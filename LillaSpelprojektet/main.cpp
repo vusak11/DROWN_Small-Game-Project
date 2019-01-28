@@ -1,11 +1,26 @@
 #include <iostream>
+#include <SFML/Window.hpp>
+
+#include "Game.h"
 
 int main() {
-	std::cout << "hejjjjjjjj" << std::endl;
 
-	int hej = 6 + 5 + 6 + 11;
-	std::cout << "bah";
+	sf::Window window(sf::VideoMode(1280, 720), "My window");
+	Game game;
 
-	getchar();
+	while (window.isOpen()) {
+		sf::Event event;
+
+		game.gameLoop();
+
+		while (window.pollEvent(event)) {
+
+			if (event.type == sf::Event::Closed) {
+				window.close();
+			}
+		}
+	}
+
+
 	return 0;
 }
