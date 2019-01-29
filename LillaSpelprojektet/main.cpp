@@ -16,13 +16,19 @@ int main() {
 	while (window.isOpen()) {
 		sf::Event event;
 
-		game.gameLoop(gameTime.restart().asSeconds());
+		game.Game_loop();
 
 		while (window.pollEvent(event)) {
 
+			/*----------Only window close commands---------------*/
 			if (event.type == sf::Event::Closed) {
 				window.close();
 			}
+
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+				window.close();
+			}
+			/*----------Only window close commands---------------*/
 		}
 	}
 
