@@ -9,6 +9,6 @@ public:
 	EventHandler();
 	~EventHandler();
 
-	void Input_from_devices();
+	void InputFromDevices();
 };
 

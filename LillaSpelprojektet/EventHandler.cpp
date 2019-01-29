@@ -8,7 +8,7 @@ EventHandler::EventHandler() {
 EventHandler::~EventHandler() {
 }
 
-void EventHandler::Input_from_devices() {
+void EventHandler::InputFromDevices() {
 
 	/*---------------Keyboard inputs-----------------*/
 	//Walk up

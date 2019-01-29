@@ -8,12 +8,12 @@ private:
 	EventHandler event_;
 
 
-	void Draw_scene();
+	void DrawScene();
 public:
 	Game();
 	~Game();
 
 	void Initilize();
-	void Game_loop();
+	void GameLoop();
 };
 

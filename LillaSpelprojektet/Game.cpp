@@ -1,6 +1,6 @@
 #include "Game.h"
 
-void Game::Draw_scene() {
+void Game::DrawScene() {
 }
 
 Game::Game() {
@@ -14,6 +14,6 @@ Game::~Game() {
 void Game::Initilize() {
 }
 
-void Game::Game_loop() {
-	event_.Input_from_devices();
+void Game::GameLoop() {
+	event_.InputFromDevices();
 }
