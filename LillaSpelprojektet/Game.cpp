@@ -18,7 +18,7 @@ void Game::initilize()
 {
 }
 
-void Game::gameLoop()
+void Game::gameLoop(float dt)
 {
 
 }

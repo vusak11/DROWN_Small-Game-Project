@@ -8,6 +8,6 @@ public:
 	~Game();
 
 	void initilize();
-	void gameLoop();
+	void gameLoop(float dt);
 };
 

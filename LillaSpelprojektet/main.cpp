@@ -6,12 +6,17 @@
 int main() {
 
 	sf::Window window(sf::VideoMode(1280, 720), "My window");
+
+	/*----------Variabels----------*/
+	sf::Clock gameTime;
 	Game game;
+
+	/*----------End of Variabels----------*/
 
 	while (window.isOpen()) {
 		sf::Event event;
 
-		game.gameLoop();
+		game.gameLoop(gameTime.restart().asSeconds());
 
 		while (window.pollEvent(event)) {
 
