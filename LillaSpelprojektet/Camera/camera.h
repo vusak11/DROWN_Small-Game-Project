@@ -1,7 +1,7 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
-#define GLM_FORCE_PURE		//Prevents SIMD functionality, thus nulling a call to include the missing file 'func_trigonometric_simd.inl'.
+//#define GLM_FORCE_PURE		//Prevents SIMD functionality, thus nulling a call to include the missing file 'func_trigonometric_simd.inl'.
 							//This must be done before the inclusion of 'glm.hpp'
 #include <GLM/glm.hpp>
 
@@ -20,7 +20,7 @@ private:
 	void UpdateViewMatrix();
 	
 public:
-	Camera(glm::vec3 in_pos);
+	Camera(glm::vec3 in_look_at = glm::vec3(0.0f, 0.0f, 0.0f), float dist = 20.0f);
 	~Camera();
 
 	void MoveCamera(float in_x, float in_y, float in_z = 0.0f);

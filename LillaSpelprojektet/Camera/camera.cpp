@@ -2,7 +2,7 @@
 
 #include <GLM/gtc/matrix_transform.hpp>
 
-#include "Globals.h"
+#include "../globals.h"
 
 //Private:
 
@@ -13,14 +13,15 @@ void Camera::UpdateViewMatrix() {
 
 //Public:
 
-Camera::Camera(glm::vec3 in_pos) {
-	//Set position of camera
-	this->pos_ = in_pos;
+Camera::Camera(glm::vec3 in_look_at, float in_dist) {
 	
-	//Camera looks at point z-offset away from itself (point within z=0 plane)
-	//(I.e. map is expected to be located at z=0)
-	this->look_at_ = in_pos;
-	this->look_at_.z = 0.0f;
+	//Point to look at (for example the position of the character)
+	this->look_at_ = in_look_at;
+
+	//Set position of camera to be offset from the point of interest (offset on z-axis)
+	this->pos_ = in_look_at;
+	this->pos_.z += in_dist;
+	
 
 	//Create vector with direction to look_at point ( always [0,0,-1] )
 	//this->camera_arr_[0].dir = glm::normalize(this->camera_arr_[0].pos - this->camera_arr_[0].look_at);
@@ -46,14 +47,18 @@ Camera::~Camera() {
 }
 
 void Camera::MoveCamera(float in_x, float in_y, float in_z) {
+	//Update position of camera
 	this->pos_.x += in_x;
 	this->pos_.y += in_y;
 	this->pos_.z += in_z;
 
+	//Update position we look at (to make camera statically follow a point)
+	this->look_at_.x += in_x;
+	this->look_at_.y += in_y;
+	this->look_at_.z += in_z;
+
 	this->UpdateViewMatrix();
 }
-
-//void Camera::AngleCamera(float in_x, float in_y, float in_z = 0.0f);
 
 glm::mat4 Camera::GetViewPerspectiveMatrix() {
 	return this->view_mat_ * this->perspective_mat_;

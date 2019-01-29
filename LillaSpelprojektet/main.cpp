@@ -3,7 +3,7 @@
 
 #include <memory>		//Fixes error with 'sf::VideoMode(...)'
 
-#include "Globals.h"
+#include "globals.h"
 #include "Game.h"
 
 int main() {
