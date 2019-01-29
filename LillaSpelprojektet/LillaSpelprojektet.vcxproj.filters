@@ -19,6 +19,12 @@
     <Filter Include="Header Files\Characters">
       <UniqueIdentifier>{33ca9f6b-cd8b-4ecc-8008-9fbaf05cef1a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Map">
+      <UniqueIdentifier>{00f63352-c645-4934-b62a-b8582f98b37f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Map">
+      <UniqueIdentifier>{103d5921-09a0-4ada-ac0f-af6c38c42795}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -33,6 +39,12 @@
     <ClCompile Include="event_handler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="map.cpp">
+      <Filter>Source Files\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="map_handler.cpp">
+      <Filter>Source Files\Map</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="character.h">
@@ -43,6 +55,12 @@
     </ClInclude>
     <ClInclude Include="event_handler.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="map_handler.h">
+      <Filter>Header Files\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="map.h">
+      <Filter>Header Files\Map</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
