@@ -16,7 +16,7 @@ int main() {
 	while (window.isOpen()) {
 		sf::Event event;
 
-		game.Game_loop();
+		game.GameLoop();
 
 		while (window.pollEvent(event)) {
 
