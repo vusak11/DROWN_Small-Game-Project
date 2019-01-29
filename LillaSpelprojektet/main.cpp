@@ -1,7 +1,7 @@
 #include <iostream>
 #include <SFML/Window.hpp>
 
-#include "Game.h"
+#include "game.h"
 
 int main() {
 

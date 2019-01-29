@@ -1,7 +1,7 @@
 #pragma once
 #include <SFML/Window.hpp>
 
-#include "EventHandler.h"
+#include "event-handler.h"
 class Game
 {
 private:
