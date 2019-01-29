@@ -1,13 +1,19 @@
 #pragma once
+#include <SFML/Window.hpp>
+
+#include "EventHandler.h"
 class Game
 {
 private:
-	void drawScene();
+	EventHandler event_;
+
+
+	void DrawScene();
 public:
 	Game();
 	~Game();
 
-	void initilize();
-	void gameLoop();
+	void Initilize();
+	void GameLoop();
 };
 
