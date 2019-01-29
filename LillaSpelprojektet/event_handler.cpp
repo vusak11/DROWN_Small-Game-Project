@@ -1,4 +1,4 @@
-#include "event-handler.h"
+#include "event_handler.h"
 
 
 EventHandler::EventHandler() {
