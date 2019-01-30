@@ -18,7 +18,6 @@ void LightHandler::LightDefault(glm::vec3 pos, glm::vec3 brightness, glm::vec3 a
 	ambient_light_ = ambient;
 	diffuse_constant_ = diffuse;
 	specular_light_ = specular;
-	
 }
 
 LightHandler::~LightHandler()
