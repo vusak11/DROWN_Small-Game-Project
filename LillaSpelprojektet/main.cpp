@@ -1,11 +1,14 @@
 #include <iostream>
 #include <SFML/Window.hpp>
 
+#include <memory>		//Fixes error with 'sf::VideoMode(...)'
+
+#include "globals.h"
 #include "Game.h"
 
 int main() {
 
-	sf::Window window(sf::VideoMode(1280, 720), "My window");
+	sf::Window window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "My window");
 	Game game;
 
 	while (window.isOpen()) {
