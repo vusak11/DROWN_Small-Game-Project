@@ -12,6 +12,7 @@ Game::~Game() {
 }
 
 void Game::Initilize() {
+	shader_.Initialize("glsl/forward_vs.glsl", "glsl/forward_fs.glsl");
 }
 
 void Game::GameLoop(float dt) {
