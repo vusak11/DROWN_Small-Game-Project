@@ -141,12 +141,14 @@
     <ClCompile Include="character.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="render.cpp" />
     <ClCompile Include="map.cpp" />
     <ClCompile Include="map_handler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera\camera.h" />
     <ClInclude Include="Camera\camera_handler.h" />
+    <ClInclude Include="render.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="shader_handler.h" />
