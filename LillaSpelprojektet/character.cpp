@@ -10,29 +10,29 @@ void Character::Render(){
 }
 
 void Character::SetPosition(glm_vec4 const pos){
-	mPosition_.m128_f32[0] = pos.m128_f32[0];
-	mPosition_.m128_f32[1] = pos.m128_f32[1];
-	mPosition_.m128_f32[2] = pos.m128_f32[2];
-	mPosition_.m128_f32[3] = pos.m128_f32[3];
+	position_.m128_f32[0] = pos.m128_f32[0];
+	position_.m128_f32[1] = pos.m128_f32[1];
+	position_.m128_f32[2] = pos.m128_f32[2];
+	position_.m128_f32[3] = pos.m128_f32[3];
 }
 
 void Character::SetHealth(int const health){
-	mHealth_ = health;
+	health_ = health;
 }
 
 void Character::SetPower(int const power){
-	mPower_ = power;
+	power_ = power;
 }
 
 glm_vec4 Character::GetPosition()
 {
-	return mPosition_;
+	return position_;
 }
 
 int Character::GetHealth(){
-	return mHealth_;
+	return health_;
 }
 
 int Character::GetPower(){
-	return mPower_;
+	return power_;
 }

@@ -135,17 +135,26 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Camera\camera.cpp" />
+    <ClCompile Include="Camera\camera_handler.cpp" />
     <ClCompile Include="event_handler.cpp" />
     <ClCompile Include="character.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="shader_handler.cpp" />
+    <ClCompile Include="map.cpp" />
+    <ClCompile Include="map_handler.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Camera\camera.h" />
+    <ClInclude Include="Camera\camera_handler.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="shader_handler.h" />
     <ClInclude Include="event_handler.h" />
     <ClInclude Include="character.h" />
     <ClInclude Include="game.h" />
+    <ClInclude Include="map.h" />
+    <ClInclude Include="map_handler.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="glsl\forward_fs.glsl" />

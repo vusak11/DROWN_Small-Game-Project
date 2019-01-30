@@ -27,9 +27,9 @@ public:
 	int GetPower();
 	Model* GetModel();
 private:
-	glm_vec4 mPosition_;
-	int mHealth_;
-	int mPower_ = 1;
+	glm_vec4 position_;
+	int health_;
+	int power_ = 1;
 	
-	Model* mModel_;
+	Model* model_;
 };
