@@ -22,6 +22,12 @@
     <Filter Include="Source Files\GLSL">
       <UniqueIdentifier>{9118221a-206c-4047-9d9c-b12f2cd23c4a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Camera">
+      <UniqueIdentifier>{07f691db-0423-4d9c-a664-b48eed30ad9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Camera">
+      <UniqueIdentifier>{4d0c2209-95a1-489c-b225-3379b261d508}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -39,6 +45,12 @@
     <ClCompile Include="Shader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Camera\camera.cpp">
+      <Filter>Source Files\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera\camera_handler.cpp">
+      <Filter>Source Files\Camera</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="character.h">
@@ -52,6 +64,12 @@
     </ClInclude>
     <ClInclude Include="Shaders.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera\camera.h">
+      <Filter>Header Files\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera\camera_handler.h">
+      <Filter>Header Files\Camera</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

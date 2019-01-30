@@ -125,6 +125,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Camera\camera.cpp" />
+    <ClCompile Include="Camera\camera_handler.cpp" />
     <ClCompile Include="event_handler.cpp" />
     <ClCompile Include="character.cpp" />
     <ClCompile Include="game.cpp" />
@@ -132,6 +134,8 @@
     <ClCompile Include="Shader.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Camera\camera.h" />
+    <ClInclude Include="Camera\camera_handler.h" />
     <ClInclude Include="Shaders.h" />
   </ItemGroup>
   <ItemGroup>
