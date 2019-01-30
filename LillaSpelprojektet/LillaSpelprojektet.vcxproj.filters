@@ -19,6 +19,15 @@
     <Filter Include="Header Files\Characters">
       <UniqueIdentifier>{33ca9f6b-cd8b-4ecc-8008-9fbaf05cef1a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\GLSL">
+      <UniqueIdentifier>{9118221a-206c-4047-9d9c-b12f2cd23c4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Camera">
+      <UniqueIdentifier>{07f691db-0423-4d9c-a664-b48eed30ad9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Camera">
+      <UniqueIdentifier>{4d0c2209-95a1-489c-b225-3379b261d508}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Header Files\Map">
       <UniqueIdentifier>{00f63352-c645-4934-b62a-b8582f98b37f}</UniqueIdentifier>
     </Filter>
@@ -38,6 +47,12 @@
     </ClCompile>
     <ClCompile Include="event_handler.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera\camera.cpp">
+      <Filter>Source Files\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera\camera_handler.cpp">
+      <Filter>Source Files\Camera</Filter>
     </ClCompile>
     <ClCompile Include="map.cpp">
       <Filter>Source Files\Map</Filter>
@@ -62,5 +77,19 @@
     <ClInclude Include="map.h">
       <Filter>Header Files\Map</Filter>
     </ClInclude>
+    <ClInclude Include="Camera\camera.h">
+      <Filter>Header Files\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera\camera_handler.h">
+      <Filter>Header Files\Camera</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="forward_vs.glsl">
+      <Filter>Source Files\GLSL</Filter>
+    </None>
+    <None Include="forward_fs.glsl">
+      <Filter>Source Files\GLSL</Filter>
+    </None>
   </ItemGroup>
 </Project>
