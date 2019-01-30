@@ -13,7 +13,7 @@ public:
 	Game();
 	~Game();
 
-	void Initilize();
+	void InitilizeGame();
 	void GameLoop(float dt);
 };
 

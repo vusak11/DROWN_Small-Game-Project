@@ -129,9 +129,11 @@
     <ClCompile Include="character.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="render.cpp" />
     <ClCompile Include="Shader.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="render.h" />
     <ClInclude Include="Shaders.h" />
   </ItemGroup>
   <ItemGroup>
