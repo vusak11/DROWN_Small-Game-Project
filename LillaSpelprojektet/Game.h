@@ -14,6 +14,6 @@ public:
 	~Game();
 
 	void Initilize();
-	void GameLoop();
+	void GameLoop(float dt);
 };
 

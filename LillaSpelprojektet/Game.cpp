@@ -14,6 +14,6 @@ Game::~Game() {
 void Game::Initilize() {
 }
 
-void Game::GameLoop() {
+void Game::GameLoop(float dt) {
 	event_.InputFromDevices();
 }
