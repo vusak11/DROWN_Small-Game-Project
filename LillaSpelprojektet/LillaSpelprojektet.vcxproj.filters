@@ -42,9 +42,6 @@
     <ClCompile Include="event_handler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Shader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Camera\camera.cpp">
       <Filter>Source Files\Camera</Filter>
     </ClCompile>
@@ -60,9 +57,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="event_handler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Shaders.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Camera\camera.h">

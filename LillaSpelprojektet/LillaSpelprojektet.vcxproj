@@ -131,12 +131,10 @@
     <ClCompile Include="character.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Shader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera\camera.h" />
     <ClInclude Include="Camera\camera_handler.h" />
-    <ClInclude Include="Shaders.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="forward_fs.glsl" />
