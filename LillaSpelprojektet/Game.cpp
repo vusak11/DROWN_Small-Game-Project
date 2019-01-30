@@ -1,24 +1,19 @@
-#include "Game.h"
+#include "game.h"
 
-void Game::drawScene()
-{
+void Game::DrawScene() {
 }
 
-Game::Game()
-{
-
-}
-
-Game::~Game()
-{
+Game::Game() {
 
 }
 
-void Game::initilize()
-{
+Game::~Game() {
+
 }
 
-void Game::gameLoop()
-{
+void Game::Initilize() {
+}
 
+void Game::GameLoop(float dt) {
+	event_.InputFromDevices();
 }
