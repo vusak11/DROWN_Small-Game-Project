@@ -1,6 +1,7 @@
 #include <iostream>
 #include "game.h"
 #include <SFML/OpenGL.hpp>
+
 int main() {
 
 	sf::Window window(sf::VideoMode(1280, 720), "My window", sf::Style::Default, sf::ContextSettings(32));
@@ -13,7 +14,7 @@ int main() {
 	Game game;
 	bool running = true;
 	/*----------End of Variabels----------*/
-
+	
 	game.Initilize();
 
 	while (running) {
