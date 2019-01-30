@@ -3,8 +3,7 @@
 
 #include "event_handler.h"
 #include "render.h"
-class Game
-{
+class Game {
 private:
 	EventHandler event_;
 	Render render_;
