@@ -4,6 +4,9 @@
 //#define GLM_FORCE_PURE		//Prevents SIMD functionality, thus nulling a call to include the missing file 'func_trigonometric_simd.inl'.
 							//This must be done before the inclusion of 'glm.hpp'
 #include <GLM/glm.hpp>
+#include <GLM/gtc/matrix_transform.hpp>
+
+#include "../globals.h"
 
 class Camera {
 private:

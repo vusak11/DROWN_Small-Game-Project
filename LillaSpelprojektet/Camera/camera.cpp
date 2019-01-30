@@ -1,9 +1,5 @@
 #include "Camera.h"
 
-#include <GLM/gtc/matrix_transform.hpp>
-
-#include "../globals.h"
-
 //Private:
 
 void Camera::UpdateViewMatrix() {
