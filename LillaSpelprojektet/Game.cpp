@@ -21,4 +21,5 @@ void Game::Initilize() {
 
 void Game::GameLoop(float dt) {
 	event_.InputFromDevices();
+	render_.UpdateRender(dt);
 }
