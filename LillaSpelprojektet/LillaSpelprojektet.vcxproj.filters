@@ -55,10 +55,10 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="glsl\forward_fs.glsl">
+    <None Include="glsl\forward_vs.glsl">
       <Filter>Source Files\GLSL</Filter>
     </None>
-    <None Include="glsl\forward_vs.glsl">
+    <None Include="glsl\forward_fs.glsl">
       <Filter>Source Files\GLSL</Filter>
     </None>
   </ItemGroup>
