@@ -45,9 +45,6 @@
     <ClCompile Include="render.cpp">
       <Filter>Source Files\Core</Filter>
     </ClCompile>
-    <ClCompile Include="Shader.cpp">
-      <Filter>Source Files\Core</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="character.h">
@@ -57,9 +54,6 @@
       <Filter>Header Files\Core</Filter>
     </ClInclude>
     <ClInclude Include="render.h">
-      <Filter>Header Files\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="Shaders.h">
       <Filter>Header Files\Core</Filter>
     </ClInclude>
     <ClInclude Include="game.h">

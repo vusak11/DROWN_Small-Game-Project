@@ -1,22 +1,22 @@
 #include "render.h"
 
-void render::DrawScene()
+void Render::DrawScene()
 {
 }
 
-render::render()
+Render::Render()
 {
 }
 
-render::~render()
+Render::~Render()
 {
 }
 
-void render::InitilizeRender()
+void Render::InitilizeRender()
 {
 
 }
 
-void render::UpdateRender(float dt)
+void Render::UpdateRender(float dt)
 {
 }

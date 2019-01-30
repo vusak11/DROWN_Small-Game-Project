@@ -2,11 +2,12 @@
 #include <SFML/Window.hpp>
 
 #include "event_handler.h"
+#include "render.h"
 class Game
 {
 private:
 	EventHandler event_;
-
+	Render render_;
 
 	void DrawScene();
 public:

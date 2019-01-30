@@ -1,10 +1,10 @@
 #pragma once
-class render {
+class Render {
 private:
 	void DrawScene();
 public:
-	render();
-	~render();
+	Render();
+	~Render();
 
 	void InitilizeRender();
 	void UpdateRender(float dt);

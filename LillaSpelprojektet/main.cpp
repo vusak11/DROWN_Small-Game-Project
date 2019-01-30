@@ -16,6 +16,10 @@ int main() {
 	bool running = true;
 	/*----------End of Variabels----------*/
 
+	/*-----------Initilize---------------*/
+	game.InitilizeGame();
+	/*-----------End Initilize---------------*/
+
 	while (running) {
 		sf::Event event;
 		game.GameLoop(gameTime.restart().asSeconds());
