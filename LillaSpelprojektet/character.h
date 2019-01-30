@@ -10,8 +10,7 @@ class Model;
 //    class Player : Character
 //    class FireGuy : Character
 
-class Character
-{
+class Character {
 public:
 	Character();
 	~Character();
