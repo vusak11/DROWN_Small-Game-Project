@@ -132,7 +132,6 @@
     <ClCompile Include="Shader.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Game.h" />
     <ClInclude Include="Shaders.h" />
   </ItemGroup>
   <ItemGroup>
