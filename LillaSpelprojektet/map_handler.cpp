@@ -8,7 +8,7 @@ MapHandler::MapHandler(){
 MapHandler::~MapHandler(){
 }
 
-Map MapHandler::GetMap(int camIndex)
+Map MapHandler::GetMap(int cam_index)
 {
-	return mMaps[camIndex];
+	return maps_[cam_index];
 }

@@ -15,8 +15,8 @@ public:
 	MapHandler();
 	~MapHandler();
 
-	Map GetMap(int camIndex = 0);
+	Map GetMap(int cam_index = 0);
 
 private:
-	Map* mMaps;	// A list of all the maps in the current game.
+	Map* maps_;	// A list of all the maps in the current game.
 };

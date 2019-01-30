@@ -15,7 +15,7 @@ public:
 	~Map();
 
 	// This function is not complete.
-	bool LoadMap(char* textureName);	// Returns a bool to trouble shoot while loading new maps.
+	bool LoadMap(char* texture_name);	// Returns a bool to trouble shoot while loading new maps.
 
 	void SetHeight(int height);
 	void SetWidth(int width);
@@ -23,7 +23,7 @@ public:
 	int GetHeight();
 	int GetWidth();
 private:
-	int mMapWidth_;
-	int mMapHeight_;
-	glm_vec4* mMapData_;
+	int map_width_;
+	int map_height_;
+	glm_vec4* map_data_;
 };

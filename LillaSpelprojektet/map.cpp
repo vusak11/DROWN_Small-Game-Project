@@ -4,35 +4,29 @@ Map::Map(){
 }
 
 Map::~Map(){
-	delete[] mMapData_;
+	delete[] map_data_;
 }
 
-bool Map::LoadMap(char* textureName){
+bool Map::LoadMap(char* texture_name){
 
-
-
-
-
-	int capacity = mMapHeight_ * mMapWidth_;
-	mMapData_ = new glm_vec4[capacity];
-
-
+	//int capacity = map_height_ * map_width_;
+	//map_data_ = new glm_vec4[capacity];
 
 	return true;
 }
 
 void Map::SetHeight(int height){
-	mMapHeight_ = height;
+	map_height_ = height;
 }
 
 void Map::SetWidth(int width){
-	mMapWidth_ = width;
+	map_width_ = width;
 }
 
 int Map::GetHeight(){
-	return mMapHeight_;
+	return map_height_;
 }
 
 int Map::GetWidth(){
-	return mMapWidth_;
+	return map_width_;
 }
