@@ -144,6 +144,7 @@
     <ClCompile Include="render.cpp" />
     <ClCompile Include="map.cpp" />
     <ClCompile Include="map_handler.cpp" />
+    <ClCompile Include="shader_handler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera\camera.h" />
