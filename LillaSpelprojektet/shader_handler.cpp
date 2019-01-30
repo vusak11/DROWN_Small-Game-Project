@@ -11,8 +11,8 @@ ShaderHandler::~ShaderHandler() {
 
 }
 void ShaderHandler::Initialize(const char* vertex_path, const char* fragment_path) {
-
-	//				Open and retrieve VERTEX file content
+	//				Vertex shader
+	//Open and retrieve VERTEX file content
 	std::ifstream glsl_file(vertex_path);
 	if (!(glsl_file.is_open())) {
 		std::cout << "ERROR::FILE::PATH::COULD_NOT_BE_OPENED\n" << vertex_path << std::endl;
@@ -21,7 +21,6 @@ void ShaderHandler::Initialize(const char* vertex_path, const char* fragment_pat
 	glsl_file.close();
 	const char* glsl_data = glsl_text.c_str();
 
-	//Vertex shader
 	GLuint vertex = glCreateShader(GL_VERTEX_SHADER);
 	glShaderSource(vertex, 1, &glsl_data, nullptr);
 	glCompileShader(vertex);
@@ -36,8 +35,8 @@ void ShaderHandler::Initialize(const char* vertex_path, const char* fragment_pat
 		std::cout << "VERTEX::COMPILATION_WORKED " << this->success_ << std::endl;
 	}
 
-	//Fragment shader
-	//				Open and retrieve FRAGMENT file content
+	//				Fragment shader
+	//Open and retrieve FRAGMENT file content
 	glsl_file.open(fragment_path);
 	if (!(glsl_file.is_open())) {
 		std::cout << "ERROR::FILE::PATH::COULD_NOT_BE_OPENED\n" << fragment_path << std::endl;

@@ -1,8 +1,7 @@
 #pragma once
 
 #include <SFML/Window.hpp>
-class EventHandler
-{
+class EventHandler {
 private:
 
 public:

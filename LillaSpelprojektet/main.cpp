@@ -1,8 +1,6 @@
 #include <iostream>
-#include <GL/glew.h>
-#include <SFML/OpenGL.hpp>
-
 #include "game.h"
+#include <SFML/OpenGL.hpp>
 int main() {
 
 	sf::Window window(sf::VideoMode(1280, 720), "My window", sf::Style::Default, sf::ContextSettings(32));
@@ -16,10 +14,7 @@ int main() {
 	bool running = true;
 	/*----------End of Variabels----------*/
 
-	if (glewInit() != GLEW_OK) {
-		std::cout << "GLEW not linking" << std::endl;
-	}
-
+	game.Initilize();
 
 	while (running) {
 		sf::Event event;

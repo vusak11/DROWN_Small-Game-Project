@@ -12,6 +12,10 @@ Game::~Game() {
 }
 
 void Game::Initilize() {
+	if (glewInit() != GLEW_OK) {
+		std::cout << "GLEW not linking" << std::endl;
+	}
+
 	shader_.Initialize("glsl/forward_vs.glsl", "glsl/forward_fs.glsl");
 }
 
