@@ -1,6 +1,5 @@
 #include "event_handler.h"
 
-
 EventHandler::EventHandler() {
 }
 
@@ -46,33 +45,34 @@ void EventHandler::InputFromDevices() {
 
 	/*---------------Secondary Camera Control-----------------*/
 	float cam_speed = 5.0;
+	bool secondary = this->cam_handler_ptr_->GetMode();		//Primary is 0 (boolean false), Secondeary is 1 (boolean !false)
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::O)) {
 		//Swap camera (Primary/Secondary)
 		this->cam_handler_ptr_->SwapCamera();
 	}
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+	if (secondary && sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
 		//Move active camera upwards
 		this->cam_handler_ptr_->MoveCamera(cam_speed, 0.0f);
 	}
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+	if (secondary && sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
 		//Move active camera leftwards
 		this->cam_handler_ptr_->MoveCamera(0.0f, -cam_speed);
 	}
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+	if (secondary && sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
 		//Move active camera rightwards
 		this->cam_handler_ptr_->MoveCamera(0.0f, cam_speed);
 	}
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+	if (secondary && sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
 		//Move active camera downwards
 		this->cam_handler_ptr_->MoveCamera(-cam_speed, 0.0f);
 	}
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Add)) {
+	if (secondary && sf::Keyboard::isKeyPressed(sf::Keyboard::Add)) {
 		//Move active camera forwards ("zoom in")
 		this->cam_handler_ptr_->MoveCamera(0.0, 0.0, -cam_speed);
 	}
