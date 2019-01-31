@@ -1,5 +1,5 @@
-#ifndef CAMERA_HANDLER_H
-#define CAMERA_HANDLER_H
+#ifndef CAMERA_CAMERA_HANDLER_H_
+#define CAMERA_CAMERA_HANDLER_H_
 
 #include <GLM/glm.hpp>
 
@@ -28,4 +28,4 @@ public:
 
 };
 
-#endif // !CAMERA_HANDLER_H
+#endif // !CAMERA_CAMERA_HANDLER_H

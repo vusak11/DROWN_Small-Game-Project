@@ -1,5 +1,5 @@
-#ifndef CAMERA_H
-#define CAMERA_H
+#ifndef CAMERA_CAMERA_H_
+#define CAMERA_CAMERA_H_
 
 //#define GLM_FORCE_PURE		//Prevents SIMD functionality, thus nulling a call to include the missing file 'func_trigonometric_simd.inl'.
 							//This must be done before the inclusion of 'glm.hpp'
@@ -33,4 +33,4 @@ public:
 
 };
 
-#endif
+#endif //!CAMERA_CAMERA_H_

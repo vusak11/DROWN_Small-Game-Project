@@ -1,4 +1,5 @@
-#pragma once
+#ifndef EVENTHANDLER_H
+#define EVENTHANDLER_H
 
 #include <SFML/Window.hpp>
 class EventHandler
@@ -11,4 +12,6 @@ public:
 
 	void InputFromDevices();
 };
+
+#endif // !EVENTHANDLER_H
 
