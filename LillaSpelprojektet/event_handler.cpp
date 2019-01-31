@@ -45,24 +45,31 @@ void EventHandler::InputFromDevices() {
 	/*---------------End Mouse inputs-----------------*/
 
 	/*---------------Secondary Camera Control-----------------*/
+	float cam_speed = 5.0;
+
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::O)) {
-		//Swap to secondary camera
+		//Swap camera (Primary/Secondary)
+		this->cam_handler_ptr->SwapCamera();
 	}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-
+		//Move active camera upwards
+		this->cam_handler_ptr->MoveCamera(cam_speed, 0.0f);
 	}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-
+		//Move active camera leftwards
+		this->cam_handler_ptr->MoveCamera(0.0f, -cam_speed);
 	}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-
+		//Move active camera rightwards
+		this->cam_handler_ptr->MoveCamera(0.0f, cam_speed);
 	}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
-
+		//Move active camera downwards
+		this->cam_handler_ptr->MoveCamera(-cam_speed, 0.0f);
 	}
 	/*---------------End Secondary Camera Control-----------------*/
 }
