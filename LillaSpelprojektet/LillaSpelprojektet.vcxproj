@@ -142,6 +142,7 @@
     <ClCompile Include="game.cpp" />
     <ClCompile Include="light_handler.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="object_class.cpp" />
     <ClCompile Include="render.cpp" />
     <ClCompile Include="map.cpp" />
     <ClCompile Include="map_handler.cpp" />
@@ -149,6 +150,7 @@
     <ClCompile Include="sound_unit.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="object_class.h" />
     <ClInclude Include="sound_unit.h" />
     <ClInclude Include="Camera\camera.h" />
     <ClInclude Include="Camera\camera_handler.h" />
