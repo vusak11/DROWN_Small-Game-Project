@@ -9,7 +9,7 @@ class Game {
 private:
 	EventHandler event_;
 	Render render_;
-	ShaderHandler shader_;
+	ShaderHandler* geometry_pass_;
 
 	void DrawScene();
 public:

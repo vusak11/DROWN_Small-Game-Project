@@ -4,7 +4,10 @@ void Game::DrawScene() {
 }
 
 Game::Game() {
-
+	geometry_pass_ = new ShaderHandler(
+		"glsl/geometrypass/geometry_vs.glsl", 
+		"glsl/geometrypass/geometry_gs.glsl", 
+		"glsl/geometrypass/geometry_fs.glsl");
 }
 
 Game::~Game() {
@@ -16,7 +19,6 @@ void Game::InitilizeGame() {
 		std::cout << "GLEW not linking" << std::endl;
 	}
 
-	shader_.Initialize("glsl/forward_vs.glsl", "", "glsl/forward_fs.glsl");
 }
 
 void Game::GameLoop(float dt) {
