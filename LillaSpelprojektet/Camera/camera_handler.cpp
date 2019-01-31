@@ -16,6 +16,10 @@ void CameraHandler::SwapCamera() {
 	else { this->mode_ = PRIMARY; }
 }
 
+int CameraHandler::GetMode() {
+	return this->mode_;
+}
+
 glm::mat4 CameraHandler::MoveCamera(float in_x, float in_y, float in_z) {
 	//Update the active camera's position
 	this->cams_[this->mode_].MoveCamera(in_x, in_y, in_z);

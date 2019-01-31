@@ -22,6 +22,7 @@ public:
 	~CameraHandler();
 
 	void SwapCamera();
+	int GetMode();
 
 	glm::mat4 MoveCamera(float in_x, float in_y, float in_z = 0.0f);
 	glm::mat4 SetCameraPos(float in_x, float in_y, float in_z = 0.0f);
