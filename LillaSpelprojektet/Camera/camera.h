@@ -27,6 +27,7 @@ public:
 	~Camera();
 
 	void MoveCamera(float in_x, float in_y, float in_z = 0.0f);
+	void SetCameraPos(float in_x, float in_y, float in_z = 0.0f);
 	//void AngleCamera(float in_x, float in_y, float in_z = 0.0f);
 	glm::mat4 GetViewPerspectiveMatrix();
 

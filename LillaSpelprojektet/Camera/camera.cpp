@@ -43,7 +43,7 @@ Camera::~Camera() {
 }
 
 void Camera::MoveCamera(float in_x, float in_y, float in_z) {
-	//Update position of camera
+	//Update position of camera by adding the input offset
 	this->pos_.x += in_x;
 	this->pos_.y += in_y;
 	this->pos_.z += in_z;
@@ -52,6 +52,20 @@ void Camera::MoveCamera(float in_x, float in_y, float in_z) {
 	this->look_at_.x += in_x;
 	this->look_at_.y += in_y;
 	this->look_at_.z += in_z;
+
+	this->UpdateViewMatrix();
+}
+
+void Camera::SetCameraPos(float in_x, float in_y, float in_z = 0.0f) {
+	//Update position of camera by setting its position to the input coordinates
+	this->pos_.x = in_x;
+	this->pos_.y = in_y;
+	this->pos_.z = in_z;
+
+	//Update position we look at (to make camera statically follow a point)
+	this->look_at_.x = in_x;
+	this->look_at_.y = in_y;
+	this->look_at_.z = in_z;
 
 	this->UpdateViewMatrix();
 }

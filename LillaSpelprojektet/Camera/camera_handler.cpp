@@ -16,9 +16,25 @@ void CameraHandler::SwapCamera() {
 	else { this->mode_ = PRIMARY; }
 }
 
-glm::mat4 CameraHandler::UpdateCamera(float in_x, float in_y, float in_z) {
+glm::mat4 CameraHandler::MoveCamera(float in_x, float in_y, float in_z) {
 	//Update the active camera's position
 	this->cams_[this->mode_].MoveCamera(in_x, in_y, in_z);
+
+	//Return the active camera's View*Perspective Matrix
+	return this->cams_[this->mode_].GetViewPerspectiveMatrix();
+}
+
+glm::mat4 CameraHandler::MoveCamera(float in_x, float in_y, float in_z) {
+	//Update the active camera's position
+	this->cams_[this->mode_].MoveCamera(in_x, in_y, in_z);
+
+	//Return the active camera's View*Perspective Matrix
+	return this->cams_[this->mode_].GetViewPerspectiveMatrix();
+}
+
+glm::mat4 CameraHandler::SetCameraPos(float in_x, float in_y, float in_z) {
+	//Update the active camera's position
+	this->cams_[this->mode_].SetCameraPos(in_x, in_y, in_z);
 
 	//Return the active camera's View*Perspective Matrix
 	return this->cams_[this->mode_].GetViewPerspectiveMatrix();
