@@ -16,7 +16,7 @@ void Game::InitilizeGame() {
 		std::cout << "GLEW not linking" << std::endl;
 	}
 
-	shader_.Initialize("glsl/forward_vs.glsl", "glsl/forward_fs.glsl");
+	shader_.Initialize("glsl/forward_vs.glsl", "", "glsl/forward_fs.glsl");
 }
 
 void Game::GameLoop(float dt) {

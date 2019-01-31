@@ -40,6 +40,9 @@
     <Filter Include="Header Files\Core">
       <UniqueIdentifier>{89b2bb9b-6130-49c0-a4c5-f8725063101a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\GLSL\GeometryPass">
+      <UniqueIdentifier>{c79053f2-ea70-4b39-a0a1-e1f34f1b31f5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -69,7 +72,6 @@
     <ClCompile Include="map_handler.cpp">
       <Filter>Source Files\Map</Filter>
     </ClCompile>
-
     <ClCompile Include="light_handler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -79,7 +81,6 @@
     <ClCompile Include="sound_unit.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="character.h">
@@ -103,7 +104,6 @@
     <ClInclude Include="Camera\camera_handler.h">
       <Filter>Header Files\Camera</Filter>
     </ClInclude>
-
     <ClInclude Include="light_handler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -113,7 +113,6 @@
     <ClInclude Include="shader_handler.h">
       <Filter>Header Files\Core</Filter>
     </ClInclude>
-    
     <ClInclude Include="sound_unit.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -124,6 +123,15 @@
     </None>
     <None Include="glsl\forward_fs.glsl">
       <Filter>Source Files\GLSL</Filter>
+    </None>
+    <None Include="geometry_vs.glsl">
+      <Filter>Source Files\GLSL\GeometryPass</Filter>
+    </None>
+    <None Include="geometry_gs.glsl">
+      <Filter>Source Files\GLSL\GeometryPass</Filter>
+    </None>
+    <None Include="geometry_fs.glsl">
+      <Filter>Source Files\GLSL\GeometryPass</Filter>
     </None>
   </ItemGroup>
 </Project>
