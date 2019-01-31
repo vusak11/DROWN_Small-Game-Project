@@ -56,7 +56,7 @@ void Camera::MoveCamera(float in_x, float in_y, float in_z) {
 	this->UpdateViewMatrix();
 }
 
-void Camera::SetCameraPos(float in_x, float in_y, float in_z = 0.0f) {
+void Camera::SetCameraPos(float in_x, float in_y, float in_z) {
 	//Update position of camera by setting its position to the input coordinates
 	this->pos_.x = in_x;
 	this->pos_.y = in_y;
