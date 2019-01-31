@@ -43,4 +43,26 @@ void EventHandler::InputFromDevices() {
 		//Do something
 	}
 	/*---------------End Mouse inputs-----------------*/
+
+	/*---------------Secondary Camera Control-----------------*/
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::O)) {
+		//Swap to secondary camera
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+
+	}
+	/*---------------End Secondary Camera Control-----------------*/
 }
