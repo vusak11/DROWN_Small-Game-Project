@@ -14,8 +14,10 @@ int main() {
 	Game game;
 	bool running = true;
 	/*----------End of Variabels----------*/
-	
-	game.Initilize();
+
+	/*-----------Initilize---------------*/
+	game.InitilizeGame();
+	/*-----------End Initilize---------------*/
 
 	while (running) {
 		sf::Event event;

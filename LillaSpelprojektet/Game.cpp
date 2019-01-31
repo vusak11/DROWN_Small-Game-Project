@@ -11,7 +11,7 @@ Game::~Game() {
 
 }
 
-void Game::Initilize() {
+void Game::InitilizeGame() {
 	if (glewInit() != GLEW_OK) {
 		std::cout << "GLEW not linking" << std::endl;
 	}
@@ -21,4 +21,5 @@ void Game::Initilize() {
 
 void Game::GameLoop(float dt) {
 	event_.InputFromDevices();
+	render_.UpdateRender(dt);
 }
