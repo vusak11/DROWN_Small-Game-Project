@@ -71,5 +71,14 @@ void EventHandler::InputFromDevices() {
 		//Move active camera downwards
 		this->cam_handler_ptr_->MoveCamera(-cam_speed, 0.0f);
 	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Add)) {
+		//Move active camera forwards ("zoom in")
+		this->cam_handler_ptr_->MoveCamera(0.0, 0.0, -cam_speed);
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Subtract)) {
+		//Move active camera backwards ("zoom out")
+		this->cam_handler_ptr_->MoveCamera(0.0, 0.0, cam_speed);
+	}
 	/*---------------End Secondary Camera Control-----------------*/
 }
