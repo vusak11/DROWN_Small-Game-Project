@@ -8,7 +8,7 @@
 class EventHandler
 {
 private:
-	CameraHandler* cam_handler_ptr;	//NTS: Temp solution while the position of the EventHandler is decided
+	CameraHandler* cam_handler_ptr_;	//NTS: Temp solution while the position of the EventHandler is decided
 public:
 	EventHandler();
 	~EventHandler();
