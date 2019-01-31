@@ -1,16 +1,16 @@
 #include "sound_unit.h"
 
-SoundUnit::SoundUnit(){
+SoundUnit::SoundUnit() {
 	buffer_.loadFromFile((char*)"../Resources/Audio/default_sound.wav");
 	sound_.setBuffer(buffer_);
 
 	music_file_name_ = ((char*)"../Resources/Audio/default_sound.wav");
 }
 
-SoundUnit::~SoundUnit(){
+SoundUnit::~SoundUnit() {
 }
 
-bool SoundUnit::LoadSound(char* file_name){
+bool SoundUnit::LoadSound(char* file_name) {
 	
 	if (!buffer_.loadFromFile(file_name))
 		return false;
@@ -19,19 +19,19 @@ bool SoundUnit::LoadSound(char* file_name){
 	return true;
 }
 
-void SoundUnit::SetMusicFile(char * file_name){
+void SoundUnit::SetMusicFile(char * file_name) {
 	music_file_name_ = file_name;
 }
 
-void SoundUnit::PlaySound(){
+void SoundUnit::PlaySound() {
 	sound_.play();
 }
 
-void SoundUnit::StopSound(){
+void SoundUnit::StopSound() {
 	sound_.stop();
 }
 
-bool SoundUnit::PlayMusic(){
+bool SoundUnit::PlayMusic() {
 
 	if (!music_.openFromFile(music_file_name_))
 		return false; // error
@@ -40,6 +40,6 @@ bool SoundUnit::PlayMusic(){
 	return true;
 }
 
-void SoundUnit::StopMusic(){
+void SoundUnit::StopMusic() {
 	music_.stop();
 }
