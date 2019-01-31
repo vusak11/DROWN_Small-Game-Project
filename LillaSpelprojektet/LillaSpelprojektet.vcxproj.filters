@@ -69,6 +69,10 @@
     <ClCompile Include="map_handler.cpp">
       <Filter>Source Files\Map</Filter>
     </ClCompile>
+
+    <ClCompile Include="light_handler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="shader_handler.cpp">
       <Filter>Source Files\Core</Filter>
     </ClCompile>
@@ -94,6 +98,10 @@
     </ClInclude>
     <ClInclude Include="Camera\camera_handler.h">
       <Filter>Header Files\Camera</Filter>
+    </ClInclude>
+
+    <ClInclude Include="light_handler.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="game.h">
       <Filter>Header Files\Core</Filter>
