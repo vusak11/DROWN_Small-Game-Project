@@ -4,7 +4,7 @@ void Game::DrawScene() {
 }
 
 Game::Game() {
-	
+	this->Initilize();
 	
 }
 
