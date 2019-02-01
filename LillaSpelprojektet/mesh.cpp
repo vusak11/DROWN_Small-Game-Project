@@ -72,7 +72,7 @@ Mesh::~Mesh() {
 }
 
 void Mesh::Draw(ShaderHandler shader) {
-	for (GLuint i = 0; i < textures_.size(); i++) {
+	for (unsigned int i = 0; i < textures_.size(); i++) {
 		glActiveTexture(GL_TEXTURE0 + i); //Activate proper texture unit
 
 		std::string name = textures_[i].type;

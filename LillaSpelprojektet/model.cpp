@@ -100,7 +100,10 @@ GLint Model::TextureFromFile(const char * path, std::string directory) {
 	return texture_id;
 }
 
-std::vector<Texture> Model::LoadMaterialTextures(aiMaterial * material, aiTextureType type, std::string type_name) {
+std::vector<Texture> Model::LoadMaterialTextures(
+	aiMaterial * material, 
+	aiTextureType type,
+	std::string type_name) {
 	std::vector<Texture> texture;
 	for (unsigned int i = 0; i < material->GetTextureCount(type); i++) {
 		aiString ai_string;
@@ -146,12 +149,12 @@ void Model::LoadModel(std::string path) {
 
 void Model::ProcessNode(aiNode * node, const aiScene * scene) {
 	//Process all the nodes meshes
-	for (GLuint i = 0; i < node->mNumMeshes; i++) {
+	for (unsigned int i = 0; i < node->mNumMeshes; i++) {
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
 		mesh_.push_back(ProcessMesh(mesh, scene));
 	}
 	//Then process nodes children
-	for (GLuint i = 0; i < node->mNumChildren; i++) {
+	for (unsigned int i = 0; i < node->mNumChildren; i++) {
 		ProcessNode(node->mChildren[i], scene);
 	}
 }
