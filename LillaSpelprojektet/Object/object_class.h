@@ -14,20 +14,15 @@ class Model;
 //    class Character : ObjectClass
 
 
-class ObjectClass
-{
+class ObjectClass {
 public:
 	ObjectClass();
 	~ObjectClass();
-
-	virtual void Render() = 0; // Update this when more other things are implemented
 
 	void SetPosition(glm::vec4 const pos);
 	void SetVelocity(glm::vec4 const v);
 	void SetRotation(glm::vec4 const r);
 	void SetScale(glm::vec4 const s);
-
-	void SetModel(); // Update ths when model reader system is working
 
 	glm::vec4 GetPosition() const;
 	glm::vec4 GetVelocity() const;
@@ -42,7 +37,7 @@ private:
 	glm::vec4 rotation_;
 	glm::vec4 scale_;
 
-	Model* model_; // The model class will contain a TextureClass 
+	//Model* model_; // The model class will contain a TextureClass 
 	//HitBot hitbox_; 
 };
 
