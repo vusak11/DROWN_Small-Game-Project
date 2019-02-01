@@ -1,12 +1,16 @@
 #pragma once
 #include <SFML/Window.hpp>
+#include <GLM/glm.hpp>
 
 #include "event_handler.h"
+#include "Camera/camera_handler.h"
+
 class Game
 {
 private:
-	EventHandler event_;
-
+	CameraHandler* cam_handler_ptr_;
+	//ObjectHandler* obj_handler_ptr_;
+	EventHandler* event_handler_ptr_;
 
 	void DrawScene();
 public:

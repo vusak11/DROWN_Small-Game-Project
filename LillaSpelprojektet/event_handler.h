@@ -8,9 +8,10 @@
 class EventHandler
 {
 private:
-	CameraHandler* cam_handler_ptr_;	//NTS: Temp solution while the position of the EventHandler is decided
+	CameraHandler* cam_handler_ptr_;
+	//ObjectHandler* obj_handler_ptr_;
 public:
-	EventHandler();
+	EventHandler(CameraHandler* in_cptr/*, in_optr*/);
 	~EventHandler();
 
 	void InputFromDevices();
