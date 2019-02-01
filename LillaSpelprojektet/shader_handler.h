@@ -1,5 +1,5 @@
 #pragma once
-
+#include "Globals.h"
 #include <GL/glew.h>
 //#include <SFML/OpenGL.hpp>
 
@@ -13,12 +13,30 @@ class ShaderHandler {
 private:
 	char info_log_[512];
 	int success_;
-	GLuint forward_rendering_;
-	GLuint lighting_pass_;
+
+	GLuint program_;
+
+	//  Geometry
+	GLuint buffer_;
+	GLuint position_;
+	GLuint normal_;
+	GLuint albedo_specular_;
 public:
 	ShaderHandler();
+	ShaderHandler(const char* vertex_path, const char* fragment_path);
+	ShaderHandler(const char* vertex_path, const char* geometry_path, const char* fragment_path);
 	~ShaderHandler();
 
-	void Initialize(const char* vertex_path, const char* fragment_path);
+	void CompileStatus(GLuint shader_id, int success, char* info);
+	
+	GLuint GetProgram();
+	GLuint GetBuffer();
+	GLuint GetPosition();
+	GLuint GetNormal();
+	GLuint GetAlbedoSpecular();
+
+	void GeometryPass();
+
 	void Use();
+
 };

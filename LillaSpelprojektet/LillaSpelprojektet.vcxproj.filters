@@ -49,6 +49,9 @@
     <Filter Include="Source Files\GLSL\LightingPass">
       <UniqueIdentifier>{96981d59-932d-4a2d-a362-03d3588bb5c1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\GLSL\GeometryPass">
+      <UniqueIdentifier>{c79053f2-ea70-4b39-a0a1-e1f34f1b31f5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -125,6 +128,9 @@
     <ClInclude Include="sound_unit.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Globals.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="object_class.h">
       <Filter>Header Files\Objects</Filter>
     </ClInclude>
@@ -135,6 +141,15 @@
     </None>
     <None Include="glsl\forward_fs.glsl">
       <Filter>Source Files\GLSL</Filter>
+    </None>
+    <None Include="glsl\geometrypass\geometry_vs.glsl">
+      <Filter>Source Files\GLSL\GeometryPass</Filter>
+    </None>
+    <None Include="glsl\geometrypass\geometry_gs.glsl">
+      <Filter>Source Files\GLSL\GeometryPass</Filter>
+    </None>
+    <None Include="glsl\geometrypass\geometry_fs.glsl">
+      <Filter>Source Files\GLSL\GeometryPass</Filter>
     </None>
     <None Include="lighting_vs.glsl">
       <Filter>Source Files\GLSL\LightingPass</Filter>
