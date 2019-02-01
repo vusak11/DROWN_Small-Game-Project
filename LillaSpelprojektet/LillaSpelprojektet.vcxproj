@@ -165,11 +165,11 @@
     <ClInclude Include="map_handler.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="geometry_fs.glsl" />
-    <None Include="geometry_gs.glsl" />
-    <None Include="geometry_vs.glsl" />
     <None Include="glsl\forward_fs.glsl" />
     <None Include="glsl\forward_vs.glsl" />
+    <None Include="glsl\geometrypass\geometry_fs.glsl" />
+    <None Include="glsl\geometrypass\geometry_gs.glsl" />
+    <None Include="glsl\geometrypass\geometry_vs.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

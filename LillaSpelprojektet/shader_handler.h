@@ -16,10 +16,11 @@ private:
 
 	GLuint program_;
 
-	GLuint geometry_buffer_;
-	GLuint geometry_position_;
-	GLuint geometry_normal_;
-	GLuint geometry_albedo_specular_;
+	//  Geometry
+	GLuint buffer_;
+	GLuint position_;
+	GLuint normal_;
+	GLuint albedo_specular_;
 public:
 	ShaderHandler();
 	ShaderHandler(const char* vertex_path, const char* fragment_path);
@@ -27,7 +28,15 @@ public:
 	~ShaderHandler();
 
 	void CompileStatus(GLuint shader_id, int success, char* info);
+	
+	GLuint GetProgram();
+	GLuint GetBuffer();
+	GLuint GetPosition();
+	GLuint GetNormal();
+	GLuint GetAlbedoSpecular();
+
 	void GeometryPass();
+
 	void Use();
 
 };

@@ -127,13 +127,13 @@
     <None Include="glsl\forward_fs.glsl">
       <Filter>Source Files\GLSL</Filter>
     </None>
-    <None Include="geometry_vs.glsl">
+    <None Include="glsl\geometrypass\geometry_vs.glsl">
       <Filter>Source Files\GLSL\GeometryPass</Filter>
     </None>
-    <None Include="geometry_gs.glsl">
+    <None Include="glsl\geometrypass\geometry_gs.glsl">
       <Filter>Source Files\GLSL\GeometryPass</Filter>
     </None>
-    <None Include="geometry_fs.glsl">
+    <None Include="glsl\geometrypass\geometry_fs.glsl">
       <Filter>Source Files\GLSL\GeometryPass</Filter>
     </None>
   </ItemGroup>

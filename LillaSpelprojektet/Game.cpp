@@ -4,10 +4,7 @@ void Game::DrawScene() {
 }
 
 Game::Game() {
-	geometry_pass_ = new ShaderHandler(
-		"glsl/geometrypass/geometry_vs.glsl", 
-		"glsl/geometrypass/geometry_gs.glsl", 
-		"glsl/geometrypass/geometry_fs.glsl");
+
 }
 
 Game::~Game() {
@@ -15,9 +12,12 @@ Game::~Game() {
 }
 
 void Game::InitilizeGame() {
+	glewExperimental = GL_TRUE;
 	if (glewInit() != GLEW_OK) {
 		std::cout << "GLEW not linking" << std::endl;
 	}
+
+	render_.InitilizeRender();
 
 }
 
