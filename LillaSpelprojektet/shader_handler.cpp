@@ -10,6 +10,10 @@ ShaderHandler::ShaderHandler() {
 ShaderHandler::~ShaderHandler() {
 
 }
+GLuint ShaderHandler::GetProgram() const
+{
+	return forward_rendering_;
+}
 void ShaderHandler::Initialize(const char* vertex_path, const char* fragment_path) {
 	//				Vertex shader
 	//Open and retrieve VERTEX file content

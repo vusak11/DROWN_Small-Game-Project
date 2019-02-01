@@ -18,6 +18,8 @@ public:
 	ShaderHandler();
 	~ShaderHandler();
 
+	GLuint GetProgram() const;
+
 	void Initialize(const char* vertex_path, const char* fragment_path);
 	void Use();
 };
