@@ -79,7 +79,3 @@ void ShaderHandler::Initialize(const char* vertex_path, const char* fragment_pat
 void ShaderHandler::Use() {
 	glUseProgram(this->forward_rendering_);
 }
-
-GLuint ShaderHandler::GetProgram() const {
-	return forward_rendering_;
-}
