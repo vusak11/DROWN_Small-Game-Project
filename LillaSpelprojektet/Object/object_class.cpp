@@ -6,9 +6,6 @@ ObjectClass::ObjectClass() {
 ObjectClass::~ObjectClass() {
 }
 
-void ObjectClass::Render() {
-}
-
 void ObjectClass::SetPosition(glm::vec4 const pos) {
 	position_.x = pos.x;
 	position_.y = pos.y;

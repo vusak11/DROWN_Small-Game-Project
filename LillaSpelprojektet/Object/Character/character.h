@@ -1,6 +1,7 @@
-#pragma once
+#ifndef CHARACTER_H
+#define CHARACTER_H
 
-#include "object_class.h"
+#include "../object_class.h"
 
 // This class is used as a base of each character in the game. 
 // Example:
@@ -20,5 +21,10 @@ public:
 private:
 	int health_;
 	int power_ = 1;
-	
+
 };
+
+#endif // !CHARACTER_H
+
+
+
