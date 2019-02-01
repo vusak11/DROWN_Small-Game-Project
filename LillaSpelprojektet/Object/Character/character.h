@@ -1,4 +1,5 @@
-#pragma once
+#ifndef CHARACTER_H
+#define CHARACTER_H
 
 #include "object_class.h"
 
@@ -20,5 +21,10 @@ public:
 private:
 	int health_;
 	int power_ = 1;
-	
+
 };
+
+#endif // !CHARACTER_H
+
+
+
