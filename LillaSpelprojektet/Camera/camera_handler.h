@@ -1,5 +1,5 @@
-#ifndef CAMERA_HANDLER_H
-#define CAMERA_HANDLER_H
+#ifndef CAMERA_CAMERA_HANDLER_H_
+#define CAMERA_CAMERA_HANDLER_H_
 
 #include <GLM/glm.hpp>
 
@@ -8,13 +8,13 @@
 class CameraHandler {
 private:
 
-	enum CamMode {
+	enum CameraMode {
 		PRIMARY,			//0
 		SECONDARY			//1
 	};
 
 	Camera cams_[2];		//Primary and secondary camera
-	CamMode mode_;
+	CameraMode mode_;
 
 public:
 
@@ -22,9 +22,11 @@ public:
 	~CameraHandler();
 
 	void SwapCamera();
+	int GetMode();
 
-	glm::mat4 UpdateCamera(float in_x, float in_y, float in_z = 0.0f);
+	glm::mat4 MoveCamera(float in_x, float in_y, float in_z = 0.0f);
+	glm::mat4 SetCameraPos(float in_x, float in_y, float in_z = 0.0f);
 
 };
 
-#endif // !CAMERA_HANDLER_H
+#endif // !CAMERA_CAMERA_HANDLER_H
