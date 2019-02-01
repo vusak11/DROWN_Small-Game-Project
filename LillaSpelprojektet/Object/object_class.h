@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECT_OBJECT_CLASS_H_
+#define OBJECT_OBJECT_CLASS_H_
 
 #include <GLM/vec4.hpp>
 #include <GLM/mat4x4.hpp>
@@ -44,3 +45,6 @@ private:
 	Model* model_; // The model class will contain a TextureClass 
 	//HitBot hitbox_; 
 };
+
+
+#endif // !OBJECT_OBJECT_CLASS_H_
