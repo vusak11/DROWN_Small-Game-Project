@@ -13,12 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source Files\Characters">
-      <UniqueIdentifier>{70b50d44-e925-4418-90c0-a69df792658b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Characters">
-      <UniqueIdentifier>{33ca9f6b-cd8b-4ecc-8008-9fbaf05cef1a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\GLSL">
       <UniqueIdentifier>{9118221a-206c-4047-9d9c-b12f2cd23c4a}</UniqueIdentifier>
     </Filter>
@@ -40,13 +34,25 @@
     <Filter Include="Header Files\Core">
       <UniqueIdentifier>{89b2bb9b-6130-49c0-a4c5-f8725063101a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Objects">
+      <UniqueIdentifier>{57212a88-3768-4928-aef2-65af495b461f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Objects\Characters">
+      <UniqueIdentifier>{70b50d44-e925-4418-90c0-a69df792658b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Objects">
+      <UniqueIdentifier>{2ddb0f38-102a-41d2-a294-994726192e68}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Objects\Characters">
+      <UniqueIdentifier>{33ca9f6b-cd8b-4ecc-8008-9fbaf05cef1a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="character.cpp">
-      <Filter>Source Files\Characters</Filter>
+      <Filter>Source Files\Objects\Characters</Filter>
     </ClCompile>
     <ClCompile Include="event_handler.cpp">
       <Filter>Source Files\Core</Filter>
@@ -84,10 +90,13 @@
     <ClCompile Include="model.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="object_class.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="character.h">
-      <Filter>Header Files\Characters</Filter>
+      <Filter>Header Files\Objects\Characters</Filter>
     </ClInclude>
     <ClInclude Include="event_handler.h">
       <Filter>Header Files\Core</Filter>
@@ -124,6 +133,9 @@
     </ClInclude>
     <ClInclude Include="model.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="object_class.h">
+      <Filter>Header Files\Objects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
