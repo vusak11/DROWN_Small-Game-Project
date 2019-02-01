@@ -86,6 +86,7 @@
     </ClCompile>
     <ClCompile Include="Object\Character\character.cpp">
       <Filter>Source Files\Object\Character</Filter>
+    </ClCompile>
     <ClCompile Include="mesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -135,6 +136,7 @@
     </ClInclude>
     <ClInclude Include="Object\object_handler.h">
       <Filter>Header Files\Object</Filter>
+    </ClInclude>
     <ClInclude Include="mesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>

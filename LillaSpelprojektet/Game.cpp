@@ -4,7 +4,7 @@ void Game::DrawScene() {
 }
 
 Game::Game() {
-	this->Initilize();
+	this->InitilizeGame();
 	
 }
 
@@ -35,5 +35,5 @@ void Game::InitilizeGame() {
 
 void Game::GameLoop(float in_deltatime) {
 	this->event_handler_ptr_->InputFromDevices(in_deltatime);
-	render_.UpdateRender(dt);
+	render_.UpdateRender(in_deltatime);
 }
