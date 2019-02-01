@@ -1,8 +1,8 @@
 #include "event_handler.h"
 
-EventHandler::EventHandler(CameraHandler* in_cptr/*, in_optr*/) {
-	this->camera_handler_ptr_ = in_cptr;
-	//this->obj_handler_ptr_ = in_optr;
+EventHandler::EventHandler(CameraHandler* in_camera_handler_ptr/*, in_object_handler_ptr*/) {
+	this->camera_handler_ptr_ = in_camera_handler_ptr;
+	//this->obj_handler_ptr_ = in_object_handler_ptr;
 }
 
 
