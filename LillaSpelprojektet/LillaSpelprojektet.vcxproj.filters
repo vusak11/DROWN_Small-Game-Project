@@ -46,6 +46,9 @@
     <Filter Include="Header Files\Objects\Characters">
       <UniqueIdentifier>{33ca9f6b-cd8b-4ecc-8008-9fbaf05cef1a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\GLSL\LightingPass">
+      <UniqueIdentifier>{96981d59-932d-4a2d-a362-03d3588bb5c1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -132,6 +135,12 @@
     </None>
     <None Include="glsl\forward_fs.glsl">
       <Filter>Source Files\GLSL</Filter>
+    </None>
+    <None Include="lighting_vs.glsl">
+      <Filter>Source Files\GLSL\LightingPass</Filter>
+    </None>
+    <None Include="lighting_fs.glsl">
+      <Filter>Source Files\GLSL\LightingPass</Filter>
     </None>
   </ItemGroup>
 </Project>

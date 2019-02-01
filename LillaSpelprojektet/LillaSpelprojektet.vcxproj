@@ -168,6 +168,8 @@
   <ItemGroup>
     <None Include="glsl\forward_fs.glsl" />
     <None Include="glsl\forward_vs.glsl" />
+    <None Include="lighting_fs.glsl" />
+    <None Include="lighting_vs.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
