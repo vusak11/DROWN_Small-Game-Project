@@ -14,6 +14,7 @@ private:
 	char info_log_[512];
 	int success_;
 	GLuint forward_rendering_;
+	GLuint lighting_pass_;
 public:
 	ShaderHandler();
 	~ShaderHandler();
