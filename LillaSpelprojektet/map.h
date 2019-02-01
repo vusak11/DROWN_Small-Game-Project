@@ -1,8 +1,10 @@
-#pragma once
+#ifndef MAP_H
+#define MAP_H
 
-#include <GLM/vec2.hpp>
-#include <GLM/vec3.hpp>
-#include <GLM/vec4.hpp>
+//#include <GLM/vec2.hpp>
+//#include <GLM/vec3.hpp>
+//#include <GLM/vec4.hpp>
+#include <GLM/glm.hpp>
 
 #include "shader_handler.h"
 
@@ -55,3 +57,5 @@ private:
 	GLuint texture_;
 
 };
+
+#endif

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef MAP_HANDLER_H
+#define MAP_HANDLER_H
 
 // Forward declaration
 class Map;
@@ -20,3 +21,5 @@ public:
 private:
 	Map* maps_;	// A list of all the maps in the current game.
 };
+
+#endif
