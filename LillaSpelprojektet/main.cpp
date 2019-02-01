@@ -16,7 +16,7 @@ int main() {
 	/*----------End of Variabels----------*/
 
 	/*-----------Initilize---------------*/
-	game.InitilizeGame();
+	game.InitializeGame();
 	/*-----------End Initilize---------------*/
 
 	while (running) {

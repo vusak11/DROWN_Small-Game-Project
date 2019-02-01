@@ -11,13 +11,13 @@ Game::~Game() {
 
 }
 
-void Game::InitilizeGame() {
+void Game::InitializeGame() {
 	glewExperimental = GL_TRUE;
 	if (glewInit() != GLEW_OK) {
 		std::cout << "GLEW not linking" << std::endl;
 	}
 
-	render_.InitilizeRender();
+	render_.InitializeRender();
 
 }
 

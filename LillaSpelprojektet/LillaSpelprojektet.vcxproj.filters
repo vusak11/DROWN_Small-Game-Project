@@ -81,9 +81,6 @@
     <ClCompile Include="map_handler.cpp">
       <Filter>Source Files\Map</Filter>
     </ClCompile>
-    <ClCompile Include="light_handler.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="shader_handler.cpp">
       <Filter>Source Files\Core</Filter>
     </ClCompile>
@@ -92,6 +89,9 @@
     </ClCompile>
     <ClCompile Include="object_class.cpp">
       <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="light.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -116,9 +116,6 @@
     <ClInclude Include="Camera\camera_handler.h">
       <Filter>Header Files\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="light_handler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="game.h">
       <Filter>Header Files\Core</Filter>
     </ClInclude>
@@ -133,6 +130,9 @@
     </ClInclude>
     <ClInclude Include="object_class.h">
       <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="light.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -151,10 +151,10 @@
     <None Include="glsl\geometrypass\geometry_fs.glsl">
       <Filter>Source Files\GLSL\GeometryPass</Filter>
     </None>
-    <None Include="lighting_vs.glsl">
+    <None Include="glsl\lightingpass\lighting_vs.glsl">
       <Filter>Source Files\GLSL\LightingPass</Filter>
     </None>
-    <None Include="lighting_fs.glsl">
+    <None Include="glsl\lightingpass\lighting_fs.glsl">
       <Filter>Source Files\GLSL\LightingPass</Filter>
     </None>
   </ItemGroup>
