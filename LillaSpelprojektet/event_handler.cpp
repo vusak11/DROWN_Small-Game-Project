@@ -1,7 +1,7 @@
 #include "event_handler.h"
 
 EventHandler::EventHandler(CameraHandler* in_cptr/*, in_optr*/) {
-	this->cam_handler_ptr_ = in_cptr;
+	this->camera_handler_ptr_ = in_cptr;
 	//this->obj_handler_ptr_ = in_optr;
 }
 
@@ -9,7 +9,7 @@ EventHandler::EventHandler(CameraHandler* in_cptr/*, in_optr*/) {
 EventHandler::~EventHandler() {
 }
 
-void EventHandler::InputFromDevices() {
+void EventHandler::InputFromDevices(float in_deltatime) {
 
 	/*---------------Keyboard inputs-----------------*/
 	//Walk up
@@ -46,41 +46,41 @@ void EventHandler::InputFromDevices() {
 	/*---------------End Mouse inputs-----------------*/
 
 	/*---------------Secondary Camera Control-----------------*/
-	float cam_speed = 5.0;
-	bool secondary = this->cam_handler_ptr_->GetMode();		//Primary is 0 (boolean false), Secondeary is 1 (boolean !false)
+	float cam_speed = 5.0 * in_deltatime;
+	bool secondary = this->camera_handler_ptr_->GetMode();		//Primary is 0 (boolean false), Secondeary is 1 (boolean !false)
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::O)) {
 		//Swap camera (Primary/Secondary)
-		this->cam_handler_ptr_->SwapCamera();
+		this->camera_handler_ptr_->SwapCamera();
 	}
 
 	if (secondary && sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
 		//Move active camera upwards
-		this->cam_handler_ptr_->MoveCamera(cam_speed, 0.0f);
+		this->camera_handler_ptr_->MoveCamera(cam_speed, 0.0f);
 	}
 
 	if (secondary && sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
 		//Move active camera leftwards
-		this->cam_handler_ptr_->MoveCamera(0.0f, -cam_speed);
+		this->camera_handler_ptr_->MoveCamera(0.0f, -cam_speed);
 	}
 
 	if (secondary && sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
 		//Move active camera rightwards
-		this->cam_handler_ptr_->MoveCamera(0.0f, cam_speed);
+		this->camera_handler_ptr_->MoveCamera(0.0f, cam_speed);
 	}
 
 	if (secondary && sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
 		//Move active camera downwards
-		this->cam_handler_ptr_->MoveCamera(-cam_speed, 0.0f);
+		this->camera_handler_ptr_->MoveCamera(-cam_speed, 0.0f);
 	}
 
 	if (secondary && sf::Keyboard::isKeyPressed(sf::Keyboard::Add)) {
 		//Move active camera forwards ("zoom in")
-		this->cam_handler_ptr_->MoveCamera(0.0, 0.0, -cam_speed);
+		this->camera_handler_ptr_->MoveCamera(0.0, 0.0, -cam_speed);
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Subtract)) {
 		//Move active camera backwards ("zoom out")
-		this->cam_handler_ptr_->MoveCamera(0.0, 0.0, cam_speed);
+		this->camera_handler_ptr_->MoveCamera(0.0, 0.0, cam_speed);
 	}
 	/*---------------End Secondary Camera Control-----------------*/
 }

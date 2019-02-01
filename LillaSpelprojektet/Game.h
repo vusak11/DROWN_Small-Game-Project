@@ -18,6 +18,6 @@ public:
 	~Game();
 
 	void Initilize();
-	void GameLoop(float dt);
+	void GameLoop(float in_deltatime);
 };
 

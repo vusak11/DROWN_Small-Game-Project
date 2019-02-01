@@ -8,13 +8,13 @@
 class CameraHandler {
 private:
 
-	enum CamMode {
+	enum CameraMode {
 		PRIMARY,			//0
 		SECONDARY			//1
 	};
 
 	Camera cams_[2];		//Primary and secondary camera
-	CamMode mode_;
+	CameraMode mode_;
 
 public:
 
