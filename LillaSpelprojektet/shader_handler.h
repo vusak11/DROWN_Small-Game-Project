@@ -1,4 +1,5 @@
-#pragma once
+#ifndef SHADERHANLDER_H
+#define SHADERHANDLER_H
 
 #include <GL/glew.h>
 //#include <SFML/OpenGL.hpp>
@@ -23,3 +24,5 @@ public:
 
 	GLuint GetProgram() const;
 };
+
+#endif
