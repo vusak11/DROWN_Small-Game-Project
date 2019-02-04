@@ -1,49 +1,5 @@
 #include "shader_handler.h"
 
-void ShaderHandler::GeometryPass() {
-	glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	glBindFramebuffer(GL_FRAMEBUFFER, buffer_);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	Use();
-
-	glUniform3fv(glGetUniformLocation(
-		program_, "view_position"), 1, glm::value_ptr(glm::vec3(2, 2, 2))); //OBS camera position
-	glUniformMatrix4fv(glGetUniformLocation(
-		program_, "projection"), 1, GL_FALSE, glm::value_ptr(glm::vec3(2, 2, 2))); //OBS projection
-	glUniformMatrix4fv(glGetUniformLocation(
-		program_, "view"), 1, GL_FALSE, glm::value_ptr(glm::vec3(2, 2, 2))); //OBS view
-
-}
-
-void ShaderHandler::LightingPass() {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	Use();
-
-	glUniform1i(glGetUniformLocation(program_, "g_position"), 0);
-	glUniform1i(glGetUniformLocation(program_, "g_normal"), 1);
-	glUniform1i(glGetUniformLocation(program_, "g_albedo_spec"), 2);
-
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, position_);
-	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, normal_);
-	glActiveTexture(GL_TEXTURE2);
-	glBindTexture(GL_TEXTURE_2D, albedo_specular_);
-
-	std::string name;
-	for (int i = 0; i < nr_of_lights_; i++) {
-		name = "lights[" + std::to_string(i) + "].position_";
-		glUniform3fv(glGetUniformLocation(program_, name.c_str()), 1, glm::value_ptr(lights_[i].GetPos()));
-		name = "lights[" + std::to_string(i) + "].color_";
-		glUniform3fv(glGetUniformLocation(program_, name.c_str()), 1, glm::value_ptr(lights_[i].GetAmbientLight()));
-	}
-
-	glUniform3fv(glGetUniformLocation(program_->GetProgram(), "viewPos"), 1, glm::value_ptr(glm::vec3(2, 2, 2))); //Add camera positions
-
-}
-
 ShaderHandler::ShaderHandler() {
 	this->success_ = 0;
 
@@ -53,9 +9,6 @@ ShaderHandler::ShaderHandler() {
 	this->position_ = 0;
 	this->normal_ = 0;
 	this->albedo_specular_ = 0;
-
-	nr_of_lights_ = 1;
-	lights_ = new Light[nr_of_lights_];
 }
 
 ShaderHandler::ShaderHandler(
@@ -70,8 +23,6 @@ ShaderHandler::ShaderHandler(
 	this->position_ = 0;
 	this->normal_ = 0;
 	this->albedo_specular_ = 0;
-	nr_of_lights_ = 1;
-	lights_ = new Light[nr_of_lights_];
 
 	//				Vertex shader
 	//Open and retrieve VERTEX file content
@@ -135,8 +86,6 @@ ShaderHandler::ShaderHandler(
 	this->position_ = 0;
 	this->normal_ = 0;
 	this->albedo_specular_ = 0;
-	nr_of_lights_ = 1;
-	lights_ = new Light[nr_of_lights_];
 	
 	//				Vertex shader
 	//Open and retrieve VERTEX file content
@@ -315,18 +264,3 @@ GLuint ShaderHandler::GetAlbedoSpecular() {
 void ShaderHandler::Use() {
 	glUseProgram(this->program_);
 }
-
-void ShaderHandler::UpdateGeometry() {
-	GeometryPass();
-	LightingPass();
-}
-
-void ShaderHandler::InitializeLight() {
-	lights_[0].LightDefault(
-		glm::vec3(0.0f, 10.0f, 0.0f),
-		glm::vec3(0.7f, 0.7f, 0.7f),
-		glm::vec3(0.2f, 0.2f, 0.2f),
-		glm::vec3(1.0f, 1.0f, 1.0f),
-		glm::vec3(1.0f, 1.0f, 1.0f));
-}
-

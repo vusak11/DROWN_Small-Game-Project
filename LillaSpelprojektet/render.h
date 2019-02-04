@@ -9,10 +9,12 @@ class Render {
 private:
 	GLuint quad_vertex_array_object_;
 	GLuint quad_vertex_buffer_object_;
+	int nr_of_lights_;
 	void DrawScene();
 
 	ShaderHandler* geometry_pass_;
 	ShaderHandler* lighting_pass_;
+	Light* lights_;
 public:
 	Render();
 	~Render();
