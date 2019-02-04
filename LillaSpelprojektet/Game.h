@@ -7,8 +7,6 @@
 
 #include <GL/glew.h>
 #include <SFML/Window.hpp>
-#include "shader_handler.h"
-#include "event_handler.h"
 #include "Camera/camera_handler.h"
 
 #include "render.h"
@@ -16,16 +14,13 @@ class Game {
 private:
 	CameraHandler* cam_handler_ptr_;
 	//ObjectHandler* obj_handler_ptr_;
-	EventHandler* event_handler_ptr_;
 	Render render_;
-	ShaderHandler shader_;
-
-	void DrawScene();
+	void InputFromDevices(float in_deltatime);
 public:
 	Game();
 	~Game();
 
-	void InitilizeGame();
+	void InitializeGame();
 	void GameLoop(float in_deltatime);
 };
 
