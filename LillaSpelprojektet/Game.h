@@ -12,6 +12,12 @@
 #include "render.h"
 class Game {
 private:
+	enum STATES {
+		RENDER,
+		PAUSE
+	};
+	STATES state;
+
 	CameraHandler* cam_handler_ptr_;
 	//ObjectHandler* obj_handler_ptr_;
 	Render render_;
@@ -22,6 +28,7 @@ public:
 
 	void InitializeGame();
 	void GameLoop(float in_deltatime);
+	void GamePaused(float in_deltatime);
 };
 
 #endif // !GAME_H

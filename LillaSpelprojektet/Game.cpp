@@ -86,9 +86,27 @@ void Game::InputFromDevices(float in_deltatime) {
 		cam_handler_ptr_->MoveCamera(0.0, 0.0, cam_speed);
 	}
 	/*---------------End Secondary Camera Control-----------------*/
+
+	/*---------------Game States---------------*/
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+		if (!state == PAUSE)
+			state = PAUSE;
+		else
+			state = RENDER;
+	}
+
+	/*---------------End Game States---------------*/
 }
 
 void Game::GameLoop(float in_deltatime) {
 	InputFromDevices(in_deltatime);
-	render_.UpdateRender(in_deltatime);
+	if (RENDER == state)
+		render_.UpdateRender(in_deltatime);
+	else if (PAUSE == state)
+		GamePaused(in_deltatime);
+
+}
+
+void Game::GamePaused(float in_deltatime) {
+
 }
