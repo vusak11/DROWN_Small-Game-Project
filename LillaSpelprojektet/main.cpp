@@ -17,15 +17,15 @@ int main() {
 		std::cout << "GLEW not linking" << std::endl;
 	}
 
-	/*----------Variabels----------*/
+	/*----------Variables----------*/
 	sf::Clock gameTime;
 	Game game;
 	bool running = true;
-	/*----------End of Variabels----------*/
+	/*----------End of Variables----------*/
 	
-	/*-----------Initilize---------------*/
+	/*-----------Initialize---------------*/
 	game.InitializeGame();
-	/*-----------End Initilize---------------*/
+	/*-----------End Initialize---------------*/
 
 	while (running) {
 		sf::Event event;
