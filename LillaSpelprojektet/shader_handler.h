@@ -1,4 +1,6 @@
-#pragma once
+#ifndef SHADER_HANDLER_H
+#define SHADER_HANDLER_H
+#endif
 #include "Globals.h"
 #include <GL/glew.h>
 //#include <SFML/OpenGL.hpp>
