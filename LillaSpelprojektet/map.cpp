@@ -194,7 +194,7 @@ void Map::LoadTexture(char * texture_name) {
 
 }
 
-void Map::Buffer(ShaderHandler shader) {
+void Map::Buffer(GLuint shader) {
 	glGenVertexArrays(1, &vertex_array_object_);
 	glBindVertexArray(vertex_array_object_);
 
@@ -209,25 +209,25 @@ void Map::Buffer(ShaderHandler shader) {
 
 	//Vertex
 	glEnableVertexAttribArray(0);
-	GLuint vertexPos = glGetAttribLocation(shader.GetProgram(), "position");
+	GLuint vertexPos = glGetAttribLocation(shader, "position");
 	glVertexAttribPointer(vertexPos, 3, GL_FLOAT, GL_FALSE, sizeof(Triangle), BUFFER_OFFSET(0));
 
 	//Texture
 	glEnableVertexAttribArray(1);
-	GLuint texCoords = glGetAttribLocation(shader.GetProgram(), "texCoordinates");
+	GLuint texCoords = glGetAttribLocation(shader, "tex_coordinates");
 	glVertexAttribPointer(texCoords, 2, GL_FLOAT, GL_FALSE, sizeof(Triangle),
 					BUFFER_OFFSET(sizeof(float) * 3));
 
 	//Normal
 	glEnableVertexAttribArray(2);
-	GLuint vertexNormal = glGetAttribLocation(shader.GetProgram(), "normal");
+	GLuint vertexNormal = glGetAttribLocation(shader, "normal");
 	glVertexAttribPointer(vertexNormal, 3, GL_FLOAT, GL_FALSE, sizeof(Triangle),
 					BUFFER_OFFSET(sizeof(float) * 5));
 
 	glBindVertexArray(0);
 }
 
-void Map::Draw(ShaderHandler shader) {
+void Map::Draw(GLuint shader) {
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texture_);
 
@@ -237,7 +237,7 @@ void Map::Draw(ShaderHandler shader) {
 	glActiveTexture(GL_TEXTURE2);
 	glBindTexture(GL_TEXTURE_2D, gTexture2);*/
 
-	glUniform1i(glGetUniformLocation(shader.GetProgram(), "grass"), 0);
+	glUniform1i(glGetUniformLocation(shader, "texture_diffuse"), 0);
 	/*glUniform1i(glGetUniformLocation(shader.GetgProgram(), "rock"), 1);
 	glUniform1i(glGetUniformLocation(shader.GetgProgram(), "snow"), 2);*/
 

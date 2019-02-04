@@ -4,6 +4,9 @@
 #include <GLM\glm.hpp>
 #include <GLM\gtc\matrix_transform.hpp>
 #include <GLM\gtc\type_ptr.hpp>
+#include "model.h"
+#include "map.h"
+
 
 class Render {
 private:
@@ -15,6 +18,11 @@ private:
 	ShaderHandler* geometry_pass_;
 	ShaderHandler* lighting_pass_;
 	Light* lights_;
+
+	int nr_of_models = 1;
+	Model** model_;
+
+	Map map_[1];
 public:
 	Render();
 	~Render();

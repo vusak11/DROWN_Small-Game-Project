@@ -169,7 +169,7 @@ Model::Model(GLchar * path) {
 	LoadModel(path);
 }
 
-void Model::Draw(ShaderHandler shader) {
+void Model::Draw(GLuint shader) {
 	for (unsigned int i = 0; i < mesh_.size(); i++) {
 		mesh_[i].Draw(shader);
 	}

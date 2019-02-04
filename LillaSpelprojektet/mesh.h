@@ -37,7 +37,7 @@ public:
 	);
 	~Mesh();
 
-	void Draw(ShaderHandler shader);
+	void Draw(GLuint shader);
 };
 
 #endif

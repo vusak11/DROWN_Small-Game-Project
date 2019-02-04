@@ -71,12 +71,12 @@ Mesh::Mesh(
 Mesh::~Mesh() {
 }
 
-void Mesh::Draw(ShaderHandler shader) {
+void Mesh::Draw(GLuint shader) {
 	for (unsigned int i = 0; i < textures_.size(); i++) {
 		glActiveTexture(GL_TEXTURE0 + i); //Activate proper texture unit
 
 		std::string name = textures_[i].type;
-		glUniform1f(glGetUniformLocation(shader.GetProgram(), (name).c_str()), i);
+		glUniform1f(glGetUniformLocation(shader, (name).c_str()), i);
 		glBindTexture(GL_TEXTURE_2D, textures_[i].id_texture);
 	}
 	glActiveTexture(GL_TEXTURE0);

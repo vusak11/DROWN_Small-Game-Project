@@ -32,8 +32,8 @@ public:
 	bool LoadMap(char* texture_name);	// Returns a bool to trouble shoot while loading new maps.
 	void LoadTexture(char* texture_name);
 
-	void Buffer(ShaderHandler shader);
-	void Draw(ShaderHandler shader);
+	void Buffer(GLuint shader);
+	void Draw(GLuint shader);
 
 	void SetHeight(int height);
 	void SetWidth(int width);

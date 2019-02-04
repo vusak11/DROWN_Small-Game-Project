@@ -16,12 +16,22 @@ Render::Render() {
 		"glsl/lightingpass/lighting_vs.glsl",
 		"glsl/lightingpass/lighting_fs.glsl");
 	lights_ = new Light[nr_of_lights_];
+
+	model_ = new Model*[nr_of_models];
+	model_[0] = new Model((char*)"../Resources/Models/TestCharacter.obj");
+
+	map_[0].LoadMap((char*)"../Resources/Map/TestMap.bmp");
 }
 
 Render::~Render() {
 	delete geometry_pass_;
 	delete lighting_pass_;
 	delete[] lights_;
+
+	for (int i = 0; i < nr_of_models; i++) {
+		delete model_[i];
+	}
+	delete[] model_;
 }
 
 void Render::InitializeRender() {
@@ -34,11 +44,20 @@ void Render::InitializeRender() {
 		glm::vec3(1.0f, 1.0f, 1.0f),
 		glm::vec3(1.0f, 1.0f, 1.0f));
 
+	/*-------------Models------------*/
+	
 }
 
 void Render::UpdateRender(float dt) {
 	GeometryPass();
+
+	//Draw
+	model_[0]->Draw(geometry_pass_->GetProgram());
+	map_[0].Draw(geometry_pass_->GetProgram());
+	
+
 	LightingPass();
+
 	RenderQuad();
 }
 
