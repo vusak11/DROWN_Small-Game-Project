@@ -40,6 +40,8 @@ public:
 	ShaderHandler(const char* vertex_path, const char* geometry_path, const char* fragment_path);
 	~ShaderHandler();
 
+	void CompileStatus(GLuint shader_id, int success, char* info, GL_ID gl_type);
+	
 	GLuint GetProgram();
 	GLuint GetBuffer();
 	GLuint GetPosition();
