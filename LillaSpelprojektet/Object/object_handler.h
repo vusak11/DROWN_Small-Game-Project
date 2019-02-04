@@ -10,13 +10,39 @@
 class ObjectHandler {
 private:
 
-	//Variables for objects in the game
+	//Structs-------------------------------------------------
+	struct PlayerInput {		//PlayerInput is made to help track button presses
+		bool left = false;
+		bool right = false;
+		bool jump = false;
+		bool attack = false;
+		bool use_ability = false;
+		bool pick_up = false;
+	};
+
+	//Variables-----------------------------------------------
 	ObjectClass player_object_;				//Player
 	std::vector<ObjectClass> npc_vector_;	//All enemies
 	std::vector<ObjectClass> drop_vector_;	//Things dropped on the ground (e.g. power-ups, health)
 
-	//Variables for controlling the player's behavious
-	//Vector of player functions
+	PlayerInput player_input_;
+
+	//std::vector<std::function<void()>> player_action_queue_;		//NTS: Not at home in ObjectHandler?
+	
+
+	//Functions-----------------------------------------------
+	std::vector<ObjectClass> CullAndRetrieveNPCs();		//Scans npc_vector_ and returns NPCs close enough to the player
+	std::vector<ObjectClass> CullAndRetrieveDrops();	//Scans drop_vector_ and returns drops close enough to the player
+
+	float DistanceBetween(ObjectClass in_object_a, ObjectClass in_object_b);	//Returns the distance between the two given objects
+
+	void DeterminePlayerAction();						//Read player_input_ and determine legal actions, such as changes to velocity or if we can attack this frame
+	void DetermineNPCAction(ObjectClass in_npc);		//Call the AI of the npc object to see what the npc does, then determine legal actions
+
+	void ResolvePlayerAction();							//Move player, apply hitboxes, etc.
+	void ResolveNPCAction(ObjectClass);					//Move npc, apply hitboxes, etc.
+
+	void ClearPlayerInput();							//Sets all values in player_input_ to false. Should be called at the end of each Update()
 
 public:
 	ObjectHandler();
@@ -24,9 +50,11 @@ public:
 
 	//Functions for controlling the player
 	//Call these functions from eventhandler
-	void PlayerMove(/*Input*/);
+	void PlayerMoveLeft();
+	void PlayerMoveRight();
+	void PlayerJump();
 	void PlayerAttack();
-	void PlayerAbility();
+	void PlayerUseAbility();
 	void PlayerPickUp();
 
 	//Called once per loop to update object positions
@@ -34,7 +62,7 @@ public:
 	//	- Call AI functions and decide behaviour
 	//	- Execute NPC actions and determine effects
 	//	- Call physics to determine new positions (<- Should be called at every step when a creature moves instead?)
-	void UpdateObjects();
+	void Update();
 };
 
 #endif // !OBJECT_OBJECT_HANDLER_H_

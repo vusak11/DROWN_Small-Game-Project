@@ -7,4 +7,6 @@
 #define WINDOW_WIDTH 1280
 #define WINDOW_HEIGHT 720
 
+#define CULLING_DISTANCE 1380;
+
 #endif // !GLOBALS_H
