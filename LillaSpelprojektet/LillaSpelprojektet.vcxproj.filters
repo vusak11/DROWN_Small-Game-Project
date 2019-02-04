@@ -46,14 +46,17 @@
     <Filter Include="Source Files\Object\Character">
       <UniqueIdentifier>{46a5f418-71db-4013-a96c-b21262127cc1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Objects\Characters">
-      <UniqueIdentifier>{33ca9f6b-cd8b-4ecc-8008-9fbaf05cef1a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\GLSL\LightingPass">
       <UniqueIdentifier>{96981d59-932d-4a2d-a362-03d3588bb5c1}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\GLSL\GeometryPass">
       <UniqueIdentifier>{c79053f2-ea70-4b39-a0a1-e1f34f1b31f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UI">
+      <UniqueIdentifier>{c4dfad29-ff35-4950-9e32-9827fd805058}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\UI">
+      <UniqueIdentifier>{acc16509-2927-4ce2-a617-c35ab47a4658}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -102,6 +105,9 @@
     <ClCompile Include="light.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UI\start_menu.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="render.h">
@@ -148,6 +154,9 @@
     </ClInclude>
     <ClInclude Include="light.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\start_menu.h">
+      <Filter>Header Files\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

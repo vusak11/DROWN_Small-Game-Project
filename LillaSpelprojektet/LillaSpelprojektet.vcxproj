@@ -150,6 +150,7 @@
     <ClCompile Include="map_handler.cpp" />
     <ClCompile Include="shader_handler.cpp" />
     <ClCompile Include="sound_unit.cpp" />
+    <ClCompile Include="UI\start_menu.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Object\Character\character.h" />
@@ -162,6 +163,7 @@
     <ClInclude Include="Camera\camera.h" />
     <ClInclude Include="Camera\camera_handler.h" />
     <ClInclude Include="render.h" />
+    <ClInclude Include="UI\start_menu.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="light.h" />
