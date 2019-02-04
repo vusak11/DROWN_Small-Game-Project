@@ -7,8 +7,8 @@
 
 class Render {
 private:
-	GLuint quadVAO_;
-	GLuint quadVBO_;
+	GLuint quad_vertex_array_object_;
+	GLuint quad_vertex_buffer_object_;
 	void DrawScene();
 
 	ShaderHandler* geometry_pass_;

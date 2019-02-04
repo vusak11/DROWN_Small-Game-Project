@@ -2,7 +2,7 @@
 
 layout(location = 0) out vec3 screen_texture;
 
-in vec2 TexCoords;
+in vec2 tex_coords;
 
 uniform sampler2D g_position;
 uniform sampler2D g_normal;
@@ -21,10 +21,10 @@ uniform vec3 viewPos;
 
 void main() {
 	// fetch data from G-buffer
-	vec3 fragment_position = texture(g_position, TexCoords).rgb;
-	vec3 normal = texture(g_normal, TexCoords).rgb;
-	vec3 albedo = texture(g_albedo_spec, TexCoords).rgb;
-	float specular = texture(g_albedo_spec, TexCoords).a;
+	vec3 fragment_position = texture(g_position, tex_coords).rgb;
+	vec3 normal = texture(g_normal, tex_coords).rgb;
+	vec3 albedo = texture(g_albedo_spec, tex_coords).rgb;
+	float specular = texture(g_albedo_spec, tex_coords).a;
 
 	// calculate lighting
 
