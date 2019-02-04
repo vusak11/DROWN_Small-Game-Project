@@ -1,8 +1,5 @@
 #include "game.h"
 
-void Game::DrawScene() {
-}
-
 Game::Game() {
 	this->InitilizeGame();
 	
@@ -14,10 +11,11 @@ Game::~Game() {
 	delete this->event_handler_ptr_;
 }
 
-void Game::InitilizeGame() {
-	if (glewInit() != GLEW_OK) {
-		std::cout << "GLEW not linking" << std::endl;
-	}
+void Game::InitializeGame() {
+
+	render_.InitializeRender();
+
+}
 
 	shader_.Initialize("glsl/forward_vs.glsl", "glsl/forward_fs.glsl");
 

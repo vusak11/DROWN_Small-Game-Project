@@ -1,6 +1,6 @@
-#ifndef SHADERHANLDER_H
-#define SHADERHANDLER_H
-
+#ifndef SHADER_HANDLER_H
+#define SHADER_HANDLER_H
+#include "Globals.h"
 #include <GL/glew.h>
 //#include <SFML/OpenGL.hpp>
 
@@ -12,18 +12,38 @@
 
 class ShaderHandler {
 private:
+	enum GL_ID {
+		SHADER,
+		PROGRAM
+	};
+
 	char info_log_[512];
 	int success_;
-	GLuint forward_rendering_;
+
+	GLuint program_;
+
+	//  Geometry
+	GLuint buffer_;
+	GLuint position_;
+	GLuint normal_;
+	GLuint albedo_specular_;
 public:
 	ShaderHandler();
+	ShaderHandler(const char* vertex_path, const char* fragment_path);
+	ShaderHandler(const char* vertex_path, const char* geometry_path, const char* fragment_path);
 	~ShaderHandler();
 
-	GLuint GetProgram() const;
+	void CompileStatus(GLuint shader_id, int success, char* info, GL_ID gl_type);
+	
+	GLuint GetProgram();
+	GLuint GetBuffer();
+	GLuint GetPosition();
+	GLuint GetNormal();
+	GLuint GetAlbedoSpecular();
 
-	void Initialize(const char* vertex_path, const char* fragment_path);
+	void GeometryPass();
+
 	void Use();
 
 };
-
 #endif

@@ -139,7 +139,7 @@
     <ClCompile Include="Camera\camera_handler.cpp" />
     <ClCompile Include="event_handler.cpp" />
     <ClCompile Include="game.cpp" />
-    <ClCompile Include="light_handler.cpp" />
+    <ClCompile Include="light.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Object\Character\character.cpp" />
     <ClCompile Include="Object\object_class.cpp" />
@@ -158,13 +158,14 @@
     <ClInclude Include="Object\object_handler.h" />
     <ClInclude Include="mesh.h" />
     <ClInclude Include="model.h" />
+    <ClInclude Include="Globals.h" />
     <ClInclude Include="sound_unit.h" />
     <ClInclude Include="Camera\camera.h" />
     <ClInclude Include="Camera\camera_handler.h" />
     <ClInclude Include="render.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="light_handler.h" />
+    <ClInclude Include="light.h" />
     <ClInclude Include="shader_handler.h" />
     <ClInclude Include="event_handler.h" />
     <ClInclude Include="game.h" />
@@ -174,6 +175,11 @@
   <ItemGroup>
     <None Include="glsl\forward_fs.glsl" />
     <None Include="glsl\forward_vs.glsl" />
+    <None Include="glsl\geometrypass\geometry_fs.glsl" />
+    <None Include="glsl\geometrypass\geometry_gs.glsl" />
+    <None Include="glsl\geometrypass\geometry_vs.glsl" />
+    <None Include="glsl\lightingpass\lighting_fs.glsl" />
+    <None Include="glsl\lightingpass\lighting_vs.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

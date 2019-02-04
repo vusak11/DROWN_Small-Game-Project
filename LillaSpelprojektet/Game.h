@@ -7,7 +7,6 @@
 
 #include <GL/glew.h>
 #include <SFML/Window.hpp>
-#include "shader_handler.h"
 #include "event_handler.h"
 #include "Camera/camera_handler.h"
 
@@ -18,8 +17,6 @@ private:
 	//ObjectHandler* obj_handler_ptr_;
 	EventHandler* event_handler_ptr_;
 	Render render_;
-	ShaderHandler shader_;
-
 	void DrawScene();
 public:
 	Game();

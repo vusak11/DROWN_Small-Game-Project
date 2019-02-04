@@ -46,6 +46,15 @@
     <Filter Include="Source Files\Object\Character">
       <UniqueIdentifier>{46a5f418-71db-4013-a96c-b21262127cc1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Objects\Characters">
+      <UniqueIdentifier>{33ca9f6b-cd8b-4ecc-8008-9fbaf05cef1a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GLSL\LightingPass">
+      <UniqueIdentifier>{96981d59-932d-4a2d-a362-03d3588bb5c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GLSL\GeometryPass">
+      <UniqueIdentifier>{c79053f2-ea70-4b39-a0a1-e1f34f1b31f5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -72,9 +81,6 @@
     <ClCompile Include="map_handler.cpp">
       <Filter>Source Files\Map</Filter>
     </ClCompile>
-    <ClCompile Include="light_handler.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="shader_handler.cpp">
       <Filter>Source Files\Core</Filter>
     </ClCompile>
@@ -96,6 +102,9 @@
     <ClCompile Include="Object\object_handler.cpp">
       <Filter>Source Files\Object</Filter>
     </ClCompile>
+    <ClCompile Include="light.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="event_handler.h">
@@ -115,9 +124,6 @@
     </ClInclude>
     <ClInclude Include="Camera\camera_handler.h">
       <Filter>Header Files\Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="light_handler.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="game.h">
       <Filter>Header Files\Core</Filter>
@@ -142,6 +148,11 @@
     </ClInclude>
     <ClInclude Include="model.h">
       <Filter>Header Files</Filter>
+    <ClInclude Include="Globals.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="light.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -150,6 +161,21 @@
     </None>
     <None Include="glsl\forward_fs.glsl">
       <Filter>Source Files\GLSL</Filter>
+    </None>
+    <None Include="glsl\geometrypass\geometry_vs.glsl">
+      <Filter>Source Files\GLSL\GeometryPass</Filter>
+    </None>
+    <None Include="glsl\geometrypass\geometry_gs.glsl">
+      <Filter>Source Files\GLSL\GeometryPass</Filter>
+    </None>
+    <None Include="glsl\geometrypass\geometry_fs.glsl">
+      <Filter>Source Files\GLSL\GeometryPass</Filter>
+    </None>
+    <None Include="glsl\lightingpass\lighting_vs.glsl">
+      <Filter>Source Files\GLSL\LightingPass</Filter>
+    </None>
+    <None Include="glsl\lightingpass\lighting_fs.glsl">
+      <Filter>Source Files\GLSL\LightingPass</Filter>
     </None>
   </ItemGroup>
 </Project>

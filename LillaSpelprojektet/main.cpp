@@ -2,22 +2,30 @@
 #include "game.h"
 #include <SFML/OpenGL.hpp>
 
+#define _CRTDBG_MAP_ALLOC 
+
 int main() {
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 
 	sf::Window window(sf::VideoMode(1280, 720), "My window", sf::Style::Default, sf::ContextSettings(32));
 	window.setVerticalSyncEnabled(true);
 
 	window.setActive(true);
 
-	/*----------Variabels----------*/
+	glewExperimental = GL_TRUE;
+	if (glewInit() != GLEW_OK) {
+		std::cout << "GLEW not linking" << std::endl;
+	}
+
+	/*----------Variables----------*/
 	sf::Clock gameTime;
 	Game game;
 	bool running = true;
-	/*----------End of Variabels----------*/
-
-	/*-----------Initilize---------------*/
-	game.InitilizeGame();
-	/*-----------End Initilize---------------*/
+	/*----------End of Variables----------*/
+	
+	/*-----------Initialize---------------*/
+	game.InitializeGame();
+	/*-----------End Initialize---------------*/
 
 	while (running) {
 		sf::Event event;
