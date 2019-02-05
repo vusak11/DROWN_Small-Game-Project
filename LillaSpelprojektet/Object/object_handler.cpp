@@ -2,15 +2,35 @@
 
 //Private--------------------------------------------------
 
-std::vector<ObjectClass> CullAndRetrieveNPCs() {
-	std::vector<ObjectClass> WIP;
-}
+std::vector<ObjectClass*> ObjectHandler::CullAndRetrieveObjects(std::vector<ObjectClass>& in_object_vector) {
+	
+	//NTS:	Function takes a REFERENCE to a std::vector with ObjectClass:es
+	//		It creates a std::vector holding POINTERS to ObjectClass:es
+	//		It fills the std::vector with POINTERS to the OBJECTS that the REFERENCES refer to
+	//		It then returns a std::vector of POINTERS
+	
+	//Set up a vector to hold pointers to all relevant objects
+	std::vector<ObjectClass*> nearby_objects_ptr_vector;
 
-std::vector<ObjectClass> CullAndRetrieveDrops() {
+	//Go through all NPCs
+	for (unsigned int i = 0; i < in_object_vector.size(); i++) {
+		//See which Objects are within OBJECT_CULLING_DISTANCE of the player
+		if (this->DistanceBetween(this->player_object_, in_object_vector.at(i)) < OBJECT_CULLING_DISTANCE) {
+			//Those that are close enough are added to the vector
+			nearby_objects_ptr_vector.push_back(&in_object_vector.at(i));
+		}
+	}
 
+	//Return the vector
+	return nearby_objects_ptr_vector;
 }
 
 /*
+std::vector<ObjectClass> ObjectHandler::CullAndRetrieveDrops() {
+
+}
+
+
 float ObjectHandler::DistanceBetween(ObjectClass in_object_a, ObjectClass in_object_b) {
 	//Returns distance between two objects
 	return glm::distance(in_object_a.GetPosition(), in_object_b.GetPosition());

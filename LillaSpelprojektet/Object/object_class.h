@@ -4,6 +4,8 @@
 #include <GLM/vec4.hpp>
 #include <GLM/mat4x4.hpp>
 #include <GLM/gtc/matrix_transform.hpp>
+
+#define GLM_ENABLE_EXPERIMENTAL		//Needed to use transform.hpp
 #include <GLM/gtx/transform.hpp>
 
 #include "../Globals.h"

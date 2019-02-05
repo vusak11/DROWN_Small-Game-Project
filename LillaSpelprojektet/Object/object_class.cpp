@@ -20,7 +20,7 @@ ObjectClass::~ObjectClass() {
 }
  
 
-void ObjectClass::SetPosition(float in_x, float in_y, float in_z = 0.0f) {
+void ObjectClass::SetPosition(float in_x, float in_y, float in_z) {
 	position_.x = in_x;
 	position_.y = in_y;
 	position_.z = in_z;
