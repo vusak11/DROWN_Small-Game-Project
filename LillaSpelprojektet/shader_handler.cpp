@@ -19,10 +19,6 @@ ShaderHandler::ShaderHandler(
 	this->success_ = 0;
 
 	this->program_ = 0;
-	this->buffer_ = 0;
-	this->position_ = 0;
-	this->normal_ = 0;
-	this->albedo_specular_ = 0;
 
 	//				Vertex shader
 	//Open and retrieve VERTEX file content
@@ -71,6 +67,9 @@ ShaderHandler::ShaderHandler(
 	glLinkProgram(this->program_);
 
 	CompileStatus(this->program_, this->success_, this->info_log_, PROGRAM);
+
+	glDeleteShader(vertex);
+	glDeleteShader(fragment);
 }
 
 ShaderHandler::ShaderHandler(
