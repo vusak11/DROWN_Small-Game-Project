@@ -1,16 +1,24 @@
 #ifndef START_MENU_H
 #define START_MENU_H
 
+
+#include <SFML/Graphics.hpp>
 #include "../Globals.h"
-#include <GL/glew.h>
-#include <string>
-#include <iostream>
+
+#define MAX_NUMBER_OF_ITEMS 3
 
 class StartMenu{
 private:
-	void createMenu();
+	int selected_item_index_;
 
+	sf::Font font_;
+	sf::Text menu_item_[MAX_NUMBER_OF_ITEMS];
 public:
 	StartMenu();
+	~StartMenu();
+
+	void Draw(sf::RenderWindow &window);
+	void NavigateUp();
+	void NavigateDown();
 };
 #endif

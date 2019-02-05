@@ -1,5 +1,8 @@
-#include <iostream>
+#include <crtdbg.h>
+
 #include "game.h"
+#include "UI/start_menu.h"
+#include <iostream>
 #include <SFML/OpenGL.hpp>
 
 #define _CRTDBG_MAP_ALLOC 
@@ -7,9 +10,9 @@
 int main() {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 
-	sf::Window window(sf::VideoMode(1280, 720), "My window", sf::Style::Default, sf::ContextSettings(32));
-	window.setVerticalSyncEnabled(true);
+	sf::RenderWindow window(sf::VideoMode(1280, 720), "My window", sf::Style::Default, sf::ContextSettings(32));
 
+	window.setVerticalSyncEnabled(true);
 	window.setActive(true);
 
 	glewExperimental = GL_TRUE;
@@ -18,6 +21,7 @@ int main() {
 	}
 
 	/*----------Variables----------*/
+	StartMenu main_menu;
 	sf::Clock gameTime;
 	Game game;
 	bool running = true;
@@ -44,12 +48,18 @@ int main() {
 			}
 			/*----------------Only exit window commands-----------*/
 		}
+		glBegin(GL_TRIANGLES);
+		//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		window.clear();
 
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		// Draw SFML
+		window.pushGLStates();
+		main_menu.Draw(window);
+		window.popGLStates();
 
-		//draw
-
+		// Display rendered frame
 		window.display();
+		glEnd();
 	}
 
 	return 0;
