@@ -17,10 +17,11 @@ Render::Render() {
 		"glsl/lightingpass/lighting_fs.glsl");
 	lights_ = new Light[nr_of_lights_];
 
-	model_ = new Model*[nr_of_models];
-	model_[0] = new Model((char*)"../Resources/Models/TestCharacter.obj");
+	//model_ = new Model*[nr_of_models];
+	//model_[0] = new Model((char*)"../Resources/Models/TestCharacter.obj");
 
 	map_[0].LoadMap((char*)"../Resources/Map/TestMap.bmp");
+	map_[0].LoadTexture((char*)"../Resources/Map/rock.png");
 }
 
 Render::~Render() {
@@ -28,10 +29,10 @@ Render::~Render() {
 	delete lighting_pass_;
 	delete[] lights_;
 
-	for (int i = 0; i < nr_of_models; i++) {
+	/*for (int i = 0; i < nr_of_models; i++) {
 		delete model_[i];
 	}
-	delete[] model_;
+	delete[] model_;*/
 }
 
 void Render::InitializeRender() {
@@ -43,25 +44,48 @@ void Render::InitializeRender() {
 		glm::vec3(0.2f, 0.2f, 0.2f),
 		glm::vec3(1.0f, 1.0f, 1.0f),
 		glm::vec3(1.0f, 1.0f, 1.0f));
-
-	/*-------------Models------------*/
 	
 }
 
-void Render::UpdateRender(float dt) {
-	GeometryPass();
+void Render::UpdateRender(
+	float dt, 
+	glm::vec3 camera_position,
+	glm::mat4 perspective_matrix, 
+	glm::mat4 view_matrix) {
+
+	GeometryPass(camera_position, perspective_matrix, view_matrix);
 
 	//Draw
-	model_[0]->Draw(geometry_pass_->GetProgram());
+	//model_matrix_ = glm::mat4();
+	//model_matrix_ = glm::scale(model_matrix_, glm::vec3(1.0f, 1.0f, 1.0f));
+	/*glUniformMatrix4fv(
+		glGetUniformLocation(geometry_pass_->GetProgram(), "model"),
+		1, 
+		GL_FALSE,
+		glm::value_ptr(model_matrix_)
+	);*/
+
+	//model_[0]->Draw(geometry_pass_->GetProgram());
+
+	model_matrix_ = glm::mat4();
+	model_matrix_ = glm::scale(model_matrix_, glm::vec3(1.0f, 1.0f, 1.0f));
+
+	glUniformMatrix4fv(
+		glGetUniformLocation(geometry_pass_->GetProgram(), "model"),
+		1, GL_FALSE, glm::value_ptr(model_matrix_)
+	);
 	map_[0].Draw(geometry_pass_->GetProgram());
 	
 
-	LightingPass();
+	LightingPass(camera_position);
 
 	RenderQuad();
 }
 
-void Render::GeometryPass() {
+void Render::GeometryPass(
+	glm::vec3 camera_position,
+	glm::mat4 perspective_matrix,
+	glm::mat4 view_matrix) {
 	glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -70,14 +94,15 @@ void Render::GeometryPass() {
 	geometry_pass_->Use();
 
 	glUniform3fv(glGetUniformLocation(
-		geometry_pass_->GetProgram(), "view_position"), 1, glm::value_ptr(glm::vec3(2, 2, 2))); //OBS camera position
+		geometry_pass_->GetProgram(), "view_position"), 1, glm::value_ptr(camera_position)); //OBS camera position
 	glUniformMatrix4fv(glGetUniformLocation(
-		geometry_pass_->GetProgram(), "projection"), 1, GL_FALSE, glm::value_ptr(glm::vec3(2, 2, 2))); //OBS projection
+		geometry_pass_->GetProgram(), "projection"), 1, GL_FALSE, glm::value_ptr(perspective_matrix)); //OBS projection
 	glUniformMatrix4fv(glGetUniformLocation(
-		geometry_pass_->GetProgram(), "view"), 1, GL_FALSE, glm::value_ptr(glm::vec3(2, 2, 2))); //OBS view
+		geometry_pass_->GetProgram(), "view"), 1, GL_FALSE, glm::value_ptr(view_matrix)); //OBS view
 }
 
-void Render::LightingPass() {
+void Render::LightingPass(glm::vec3 camera_position) {
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	lighting_pass_->Use();
 
@@ -86,21 +111,21 @@ void Render::LightingPass() {
 	glUniform1i(glGetUniformLocation(lighting_pass_->GetProgram(), "g_albedo_spec"), 2);
 
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, lighting_pass_->GetPosition());
+	glBindTexture(GL_TEXTURE_2D, geometry_pass_->GetPosition());
 	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, lighting_pass_->GetNormal());
+	glBindTexture(GL_TEXTURE_2D, geometry_pass_->GetNormal());
 	glActiveTexture(GL_TEXTURE2);
-	glBindTexture(GL_TEXTURE_2D, lighting_pass_->GetAlbedoSpecular());
+	glBindTexture(GL_TEXTURE_2D, geometry_pass_->GetAlbedoSpecular());
 
 	std::string name;
 	for (int i = 0; i < nr_of_lights_; i++) {
-		name = "lights[" + std::to_string(i) + "].position_";
+		name = "lights[" + std::to_string(i) + "].position";
 		glUniform3fv(glGetUniformLocation(lighting_pass_->GetProgram(), name.c_str()), 1, glm::value_ptr(lights_[i].GetPos()));
-		name = "lights[" + std::to_string(i) + "].color_";
+		name = "lights[" + std::to_string(i) + "].color";
 		glUniform3fv(glGetUniformLocation(lighting_pass_->GetProgram(), name.c_str()), 1, glm::value_ptr(lights_[i].GetAmbientLight()));
 	}
 
-	glUniform3fv(glGetUniformLocation(lighting_pass_->GetProgram(), "viewPos"), 1, glm::value_ptr(glm::vec3(2, 2, 2))); //Add camera positions
+	glUniform3fv(glGetUniformLocation(lighting_pass_->GetProgram(), "viewPos"), 1, glm::value_ptr(camera_position)); //Add camera positions
 
 }
 

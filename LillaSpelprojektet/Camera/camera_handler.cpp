@@ -35,3 +35,18 @@ glm::mat4 CameraHandler::SetCameraPos(float in_x, float in_y, float in_z) {
 	//Return the active camera's View*Perspective Matrix
 	return this->cams_[this->mode_].GetViewPerspectiveMatrix();
 }
+
+glm::mat4 CameraHandler::GetPerspectiveMatrix() const
+{
+	return cams_[mode_].GetPerspectiveMatrix();
+}
+
+glm::mat4 CameraHandler::GetViewMatrix() const
+{
+	return cams_[mode_].GetViewMatrix();
+}
+
+glm::vec3 CameraHandler::GetCameraPosition() const
+{
+	return cams_[mode_].GetCameraPosition();
+}

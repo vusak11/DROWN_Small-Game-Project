@@ -29,8 +29,6 @@ int main() {
 
 	while (running) {
 		sf::Event event;
-		game.GameLoop(gameTime.restart().asSeconds());
-
 		while (window.pollEvent(event)) {
 			/*----------------Only exit window commands-----------*/
 			if (event.type == sf::Event::Closed) {
@@ -47,7 +45,7 @@ int main() {
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		//draw
+		game.GameLoop(gameTime.restart().asSeconds());
 
 		window.display();
 	}

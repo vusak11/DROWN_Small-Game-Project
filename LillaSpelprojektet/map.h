@@ -38,6 +38,9 @@ public:
 	void SetHeight(int height);
 	void SetWidth(int width);
 
+	float GetTempHeight(int x, int z);
+	void LowerPosition();
+
 	int GetHeight();
 	int GetWidth();
 private:

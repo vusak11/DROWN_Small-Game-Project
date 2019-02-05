@@ -21,7 +21,7 @@ Camera::Camera(glm::vec3 in_look_at, float in_distance) {
 
 	//Create vector with direction to look_at point ( always [0,0,-1] )
 	//this->camera_arr_[0].dir = glm::normalize(this->camera_arr_[0].pos - this->camera_arr_[0].look_at);
-	this->direction_ = glm::vec3(0.0f, 0.0f, -1.0f);
+	this->direction_ = glm::vec3(0.0f, 0.0f, 1.0f);
 
 	//Set up and right vectors
 	this->up_ = glm::vec3(0.0f, 1.0f, 0.0f);
@@ -70,6 +70,21 @@ void Camera::SetCameraPos(float in_x, float in_y, float in_z) {
 	this->UpdateViewMatrix();
 }
 
-glm::mat4 Camera::GetViewPerspectiveMatrix() {
+glm::mat4 Camera::GetPerspectiveMatrix() const
+{
+	return perspective_mat_;
+}
+
+glm::mat4 Camera::GetViewMatrix() const
+{
+	return view_mat_;
+}
+
+glm::vec3 Camera::GetCameraPosition() const
+{
+	return pos_;
+}
+
+glm::mat4 Camera::GetViewPerspectiveMatrix() const {
 	return this->view_mat_ * this->perspective_mat_;
 }

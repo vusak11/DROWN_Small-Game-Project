@@ -1,7 +1,7 @@
 #include "game.h"
 
 Game::Game() {
-	this->cam_handler_ptr_ = new CameraHandler(glm::vec3(0.0), 20.0);
+	this->cam_handler_ptr_ = new CameraHandler(glm::vec3(0.0f), 50.0f);
 }
 
 Game::~Game() {
@@ -90,5 +90,9 @@ void Game::InputFromDevices(float in_deltatime) {
 
 void Game::GameLoop(float in_deltatime) {
 	InputFromDevices(in_deltatime);
-	render_.UpdateRender(in_deltatime);
+	render_.UpdateRender(
+		in_deltatime, 
+		cam_handler_ptr_->GetCameraPosition(),
+		cam_handler_ptr_->GetPerspectiveMatrix(),
+		cam_handler_ptr_->GetViewMatrix());
 }

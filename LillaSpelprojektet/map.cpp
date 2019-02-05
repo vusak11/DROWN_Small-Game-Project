@@ -20,10 +20,10 @@ bool Map::LoadMap(char* texture_name) {
 	int map_width_, map_height_;
 	unsigned char* map_data = SOIL_load_image(texture_name, &map_width_, &map_height_, 0, SOIL_LOAD_RGB);
 
-	//float fTextureU = float(map_width_)*0.1f;
-	//float fTextureV = float(map_height_)*0.1f;	// ?????????
+	float fTextureU = float(map_width_)*0.1f;
+	float fTextureV = float(map_height_)*0.1f;
 
-	//std::cout << "SOIL: " << SOIL_last_result() << std::endl;
+	std::cout << "SOIL: " << SOIL_last_result() << std::endl;
 
 	std::vector<float> tempFloat;
 
@@ -39,7 +39,7 @@ bool Map::LoadMap(char* texture_name) {
 		temp_height_.push_back(tempFloat);
 	}
 
-	//lowerPosition();
+	LowerPosition();
 
 	//-------------Texture coordinates(U,V)-------------//
 
@@ -263,4 +263,17 @@ int Map::GetHeight() {
 
 int Map::GetWidth() {
 	return map_width_;
+}
+
+float Map::GetTempHeight(int x, int z) {
+	return temp_height_[z][x];
+}
+
+
+void Map::LowerPosition() {
+	for (int i = 0; i < map_height_; i++) {
+		for (int j = 0; j < map_width_; j++) {
+			temp_height_[i][j] -= GetTempHeight(0, 0);
+		}
+	}
 }
