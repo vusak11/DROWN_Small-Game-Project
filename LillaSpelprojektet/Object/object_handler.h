@@ -35,7 +35,9 @@ private:
 	std::vector<ObjectClass> CullAndRetrieveNPCs();		//Scans npc_vector_ and returns NPCs close enough to the player
 	std::vector<ObjectClass> CullAndRetrieveDrops();	//Scans drop_vector_ and returns drops close enough to the player
 
-	float DistanceBetween(ObjectClass in_object_a, ObjectClass in_object_b);	//Returns the distance between the two given objects
+	//float DistanceBetween(ObjectClass in_object_a, ObjectClass in_object_b);				//Returns the distance between the two given objects
+	float DistanceBetween(const ObjectClass& in_object_a, const ObjectClass& in_object_b);	//Alternate function using constant references to keep things safe
+																							//while avoiding copying
 
 	void DeterminePlayerAction();						//Read player_input_ and determine legal actions, such as changes to velocity or if we can attack this frame
 	void DetermineNPCAction(ObjectClass in_npc);		//Call the AI of the npc object to see what the npc does, then determine legal actions

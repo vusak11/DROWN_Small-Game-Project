@@ -10,8 +10,21 @@ std::vector<ObjectClass> CullAndRetrieveDrops() {
 
 }
 
+/*
 float ObjectHandler::DistanceBetween(ObjectClass in_object_a, ObjectClass in_object_b) {
-	in_object_a.GetPosition();
+	//Returns distance between two objects
+	return glm::distance(in_object_a.GetPosition(), in_object_b.GetPosition());
+}
+*/
+
+float ObjectHandler::DistanceBetween(const ObjectClass& in_object_a, const ObjectClass& in_object_b) {
+	//Returns distance between two objects
+
+	//NTS:
+	//Alternate function to DistanceBetween(ObjectClass in_object_a, ObjectClass in_object_b)
+	//using constant references to keep things safe while avoiding copying
+
+	return glm::distance(in_object_a.GetPosition(), in_object_b.GetPosition());
 }
 
 void ObjectHandler::ClearPlayerInput() {
