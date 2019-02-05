@@ -70,7 +70,7 @@ public:
 	void TestObjectHandler() {
 		std::cout << "Test of ObjectHandler started" << std::endl;
 
-		std::cout << "A:	Creating three ObjectClass:es in npc_vector_";
+		std::cout << "A:	Creating three ObjectClass:es in npc_vector_" << std::endl;
 		this->npc_vector_.push_back(ObjectClass());
 		this->npc_vector_.push_back(ObjectClass());
 		this->npc_vector_.push_back(ObjectClass());

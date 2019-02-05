@@ -13,6 +13,9 @@ void ObjectClass::CalculateWorldMatrix() {
 //Public---------------------------------------------------
 
 ObjectClass::ObjectClass() {
+
+	this->position_ = glm::vec3(0.0f);
+
 	this->world_matrix_up_to_date_ = false;
 }
 
