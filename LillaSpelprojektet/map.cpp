@@ -20,10 +20,10 @@ bool Map::LoadMap(char* texture_name) {
 	int map_width_, map_height_;
 	unsigned char* map_data = SOIL_load_image(texture_name, &map_width_, &map_height_, 0, SOIL_LOAD_RGB);
 
-	//float fTextureU = float(map_width_)*0.1f;
-	//float fTextureV = float(map_height_)*0.1f;	// ?????????
+	float fTextureU = float(map_width_)*0.1f;
+	float fTextureV = float(map_height_)*0.1f;	// ?????????
 
-	//std::cout << "SOIL: " << SOIL_last_result() << std::endl;
+	std::cout << "MAP: " << texture_name << SOIL_last_result() << std::endl;
 
 	std::vector<float> tempFloat;
 
@@ -166,8 +166,6 @@ bool Map::LoadMap(char* texture_name) {
 			vertices_.push_back(tempTriangle);
 		}
 	}
-
-	//Buffer(shader);
 
 	return true;
 }
