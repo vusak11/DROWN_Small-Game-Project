@@ -17,10 +17,14 @@ Render::Render() {
 		"glsl/lightingpass/lighting_fs.glsl");
 	lights_ = new Light[nr_of_lights_];
 
-	model_ = new Model*[nr_of_models];
-	model_[0] = new Model((char*)"../Resources/Models/TestCharacter.obj");
+	//model_ = new Model*[nr_of_models];
+	//model_[0] = new Model((char*)"../Resources/Models/TestCharacter.obj");
 
-	map_[0].LoadMap((char*)"../Resources/Map/TestMap.bmp");
+	//map_[0].LoadTexture((char*)"../Resources/Map/rock.png");
+	//map_[0].LoadMap((char*)"../Resources/Map/TestMap.bmp");
+
+
+
 }
 
 Render::~Render() {
@@ -28,10 +32,10 @@ Render::~Render() {
 	delete lighting_pass_;
 	delete[] lights_;
 
-	for (int i = 0; i < nr_of_models; i++) {
+	/*for (int i = 0; i < nr_of_models; i++) {
 		delete model_[i];
 	}
-	delete[] model_;
+	delete[] model_;*/
 }
 
 void Render::InitializeRender() {
@@ -44,6 +48,31 @@ void Render::InitializeRender() {
 		glm::vec3(1.0f, 1.0f, 1.0f),
 		glm::vec3(1.0f, 1.0f, 1.0f));
 	
+	float vertices[] = {
+		0.0f, 0.5f, 0.0f,
+		-0.5f, 0.0f, 0.0f,
+		0.5f, 0.0f, 0.0f
+	};
+
+	glGenVertexArrays(1, &VAO);
+	glGenBuffers(1, &VBO);
+	// bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
+	glBindVertexArray(VAO);
+
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(0);
+
+	// note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	// You can unbind the VAO afterwards so other VAO calls won't accidentally modify this VAO, but this rarely happens. Modifying other
+	// VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
+	glBindVertexArray(0);
+
+	//map_[0].Buffer(geometry_pass_->GetProgram());
 }
 
 void Render::UpdateRender(
@@ -55,18 +84,19 @@ void Render::UpdateRender(
 	GeometryPass(camera_position, perspective_matrix, view_matrix);
 
 	//Draw
-	model_matrix_ = glm::mat4();
-	model_matrix_ = glm::scale(model_matrix_, glm::vec3(1.0f, 1.0f, 1.0f));
+	model_matrix_ = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
 	glUniformMatrix4fv(
 		glGetUniformLocation(geometry_pass_->GetProgram(), "model"),
 		1, 
 		GL_FALSE,
 		glm::value_ptr(model_matrix_)
 	);
-
-	model_[0]->Draw(geometry_pass_->GetProgram());
-	//map_[0].Draw(geometry_pass_->GetProgram());
 	
+	//model_[0]->Draw(geometry_pass_->GetProgram());
+	//map_[0].Draw(geometry_pass_->GetProgram());
+
+	glBindVertexArray(VAO);
+	glDrawArrays(GL_TRIANGLES, 0, 3);
 
 	LightingPass(camera_position);
 
@@ -102,11 +132,11 @@ void Render::LightingPass(glm::vec3 camera_position) {
 	glUniform1i(glGetUniformLocation(lighting_pass_->GetProgram(), "g_albedo_spec"), 2);
 
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, lighting_pass_->GetPosition());
+	glBindTexture(GL_TEXTURE_2D, geometry_pass_->GetPosition());
 	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, lighting_pass_->GetNormal());
+	glBindTexture(GL_TEXTURE_2D, geometry_pass_->GetNormal());
 	glActiveTexture(GL_TEXTURE2);
-	glBindTexture(GL_TEXTURE_2D, lighting_pass_->GetAlbedoSpecular());
+	glBindTexture(GL_TEXTURE_2D, geometry_pass_->GetAlbedoSpecular());
 
 	std::string name;
 	for (int i = 0; i < nr_of_lights_; i++) {
