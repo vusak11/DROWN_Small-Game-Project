@@ -1,4 +1,4 @@
-#version 440
+#version 440 core
 layout(location = 0) out vec3 geometry_position;
 layout(location = 1) out vec3 geometry_normal;
 layout(location = 2) out vec4 geometry_albedo_specular;

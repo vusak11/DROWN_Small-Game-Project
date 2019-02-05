@@ -70,6 +70,21 @@ void Camera::SetCameraPos(float in_x, float in_y, float in_z) {
 	this->UpdateViewMatrix();
 }
 
-glm::mat4 Camera::GetViewPerspectiveMatrix() {
+glm::mat4 Camera::GetPerspectiveMatrix() const
+{
+	return perspective_mat_;
+}
+
+glm::mat4 Camera::GetViewMatrix() const
+{
+	return view_mat_;
+}
+
+glm::vec3 Camera::GetCameraPosition() const
+{
+	return pos_;
+}
+
+glm::mat4 Camera::GetViewPerspectiveMatrix() const {
 	return this->view_mat_ * this->perspective_mat_;
 }

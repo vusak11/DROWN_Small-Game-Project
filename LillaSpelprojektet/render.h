@@ -23,15 +23,25 @@ private:
 	Model** model_;
 
 	Map map_[1];
+
+	glm::mat4 model_matrix_;
 public:
 	Render();
 	~Render();
 
 	void InitializeRender();
-	void UpdateRender(float dt);
+	void UpdateRender(
+		float dt, 
+		glm::vec3 camera_position,
+		glm::mat4 perspective_matrix,
+		glm::mat4 view_matrix);
 
-	void GeometryPass();
-	void LightingPass();
+	void GeometryPass(
+		glm::vec3 camera_position,
+		glm::mat4 perspective_matrix,
+		glm::mat4 view_matrix);
+	void LightingPass(
+		glm::vec3 camera_position);
 
 	void RenderQuad();
 };
