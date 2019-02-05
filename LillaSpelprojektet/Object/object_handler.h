@@ -80,25 +80,25 @@ public:
 		glm::vec3 test_pos;
 		for (unsigned int i = 0; i < this->npc_vector_.size(); i++) {
 			test_pos = this->npc_vector_.at(i).GetPosition();
-			std::cout << "ObjectClass [" << i << "]: (" << test_pos.x << "," << test_pos.y << "," << test_pos.z << ")" << std::endl;
+			std::cout << "	ObjectClass [" << i << "]: (" << test_pos.x << "," << test_pos.y << "," << test_pos.z << ")" << std::endl;
 		}
 
 		std::cout << "C:	Creating culled vector" << std::endl;
 		std::vector<ObjectClass*> test_vector = this->CullAndRetrieveObjects(this->npc_vector_);
-		std::cout << "npc_vector_ length: " << this->npc_vector_.size() << std::endl;
-		std::cout << "test_vector length: " << test_vector.size() << std::endl;
+		std::cout << "	npc_vector_ length: " << this->npc_vector_.size() << std::endl;
+		std::cout << "	test_vector length: " << test_vector.size() << std::endl;
 
 		std::cout << "D:	Changing the position of first entry to (-3000, -3000) via pointer in test vector" << std::endl;
 		test_vector.at(0)->SetPosition(-3000, -3000);
 		for (unsigned int i = 0; i < this->npc_vector_.size(); i++) {
 			test_pos = this->npc_vector_.at(i).GetPosition();
-			std::cout << "ObjectClass [" << i << "]: (" << test_pos.x << "," << test_pos.y << "," << test_pos.z << ")" << std::endl;
+			std::cout << "	ObjectClass [" << i << "]: (" << test_pos.x << "," << test_pos.y << "," << test_pos.z << ")" << std::endl;
 		}
 
 		std::cout << "E:	Creating new culled vector" << std::endl;
 		test_vector = this->CullAndRetrieveObjects(this->npc_vector_);
-		std::cout << "npc_vector_ length: " << this->npc_vector_.size() << std::endl;
-		std::cout << "test_vector length: " << test_vector.size() << std::endl;
+		std::cout << "	npc_vector_ length: " << this->npc_vector_.size() << std::endl;
+		std::cout << "	test_vector length: " << test_vector.size() << std::endl;
 	}
 
 };
