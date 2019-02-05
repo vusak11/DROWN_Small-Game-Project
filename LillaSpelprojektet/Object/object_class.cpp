@@ -14,7 +14,6 @@ void ObjectClass::CalculateWorldMatrix() {
 
 ObjectClass::ObjectClass() {
 	this->world_matrix_up_to_date_ = false;
-	this->extra_rotation_y_ = 0.0;
 }
 
 ObjectClass::~ObjectClass() {
