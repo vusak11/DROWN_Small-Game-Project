@@ -12,5 +12,6 @@
 #define OBJECT_CULLING_DISTANCE 1380
 
 #define OBJECT_MAX_VELOCITY 100
+#define OBJECT_TURN_RATE 45 //degrees
 
 #endif // !GLOBALS_H

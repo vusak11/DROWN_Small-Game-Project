@@ -14,6 +14,7 @@ void ObjectClass::CalculateWorldMatrix() {
 
 ObjectClass::ObjectClass() {
 	this->world_matrix_up_to_date_ = false;
+	this->extra_rotation_y_ = 0.0;
 }
 
 ObjectClass::~ObjectClass() {
@@ -52,18 +53,18 @@ void ObjectClass::SetScale(float in_x, float in_y, float in_z) {
 	this->world_matrix_up_to_date_ = false;
 }
 
-void ObjectClass::SetRotation(float in_x, float in_y, float in_z) {
-	this->rotation_around_x_ = in_x;
-	this->rotation_around_y_ = in_y;
-	this->rotation_around_z_ = in_z;
+void ObjectClass::SetRotation(int in_x, int in_y, int in_z) {
+	this->rotation_around_x_ = in_x % 360;
+	this->rotation_around_y_ = in_y % 360;
+	this->rotation_around_z_ = in_z % 360;
 
 	//Create three matrices for rotating around x, y and z
-	glm::mat4 rotation_matrix_x = glm::rotate(this->rotation_around_x_, glm::vec3(1.0f, 0.0f, 0.0f));
-	glm::mat4 rotation_matrix_y = glm::rotate(this->rotation_around_y_, glm::vec3(0.0f, 1.0f, 0.0f));
-	glm::mat4 rotation_matrix_z = glm::rotate(this->rotation_around_z_, glm::vec3(0.0f, 0.0f, 1.0f));
+	glm::mat4 rotation_matrix_x = glm::rotate((float)this->rotation_around_x_, glm::vec3(1.0f, 0.0f, 0.0f));
+	glm::mat4 rotation_matrix_y = glm::rotate((float)this->rotation_around_y_, glm::vec3(0.0f, 1.0f, 0.0f));
+	glm::mat4 rotation_matrix_z = glm::rotate((float)this->rotation_around_z_, glm::vec3(0.0f, 0.0f, 1.0f));
 
 	//Add the rotations together
-	this->rotation_matrix_ = rotation_matrix_x * rotation_matrix_y * rotation_around_z_;
+	this->rotation_matrix_ = rotation_matrix_x * rotation_matrix_y * rotation_matrix_z;
 
 	//World matrix is now out of date
 	this->world_matrix_up_to_date_ = false;
@@ -86,14 +87,6 @@ void ObjectClass::SetVelocityVector(glm::vec3 in_velocity_vector) {
 	//Then call the SetVelocity function to clamp the value below OBJECT_MAX_VELOCITY
 	this->SetVelocity(glm::length(this->velocity_vector_));
 
-}
-
-void ObjectClass::AlterVelocity(glm::vec3 in_vector) {
-	//Alter the current velocity vector with the new given one
-	this->velocity_vector_ = this->velocity_vector_ + in_vector;
-
-	//Then call the SetVelocity function to clam the value below OBJECT_MAX_VELOCITY
-	this->SetVelocity(glm::length(this->velocity_vector_));
 }
 
 glm::vec3 ObjectClass::GetPosition() const {
@@ -123,14 +116,33 @@ void ObjectClass::UpdatePosition(float in_deltatime) {
 	//the function moving back if we end up in a wall enough velocity would just carry us through it
 }
 
-/*
-glm::vec4 ObjectClass::GetRotation() const
-{
-	return rotation_;
+
+void ObjectClass::AlterVelocity(glm::vec3 in_vector) {
+	//Alter the current velocity vector with the new given one
+	this->velocity_vector_ = this->velocity_vector_ + in_vector;
+
+	//Then call the SetVelocity function to clam the value below OBJECT_MAX_VELOCITY
+	this->SetVelocity(glm::length(this->velocity_vector_));
 }
 
-glm::vec4 ObjectClass::GetScale() const
-{
-	return scale_;
+void ObjectClass::TurnLeft() {
+	//Turn the model leftwards (positive direction)
+	int new_rotation = (this->rotation_around_y_ + OBJECT_TURN_RATE) % 360;
+
+	//If the new orientation lies somewhere in [90, 180] we have turned too far
+	//and we snap back to 90
+	if ((new_rotation > 90) && (new_rotation < 180)) { new_rotation = 90; }
+
+	this->SetRotation(this->rotation_around_x_, new_rotation, this->rotation_around_z_);
 }
-*/
+
+void ObjectClass::TurnRight() {
+	//Turn the model rightwards (negative direction)
+	int new_rotation = (this->rotation_around_y_ - OBJECT_TURN_RATE) % 360;
+
+	//If the new orientation lies somewhere in [180, 270] we have turned too far
+	//and we snap back to 270
+	if ((new_rotation > 180) && (new_rotation < 270)) { new_rotation = 270; }
+
+	this->SetRotation(this->rotation_around_x_, new_rotation, this->rotation_around_z_);
+}

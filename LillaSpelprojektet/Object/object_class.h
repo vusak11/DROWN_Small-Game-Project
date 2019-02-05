@@ -23,9 +23,11 @@ private:
 								//				and rotation around z-axis on z
 								//Rotation represented in degrees
 
-	float rotation_around_x_;			//The rotation of the object in degrees 
-	float rotation_around_y_;			//around the x, y and z-axises
-	float rotation_around_z_;			//
+	int rotation_around_x_;			//The rotation of the object in degrees 
+	int rotation_around_y_;			//around the x, y and z-axises
+	int rotation_around_z_;			//NTS:	0 rotation around y is default (model look towards screen[positive z])
+										//		-90 (or 270) rotation around y is looking towards the right[positive x]
+										//		90 rotation around y is looking towards the left[negative x]
 
 	glm::vec3 scale_;			//Vector with	x scaling on x,
 								//				y scaling on y
@@ -52,27 +54,25 @@ public:
 	ObjectClass();
 	~ObjectClass();
 
+	//Set Functions---------------------------------------
 	void SetPosition(float in_x, float in_y, float in_z = 0.0f);
-
 	void SetScale(float in_s);
 	void SetScale(float in_x, float in_y, float in_z);
-
-	void SetRotation(float in_x, float in_y, float in_z);
+	void SetRotation(int in_x, int in_y, int in_z);
+	void SetVelocity(float in_velocity);					//Set current velocity to in-parameter (does not change direction)
+	void SetVelocityVector(glm::vec3 in_velocity_vector);	//Set curren velocity and movement direction to match in-parameter
 	
-	void SetVelocity(float in_velocity);
-	void SetVelocityVector(glm::vec3 in_velocity_vector);
-	void AlterVelocity(glm::vec3 in_vector);
-	
+	//Get Functions----------------------------------------
 	glm::vec3 GetPosition() const;				//Returns the object's x, y and z coordinates
 	float GetVelocity() const;					//Returns a float with the opject's velocity
 	glm::vec3 GetVelocityVector() const;		//Returns a vec3 with the object's velocity vector
-
 	glm::mat4 GetWorldMatrix();					//NTS: Should check if world matrix is up to date before returning, and update it if it isn't
 
+	//Other Functions--------------------------------------
 	void UpdatePosition(float in_deltatime);	//Moves object along it's velocity vector in accorance with time elapsed
-
-	//glm::vec4 GetRotation() const;
-	//glm::vec4 GetScale() const;
+	void AlterVelocity(glm::vec3 in_vector);				//Add in parameter to current velocity and use result as new velocity
+	void TurnLeft();
+	void TurnRight();
 
 
 };
