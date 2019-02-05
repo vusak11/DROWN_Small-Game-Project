@@ -46,9 +46,6 @@
     <Filter Include="Source Files\Object\Character">
       <UniqueIdentifier>{46a5f418-71db-4013-a96c-b21262127cc1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Objects\Characters">
-      <UniqueIdentifier>{33ca9f6b-cd8b-4ecc-8008-9fbaf05cef1a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\GLSL\LightingPass">
       <UniqueIdentifier>{96981d59-932d-4a2d-a362-03d3588bb5c1}</UniqueIdentifier>
     </Filter>
@@ -102,6 +99,15 @@
     <ClCompile Include="light.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="state_handler.cpp">
+      <Filter>Source Files\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="game_state.cpp">
+      <Filter>Source Files\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="menu_state.cpp">
+      <Filter>Source Files\Core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="render.h">
@@ -148,6 +154,15 @@
     </ClInclude>
     <ClInclude Include="light.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="state_handler.h">
+      <Filter>Header Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="game_state.h">
+      <Filter>Header Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="menu_state.h">
+      <Filter>Header Files\Core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

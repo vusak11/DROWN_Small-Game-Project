@@ -138,8 +138,10 @@
     <ClCompile Include="Camera\camera.cpp" />
     <ClCompile Include="Camera\camera_handler.cpp" />
     <ClCompile Include="game.cpp" />
+    <ClCompile Include="game_state.cpp" />
     <ClCompile Include="light.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="menu_state.cpp" />
     <ClCompile Include="Object\Character\character.cpp" />
     <ClCompile Include="Object\object_class.cpp" />
     <ClCompile Include="Object\object_handler.cpp" />
@@ -150,8 +152,11 @@
     <ClCompile Include="map_handler.cpp" />
     <ClCompile Include="shader_handler.cpp" />
     <ClCompile Include="sound_unit.cpp" />
+    <ClCompile Include="state_handler.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="game_state.h" />
+    <ClInclude Include="menu_state.h" />
     <ClInclude Include="Object\Character\character.h" />
     <ClInclude Include="Object\object_class.h" />
     <ClInclude Include="Object\object_handler.h" />
@@ -162,6 +167,7 @@
     <ClInclude Include="Camera\camera.h" />
     <ClInclude Include="Camera\camera_handler.h" />
     <ClInclude Include="render.h" />
+    <ClInclude Include="state_handler.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="light.h" />
