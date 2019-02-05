@@ -6,6 +6,7 @@
 							//Ref. for how it works: https://en.cppreference.com/w/cpp/utility/functional/function
 
 #include "object_class.h"
+#include "../Globals.h"
 
 class ObjectHandler {
 private:

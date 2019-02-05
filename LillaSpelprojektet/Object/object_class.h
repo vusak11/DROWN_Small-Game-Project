@@ -6,6 +6,8 @@
 #include <GLM/gtc/matrix_transform.hpp>
 #include <GLM/gtx/transform.hpp>
 
+#include "../Globals.h"
+
 // This class is used as a base for all the objects in the game. This goes for any
 // objects or characters.
 // Example:
@@ -38,8 +40,7 @@ private:
 	bool world_matrix_up_to_date_;		//NTS:	Variable should be set to false anytime we change one of the other matrices
 	glm::mat4 world_matrix_;
 
-	float velocity_;
-	glm::vec3 move_direction_;
+	glm::vec3 velocity_vector_;
 
 	//Functions----------------------------------------------
 	void CalculateWorldMatrix();	//Function calculates world matrix from scratch
@@ -58,13 +59,13 @@ public:
 
 	void SetRotation(float in_x, float in_y, float in_z);
 	
+	void SetVelocity(float in_velocity);
+	void SetVelocityVector(glm::vec3 in_velocity_vector);
+	void AlterVelocity(glm::vec3 in_vector);
 	
-	void SetVelocity(glm::vec4 const v);
-	
-	
-
 	glm::vec3 GetPosition() const;				//Returns the object's x, y and z coordinates
-	glm::vec4 GetVelocityVector() const;		//Returns a vec4 with the object's velocity vector (direction of movement times velocity)
+	float GetVelocity() const;					//Returns a float with the opject's velocity
+	glm::vec3 GetVelocityVector() const;		//Returns a vec3 with the object's velocity vector
 
 	glm::mat4 GetWorldMatrix();					//NTS: Should check if world matrix is up to date before returning, and update it if it isn't
 

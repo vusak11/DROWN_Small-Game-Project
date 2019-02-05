@@ -69,23 +69,43 @@ void ObjectClass::SetRotation(float in_x, float in_y, float in_z) {
 	this->world_matrix_up_to_date_ = false;
 }
 
+void ObjectClass::SetVelocity(float in_velocity) {
+	//If the velocity given is greater than our allowed maximum
+	//clamp it down to it
+	if (in_velocity > OBJECT_MAX_VELOCITY) { in_velocity = OBJECT_MAX_VELOCITY; }
+	else if (in_velocity < -OBJECT_MAX_VELOCITY) { in_velocity = -OBJECT_MAX_VELOCITY; }
 
-
-/*
-void ObjectClass::SetVelocity(glm::vec4 const v) {
-	velocity_ = v;
+	//Normalize the current vector and then scale it in accordance with the new velocity
+	this->velocity_vector_ = glm::normalize(this->velocity_vector_) * in_velocity;
 }
 
+void ObjectClass::SetVelocityVector(glm::vec3 in_velocity_vector) {
+	//Set the velocity vector to be the new velocity
+	this->velocity_vector_ = in_velocity_vector;
 
-*/
+	//Then call the SetVelocity function to clamp the value below OBJECT_MAX_VELOCITY
+	this->SetVelocity(glm::length(this->velocity_vector_));
+
+}
+
+void ObjectClass::AlterVelocity(glm::vec3 in_vector) {
+	//Alter the current velocity vector with the new given one
+	this->velocity_vector_ = this->velocity_vector_ + in_vector;
+
+	//Then call the SetVelocity function to clam the value below OBJECT_MAX_VELOCITY
+	this->SetVelocity(glm::length(this->velocity_vector_));
+}
 
 glm::vec3 ObjectClass::GetPosition() const {
 	return this->position_;
 }
 
-glm::vec4 ObjectClass::GetVelocityVector() const {
-	//Calculates a vec4 describing the directional velocity and returns it
-	return glm::vec4(this->velocity_ * glm::normalize(this->move_direction_), 0.0);
+float ObjectClass::GetVelocity() const {
+	return glm::length(this->velocity_vector_);
+}
+
+glm::vec3 ObjectClass::GetVelocityVector() const {
+	return this->velocity_vector_;
 }
 
 glm::mat4 ObjectClass::GetWorldMatrix() {
@@ -93,6 +113,14 @@ glm::mat4 ObjectClass::GetWorldMatrix() {
 	if (!this->world_matrix_up_to_date_) { this->CalculateWorldMatrix(); }
 	
 	return this->world_matrix_;
+}
+
+void ObjectClass::UpdatePosition(float in_deltatime) {
+	//Updates object position in accordance with how far its velocity would have taken it
+	this->position_ = this->position_ + (in_deltatime * this->velocity_vector_);
+
+	//NTS: This function has no stops. It does not stop by walls. Keep in mind that even with
+	//the function moving back if we end up in a wall enough velocity would just carry us through it
 }
 
 /*
