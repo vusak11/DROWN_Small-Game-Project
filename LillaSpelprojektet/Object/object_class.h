@@ -42,7 +42,7 @@ private:
 	bool world_matrix_up_to_date_;		//NTS:	Variable should be set to false anytime we change one of the other matrices
 	glm::mat4 world_matrix_;
 
-	glm::vec3 velocity_vector_;
+	glm::vec3 velocity_vec_;
 
 	//Functions----------------------------------------------
 	void CalculateWorldMatrix();	//Function calculates world matrix from scratch
@@ -60,17 +60,17 @@ public:
 	void SetScale(float in_x, float in_y, float in_z);
 	void SetRotation(int in_x, int in_y, int in_z);
 	void SetVelocity(float in_velocity);					//Set current velocity to in-parameter (does not change direction)
-	void SetVelocityVector(glm::vec3 in_velocity_vector);	//Set curren velocity and movement direction to match in-parameter
+	void SetVelocityVec(glm::vec3 in_velocity_vec);		//Set curren velocity and movement direction to match in-parameter
 	
 	//Get Functions----------------------------------------
 	glm::vec3 GetPosition() const;				//Returns the object's x, y and z coordinates
 	float GetVelocity() const;					//Returns a float with the opject's velocity
-	glm::vec3 GetVelocityVector() const;		//Returns a vec3 with the object's velocity vector
+	glm::vec3 GetVelocityVec() const;			//Returns a vec3 with the object's velocity vector
 	glm::mat4 GetWorldMatrix();					//NTS: Should check if world matrix is up to date before returning, and update it if it isn't
 
 	//Other Functions--------------------------------------
-	void UpdatePosition(float in_deltatime);	//Moves object along it's velocity vector in accorance with time elapsed
-	void AlterVelocity(glm::vec3 in_vector);				//Add in parameter to current velocity and use result as new velocity
+	void UpdatePosition(float in_deltatime);		//Moves object along it's velocity vector in accorance with time elapsed
+	void AlterVelocityVec(glm::vec3 in_vec);		//Add in parameter to current velocity and use result as new velocity
 	void TurnLeft();
 	void TurnRight();
 

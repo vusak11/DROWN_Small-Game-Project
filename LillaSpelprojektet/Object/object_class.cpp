@@ -76,15 +76,15 @@ void ObjectClass::SetVelocity(float in_velocity) {
 	else if (in_velocity < -OBJECT_MAX_VELOCITY) { in_velocity = -OBJECT_MAX_VELOCITY; }
 
 	//Normalize the current vector and then scale it in accordance with the new velocity
-	this->velocity_vector_ = glm::normalize(this->velocity_vector_) * in_velocity;
+	this->velocity_vec_ = glm::normalize(this->velocity_vec_) * in_velocity;
 }
 
-void ObjectClass::SetVelocityVector(glm::vec3 in_velocity_vector) {
+void ObjectClass::SetVelocityVec(glm::vec3 in_velocity_vec) {
 	//Set the velocity vector to be the new velocity
-	this->velocity_vector_ = in_velocity_vector;
+	this->velocity_vec_ = in_velocity_vec;
 
 	//Then call the SetVelocity function to clamp the value below OBJECT_MAX_VELOCITY
-	this->SetVelocity(glm::length(this->velocity_vector_));
+	this->SetVelocity(glm::length(this->velocity_vec_));
 
 }
 
@@ -93,11 +93,11 @@ glm::vec3 ObjectClass::GetPosition() const {
 }
 
 float ObjectClass::GetVelocity() const {
-	return glm::length(this->velocity_vector_);
+	return glm::length(this->velocity_vec_);
 }
 
-glm::vec3 ObjectClass::GetVelocityVector() const {
-	return this->velocity_vector_;
+glm::vec3 ObjectClass::GetVelocityVec() const {
+	return this->velocity_vec_;
 }
 
 glm::mat4 ObjectClass::GetWorldMatrix() {
@@ -109,19 +109,19 @@ glm::mat4 ObjectClass::GetWorldMatrix() {
 
 void ObjectClass::UpdatePosition(float in_deltatime) {
 	//Updates object position in accordance with how far its velocity would have taken it
-	this->position_ = this->position_ + (in_deltatime * this->velocity_vector_);
+	this->position_ = this->position_ + (in_deltatime * this->velocity_vec_);
 
 	//NTS: This function has no stops. It does not stop by walls. Keep in mind that even with
 	//the function moving back if we end up in a wall enough velocity would just carry us through it
 }
 
 
-void ObjectClass::AlterVelocity(glm::vec3 in_vector) {
+void ObjectClass::AlterVelocityVec(glm::vec3 in_vec) {
 	//Alter the current velocity vector with the new given one
-	this->velocity_vector_ = this->velocity_vector_ + in_vector;
+	this->velocity_vec_ = this->velocity_vec_ + in_vec;
 
 	//Then call the SetVelocity function to clam the value below OBJECT_MAX_VELOCITY
-	this->SetVelocity(glm::length(this->velocity_vector_));
+	this->SetVelocity(glm::length(this->velocity_vec_));
 }
 
 void ObjectClass::TurnLeft() {

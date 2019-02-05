@@ -3,7 +3,7 @@
 //Private--------------------------------------------------
 
 std::vector<ObjectClass> CullAndRetrieveNPCs() {
-
+	std::vector<ObjectClass> WIP;
 }
 
 std::vector<ObjectClass> CullAndRetrieveDrops() {
