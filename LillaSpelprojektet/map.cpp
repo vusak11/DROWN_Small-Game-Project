@@ -211,7 +211,7 @@ void Map::Buffer(GLuint shader) {
 
 	//Texture
 	glEnableVertexAttribArray(1);
-	GLuint texCoords = glGetAttribLocation(shader, "tex_coordinates");
+	GLuint texCoords = glGetAttribLocation(shader, "a_coordinates");
 	glVertexAttribPointer(texCoords, 2, GL_FLOAT, GL_FALSE, sizeof(Triangle),
 					BUFFER_OFFSET(sizeof(float) * 3));
 

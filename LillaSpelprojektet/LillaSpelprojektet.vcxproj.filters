@@ -169,5 +169,8 @@
     <None Include="glsl\lightingpass\lighting_fs.glsl">
       <Filter>Source Files\GLSL\LightingPass</Filter>
     </None>
+    <None Include="glsl\forward_gs.glsl">
+      <Filter>Source Files\GLSL</Filter>
+    </None>
   </ItemGroup>
 </Project>
