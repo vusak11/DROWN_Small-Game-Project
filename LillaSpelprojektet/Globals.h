@@ -1,6 +1,8 @@
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
+#include "GLM/glm.hpp"
+
 //const int kWindow_Width = 1280;
 //const int kWindow_Height = 720;
 
@@ -23,6 +25,12 @@ enum ObjectID {
 	OBJECT_ID_NULL,			//0:
 	OBJECT_ID_PLAYER,			//1:
 	OBJECT_ID_JOHNNY_BRAVO		//2:
+};
+
+//Package Structs------------------------------------------
+struct ObjectPackage {
+	ObjectID id;
+	glm::mat4 model_matrix;
 };
 
 #endif // !GLOBALS_H
