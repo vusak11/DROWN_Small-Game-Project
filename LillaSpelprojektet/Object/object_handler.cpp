@@ -1,6 +1,17 @@
 #include "object_handler.h"
 
 //Private--------------------------------------------------
+bool ObjectHandler::ClearPtrVector(std::vector<ObjectClass*>& in_vec) {
+	//While vector is not empty
+	while (!in_vec.empty()) {
+		//Delete the first object in vector
+		delete in_vec.at(0);
+		//then erase the first entry
+		in_vec.erase(this->npc_ptr_vector_.begin() + 0);
+	}
+
+	return in_vec.empty();
+}
 
 bool ObjectHandler::RemoveObject(const ObjectClass* in_object_ptr, std::vector<ObjectClass*>& in_object_ptr_vector) {
 	
@@ -71,15 +82,19 @@ void ObjectHandler::ClearPlayerInput() {
 //Public---------------------------------------------------
 
 ObjectHandler::ObjectHandler() {
-	
+	this->player_ptr_ = NULL;
 }
 
 ObjectHandler::~ObjectHandler() {
+	delete this->player_ptr_;
+	this->ClearPtrVector(this->npc_ptr_vector_);
+	this->ClearPtrVector(this->drop_ptr_vector_);
 
 }
 
 void ObjectHandler::InitializeObjectHandler() {
 
+	this->player_ptr_ = new ObjectClass(glm::vec3(0.0f, 0.0f, 0.0f), OBJECT_ID_PLAYER);
 
 	this->TestObjectHandler();		//NTS: Just for testing
 

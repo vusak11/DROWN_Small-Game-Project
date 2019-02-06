@@ -20,9 +20,9 @@
 //Anytime a new object or model is added to the game, ensure it is
 //represented by an ObjectID
 enum ObjectID {
-	OBJECT_NULL,			//0:
-	OBJECT_PLAYER,			//1:
-	OBJECT_JOHNNY_BRAVO		//2:
+	OBJECT_ID_NULL,			//0:
+	OBJECT_ID_PLAYER,			//1:
+	OBJECT_ID_JOHNNY_BRAVO		//2:
 };
 
 #endif // !GLOBALS_H

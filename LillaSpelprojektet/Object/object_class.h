@@ -53,7 +53,7 @@ private:
 	//HitBot hitbox_;
 
 public:
-	ObjectClass(glm::vec3 start_pos = glm::vec3(0.0f, 0.0f, 0.0f), ObjectID id = OBJECT_NULL);
+	ObjectClass(glm::vec3 start_pos = glm::vec3(0.0f, 0.0f, 0.0f), ObjectID id = OBJECT_ID_NULL);
 	~ObjectClass();
 
 	bool operator==(const ObjectClass& in_object);			//Equals operator for ObjectClass:es

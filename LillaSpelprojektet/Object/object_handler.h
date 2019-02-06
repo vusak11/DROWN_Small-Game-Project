@@ -36,6 +36,8 @@ private:
 	
 
 	//Functions-----------------------------------------------
+	bool ClearPtrVector(std::vector<ObjectClass*>& in_vec);
+	
 	bool RemoveObject(const ObjectClass* in_object_ptr, std::vector<ObjectClass*>& in_object_ptr_vector);			//Takes an object, scans the given vector for it, removes it if found, returns true if success 
 	
 	std::vector<ObjectClass*> CullAndRetrieveObjects(const std::vector<ObjectClass*>& in_object_vector) const;	//Scans given vector and returns a vector of references to objects close enough to the player
@@ -78,12 +80,12 @@ public:
 	void TestObjectHandler() {
 		std::cout << "Test of ObjectHandler started" << std::endl;
 
-		glm::vec3 best_pos;
+		glm::vec3 best_pos = glm::vec3(0.0f, 0.0f, 0.0f);
 
 		std::cout << "A:	Creating three ObjectClass:es in npc_vector_" << std::endl;
-		this->npc_ptr_vector_.push_back(new ObjectClass(best_pos, OBJECT_JOHNNY_BRAVO));
-		this->npc_ptr_vector_.push_back(new ObjectClass(best_pos, OBJECT_JOHNNY_BRAVO));
-		this->npc_ptr_vector_.push_back(new ObjectClass(best_pos, OBJECT_JOHNNY_BRAVO));
+		this->npc_ptr_vector_.push_back(new ObjectClass(best_pos, OBJECT_ID_JOHNNY_BRAVO));
+		this->npc_ptr_vector_.push_back(new ObjectClass(best_pos, OBJECT_ID_JOHNNY_BRAVO));
+		this->npc_ptr_vector_.push_back(new ObjectClass(best_pos, OBJECT_ID_JOHNNY_BRAVO));
 
 		std::cout << "B:	Moving second entry (index 1) to position (3000, 3000)" << std::endl;
 		this->npc_ptr_vector_.at(1)->SetPosition(3000, 3000);
@@ -120,6 +122,10 @@ public:
 		std::cout << "	Word of warning, the culled vector still holds 1 element: a pointer leading to trash" << std::endl;
 		std::cout << "	npc_vector_ length: " << this->npc_ptr_vector_.size() << std::endl;
 		std::cout << "	test_vector length: " << test_vector.size() << std::endl;
+
+		std::cout << "E:	Clear npc_ptr_vector from its elements" << std::endl;
+		this->ClearPtrVector(this->npc_ptr_vector_);
+		std::cout << "	npc_vector_ length: " << this->npc_ptr_vector_.size() << std::endl;
 	}
 
 };
