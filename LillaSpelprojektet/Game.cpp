@@ -97,7 +97,7 @@ void Game::GameLoop(float in_deltatime) {
 		cam_handler_ptr_->GetPerspectiveMatrix(),
 		cam_handler_ptr_->GetViewMatrix());*/
 
-	glm::mat4 m = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+	glm::mat4 m = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -10.0f));
 	glm::mat4 v = this->cam_handler_ptr_->GetViewMatrix();
 	glm::mat4 p = this->cam_handler_ptr_->GetPerspectiveMatrix();
 

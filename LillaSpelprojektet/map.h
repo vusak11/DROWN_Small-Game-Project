@@ -1,17 +1,13 @@
 #ifndef MAP_H
 #define MAP_H
 
-//#include <GLM/vec2.hpp>
-//#include <GLM/vec3.hpp>
-//#include <GLM/vec4.hpp>
 #include <GLM/glm.hpp>
 
 #include "shader_handler.h"
-
-// This class is symbolising the a map in the game and all its proporties.  
-// Example:
-//    map->GetMapWidth();
-//  
+#include "glm\gtc\matrix_transform.hpp"
+#include "glm\gtc\type_ptr.hpp"	// To be able to use vector variables in class.
+#include <iostream>
+#include <vector>
 
 #define BUFFER_OFFSET(i) ((char *)nullptr + (i)) // Offset variable
 
@@ -25,7 +21,7 @@ private:
 	};
 
 public:
-	Map();
+	Map(char* path);
 	~Map();
 
 	// This function is not complete.

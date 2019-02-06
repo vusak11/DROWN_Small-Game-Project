@@ -22,7 +22,7 @@ private:
 	int nr_of_models = 1;
 	Model** model_;
 
-	Map map_[1];
+	//Map map_[1];
 
 	glm::mat4 model_matrix_;
 public:

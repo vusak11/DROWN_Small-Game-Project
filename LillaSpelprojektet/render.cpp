@@ -20,7 +20,7 @@ Render::Render() {
 	model_ = new Model*[nr_of_models];
 	model_[0] = new Model((char*)"../Resources/Models/TestCharacter.obj");
 
-	map_[0].LoadMap((char*)"../Resources/Map/TestMap.bmp");
+	//map_[0].LoadMap((char*)"../Resources/Map/TestMap.bmp");
 }
 
 Render::~Render() {
