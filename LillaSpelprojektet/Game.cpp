@@ -30,7 +30,7 @@ void Game::InitilizeGame() {
 
 	shader_.Initialize("glsl/forward_vs.glsl", "glsl/forward_fs.glsl");
 
-	this->obj_handler_ptr_->TestObjectHandler();		//NTS: Just for testing
+	this->obj_handler_ptr_->InitializeObjectHandler();
 }
 
 void Game::GameLoop(float in_deltatime) {

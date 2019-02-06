@@ -12,9 +12,11 @@ void ObjectClass::CalculateWorldMatrix() {
 
 //Public---------------------------------------------------
 
-ObjectClass::ObjectClass() {
+ObjectClass::ObjectClass(glm::vec3 start_pos, ObjectID id) {
 
-	this->position_ = glm::vec3(0.0f);
+	this->position_ = start_pos;
+
+	//TBA: Use the ID to determine the specs of a Object (Character/Drop/etc)
 
 	this->world_matrix_up_to_date_ = false;
 }
