@@ -29,9 +29,24 @@ StartMenu::~StartMenu() {
 }
 
 void StartMenu::Draw(sf::RenderWindow &window) {
+	//glDisable(GL_DEPTH_TEST);
+	
+	glMatrixMode(GL_PROJECTION);
+	glPushMatrix();
+	glLoadIdentity();
+	gluOrtho2D(0.0, 1.0, 1.0, 0.0);
+	glMatrixMode(GL_MODELVIEW);
+	glPushMatrix();
+	glLoadIdentity();
+	
 	for (int i = 0; i = MAX_NUMBER_OF_ITEMS; i++) {
 		window.draw(menu_item_[i]);
 	}
+
+	glMatrixMode(GL_PROJECTION);
+	glPopMatrix();
+	glMatrixMode(GL_MODELVIEW);
+	glPopMatrix();
 }
 
 void StartMenu::NavigateUp() {

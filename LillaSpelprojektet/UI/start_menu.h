@@ -4,6 +4,8 @@
 
 #include <SFML/Graphics.hpp>
 #include "../Globals.h"
+#include <SFML/OpenGL.hpp>
+#include <GL/GLU.h>
 
 #define MAX_NUMBER_OF_ITEMS 3
 
