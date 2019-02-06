@@ -23,7 +23,6 @@ private:
 	Model** model_;
 
 	Map map_[1];
-	unsigned int VBO, VAO;
 	glm::mat4 model_matrix_;
 public:
 	Render();
