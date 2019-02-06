@@ -48,13 +48,15 @@ int main() {
 			}
 			/*----------------Only exit window commands-----------*/
 		}
-		glBegin(GL_TRIANGLES);
+
 		//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		window.clear();
 
 		// Draw SFML
 		window.pushGLStates();
+
 		main_menu.Draw(window);
+
 		window.popGLStates();
 
 		// Display rendered frame
