@@ -59,11 +59,13 @@ void Render::UpdateRender(
 	glm::vec3 camera_position,
 	glm::mat4 perspective_matrix, 
 	glm::mat4 view_matrix) {
-
+	glClearColor(0.0f, 0.0f, 0.5f, 1.0f);
 	GeometryPass(camera_position, perspective_matrix, view_matrix);
 
 	GeometryDrawing();
 	
+	lights_[0].SetPos(camera_position);
+
 	LightingPass(camera_position);
 
 	RenderQuad();
@@ -71,10 +73,10 @@ void Render::UpdateRender(
 
 void Render::GeometryDrawing() {
 	ModelTransformation(
-		glm::vec3(-250.0f, 0.0, 600.0f),
+		glm::vec3(-256.0f, 0.0, 0.0f),
 		glm::vec3(1, 1, 1),
 		0,
-		glm::vec3(1.0, 1.0f, 1.0f)
+		glm::vec3(0.8f, 0.8f, 0.8f)
 	);
 	map_[0].Draw(geometry_pass_->GetProgram());
 }
@@ -123,13 +125,17 @@ void Render::LightingPass(glm::vec3 camera_position) {
 	glBindTexture(GL_TEXTURE_2D, geometry_pass_->GetAlbedoSpecular());
 
 	std::string name;
-	for (int i = 0; i < nr_of_lights_; i++) {
+	/*for (int i = 0; i < nr_of_lights_; i++) {
 		name = "lights[" + std::to_string(i) + "].position";
 		glUniform3fv(glGetUniformLocation(lighting_pass_->GetProgram(), name.c_str()), 1, glm::value_ptr(lights_[i].GetPos()));
 		name = "lights[" + std::to_string(i) + "].color";
 		glUniform3fv(glGetUniformLocation(lighting_pass_->GetProgram(), name.c_str()), 1, glm::value_ptr(lights_[i].GetAmbientLight()));
 	}
-
+	*/
+	glUniform3f(
+		glGetUniformLocation(lighting_pass_->GetProgram(), "light_position"),
+		camera_position.x, camera_position.y, camera_position.z
+	);
 	glUniform3fv(glGetUniformLocation(lighting_pass_->GetProgram(), "viewPos"), 1, glm::value_ptr(camera_position)); //Add camera positions
 
 }
