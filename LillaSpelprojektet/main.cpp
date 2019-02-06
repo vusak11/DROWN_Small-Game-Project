@@ -33,7 +33,6 @@ int main() {
 
 	while (running) {
 		sf::Event event;
-		game.GameLoop(gameTime.restart().asSeconds());
 
 		while (window.pollEvent(event)) {
 			/*----------------Only exit window commands-----------*/
@@ -52,12 +51,17 @@ int main() {
 		//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		window.clear();
 
+		game.GameLoop(gameTime.restart().asSeconds());
+		
+
 		// Draw SFML
+		sf::Text poop;				//TEST
+		poop.setString("POOP");		//TEST
 		window.pushGLStates();
-
-		main_menu.Draw(window);
-
+		//main_menu.Draw(window);
+		window.draw(poop);			//TEST
 		window.popGLStates();
+
 
 		// Display rendered frame
 		window.display();
