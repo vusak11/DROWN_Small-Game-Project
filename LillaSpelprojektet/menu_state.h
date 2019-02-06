@@ -12,11 +12,22 @@ private:
 	void NavDown();
 	void Select();
 
-	//GameFont variable
-	int selection_index;
+	// GameFont variable
 
+	//Currently selected menu alternative
+	int selection_index_;
 
+	// A pointer to the current active game (if any).
+
+	// TEXT VARIABLES(?)
 public:
+	~MenuState();
+
+	void KeyDown(WPARAM key);
+	void Draw();
+	void EnterState();
+
+	static MenuState* GetInstance(StateHandler* handler);
 };
 
 
