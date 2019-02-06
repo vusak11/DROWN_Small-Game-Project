@@ -61,7 +61,6 @@ int main() {
 
 		// Display rendered frame
 		window.display();
-		glEnd();
 	}
 
 	return 0;
