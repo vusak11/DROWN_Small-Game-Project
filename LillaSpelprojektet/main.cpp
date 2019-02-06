@@ -1,7 +1,6 @@
 #include <crtdbg.h>
 
 #include "game.h"
-#include "UI/start_menu.h"
 #include <iostream>
 #include <SFML/OpenGL.hpp>
 
@@ -10,18 +9,17 @@
 int main() {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 
-	sf::RenderWindow window(sf::VideoMode(1280, 720), "My window", sf::Style::Default, sf::ContextSettings(32));
+	sf::Window window(sf::VideoMode(1280, 720), "My window", sf::Style::Default, sf::ContextSettings(32));
 
 	window.setVerticalSyncEnabled(true);
 	window.setActive(true);
-
+	 
 	glewExperimental = GL_TRUE;
 	if (glewInit() != GLEW_OK) {
 		std::cout << "GLEW not linking" << std::endl;
 	}
 
 	/*----------Variables----------*/
-	StartMenu main_menu;
 	sf::Clock gameTime;
 	Game game;
 	bool running = true;
@@ -33,7 +31,6 @@ int main() {
 
 	while (running) {
 		sf::Event event;
-
 		while (window.pollEvent(event)) {
 			/*----------------Only exit window commands-----------*/
 			if (event.type == sf::Event::Closed) {
@@ -49,7 +46,6 @@ int main() {
 		}
 
 		//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		window.clear();
 
 		game.GameLoop(gameTime.restart().asSeconds());
 

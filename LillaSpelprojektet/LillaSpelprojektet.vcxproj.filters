@@ -108,6 +108,9 @@
     <ClCompile Include="UI\start_menu.cpp">
       <Filter>Source Files\UI</Filter>
     </ClCompile>
+    <ClCompile Include="forwardRendering.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="render.h">
@@ -157,6 +160,9 @@
     </ClInclude>
     <ClInclude Include="UI\start_menu.h">
       <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="forwardRendering.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

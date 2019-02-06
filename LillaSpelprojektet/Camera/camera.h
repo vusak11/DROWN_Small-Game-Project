@@ -29,7 +29,11 @@ public:
 	void MoveCamera(float in_x, float in_y, float in_z = 0.0f);
 	void SetCameraPos(float in_x, float in_y, float in_z = 0.0f);
 	//void AngleCamera(float in_x, float in_y, float in_z = 0.0f);
-	glm::mat4 GetViewPerspectiveMatrix();
+
+	glm::mat4 GetViewPerspectiveMatrix() const;
+	glm::mat4 GetPerspectiveMatrix() const;
+	glm::mat4 GetViewMatrix() const;
+	glm::vec3 GetCameraPosition() const;
 
 };
 

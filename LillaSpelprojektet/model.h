@@ -27,7 +27,7 @@ public:
 	~Model();
 
 	Model(GLchar* path);
-	void Draw(ShaderHandler shader);
+	void Draw(GLuint shader);
 };
 
 #endif
