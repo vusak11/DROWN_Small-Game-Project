@@ -2,11 +2,11 @@
 
 //Private--------------------------------------------------
 
-void ObjectClass::CalculateWorldMatrix() {
-	//Add all matrices together into a world matrix.
+void ObjectClass::CalculateModelMatrix() {
+	//Add all matrices together into a model matrix.
 	//The order is important here.
 	//First we scale, then we rotate and finally we translate
-	this->world_matrix_ = this->translation_matrix_ * this->rotation_matrix_ * this->scaling_matrix_;
+	this->model_matrix_ = this->translation_matrix_ * this->rotation_matrix_ * this->scaling_matrix_;
 }
 
 
@@ -18,7 +18,7 @@ ObjectClass::ObjectClass(glm::vec3 start_pos, ObjectID id) {
 
 	//TBA: Use the ID to determine the specs of a Object (Character/Drop/etc)
 
-	this->world_matrix_up_to_date_ = false;
+	this->model_matrix_up_to_date_ = false;
 }
 
 ObjectClass::~ObjectClass() {
@@ -38,8 +38,8 @@ void ObjectClass::SetPosition(float in_x, float in_y, float in_z) {
 	//Translate an identity matrix to position_ and set it as the model's translation matrix
 	this->translation_matrix_ = glm::translate(glm::mat4(), position_);
 
-	//World matrix is now out of date
-	this->world_matrix_up_to_date_ = false;
+	//Model matrix is now out of date
+	this->model_matrix_up_to_date_ = false;
 }
 
 void ObjectClass::SetScale(float in_s) {
@@ -48,8 +48,8 @@ void ObjectClass::SetScale(float in_s) {
 	//Scale an identity matrix by scale_
 	this->scaling_matrix_ = glm::scale(glm::mat4(), this->scale_);
 
-	//World matrix is now out of date
-	this->world_matrix_up_to_date_ = false;
+	//Model matrix is now out of date
+	this->model_matrix_up_to_date_ = false;
 }
 
 void ObjectClass::SetScale(float in_x, float in_y, float in_z) {
@@ -58,8 +58,8 @@ void ObjectClass::SetScale(float in_x, float in_y, float in_z) {
 	//Scale an identity matrix by scale_
 	this->scaling_matrix_ = glm::scale(glm::mat4(), this->scale_);
 
-	//World matrix is now out of date
-	this->world_matrix_up_to_date_ = false;
+	//Model matrix is now out of date
+	this->model_matrix_up_to_date_ = false;
 }
 
 void ObjectClass::SetRotation(int in_x, int in_y, int in_z) {
@@ -76,7 +76,7 @@ void ObjectClass::SetRotation(int in_x, int in_y, int in_z) {
 	this->rotation_matrix_ = rotation_matrix_x * rotation_matrix_y * rotation_matrix_z;
 
 	//World matrix is now out of date
-	this->world_matrix_up_to_date_ = false;
+	this->model_matrix_up_to_date_ = false;
 }
 
 void ObjectClass::SetVelocity(float in_velocity) {
@@ -110,11 +110,11 @@ glm::vec3 ObjectClass::GetVelocityVec() const {
 	return this->velocity_vec_;
 }
 
-glm::mat4 ObjectClass::GetWorldMatrix() {
-	//If the world matrix is not up to date call the function calculating it
-	if (!this->world_matrix_up_to_date_) { this->CalculateWorldMatrix(); }
+glm::mat4 ObjectClass::GetModelMatrix() {
+	//If the model matrix is not up to date call the function calculating it
+	if (!this->model_matrix_up_to_date_) { this->CalculateModelMatrix(); }
 	
-	return this->world_matrix_;
+	return this->model_matrix_;
 }
 
 void ObjectClass::UpdatePosition(float in_deltatime) {

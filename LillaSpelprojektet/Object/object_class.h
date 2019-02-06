@@ -41,13 +41,13 @@ private:
 	glm::mat4 scaling_matrix_;
 	glm::mat4 rotation_matrix_;
 
-	bool world_matrix_up_to_date_;		//NTS:	Variable should be set to false anytime we change one of the other matrices
-	glm::mat4 world_matrix_;
+	bool model_matrix_up_to_date_;		//NTS:	Variable should be set to false anytime we change one of the other matrices
+	glm::mat4 model_matrix_;
 
 	glm::vec3 velocity_vec_;
 
 	//Functions----------------------------------------------
-	void CalculateWorldMatrix();	//Function calculates world matrix from scratch
+	void CalculateModelMatrix();	//Function calculates model matrix from scratch
 
 	//Model* model_; // The model class will contain a TextureClass 
 	//HitBot hitbox_;
@@ -70,7 +70,7 @@ public:
 	glm::vec3 GetPosition() const;				//Returns the object's x, y and z coordinates
 	float GetVelocity() const;					//Returns a float with the opject's velocity
 	glm::vec3 GetVelocityVec() const;			//Returns a vec3 with the object's velocity vector
-	glm::mat4 GetWorldMatrix();					//NTS: Should check if world matrix is up to date before returning, and update it if it isn't
+	glm::mat4 GetModelMatrix();					//NTS: Should check if model matrix is up to date before returning, and update it if it isn't
 
 	//Other Functions--------------------------------------
 	void UpdatePosition(float in_deltatime);		//Moves object along it's velocity vector in accorance with time elapsed
