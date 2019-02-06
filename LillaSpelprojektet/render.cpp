@@ -62,21 +62,29 @@ void Render::UpdateRender(
 
 	GeometryPass(camera_position, perspective_matrix, view_matrix);
 
-	//Draw
-	model_matrix_ = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
-	glUniformMatrix4fv(
-		glGetUniformLocation(geometry_pass_->GetProgram(), "model"),
-		1, 
-		GL_FALSE,
-		glm::value_ptr(model_matrix_)
-	);
+	GeometryDrawing();
 	
-	//model_[0]->Draw(geometry_pass_->GetProgram());
-	map_[0].Draw(geometry_pass_->GetProgram());
-
 	LightingPass(camera_position);
 
 	RenderQuad();
+}
+
+void Render::GeometryDrawing() {
+	ModelTransformation(
+		glm::vec3(-250.0f, 0.0, 600.0f),
+		glm::vec3(1, 1, 1),
+		0,
+		glm::vec3(1.0, 1.0f, 1.0f)
+	);
+	map_[0].Draw(geometry_pass_->GetProgram());
+}
+
+void Render::ModelTransformation(glm::vec3 m_translate, glm::vec3 m_rotate, float radians, glm::vec3 m_scale) {
+	model_matrix_ = glm::mat4(1.0f);
+	model_matrix_ = glm::translate(model_matrix_, m_translate);
+	model_matrix_ = glm::rotate(model_matrix_, glm::radians(radians), m_rotate);
+	model_matrix_ = glm::scale(model_matrix_, m_scale);
+	glUniformMatrix4fv(glGetUniformLocation(geometry_pass_->GetProgram(), "model"), 1, GL_FALSE, glm::value_ptr(model_matrix_));
 }
 
 void Render::GeometryPass(

@@ -2,7 +2,10 @@
 #include "shader_handler.h"
 #include "light.h"
 #include <GLM\glm.hpp>
+
+#define GL_ENABLE_EXPERIMENTAL
 #include <GLM\gtc\matrix_transform.hpp>
+
 #include <GLM\gtc\type_ptr.hpp>
 #include "model.h"
 #include "map.h"
@@ -43,5 +46,8 @@ public:
 		glm::vec3 camera_position);
 
 	void RenderQuad();
+
+	void GeometryDrawing();
+	void ModelTransformation(glm::vec3 m_translate, glm::vec3 m_rotate, float radians, glm::vec3 m_scale);
 };
 

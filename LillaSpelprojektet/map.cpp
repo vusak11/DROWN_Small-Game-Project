@@ -39,7 +39,7 @@ bool Map::LoadMap(char* texture_name) {
 		temp_height_.push_back(tempFloat);
 	}
 
-	//lowerPosition();
+	//LowerPosition();
 
 	//-------------Texture coordinates(U,V)-------------//
 
@@ -146,7 +146,7 @@ bool Map::LoadMap(char* texture_name) {
 			indices_.push_back(p5);
 			indices_.push_back(p6);
 		}
-		indices_.push_back(map_width_*map_height_); //"degenerate"
+		//indices_.push_back(map_width_*map_height_); //"degenerate"
 	}
 
 	//-------------Create triangles-------------//
@@ -261,4 +261,16 @@ int Map::GetHeight() {
 
 int Map::GetWidth() {
 	return map_width_;
+}
+
+void Map::LowerPosition() {
+	for (int i = 0; i < map_height_; i++) {
+		for (int j = 0; j < map_width_; j++) {
+			temp_height_[i][j] -= GetTempHeight(0, 0);
+		}
+	}
+}
+
+float Map::GetTempHeight(int z, int x) {
+	return temp_height_[z][x];
 }

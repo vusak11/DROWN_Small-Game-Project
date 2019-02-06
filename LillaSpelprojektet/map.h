@@ -42,7 +42,7 @@ public:
 	void SetHeight(int height);
 	void SetWidth(int width);
 
-	float GetTempHeight(int x, int z);
+	float GetTempHeight(int z, int x);
 	void LowerPosition();
 
 	int GetHeight();
