@@ -66,6 +66,8 @@ Mesh::Mesh(
 	vertices_ = vertices;
 	indices_ = indices;
 	textures_ = textures;
+
+	SetupMesh();
 }
 
 Mesh::~Mesh() {

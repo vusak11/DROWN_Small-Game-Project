@@ -11,7 +11,7 @@ int main() {
 	window.setVerticalSyncEnabled(true);
 
 	window.setActive(true);
-
+	 
 	glewExperimental = GL_TRUE;
 	if (glewInit() != GLEW_OK) {
 		std::cout << "GLEW not linking" << std::endl;
@@ -43,8 +43,8 @@ int main() {
 			/*----------------Only exit window commands-----------*/
 		}
 
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+		//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		
 		game.GameLoop(gameTime.restart().asSeconds());
 
 		window.display();

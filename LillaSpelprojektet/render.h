@@ -21,7 +21,8 @@ private:
 
 	Model model_[1];
 
-	Map map_[1];
+	//Map map_[1];
+
 	glm::mat4 model_matrix_;
 public:
 	Render();

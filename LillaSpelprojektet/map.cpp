@@ -4,12 +4,11 @@
 #include <GL/glew.h>
 
 #include <Soil\SOIL.h>
-#include "glm\gtc\matrix_transform.hpp"
-#include "glm\gtc\type_ptr.hpp"	// To be able to use vector variables in class.
-#include <iostream>
-#include <vector>
 
-Map::Map() {
+Map::Map(char* path) {
+	if (!LoadMap(path)) {
+		std::cout << "Error load height map" << std::endl;
+	}
 }
 
 Map::~Map() {
@@ -207,7 +206,7 @@ void Map::Buffer(GLuint shader) {
 
 	//Vertex
 	glEnableVertexAttribArray(0);
-	GLuint vertexPos = glGetAttribLocation(shader, "position");
+	GLuint vertexPos = glGetAttribLocation(shader, "a_position");
 	glVertexAttribPointer(vertexPos, 3, GL_FLOAT, GL_FALSE, sizeof(Triangle), BUFFER_OFFSET(0));
 
 	//Texture

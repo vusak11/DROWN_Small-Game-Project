@@ -20,7 +20,6 @@ Render::Render() {
 	model_[0].LoadModelFromFile((char*)"../Resources/Models/TestCharacter.obj");
 
 	//map_[0].LoadMap((char*)"../Resources/Map/TestMap.bmp");
-	//map_[0].LoadTexture((char*)"../Resources/Map/rock.png");
 }
 
 Render::~Render() {
