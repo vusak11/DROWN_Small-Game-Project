@@ -17,22 +17,16 @@ Render::Render() {
 		"glsl/lightingpass/lighting_fs.glsl");
 	lights_ = new Light[nr_of_lights_];
 
-	//model_ = new Model*[nr_of_models];
-	//model_[0] = new Model((char*)"../Resources/Models/TestCharacter.obj");
+	model_[0].LoadModelFromFile((char*)"../Resources/Models/TestCharacter.obj");
 
-	map_[0].LoadMap((char*)"../Resources/Map/TestMap.bmp");
-	map_[0].LoadTexture((char*)"../Resources/Map/rock.png");
+	//map_[0].LoadMap((char*)"../Resources/Map/TestMap.bmp");
+	//map_[0].LoadTexture((char*)"../Resources/Map/rock.png");
 }
 
 Render::~Render() {
 	delete geometry_pass_;
 	delete lighting_pass_;
 	delete[] lights_;
-
-	/*for (int i = 0; i < nr_of_models; i++) {
-		delete model_[i];
-	}
-	delete[] model_;*/
 }
 
 void Render::InitializeRender() {
@@ -45,30 +39,6 @@ void Render::InitializeRender() {
 		glm::vec3(1.0f, 1.0f, 1.0f),
 		glm::vec3(1.0f, 1.0f, 1.0f));
 	
-	float vertices[] = {
-		0.0f, 0.5f, 0.0f,
-		-0.5f, 0.0f, 0.0f,
-		0.5f, 0.0f, 0.0f
-	};
-
-	glGenVertexArrays(1, &VAO);
-	glGenBuffers(1, &VBO);
-	// bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
-	glBindVertexArray(VAO);
-
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(0);
-
-	// note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-	// You can unbind the VAO afterwards so other VAO calls won't accidentally modify this VAO, but this rarely happens. Modifying other
-	// VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
-	glBindVertexArray(0);
-
 	//map_[0].Buffer(geometry_pass_->GetProgram());
 }
 
@@ -77,6 +47,9 @@ void Render::UpdateRender(
 	glm::vec3 camera_position,
 	glm::mat4 perspective_matrix, 
 	glm::mat4 view_matrix) {
+	
+	
+	glClearColor(0.0f, 0.0f, 0.5f, 1.0f);
 
 	GeometryPass(camera_position, perspective_matrix, view_matrix);
 
@@ -89,11 +62,8 @@ void Render::UpdateRender(
 		glm::value_ptr(model_matrix_)
 	);
 	
-	//model_[0]->Draw(geometry_pass_->GetProgram());
+	model_[0].Draw(geometry_pass_->GetProgram());
 	//map_[0].Draw(geometry_pass_->GetProgram());
-
-	glBindVertexArray(VAO);
-	glDrawArrays(GL_TRIANGLES, 0, 3);
 
 	LightingPass(camera_position);
 

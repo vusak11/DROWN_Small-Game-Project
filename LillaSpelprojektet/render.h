@@ -19,11 +19,9 @@ private:
 	ShaderHandler* lighting_pass_;
 	Light* lights_;
 
-	int nr_of_models = 1;
-	Model** model_;
+	Model model_[1];
 
 	Map map_[1];
-	unsigned int VBO, VAO;
 	glm::mat4 model_matrix_;
 public:
 	Render();

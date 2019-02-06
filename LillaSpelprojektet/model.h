@@ -26,7 +26,7 @@ public:
 	Model();
 	~Model();
 
-	Model(GLchar* path);
+	void LoadModelFromFile(GLchar* path);
 	void Draw(GLuint shader);
 };
 

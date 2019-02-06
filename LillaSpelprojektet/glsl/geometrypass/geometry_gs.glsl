@@ -29,5 +29,7 @@ void main() {
 		GS_OUT.normal = normal;
 		EmitVertex();
 	}
+
 	EndPrimitive();
+
 }

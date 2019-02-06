@@ -165,7 +165,7 @@ Model::Model() {
 Model::~Model() {
 }
 
-Model::Model(GLchar * path) {
+void Model::LoadModelFromFile(GLchar * path) {
 	LoadModel(path);
 }
 
