@@ -1,4 +1,4 @@
-#version 440
+#version 440 core
 layout(triangles) in;
 layout(triangle_strip, max_vertices = 3) out;
 
@@ -21,7 +21,7 @@ uniform mat4 projection;
 void main() {
 	mat3 normal_matrix = mat3(transpose(inverse(model)));
 
-	for (int i = 0; i < 3; i++) {
+	for (int i = 0; i < gl_in.length(); i++) {
 		vec3 normal = normalize(normal_matrix * VS_IN[i].normal);
 		gl_Position = projection * view * model * gl_in[i].gl_Position;
 		GS_OUT.frag_pos = vec3(model * gl_in[i].gl_Position);

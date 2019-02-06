@@ -4,9 +4,13 @@
 //#include <GLM/vec2.hpp>
 //#include <GLM/vec3.hpp>
 //#include <GLM/vec4.hpp>
+#include <iostream>
 #include <GLM/glm.hpp>
-
-#include "shader_handler.h"
+#include <GL/glew.h>
+#include <vector>
+#include <stdlib.h>
+#include "glm\gtc\matrix_transform.hpp"
+#include "glm\gtc\type_ptr.hpp"
 
 // This class is symbolising the a map in the game and all its proporties.  
 // Example:
