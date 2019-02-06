@@ -146,7 +146,6 @@
     <ClCompile Include="Object\object_handler.cpp" />
     <ClCompile Include="mesh.cpp" />
     <ClCompile Include="model.cpp" />
-    <ClCompile Include="render.cpp" />
     <ClCompile Include="map.cpp" />
     <ClCompile Include="map_handler.cpp" />
     <ClCompile Include="shader_handler.cpp" />
@@ -163,7 +162,6 @@
     <ClInclude Include="sound_unit.h" />
     <ClInclude Include="Camera\camera.h" />
     <ClInclude Include="Camera\camera_handler.h" />
-    <ClInclude Include="render.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="light.h" />

@@ -23,7 +23,7 @@ private:
 	std::vector<Mesh> mesh_;
 	std::string directory_;
 public:
-	Model();
+	Model(char* path);
 	~Model();
 
 	void LoadModelFromFile(GLchar* path);

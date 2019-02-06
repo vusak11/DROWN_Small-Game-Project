@@ -159,7 +159,8 @@ void Model::ProcessNode(aiNode * node, const aiScene * scene) {
 	}
 }
 
-Model::Model() {
+Model::Model(char* path) {
+	LoadModel(path);
 }
 
 Model::~Model() {
