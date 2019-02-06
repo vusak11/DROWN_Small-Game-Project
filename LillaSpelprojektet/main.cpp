@@ -14,7 +14,7 @@ int main() {
 
 	window.setVerticalSyncEnabled(true);
 	window.setActive(true);
-
+	 
 	glewExperimental = GL_TRUE;
 	if (glewInit() != GLEW_OK) {
 		std::cout << "GLEW not linking" << std::endl;
@@ -33,7 +33,6 @@ int main() {
 
 	while (running) {
 		sf::Event event;
-
 		while (window.pollEvent(event)) {
 			/*----------------Only exit window commands-----------*/
 			if (event.type == sf::Event::Closed) {
@@ -49,7 +48,6 @@ int main() {
 		}
 
 		//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		window.clear();
 
 		game.GameLoop(gameTime.restart().asSeconds());
 

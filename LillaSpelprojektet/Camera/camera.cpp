@@ -31,10 +31,10 @@ Camera::Camera(glm::vec3 in_look_at, float in_distance) {
 	this->UpdateViewMatrix();
 
 	//Calculate perspective matrix
-	float fov = glm::radians(45.0f);
+	float fov = 3.141592653589 * 0.45f;
 	float aspect = ((float)WINDOW_HEIGHT / (float)WINDOW_WIDTH);
 	float nearplane = 0.1f;
-	float farplane = 1000;
+	float farplane = 10000.0f;
 	this->perspective_mat_ = glm::perspective(fov, aspect, nearplane, farplane);
 }
 
@@ -70,6 +70,21 @@ void Camera::SetCameraPos(float in_x, float in_y, float in_z) {
 	this->UpdateViewMatrix();
 }
 
-glm::mat4 Camera::GetViewPerspectiveMatrix() {
+glm::mat4 Camera::GetPerspectiveMatrix() const
+{
+	return perspective_mat_;
+}
+
+glm::mat4 Camera::GetViewMatrix() const
+{
+	return view_mat_;
+}
+
+glm::vec3 Camera::GetCameraPosition() const
+{
+	return pos_;
+}
+
+glm::mat4 Camera::GetViewPerspectiveMatrix() const {
 	return this->view_mat_ * this->perspective_mat_;
 }

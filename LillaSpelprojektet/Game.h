@@ -6,6 +6,7 @@
 
 #include <GL/glew.h>
 #include "Camera/camera_handler.h"
+#include "forwardRendering.h"
 
 #include "render.h"
 
@@ -14,6 +15,7 @@ private:
 	CameraHandler* cam_handler_ptr_;
 	//ObjectHandler* obj_handler_ptr_;
 	Render render_;
+	ForwardRendering forwardRender_;
 	void InputFromDevices(float in_deltatime);
 public:
 	Game();
