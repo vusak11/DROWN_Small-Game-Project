@@ -10,7 +10,7 @@
 
 class Character : ObjectClass {
 public:
-	Character();
+	Character(glm::vec3 start_pos, ObjectID id);
 	~Character();
 
 	void SetHealth(int const health);
