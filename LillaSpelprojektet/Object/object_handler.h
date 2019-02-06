@@ -24,6 +24,8 @@ private:
 	};
 
 	//Variables-----------------------------------------------
+	int object_next_id_;
+
 	ObjectClass player_object_;				//Player
 	std::vector<ObjectClass> npc_vector_;	//All enemies
 	std::vector<ObjectClass> drop_vector_;	//Things dropped on the ground (e.g. power-ups, health)
@@ -34,6 +36,8 @@ private:
 	
 
 	//Functions-----------------------------------------------
+	bool RemoveObject(ObjectClass in_object, std::vector<ObjectClass>& in_object_vector);			//Takes an object, scans the given vector for it, removes it if found, returns true if success 
+	
 	std::vector<ObjectClass*> CullAndRetrieveObjects(std::vector<ObjectClass>& in_object_vector);	//Scans given vector and returns a vector of references to objects close enough to the player
 				
 	float DistanceBetween(const ObjectClass& in_object_a, const ObjectClass& in_object_b);			//Returns the distance between the two given objects
@@ -42,7 +46,9 @@ private:
 	void DetermineNPCAction(ObjectClass in_npc);		//Call the AI of the npc object to see what the npc does, then determine legal actions
 
 	void ResolvePlayerAction();							//Move player, apply hitboxes, etc.
-	void ResolveNPCAction(ObjectClass);					//Move npc, apply hitboxes, etc.
+	void ResolveNPCAction(ObjectClass in_npc);			//Move npc, apply hitboxes, etc.
+
+	void ResolveDropBehaviour(ObjectClass in_drop);		//Rotates drop, counts towards its despawn, etc.
 
 	void ClearPlayerInput();							//Sets all values in player_input_ to false. Should be called at the end of each Update()
 
@@ -99,6 +105,19 @@ public:
 		test_vector = this->CullAndRetrieveObjects(this->npc_vector_);
 		std::cout << "	npc_vector_ length: " << this->npc_vector_.size() << std::endl;
 		std::cout << "	test_vector length: " << test_vector.size() << std::endl;
+
+		
+		std::cout << "D:	Test if objects are unique when compared (==) to eachother " << std::endl;
+		ObjectClass A();
+		ObjectClass B();
+		if (A == A) {
+			std::cout << "Hi" << std::endl;
+		}
+		//std::string str1 = (A == A ? "True" : "False");
+		//std::cout << "A == A : " << str1.c_str() << std::endl;
+		//str1 = (A == B ? "True" : "False");
+		//std::cout << "A == B : " << str1.c_str() << std::endl;
+		
 	}
 
 };

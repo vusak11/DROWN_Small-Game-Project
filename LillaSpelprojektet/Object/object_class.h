@@ -56,13 +56,15 @@ public:
 	ObjectClass();
 	~ObjectClass();
 
+	bool operator==(const ObjectClass& in_object);			//Equals operator for ObjectClass:es
+
 	//Set Functions---------------------------------------
 	void SetPosition(float in_x, float in_y, float in_z = 0.0f);
 	void SetScale(float in_s);
 	void SetScale(float in_x, float in_y, float in_z);
 	void SetRotation(int in_x, int in_y, int in_z);
 	void SetVelocity(float in_velocity);					//Set current velocity to in-parameter (does not change direction)
-	void SetVelocityVec(glm::vec3 in_velocity_vec);		//Set curren velocity and movement direction to match in-parameter
+	void SetVelocityVec(glm::vec3 in_velocity_vec);			//Set curren velocity and movement direction to match in-parameter
 	
 	//Get Functions----------------------------------------
 	glm::vec3 GetPosition() const;				//Returns the object's x, y and z coordinates

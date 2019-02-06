@@ -22,6 +22,11 @@ ObjectClass::ObjectClass() {
 ObjectClass::~ObjectClass() {
 }
  
+bool ObjectClass::operator==(const ObjectClass& in_object) {
+	//Checks if this object is compared to itself. If it is return true, otherwise false
+	if (this == &in_object) { return true; }
+	return false;
+}
 
 void ObjectClass::SetPosition(float in_x, float in_y, float in_z) {
 	position_.x = in_x;

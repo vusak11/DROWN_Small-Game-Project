@@ -2,6 +2,22 @@
 
 //Private--------------------------------------------------
 
+bool ObjectHandler::RemoveObject(ObjectClass in_object, std::vector<ObjectClass>& in_object_vector) {
+	
+	//Go through the array
+	for (unsigned int i = 0; i < in_object_vector.size(); i++) {
+		//See if the given object exists within it
+		if (in_object == in_object_vector.at(i)) {
+			//if it does, remove that element and return true
+			in_object_vector.erase(in_object_vector.begin() + i);
+			return true;
+		}
+	}
+
+	//If the object wasn't found return false
+	return false;
+}
+
 std::vector<ObjectClass*> ObjectHandler::CullAndRetrieveObjects(std::vector<ObjectClass>& in_object_vector) {
 	
 	//NTS:	Function takes a REFERENCE to a std::vector with ObjectClass:es
@@ -94,8 +110,16 @@ void ObjectHandler::PlayerPickUp() {
 
 void ObjectHandler::Update() {
 
+	
+	//DeterminePlayerAction();
+	
+	//DetermineNPCAction(/*vector.at(i)*/);
 
+	//ResolvePlayerAction();
+	
+	//ResolveNPCAction(/*vector.at(i)*/);
 
+	//ResolveDropBehaviour(in_drop);
 
 	//Reset the inputs
 	this->ClearPlayerInput();
