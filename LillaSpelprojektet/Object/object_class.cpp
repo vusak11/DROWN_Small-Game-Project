@@ -98,6 +98,10 @@ void ObjectClass::SetVelocityVec(glm::vec3 in_velocity_vec) {
 
 }
 
+ObjectID ObjectClass::GetObjectID() const {
+	return this->id_;
+}
+
 glm::vec3 ObjectClass::GetPosition() const {
 	return this->position_;
 }

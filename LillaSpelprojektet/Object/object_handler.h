@@ -24,8 +24,6 @@ private:
 	};
 
 	//Variables-----------------------------------------------
-	int object_next_id_;
-
 	ObjectClass* player_ptr_;						//Player
 	std::vector<ObjectClass*> npc_ptr_vector_;		//All enemies
 	std::vector<ObjectClass*> drop_ptr_vector_;		//Things dropped on the ground (e.g. power-ups, health)
@@ -40,7 +38,7 @@ private:
 	
 	bool RemoveObject(const ObjectClass* in_object_ptr, std::vector<ObjectClass*>& in_object_ptr_vector);			//Takes an object, scans the given vector for it, removes it if found, returns true if success 
 	
-	std::vector<ObjectClass*> CullAndRetrieveObjects(const std::vector<ObjectClass*>& in_object_vector) const;	//Scans given vector and returns a vector of references to objects close enough to the player
+	std::vector<ObjectClass*> CullAndRetrieveObjectPtrs(const std::vector<ObjectClass*>& in_object_vector) const;	//Scans given vector and returns a vector of references to objects close enough to the player
 				
 	float DistanceBetween(const ObjectClass* in_object_a, const ObjectClass* in_object_b) const;			//Returns the distance between the two given objects
 
@@ -53,6 +51,9 @@ private:
 	void ResolveDropBehaviour(ObjectClass* in_drop);		//Rotates drop, counts towards its despawn, etc.
 
 	void ClearPlayerInput();							//Sets all values in player_input_ to false. Should be called at the end of each Update()
+
+	void PackObjectIntoVector(ObjectClass* in_ptr, std::vector<ObjectPackage>& in_target_vector);
+	void PackObjectVectorIntoVector(std::vector<ObjectClass*>& in_ptr_vector, std::vector<ObjectPackage>& in_target_vector);
 
 public:
 	ObjectHandler();
@@ -74,7 +75,7 @@ public:
 	//	- Call AI functions and decide behaviour
 	//	- Execute NPC actions and determine effects
 	//	- Call physics to determine new positions (<- Should be called at every step when a creature moves instead?)
-	void Update();
+	std::vector<ObjectPackage> UpdateAndRetrieve();
 
 	//Test functions------------------------------------------
 	void TestObjectHandler() {
@@ -96,7 +97,7 @@ public:
 		}
 
 		std::cout << "C:	Creating culled vector" << std::endl;
-		std::vector<ObjectClass*> test_vector = this->CullAndRetrieveObjects(this->npc_ptr_vector_);
+		std::vector<ObjectClass*> test_vector = this->CullAndRetrieveObjectPtrs(this->npc_ptr_vector_);
 		std::cout << "	npc_vector_ length: " << this->npc_ptr_vector_.size() << std::endl;
 		std::cout << "	test_vector length: " << test_vector.size() << std::endl;
 
@@ -108,12 +109,12 @@ public:
 		}
 
 		std::cout << "E:	Creating new culled vector" << std::endl;
-		test_vector = this->CullAndRetrieveObjects(this->npc_ptr_vector_);
+		test_vector = this->CullAndRetrieveObjectPtrs(this->npc_ptr_vector_);
 		std::cout << "	npc_vector_ length: " << this->npc_ptr_vector_.size() << std::endl;
 		std::cout << "	test_vector length: " << test_vector.size() << std::endl;
 
 		
-		std::cout << "D:	Remove the last entry in the culled vector from the npc_ptr_vector_" << std::endl;
+		std::cout << "F:	Remove the last entry in the culled vector from the npc_ptr_vector_" << std::endl;
 		this->RemoveObject(test_vector.at(0), this->npc_ptr_vector_);
 		for (unsigned int i = 0; i < this->npc_ptr_vector_.size(); i++) {
 			test_pos = this->npc_ptr_vector_.at(i)->GetPosition();
@@ -123,9 +124,23 @@ public:
 		std::cout << "	npc_vector_ length: " << this->npc_ptr_vector_.size() << std::endl;
 		std::cout << "	test_vector length: " << test_vector.size() << std::endl;
 
-		std::cout << "E:	Clear npc_ptr_vector from its elements" << std::endl;
+		std::cout << "G:	Clear npc_ptr_vector from its elements" << std::endl;
 		this->ClearPtrVector(this->npc_ptr_vector_);
 		std::cout << "	npc_vector_ length: " << this->npc_ptr_vector_.size() << std::endl;
+
+		std::cout << "H:	Testing the UpdateAndRetrive() early function" << std::endl;
+		std::cout << "	Add 2 objects to npc vector and 2 to drop vector"  << std::endl;
+		this->npc_ptr_vector_.push_back(new ObjectClass(best_pos, OBJECT_ID_JOHNNY_BRAVO));
+		this->npc_ptr_vector_.push_back(new ObjectClass(best_pos, OBJECT_ID_JOHNNY_BRAVO));
+		this->drop_ptr_vector_.push_back(new ObjectClass(best_pos, OBJECT_ID_JOHNNY_BRAVO));
+		this->drop_ptr_vector_.push_back(new ObjectClass(best_pos, OBJECT_ID_JOHNNY_BRAVO));
+		std::cout << "	npc_vector_ length: " << this->npc_ptr_vector_.size() << std::endl;
+		std::cout << "	drop_vector_ length: " << this->drop_ptr_vector_.size() << std::endl;
+		std::cout << "	Move one drop to (3000, 3000)" << std::endl;
+		this->drop_ptr_vector_.at(0)->SetPosition(3000, 3000);
+		std::cout << "	Call UpdateAndRetrieve and check returned vector length (should be 4: One Player, Two NPCs, One Drop)" << std::endl;
+		std::vector<ObjectPackage> pckg_vector = this->UpdateAndRetrieve();
+		std::cout << "	pckg_vec length: " << pckg_vector.size() << std::endl;
 	}
 
 };

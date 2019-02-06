@@ -35,7 +35,7 @@ bool ObjectHandler::RemoveObject(const ObjectClass* in_object_ptr, std::vector<O
 	return false;
 }
 
-std::vector<ObjectClass*> ObjectHandler::CullAndRetrieveObjects(const std::vector<ObjectClass*>& in_object_vector) const {
+std::vector<ObjectClass*> ObjectHandler::CullAndRetrieveObjectPtrs(const std::vector<ObjectClass*>& in_object_vector) const {
 	
 	//NTS:	Function takes a REFERENCE to a std::vector with OBJECTCLASS POINTERS
 	//		It creates a std::vector holding OBJECTCLASS POINTERS
@@ -77,7 +77,23 @@ void ObjectHandler::ClearPlayerInput() {
 	this->player_input_.pick_up = false;
 }
 
+void ObjectHandler::PackObjectIntoVector(ObjectClass* in_ptr, std::vector<ObjectPackage>& in_target_vector) {
+	ObjectPackage package;
 
+	//Retrieve relevant data from object
+	package.id = in_ptr->GetObjectID();
+	package.model_matrix = in_ptr->GetModelMatrix();
+
+	//Add package to the given vector reference
+	in_target_vector.push_back(package);
+}
+
+void ObjectHandler::PackObjectVectorIntoVector(std::vector<ObjectClass*>& in_ptr_vector, std::vector<ObjectPackage>& in_target_vector) {
+	//Pack all objects in given vector into the given vector reference
+	for (unsigned int i = 0; i < in_ptr_vector.size(); i++) {
+		this->PackObjectIntoVector(in_ptr_vector.at(i), in_target_vector);
+	}
+}
 
 //Public---------------------------------------------------
 
@@ -125,9 +141,17 @@ void ObjectHandler::PlayerPickUp() {
 	this->player_input_.pick_up;
 }
 
-void ObjectHandler::Update() {
+std::vector<ObjectPackage> ObjectHandler::UpdateAndRetrieve() {
 
-	
+	std::vector<ObjectClass*> relevant_nps_ptr_vector;
+	std::vector<ObjectClass*> relevant_drops_ptr_vector;
+
+	//Cull NPCs
+	relevant_nps_ptr_vector = this->CullAndRetrieveObjectPtrs(this->npc_ptr_vector_);
+
+	//Cull Drops
+	relevant_drops_ptr_vector = this->CullAndRetrieveObjectPtrs(this->drop_ptr_vector_);
+
 	//DeterminePlayerAction();
 	
 	//DetermineNPCAction(/*vector.at(i)*/);
@@ -141,6 +165,13 @@ void ObjectHandler::Update() {
 	//Reset the inputs
 	this->ClearPlayerInput();
 
-	return;
+	//Put the things that are to be drawn onto screen in a package struct and return it
+	std::vector<ObjectPackage> package_vector;
+	
+	this->PackObjectIntoVector(this->player_ptr_, package_vector);
+	this->PackObjectVectorIntoVector(relevant_nps_ptr_vector, package_vector);
+	this->PackObjectVectorIntoVector(relevant_drops_ptr_vector, package_vector);
+
+	return package_vector;
 }
 

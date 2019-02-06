@@ -19,6 +19,8 @@
 class ObjectClass {
 private:
 	//Variables-----------------------------------------------
+	ObjectID id_;
+	
 	glm::vec3 position_;
 	//glm::vec3 rotation_;		//Vector with	rotation around x-axis on x,
 								//				rotation around y-axis on y
@@ -67,6 +69,7 @@ public:
 	void SetVelocityVec(glm::vec3 in_velocity_vec);			//Set curren velocity and movement direction to match in-parameter
 	
 	//Get Functions----------------------------------------
+	ObjectID GetObjectID() const;
 	glm::vec3 GetPosition() const;				//Returns the object's x, y and z coordinates
 	float GetVelocity() const;					//Returns a float with the opject's velocity
 	glm::vec3 GetVelocityVec() const;			//Returns a vec3 with the object's velocity vector
