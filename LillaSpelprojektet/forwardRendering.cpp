@@ -18,7 +18,7 @@ ForwardRendering::~ForwardRendering() {
 }
 
 void ForwardRendering::HelloScreen() {
-	map_->LoadTexture((char*)"../Resources/Map/rock.png");
+	map_->LoadTexture((char*)"../Resources/Map/cave.png");
 	map_->Buffer(forwardRenderingShader->GetProgram());
 
 	glEnable(GL_CULL_FACE);

@@ -19,8 +19,8 @@ bool Map::LoadMap(char* texture_name) {
 	int map_width_, map_height_;
 	unsigned char* map_data = SOIL_load_image(texture_name, &map_width_, &map_height_, 0, SOIL_LOAD_RGB);
 
-	float fTextureU = float(map_width_)*0.1f;
-	float fTextureV = float(map_height_)*0.1f;	// ?????????
+	float fTextureU = float(map_width_);
+	float fTextureV = float(map_height_);	// ?????????
 
 	std::cout << "MAP: " << texture_name << SOIL_last_result() << std::endl;
 
@@ -32,7 +32,7 @@ bool Map::LoadMap(char* texture_name) {
 		for (int x = 0; x < map_width_; x++) {
 			// Read every third value
 			unsigned char color = map_data[3 * (z * map_width_ + x)];
-			float height = (map_height_ * (color / 255.0f)) * 0.2f;
+			float height = (map_height_ * (color / 255.0f));
 			tempFloat.push_back(height);
 		}
 		temp_height_.push_back(tempFloat);
