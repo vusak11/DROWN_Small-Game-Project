@@ -2,6 +2,7 @@
 
 Game::Game() {
 	this->cam_handler_ptr_ = new CameraHandler(glm::vec3(0.0f), 5.0f);
+	State_ = MENU;
 }
 
 Game::~Game() {
@@ -97,27 +98,36 @@ void Game::InputFromDevices(float in_deltatime) {
 
 void Game::GameLoop(float in_deltatime) {
 	InputFromDevices(in_deltatime);
-	/*render_.UpdateRender(
-		in_deltatime, 
-		cam_handler_ptr_->GetCameraPosition(),
-		cam_handler_ptr_->GetPerspectiveMatrix(),
-		cam_handler_ptr_->GetViewMatrix());*/
-	static float c = 0;
-	c += 1.0f * in_deltatime;
 
-	glm::mat4 m = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 10.0f));
-	m = glm::rotate(m, (90.0f + c), glm::vec3(1.0f, 1.0f, 0.0f));
-	glm::mat4 v = this->cam_handler_ptr_->GetViewMatrix();
-	glm::mat4 p = this->cam_handler_ptr_->GetPerspectiveMatrix();
+	if (State_ == MENU) {
+		// MENU TIME
+	}
+	else if (State_ == GAME) {
+		/*render_.UpdateRender(
+			in_deltatime,
+			cam_handler_ptr_->GetCameraPosition(),
+			cam_handler_ptr_->GetPerspectiveMatrix(),
+			cam_handler_ptr_->GetViewMatrix());*/
+		static float c = 0;
+		c += 1.0f * in_deltatime;
 
-	glm::mat4 matrix = p * v * m;
+		glm::mat4 m = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 10.0f));
+		m = glm::rotate(m, (90.0f + c), glm::vec3(1.0f, 1.0f, 0.0f));
+		glm::mat4 v = this->cam_handler_ptr_->GetViewMatrix();
+		glm::mat4 p = this->cam_handler_ptr_->GetPerspectiveMatrix();
 
-	glUniformMatrix4fv(
-		glGetUniformLocation(forwardRender_.GetProgramFromShader(), "matrix"), 
-		1, 
-		GL_FALSE,
-		glm::value_ptr(matrix)
-	);
+		glm::mat4 matrix = p * v * m;
 
-	forwardRender_.RenderScreen();
+		glUniformMatrix4fv(
+			glGetUniformLocation(forwardRender_.GetProgramFromShader(), "matrix"),
+			1,
+			GL_FALSE,
+			glm::value_ptr(matrix)
+		);
+
+		forwardRender_.RenderScreen();
+	}
+	else if (State_ == PAUSE) {
+		// PAUSE TIME
+	}
 }
