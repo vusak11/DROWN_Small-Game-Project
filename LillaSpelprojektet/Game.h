@@ -15,6 +15,7 @@ private:
 	CameraHandler* cam_handler_ptr_;
 	//ObjectHandler* obj_handler_ptr_;
 	ForwardRendering forwardRender_;
+	Menu menu_;
 	void InputFromDevices(float in_deltatime);
 public:
 	Game();

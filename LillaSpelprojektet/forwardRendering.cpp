@@ -20,6 +20,7 @@ void ForwardRendering::HelloScreen() {
 	//map_->Buffer(forwardRenderingShader->GetProgram());
 
 	glEnable(GL_CULL_FACE);
+	menu_.Initiliaze();
 }
 
 void ForwardRendering::RenderScreen() {
@@ -31,6 +32,15 @@ void ForwardRendering::RenderScreen() {
 
 	//map_->Draw(forwardRenderingShader->GetProgram());
 	model_->Draw(forwardRenderingShader->GetProgram());
+
+	menu_.RenderText(
+		forwardRenderingShader,
+		"This is a test text from forwardRendering class",
+		25.0f,
+		25.0f,
+		1.0f,
+		glm::vec3(1.0f, 0.9f, 0.5f)
+	);
 }
 
 GLuint ForwardRendering::GetProgramFromShader() const {
