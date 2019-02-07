@@ -65,12 +65,12 @@ void Game::InputFromDevices(float in_deltatime) {
 
 	if (secondary && sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
 		//Move active camera leftwards
-		cam_handler_ptr_->MoveCamera(-cam_speed, 0.0f);
+		cam_handler_ptr_->MoveCamera(cam_speed, 0.0f);
 	}
 
 	if (secondary && sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
 		//Move active camera rightwards
-		cam_handler_ptr_->MoveCamera(cam_speed, 0.0f);
+		cam_handler_ptr_->MoveCamera(-cam_speed, 0.0f);
 	}
 
 	if (secondary && sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
@@ -80,12 +80,18 @@ void Game::InputFromDevices(float in_deltatime) {
 
 	if (secondary && sf::Keyboard::isKeyPressed(sf::Keyboard::Add)) {
 		//Move active camera forwards ("zoom in")
-		cam_handler_ptr_->MoveCamera(0.0, 0.0, -cam_speed);
-	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Subtract)) {
-		//Move active camera backwards ("zoom out")
 		cam_handler_ptr_->MoveCamera(0.0, 0.0, cam_speed);
 	}
+	else if (secondary && sf::Keyboard::isKeyPressed(sf::Keyboard::Subtract)) {
+		//Move active camera backwards ("zoom out")
+		cam_handler_ptr_->MoveCamera(0.0, 0.0, -cam_speed);
+	}
+
+	if (secondary && sf::Keyboard::isKeyPressed(sf::Keyboard::P)) {
+		//Move active camera forwards ("zoom in")
+		cam_handler_ptr_->SetCameraPos(0.0f, 0.0f, 5.0);
+	}
+
 	/*---------------End Secondary Camera Control-----------------*/
 }
 
