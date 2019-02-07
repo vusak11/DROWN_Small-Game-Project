@@ -70,6 +70,34 @@ float ObjectHandler::DistanceBetween(const ObjectClass* in_object_a, const Objec
 
 void ObjectHandler::DeterminePlayerAction() {
 
+	// Collision detection will be implemented at a later stage.
+
+	if (player_input_.attack)
+	{
+
+	}
+	if (player_input_.jump)
+	{
+		//player_ptr_.se
+	}
+	if (player_input_.left)
+	{
+		glm::vec3 pos = player_ptr_->GetPosition();
+		player_ptr_->SetPosition(pos.x - 1, pos.y, pos.z);
+	}
+	if (player_input_.right)
+	{
+		glm::vec3 pos = player_ptr_->GetPosition();
+		player_ptr_->SetPosition(pos.x + 1, pos.y, pos.z);
+	}
+	if (player_input_.pick_up)
+	{
+
+	}
+	if (player_input_.use_ability)
+	{
+
+	}
 }
 
 void ObjectHandler::ClearPlayerInput() {
@@ -114,7 +142,7 @@ ObjectHandler::~ObjectHandler() {
 
 void ObjectHandler::InitializeObjectHandler() {
 
-	this->player_ptr_ = new ObjectClass(glm::vec3(0.0f, 0.0f, 0.0f), OBJECT_ID_PLAYER);
+	this->player_ptr_ = new ObjectClass(glm::vec3(100.0f, 0.0f, 0.0f), OBJECT_ID_PLAYER);
 
 	//this->TestObjectHandler();		//NTS: Just for testing
 
@@ -156,7 +184,7 @@ std::vector<ObjectPackage> ObjectHandler::UpdateAndRetrieve() {
 	//Cull Drops
 	relevant_drops_ptr_vector = this->CullAndRetrieveObjectPtrs(this->drop_ptr_vector_);
 
-	//DeterminePlayerAction();
+	DeterminePlayerAction();
 	
 	//DetermineNPCAction(/*vector.at(i)*/);
 
