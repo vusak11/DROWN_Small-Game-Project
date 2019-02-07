@@ -14,7 +14,7 @@ void Menu::Initiliaze() {
 	//Load font
 	if (FT_New_Face(
 		free_type_lib_,
-		"../Resources/FONTS/alittlepot.tff",
+		"../Resources/Fonts/alittlepot.tff",
 		0,
 		&free_type_face_)) {
 
