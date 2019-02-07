@@ -53,7 +53,7 @@ void Game::InputFromDevices(float in_deltatime) {
 	/*---------------End Mouse inputs-----------------*/
 
 	/*---------------Secondary Camera Control-----------------*/
-	float cam_speed = 20.0f * in_deltatime;
+	float cam_speed = 150.0f * in_deltatime;
 	bool secondary = cam_handler_ptr_->GetMode();		//Primary is 0 (boolean false), Secondeary is 1 (boolean !false)
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::O)) {

@@ -68,6 +68,10 @@ float ObjectHandler::DistanceBetween(const ObjectClass* in_object_a, const Objec
 	return glm::distance(in_object_a->GetPosition(), in_object_b->GetPosition());
 }
 
+void ObjectHandler::DeterminePlayerAction() {
+
+}
+
 void ObjectHandler::ClearPlayerInput() {
 	this->player_input_.left = false;
 	this->player_input_.right = false;
@@ -134,11 +138,11 @@ void ObjectHandler::PlayerAttack() {
 }
 
 void ObjectHandler::PlayerUseAbility() {
-	this->player_input_.use_ability;
+	this->player_input_.use_ability = true;
 }
 
 void ObjectHandler::PlayerPickUp() {
-	this->player_input_.pick_up;
+	this->player_input_.pick_up = true;
 }
 
 std::vector<ObjectPackage> ObjectHandler::UpdateAndRetrieve() {
