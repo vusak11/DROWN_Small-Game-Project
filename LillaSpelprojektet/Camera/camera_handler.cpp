@@ -2,7 +2,7 @@
 
 CameraHandler::CameraHandler(glm::vec3 in_target, float in_dist) {
 	this->cams_[PRIMARY] = Camera(in_target, in_dist);
-	this->cams_[SECONDARY] = Camera(in_target, in_dist+30);			//Place the secondary camera (debug) a bit further away than the primary one
+	this->cams_[SECONDARY] = Camera(in_target, in_dist+10);			//Place the secondary camera (debug) a bit further away than the primary one
 	this->mode_ = PRIMARY;
 }
 
