@@ -7,6 +7,7 @@
 class ForwardRendering {
 private:
 	ShaderHandler* forwardRenderingShader;
+	ShaderHandler* textShader;
 	
 	Model* model_;
 	Map* map_;

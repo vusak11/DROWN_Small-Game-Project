@@ -175,5 +175,8 @@
     <None Include="glsl\lightingpass\lighting_fs.glsl">
       <Filter>Source Files\GLSL\LightingPass</Filter>
     </None>
+    <None Include="textshader_fs.glsl">
+      <Filter>Source Files\GLSL</Filter>
+    </None>
   </ItemGroup>
 </Project>

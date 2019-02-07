@@ -5,6 +5,10 @@ ForwardRendering::ForwardRendering() {
 		"glsl/forward_vs.glsl",
 		"glsl/forward_fs.glsl"
 	);
+	textShader = new ShaderHandler(
+		"glsl/forward_vs.glsl",
+		"glsl/textshader_fs.glsl"
+	);
 
 	model_ = new Model((char*)"../Resources/Models/TestBox/testBOX.obj");
 	//map_ = new Map((char*)"../Resources/Map/TestMap.bmp");
@@ -34,7 +38,7 @@ void ForwardRendering::RenderScreen() {
 	model_->Draw(forwardRenderingShader->GetProgram());
 
 	menu_.RenderText(
-		forwardRenderingShader,
+		textShader,
 		"This is a test text from forwardRendering class",
 		25.0f,
 		25.0f,
