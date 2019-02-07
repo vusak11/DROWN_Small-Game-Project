@@ -5,6 +5,9 @@
 
 #include <Soil\SOIL.h>
 
+Map::Map() {
+}
+
 Map::Map(char* path) {
 	if (!LoadMap(path)) {
 		std::cout << "Error load height map" << std::endl;
@@ -14,44 +17,41 @@ Map::Map(char* path) {
 Map::~Map() {
 }
 
-bool Map::LoadMap(char* texture_name) {
+bool Map::LoadMap(char* path) {
 
 	int map_width_, map_height_;
-	unsigned char* map_data = SOIL_load_image(texture_name, &map_width_, &map_height_, 0, SOIL_LOAD_RGB);
+	unsigned char* map_data = SOIL_load_image(path, &map_width_, &map_height_, 0, SOIL_LOAD_RGB);
 
-	float fTextureU = float(map_width_);
-	float fTextureV = float(map_height_);	// ?????????
+	std::cout << "MAP: " << path << SOIL_last_result() << std::endl;
 
-	std::cout << "MAP: " << texture_name << SOIL_last_result() << std::endl;
-
-	std::vector<float> tempFloat;
+	std::vector<float> temp_float;
 
 	//-------------Height-------------//
 	for (int z = 0; z < map_height_; z++) {
-		tempFloat.clear();
+		temp_float.clear();
 		for (int x = 0; x < map_width_; x++) {
 			// Read every third value
 			unsigned char color = map_data[3 * (z * map_width_ + x)];
 			float height = (map_height_ * (color / 255.0f));
-			tempFloat.push_back(height);
+			temp_float.push_back(height);
 		}
-		temp_height_.push_back(tempFloat);
+		temp_height_.push_back(temp_float);
 	}
 
 	//lowerPosition();
 
 	//-------------Texture coordinates(U,V)-------------//
 
-	std::vector<glm::vec2> tempCoord;
+	std::vector<glm::vec2> temp_coord;
 
 	for (int z = 0; z < map_height_; z++) {
-		tempCoord.clear();
+		temp_coord.clear();
 		for (int x = 0; x < map_width_; x++) {
-			float fScaleC = (float(x) / float(map_width_ - 1)) * 10;
-			float fScaleR = (float(z) / float(map_height_ - 1)) * 10;
-			tempCoord.push_back(glm::vec2(fScaleC, fScaleR));
+			float f_scale_c = (float(x) / float(map_width_ - 1)) * 10;
+			float f_scale_r = (float(z) / float(map_height_ - 1)) * 10;
+			temp_coord.push_back(glm::vec2(f_scale_c, f_scale_r));
 		}
-		tex_coord_.push_back(tempCoord);
+		tex_coord_.push_back(temp_coord);
 	}
 
 	//------------ Normals ------------//
@@ -64,15 +64,15 @@ bool Map::LoadMap(char* texture_name) {
 	glm::vec3 edge1;
 	glm::vec3 edge2;
 
-	std::vector<glm::vec3> tempNorm0;
-	std::vector<glm::vec3> tempNorm1;
+	std::vector<glm::vec3> temp_norm_0;
+	std::vector<glm::vec3> temp_norm_1;
 
-	std::vector<std::vector<glm::vec3>> triangleNorm0;
-	std::vector<std::vector<glm::vec3>> triangleNorm1;
+	std::vector<std::vector<glm::vec3>> triangle_norm_0;
+	std::vector<std::vector<glm::vec3>> triangle_norm_1;
 
 	for (int z = 0; z < map_height_ - 1; z++) {
-		tempNorm0.clear();
-		tempNorm1.clear();
+		temp_norm_0.clear();
+		temp_norm_1.clear();
 		for (int x = 0; x < map_width_ - 1; x++) {
 
 			point1 = glm::vec3((float)x, temp_height_[z][x], (float)z);
@@ -92,38 +92,38 @@ bool Map::LoadMap(char* texture_name) {
 
 			glm::vec3 normal1 = glm::normalize(glm::cross(edge1, edge2));
 
-			tempNorm0.push_back(normal0);
-			tempNorm1.push_back(normal1);
+			temp_norm_0.push_back(normal0);
+			temp_norm_1.push_back(normal1);
 		}
-		triangleNorm0.push_back(tempNorm0);
-		triangleNorm1.push_back(tempNorm1);
+		triangle_norm_0.push_back(temp_norm_0);
+		triangle_norm_1.push_back(temp_norm_1);
 	}
 
 	//---------------Sum Normals(adjacent)------------//
 
-	std::vector<glm::vec3> tempSum;
+	std::vector<glm::vec3> temp_sum;
 	for (int z = 0; z < map_height_; z++) {
-		tempSum.clear();
+		temp_sum.clear();
 		for (int x = 0; x < map_width_; x++) {
-			glm::vec3 sumNormal = glm::vec3(0.0f, 0.0f, 0.0f);
+			glm::vec3 sum_normal = glm::vec3(0.0f, 0.0f, 0.0f);
 			if (z != 0 && x != 0) {
-				sumNormal += triangleNorm0[z - 1][x - 1];
-				sumNormal += triangleNorm1[z - 1][x - 1];
+				sum_normal += triangle_norm_0[z - 1][x - 1];
+				sum_normal += triangle_norm_1[z - 1][x - 1];
 			}
 			if (z != 0 && x != map_width_ - 1) {
-				sumNormal += triangleNorm0[z - 1][x];
+				sum_normal += triangle_norm_0[z - 1][x];
 			}
 			if (z != map_height_ - 1 && x != map_width_ - 1) {
-				sumNormal += triangleNorm0[z][x];
-				sumNormal += triangleNorm1[z][x];
+				sum_normal += triangle_norm_0[z][x];
+				sum_normal += triangle_norm_1[z][x];
 			}
 			if (z != map_height_ - 1 && x != 0) {
-				sumNormal += triangleNorm1[z][x - 1];
+				sum_normal += triangle_norm_1[z][x - 1];
 			}
-			sumNormal = glm::normalize(sumNormal);
-			tempSum.push_back(sumNormal);
+			sum_normal = glm::normalize(sum_normal);
+			temp_sum.push_back(sum_normal);
 		}
-		normals_.push_back(tempSum);
+		normals_.push_back(temp_sum);
 	}
 
 	for (int z = 0; z < map_height_ - 1; z++) {
@@ -145,24 +145,24 @@ bool Map::LoadMap(char* texture_name) {
 			indices_.push_back(p5);
 			indices_.push_back(p6);
 		}
-		indices_.push_back(map_width_*map_height_); //"degenerate"
+		//indices_.push_back(map_width_*map_height_); //"degenerate"
 	}
 
 	//-------------Create triangles-------------//
-	Triangle tempTriangle;
+	Triangle temp_triangle;
 	int index = 0;
 
 	for (int z = 0; z < map_height_; z++) {
 		for (int x = 0; x < map_width_; x++) {
-			tempTriangle.x = (float)x;
-			tempTriangle.y = temp_height_[z][x];
-			tempTriangle.z = (float)z;
-			tempTriangle.u = tex_coord_[z][x].x;
-			tempTriangle.v = tex_coord_[z][x].y;
-			tempTriangle.x_normal = normals_[z][x].x;
-			tempTriangle.y_normal = normals_[z][x].y;
-			tempTriangle.z_normal = normals_[z][x].z;
-			vertices_.push_back(tempTriangle);
+			temp_triangle.x = (float)x;
+			temp_triangle.y = temp_height_[z][x];
+			temp_triangle.z = (float)z;
+			temp_triangle.u = tex_coord_[z][x].x;
+			temp_triangle.v = tex_coord_[z][x].y;
+			temp_triangle.x_normal = normals_[z][x].x;
+			temp_triangle.y_normal = normals_[z][x].y;
+			temp_triangle.z_normal = normals_[z][x].z;
+			vertices_.push_back(temp_triangle);
 		}
 	}
 

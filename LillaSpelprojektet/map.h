@@ -21,11 +21,12 @@ private:
 	};
 
 public:
+	Map();
 	Map(char* path);
 	~Map();
 
 	// This function is not complete.
-	bool LoadMap(char* texture_name);	// Returns a bool to trouble shoot while loading new maps.
+	bool LoadMap(char* path);	// Returns a bool to trouble shoot while loading new maps.
 	void LoadTexture(char* texture_name);
 
 	void Buffer(GLuint shader);
