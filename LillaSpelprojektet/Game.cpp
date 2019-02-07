@@ -1,14 +1,18 @@
 #include "game.h"
 
 Game::Game() {
-	this->cam_handler_ptr_ = new CameraHandler(glm::vec3(0.0f), 5.0f);
+	this->cam_handler_ptr_ = new CameraHandler(glm::vec3(0.0), 20.0);
+	this->obj_handler_ptr_ = new ObjectHandler();
 }
 
 Game::~Game() {
 	delete cam_handler_ptr_;
+	delete this->obj_handler_ptr_;
 }
 
 void Game::InitializeGame() {
+	//render_.InitializeRender();
+	this->obj_handler_ptr_->InitializeObjectHandler();
 	//render_.InitializeRender();
 	forwardRender_.HelloScreen();
 }
@@ -50,7 +54,7 @@ void Game::InputFromDevices(float in_deltatime) {
 	/*---------------End Mouse inputs-----------------*/
 
 	/*---------------Secondary Camera Control-----------------*/
-	float cam_speed = 20.0 * in_deltatime;
+	float cam_speed = 20.0f * in_deltatime;
 	bool secondary = cam_handler_ptr_->GetMode();		//Primary is 0 (boolean false), Secondeary is 1 (boolean !false)
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::O)) {
@@ -65,12 +69,12 @@ void Game::InputFromDevices(float in_deltatime) {
 
 	if (secondary && sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
 		//Move active camera leftwards
-		cam_handler_ptr_->MoveCamera(cam_speed, 0.0f);
+		cam_handler_ptr_->MoveCamera(-cam_speed, 0.0f);
 	}
 
 	if (secondary && sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
 		//Move active camera rightwards
-		cam_handler_ptr_->MoveCamera(-cam_speed, 0.0f);
+		cam_handler_ptr_->MoveCamera(cam_speed, 0.0f);
 	}
 
 	if (secondary && sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
@@ -80,11 +84,11 @@ void Game::InputFromDevices(float in_deltatime) {
 
 	if (secondary && sf::Keyboard::isKeyPressed(sf::Keyboard::Add)) {
 		//Move active camera forwards ("zoom in")
-		cam_handler_ptr_->MoveCamera(0.0, 0.0, cam_speed);
+		cam_handler_ptr_->MoveCamera(0.0, 0.0, -cam_speed);
 	}
 	else if (secondary && sf::Keyboard::isKeyPressed(sf::Keyboard::Subtract)) {
 		//Move active camera backwards ("zoom out")
-		cam_handler_ptr_->MoveCamera(0.0, 0.0, -cam_speed);
+		cam_handler_ptr_->MoveCamera(0.0, 0.0, cam_speed);
 	}
 
 	if (secondary && sf::Keyboard::isKeyPressed(sf::Keyboard::P)) {

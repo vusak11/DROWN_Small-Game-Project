@@ -152,13 +152,13 @@
     <ClCompile Include="sound_unit.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="globals.h" />
     <ClInclude Include="forwardRendering.h" />
     <ClInclude Include="Object\Character\character.h" />
     <ClInclude Include="Object\object_class.h" />
     <ClInclude Include="Object\object_handler.h" />
     <ClInclude Include="mesh.h" />
     <ClInclude Include="model.h" />
-    <ClInclude Include="Globals.h" />
     <ClInclude Include="sound_unit.h" />
     <ClInclude Include="Camera\camera.h" />
     <ClInclude Include="Camera\camera_handler.h" />
