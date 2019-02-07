@@ -239,6 +239,17 @@ void ShaderHandler::GeometryFrameBuffers() {
 		GL_COLOR_ATTACHMENT1,
 		GL_COLOR_ATTACHMENT2 
 	};
+	glDrawBuffers(3, attachments);
+
+	GLuint rbo_depth;
+	glGenRenderbuffers(1, &rbo_depth);
+	glBindRenderbuffer(GL_RENDERBUFFER, rbo_depth);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, WINDOW_WIDTH, WINDOW_HEIGHT);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rbo_depth);
+
+	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+		std::cout << "Framebuffer is not sound!" << std::endl;
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 GLuint ShaderHandler::GetProgram() {

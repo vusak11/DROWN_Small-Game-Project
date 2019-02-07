@@ -1,7 +1,7 @@
 #version 440
 
-//layout(location = 0) out vec3 screen_texture;
-out vec4 frag_color;
+layout(location = 0) out vec3 screen_texture;
+//out vec4 frag_color;
 in vec2 tex_coords;
 
 uniform sampler2D g_position;
@@ -49,7 +49,7 @@ void main() {
 	spec = pow(max(dot(viewDir, reflectDir), 0.0), 8.0);
 
 	vec3 speculars = vec3(0.3) * spec;
-	frag_color = vec4(ambient + diffuse + speculars, 1.0);
+	screen_texture = vec3(ambient + diffuse + speculars);
 	//screen_texture = lighting;
 
 }

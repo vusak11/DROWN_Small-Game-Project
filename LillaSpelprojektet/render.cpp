@@ -59,7 +59,6 @@ void Render::UpdateRender(
 	glm::vec3 camera_position,
 	glm::mat4 perspective_matrix, 
 	glm::mat4 view_matrix) {
-	glClearColor(0.0f, 0.0f, 0.5f, 1.0f);
 	GeometryPass(camera_position, perspective_matrix, view_matrix);
 
 	GeometryDrawing();
@@ -130,8 +129,8 @@ void Render::LightingPass(glm::vec3 camera_position) {
 		glUniform3fv(glGetUniformLocation(lighting_pass_->GetProgram(), name.c_str()), 1, glm::value_ptr(lights_[i].GetPos()));
 		name = "lights[" + std::to_string(i) + "].color";
 		glUniform3fv(glGetUniformLocation(lighting_pass_->GetProgram(), name.c_str()), 1, glm::value_ptr(lights_[i].GetAmbientLight()));
-	}
-	*/
+	}*/
+	
 	glUniform3f(
 		glGetUniformLocation(lighting_pass_->GetProgram(), "light_position"),
 		camera_position.x, camera_position.y, camera_position.z
@@ -147,10 +146,11 @@ void Render::RenderQuad() {
 	{
 		GLfloat quad_vertices[] = {
 			// Positions        // Texture Coords
-			-1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+			-1.0f,  1.0f, 0.0f, 0.0f, 1.0f, //MORE PASTA
+			-1.0f,  1.0f, 0.0f, 0.0f, 1.0f,
 			-1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
-			1.0f, 1.0f, 0.0f, 1.0f, 1.0f,
-			1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
+			 1.0f,  1.0f, 0.0f, 1.0f, 1.0f,
+			 1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
 		};
 		// Setup plane VAO
 		glGenVertexArrays(1, &quad_vertex_array_object_);
@@ -158,12 +158,14 @@ void Render::RenderQuad() {
 		glBindVertexArray(quad_vertex_array_object_);
 		glBindBuffer(GL_ARRAY_BUFFER, quad_vertex_buffer_object_);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(quad_vertices), &quad_vertices, GL_STATIC_DRAW);
+
 		glEnableVertexAttribArray(0);
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)0);
 		glEnableVertexAttribArray(1);
 		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+		
 	}
 	glBindVertexArray(quad_vertex_array_object_);
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 5);
 	glBindVertexArray(0);
 }
