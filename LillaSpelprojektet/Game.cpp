@@ -13,7 +13,6 @@ Game::~Game() {
 void Game::InitializeGame() {
 	//render_.InitializeRender();
 	this->obj_handler_ptr_->InitializeObjectHandler();
-	//render_.InitializeRender();
 	forwardRender_.HelloScreen();
 }
 

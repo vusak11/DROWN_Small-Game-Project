@@ -21,7 +21,7 @@ Camera::Camera(glm::vec3 in_look_at, float in_distance) {
 
 	//Create vector with direction to look_at point ( always [0,0,-1] )
 	//this->camera_arr_[0].dir = glm::normalize(this->camera_arr_[0].pos - this->camera_arr_[0].look_at);
-	this->direction_ = glm::vec3(0.0f, 0.0f, 1.0f);
+	this->direction_ = glm::vec3(0.0f, 0.0f, -1.0f);
 
 	//Set up and right vectors
 	this->up_ = glm::vec3(0.0f, 1.0f, 0.0f);
