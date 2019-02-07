@@ -178,3 +178,68 @@ std::vector<ObjectPackage> ObjectHandler::UpdateAndRetrieve() {
 glm::vec3 ObjectHandler::GetPlayerPos() {
 	return this->player_ptr_->GetPosition();
 }
+
+void ObjectHandler::TestObjectHandler() {
+	std::cout << "Test of ObjectHandler started" << std::endl;
+
+	glm::vec3 best_pos = glm::vec3(0.0f, 0.0f, 0.0f);
+
+	std::cout << "A:	Creating three ObjectClass:es in npc_vector_" << std::endl;
+	this->npc_ptr_vector_.push_back(new ObjectClass(best_pos, OBJECT_ID_JOHNNY_BRAVO));
+	this->npc_ptr_vector_.push_back(new ObjectClass(best_pos, OBJECT_ID_JOHNNY_BRAVO));
+	this->npc_ptr_vector_.push_back(new ObjectClass(best_pos, OBJECT_ID_JOHNNY_BRAVO));
+
+	std::cout << "B:	Moving second entry (index 1) to position (3000, 3000)" << std::endl;
+	this->npc_ptr_vector_.at(1)->SetPosition(3000, 3000);
+	glm::vec3 test_pos;
+	for (unsigned int i = 0; i < this->npc_ptr_vector_.size(); i++) {
+		test_pos = this->npc_ptr_vector_.at(i)->GetPosition();
+		std::cout << "	ObjectClass [" << i << "]: (" << test_pos.x << "," << test_pos.y << "," << test_pos.z << ")" << std::endl;
+	}
+
+	std::cout << "C:	Creating culled vector" << std::endl;
+	std::vector<ObjectClass*> test_vector = this->CullAndRetrieveObjectPtrs(this->npc_ptr_vector_);
+	std::cout << "	npc_vector_ length: " << this->npc_ptr_vector_.size() << std::endl;
+	std::cout << "	test_vector length: " << test_vector.size() << std::endl;
+
+	std::cout << "D:	Changing the position of first entry to (-3000, -3000) via pointer in test vector" << std::endl;
+	test_vector.at(0)->SetPosition(-3000, -3000);
+	for (unsigned int i = 0; i < this->npc_ptr_vector_.size(); i++) {
+		test_pos = this->npc_ptr_vector_.at(i)->GetPosition();
+		std::cout << "	ObjectClass [" << i << "]: (" << test_pos.x << "," << test_pos.y << "," << test_pos.z << ")" << std::endl;
+	}
+
+	std::cout << "E:	Creating new culled vector" << std::endl;
+	test_vector = this->CullAndRetrieveObjectPtrs(this->npc_ptr_vector_);
+	std::cout << "	npc_vector_ length: " << this->npc_ptr_vector_.size() << std::endl;
+	std::cout << "	test_vector length: " << test_vector.size() << std::endl;
+
+
+	std::cout << "F:	Remove the last entry in the culled vector from the npc_ptr_vector_" << std::endl;
+	this->RemoveObject(test_vector.at(0), this->npc_ptr_vector_);
+	for (unsigned int i = 0; i < this->npc_ptr_vector_.size(); i++) {
+		test_pos = this->npc_ptr_vector_.at(i)->GetPosition();
+		std::cout << "	ObjectClass [" << i << "]: (" << test_pos.x << "," << test_pos.y << "," << test_pos.z << ")" << std::endl;
+	}
+	std::cout << "	Word of warning, the culled vector still holds 1 element: a pointer leading to trash" << std::endl;
+	std::cout << "	npc_vector_ length: " << this->npc_ptr_vector_.size() << std::endl;
+	std::cout << "	test_vector length: " << test_vector.size() << std::endl;
+
+	std::cout << "G:	Clear npc_ptr_vector from its elements" << std::endl;
+	this->ClearPtrVector(this->npc_ptr_vector_);
+	std::cout << "	npc_vector_ length: " << this->npc_ptr_vector_.size() << std::endl;
+
+	std::cout << "H:	Testing the UpdateAndRetrive() early function" << std::endl;
+	std::cout << "	Add 2 objects to npc vector and 2 to drop vector" << std::endl;
+	this->npc_ptr_vector_.push_back(new ObjectClass(best_pos, OBJECT_ID_JOHNNY_BRAVO));
+	this->npc_ptr_vector_.push_back(new ObjectClass(best_pos, OBJECT_ID_JOHNNY_BRAVO));
+	this->drop_ptr_vector_.push_back(new ObjectClass(best_pos, OBJECT_ID_JOHNNY_BRAVO));
+	this->drop_ptr_vector_.push_back(new ObjectClass(best_pos, OBJECT_ID_JOHNNY_BRAVO));
+	std::cout << "	npc_vector_ length: " << this->npc_ptr_vector_.size() << std::endl;
+	std::cout << "	drop_vector_ length: " << this->drop_ptr_vector_.size() << std::endl;
+	std::cout << "	Move one drop to (3000, 3000)" << std::endl;
+	this->drop_ptr_vector_.at(0)->SetPosition(3000, 3000);
+	std::cout << "	Call UpdateAndRetrieve and check returned vector length (should be 4: One Player, Two NPCs, One Drop)" << std::endl;
+	std::vector<ObjectPackage> pckg_vector = this->UpdateAndRetrieve();
+	std::cout << "	pckg_vec length: " << pckg_vector.size() << std::endl;
+}
