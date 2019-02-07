@@ -77,6 +77,8 @@ public:
 	//	- Call physics to determine new positions (<- Should be called at every step when a creature moves instead?)
 	std::vector<ObjectPackage> UpdateAndRetrieve();
 
+	glm::vec3 GetPlayerPos();
+
 	//Test functions------------------------------------------
 	void TestObjectHandler() {
 		std::cout << "Test of ObjectHandler started" << std::endl;

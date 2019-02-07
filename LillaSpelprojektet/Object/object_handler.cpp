@@ -112,7 +112,7 @@ void ObjectHandler::InitializeObjectHandler() {
 
 	this->player_ptr_ = new ObjectClass(glm::vec3(0.0f, 0.0f, 0.0f), OBJECT_ID_PLAYER);
 
-	this->TestObjectHandler();		//NTS: Just for testing
+	//this->TestObjectHandler();		//NTS: Just for testing
 
 
 }
@@ -175,3 +175,6 @@ std::vector<ObjectPackage> ObjectHandler::UpdateAndRetrieve() {
 	return package_vector;
 }
 
+glm::vec3 ObjectHandler::GetPlayerPos() {
+	return this->player_ptr_->GetPosition();
+}
