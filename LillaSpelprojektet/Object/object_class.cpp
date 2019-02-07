@@ -82,8 +82,12 @@ void ObjectClass::SetRotation(int in_x, int in_y, int in_z) {
 void ObjectClass::SetVelocity(float in_velocity) {
 	//If the velocity given is greater than our allowed maximum
 	//clamp it down to it
-	if (in_velocity > OBJECT_MAX_VELOCITY) { in_velocity = OBJECT_MAX_VELOCITY; }
-	else if (in_velocity < -OBJECT_MAX_VELOCITY) { in_velocity = -OBJECT_MAX_VELOCITY; }
+	if (in_velocity > OBJECT_MAX_VELOCITY) {
+		in_velocity = OBJECT_MAX_VELOCITY;
+	}
+	else if (in_velocity < -OBJECT_MAX_VELOCITY) {
+		in_velocity = -OBJECT_MAX_VELOCITY;
+	}
 
 	//Normalize the current vector and then scale it in accordance with the new velocity
 	this->velocity_vec_ = glm::normalize(this->velocity_vec_) * in_velocity;
@@ -116,7 +120,9 @@ glm::vec3 ObjectClass::GetVelocityVec() const {
 
 glm::mat4 ObjectClass::GetModelMatrix() {
 	//If the model matrix is not up to date call the function calculating it
-	if (!this->model_matrix_up_to_date_) { this->CalculateModelMatrix(); }
+	if (!this->model_matrix_up_to_date_) {
+		this->CalculateModelMatrix();
+	}
 	
 	return this->model_matrix_;
 }
