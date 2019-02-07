@@ -2,6 +2,7 @@
 
 Game::Game() {
 	this->cam_handler_ptr_ = new CameraHandler(glm::vec3(0.0), 20.0);
+	this->obj_handler_ptr_ = new ObjectHandler();
 }
 
 Game::~Game() {
@@ -61,29 +62,29 @@ void Game::InputFromDevices(float in_deltatime) {
 
 	if (secondary && sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
 		//Move active camera upwards
-		cam_handler_ptr_->MoveCamera(cam_speed, 0.0f);
+		cam_handler_ptr_->MoveCamera(0.0f, cam_speed);
 	}
 
 	if (secondary && sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
 		//Move active camera leftwards
-		cam_handler_ptr_->MoveCamera(0.0f, -cam_speed);
+		cam_handler_ptr_->MoveCamera(-cam_speed, 0.0f);
 	}
 
 	if (secondary && sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
 		//Move active camera rightwards
-		cam_handler_ptr_->MoveCamera(0.0f, cam_speed);
+		cam_handler_ptr_->MoveCamera(cam_speed, 0.0f);
 	}
 
 	if (secondary && sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
 		//Move active camera downwards
-		cam_handler_ptr_->MoveCamera(-cam_speed, 0.0f);
+		cam_handler_ptr_->MoveCamera(0.0f, -cam_speed);
 	}
 
 	if (secondary && sf::Keyboard::isKeyPressed(sf::Keyboard::Add)) {
 		//Move active camera forwards ("zoom in")
 		cam_handler_ptr_->MoveCamera(0.0, 0.0, -cam_speed);
 	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Subtract)) {
+	else if (secondary && sf::Keyboard::isKeyPressed(sf::Keyboard::Subtract)) {
 		//Move active camera backwards ("zoom out")
 		cam_handler_ptr_->MoveCamera(0.0, 0.0, cam_speed);
 	}
