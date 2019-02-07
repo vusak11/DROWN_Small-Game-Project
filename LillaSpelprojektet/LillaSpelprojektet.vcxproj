@@ -137,6 +137,7 @@
   <ItemGroup>
     <ClCompile Include="Camera\camera.cpp" />
     <ClCompile Include="Camera\camera_handler.cpp" />
+    <ClCompile Include="forwardRendering.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="light.cpp" />
     <ClCompile Include="main.cpp" />
@@ -145,13 +146,13 @@
     <ClCompile Include="Object\object_handler.cpp" />
     <ClCompile Include="mesh.cpp" />
     <ClCompile Include="model.cpp" />
-    <ClCompile Include="render.cpp" />
     <ClCompile Include="map.cpp" />
     <ClCompile Include="map_handler.cpp" />
     <ClCompile Include="shader_handler.cpp" />
     <ClCompile Include="sound_unit.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="forwardRendering.h" />
     <ClInclude Include="Object\Character\character.h" />
     <ClInclude Include="Object\object_class.h" />
     <ClInclude Include="Object\object_handler.h" />
@@ -161,7 +162,6 @@
     <ClInclude Include="sound_unit.h" />
     <ClInclude Include="Camera\camera.h" />
     <ClInclude Include="Camera\camera_handler.h" />
-    <ClInclude Include="render.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="light.h" />
@@ -172,6 +172,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="glsl\forward_fs.glsl" />
+    <None Include="glsl\forward_gs.glsl" />
     <None Include="glsl\forward_vs.glsl" />
     <None Include="glsl\geometrypass\geometry_fs.glsl" />
     <None Include="glsl\geometrypass\geometry_gs.glsl" />

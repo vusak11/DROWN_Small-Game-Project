@@ -21,7 +21,7 @@ Camera::Camera(glm::vec3 in_look_at, float in_distance) {
 
 	//Create vector with direction to look_at point ( always [0,0,-1] )
 	//this->camera_arr_[0].dir = glm::normalize(this->camera_arr_[0].pos - this->camera_arr_[0].look_at);
-	this->direction_ = glm::vec3(0.0f, 0.0f, -1.0f);
+	this->direction_ = glm::vec3(0.0f, 0.0f, 1.0f);
 
 	//Set up and right vectors
 	this->up_ = glm::vec3(0.0f, 1.0f, 0.0f);
@@ -31,10 +31,10 @@ Camera::Camera(glm::vec3 in_look_at, float in_distance) {
 	this->UpdateViewMatrix();
 
 	//Calculate perspective matrix
-	float fov = glm::radians(45.0f);
+	float fov = 3.141592653589 * 0.45f;
 	float aspect = ((float)WINDOW_HEIGHT / (float)WINDOW_WIDTH);
 	float nearplane = 0.1f;
-	float farplane = 1000;
+	float farplane = 10000.0f;
 	this->perspective_mat_ = glm::perspective(fov, aspect, nearplane, farplane);
 }
 

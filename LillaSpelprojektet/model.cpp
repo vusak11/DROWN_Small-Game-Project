@@ -80,12 +80,12 @@ GLint Model::TextureFromFile(const char * path, std::string directory) {
 	glTexImage2D(
 		GL_TEXTURE_2D,
 		0,
-		GL_RGBA, 
+		GL_RGBA,
 		image.getSize().x,
 		image.getSize().y,
-		0,
+		0, 
 		GL_RGBA,
-		GL_UNSIGNED_INT,
+		GL_UNSIGNED_BYTE,
 		image.getPixelsPtr()
 	);
 	glGenerateMipmap(GL_TEXTURE_2D);
@@ -159,13 +159,14 @@ void Model::ProcessNode(aiNode * node, const aiScene * scene) {
 	}
 }
 
-Model::Model() {
+Model::Model(char* path) {
+	LoadModel(path);
 }
 
 Model::~Model() {
 }
 
-Model::Model(GLchar * path) {
+void Model::LoadModelFromFile(GLchar * path) {
 	LoadModel(path);
 }
 
