@@ -15,6 +15,15 @@ private:
 	CameraHandler* cam_handler_ptr_;
 	//ObjectHandler* obj_handler_ptr_;
 	ForwardRendering forwardRender_;
+
+	enum GameState {
+		GAME,
+		MENU,
+		PAUSE
+	};
+
+	GameState State_;
+
 	void InputFromDevices(float in_deltatime);
 public:
 	Game();
