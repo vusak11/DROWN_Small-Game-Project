@@ -21,7 +21,6 @@ private:
 		MENU,
 		PAUSE
 	};
-
 	GameState State_;
 
 	void InputFromDevices(float in_deltatime);

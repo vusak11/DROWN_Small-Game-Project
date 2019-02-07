@@ -19,12 +19,10 @@ private:
 		glm::ivec2 bearing;
 		GLuint advance;
 	};
-
+	std::map<GLchar, Character> characters_;
 
 	FT_Library free_type_lib_;
 	FT_Face free_type_face_;
-
-	std::map<GLchar, Character> characters_;
 
 	GLuint vertex_array_object_;
 	GLuint vertex_buffer_object_;

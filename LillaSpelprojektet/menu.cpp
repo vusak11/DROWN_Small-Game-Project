@@ -14,7 +14,7 @@ void Menu::Initiliaze() {
 	//Load font
 	if (FT_New_Face(
 		free_type_lib_,
-		"../Resources/Fonts/alittlepot.tff",
+		"../Resources/Fonts/alittlepot.ttf",
 		0,
 		&free_type_face_)) {
 
@@ -27,6 +27,7 @@ void Menu::Initiliaze() {
 
 	//Load first 128 characters of ASCII
 	for (GLubyte c = 0; c < 128; c++) {
+		//Load character glyph
 		if (FT_Load_Char(free_type_face_, c, FT_LOAD_RENDER)) {
 			std::cout << "Error::Can't load Glyph" << std::endl;
 			continue;
@@ -46,7 +47,12 @@ void Menu::Initiliaze() {
 			GL_UNSIGNED_INT,
 			free_type_face_->glyph->bitmap.buffer
 		);
-
+		// Set texture options
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		// Store characters for later use
 		Character character = {
 			texture,
 			glm::ivec2(free_type_face_->glyph->bitmap.width, free_type_face_->glyph->bitmap.rows),
@@ -55,8 +61,8 @@ void Menu::Initiliaze() {
 		};
 		characters_.insert(std::pair<GLchar, Character>(c, character));
 	}
-
 	glBindTexture(GL_TEXTURE_2D, 0);
+
 	//Destroy Face once finished
 	FT_Done_Face(free_type_face_);
 	FT_Done_FreeType(free_type_lib_);

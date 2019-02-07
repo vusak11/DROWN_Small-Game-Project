@@ -99,10 +99,10 @@ void Game::InputFromDevices(float in_deltatime) {
 void Game::GameLoop(float in_deltatime) {
 	InputFromDevices(in_deltatime);
 
-	if (State_ == MENU) {
+	//if (State_ == MENU) {
 		// MENU TIME
-	}
-	else if (State_ == GAME) {
+	//}
+	//else if (State_ == GAME) {
 		/*render_.UpdateRender(
 			in_deltatime,
 			cam_handler_ptr_->GetCameraPosition(),
@@ -126,8 +126,8 @@ void Game::GameLoop(float in_deltatime) {
 		);
 
 		forwardRender_.RenderScreen();
-	}
-	else if (State_ == PAUSE) {
+	//}
+	//else if (State_ == PAUSE) {
 		// PAUSE TIME
-	}
+	//}
 }

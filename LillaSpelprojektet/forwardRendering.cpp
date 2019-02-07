@@ -37,6 +37,12 @@ void ForwardRendering::RenderScreen() {
 	//map_->Draw(forwardRenderingShader->GetProgram());
 	model_->Draw(forwardRenderingShader->GetProgram());
 
+
+	/*glClearColor(0.0f, 0.0f, 0.5f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT);*/
+
+	textShader->Use();
+
 	menu_.RenderText(
 		textShader,
 		"This is a test text from forwardRendering class",
