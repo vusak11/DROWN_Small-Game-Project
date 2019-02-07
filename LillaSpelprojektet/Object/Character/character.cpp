@@ -1,6 +1,6 @@
 #include "character.h"
 
-Character::Character(){
+Character::Character(glm::vec3 start_pos, ObjectID id) : ObjectClass(start_pos, id){
 }
 
 Character::~Character(){

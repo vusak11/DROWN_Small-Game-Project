@@ -6,10 +6,12 @@ Game::Game() {
 
 Game::~Game() {
 	delete cam_handler_ptr_;
+	delete this->obj_handler_ptr_;
 }
 
 void Game::InitializeGame() {
 	render_.InitializeRender();
+	this->obj_handler_ptr_->InitializeObjectHandler();
 }
 
 void Game::InputFromDevices(float in_deltatime) {
