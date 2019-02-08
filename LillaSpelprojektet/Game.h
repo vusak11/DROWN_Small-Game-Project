@@ -12,6 +12,13 @@
 #include "render.h"
 class Game {
 private:
+	enum STATES {
+		RENDER,
+		PAUSE
+	};
+
+	STATES state;
+
 	CameraHandler* cam_handler_ptr_;
 	//ObjectHandler* obj_handler_ptr_;
 	Render render_;

@@ -86,13 +86,29 @@ void Game::InputFromDevices(float in_deltatime) {
 		cam_handler_ptr_->MoveCamera(0.0, 0.0, cam_speed);
 	}
 	/*---------------End Secondary Camera Control-----------------*/
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+		if (state == RENDER) {
+			state = PAUSE;
+		}
+		else if (state == PAUSE) {
+			state = RENDER;
+		}
+	}
 }
 
 void Game::GameLoop(float in_deltatime) {
 	InputFromDevices(in_deltatime);
-	render_.UpdateRender(
-		in_deltatime, 
-		cam_handler_ptr_->GetCameraPosition(),
-		cam_handler_ptr_->GetPerspectiveMatrix(),
-		cam_handler_ptr_->GetViewMatrix());
+	if (RENDER == state) {
+		std::cout << "Render state" << std::endl;
+		render_.UpdateRender(
+			in_deltatime,
+			cam_handler_ptr_->GetCameraPosition(),
+			cam_handler_ptr_->GetPerspectiveMatrix(),
+			cam_handler_ptr_->GetViewMatrix());
+	}
+	else if (PAUSE == state) {
+		std::cout << "Pause state" << std::endl;
+
+	}
 }

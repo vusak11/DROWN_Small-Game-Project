@@ -42,6 +42,10 @@ public:
 	void LightingPass(
 		glm::vec3 camera_position);
 
+	void GeometryDrawing();
+	void ModelTransformation(glm::vec3 m_translate, glm::vec3 m_rotate, float radians, glm::vec3 m_scale);
 	void RenderQuad();
+
+	void RenderPauseMenu();
 };
 

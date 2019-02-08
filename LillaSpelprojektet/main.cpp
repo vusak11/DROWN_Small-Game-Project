@@ -34,7 +34,7 @@ int main() {
 			if (event.type == sf::Event::Closed) {
 				running = false;
 			}
-			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::L)) {
 				running = false;
 			}
 			else if (event.type == sf::Event::Resized) {
