@@ -23,10 +23,10 @@ private:
 	std::vector<Mesh> mesh_;
 	std::string directory_;
 public:
-	Model();
+	Model(char* path);
 	~Model();
 
-	Model(GLchar* path);
+	void LoadModelFromFile(GLchar* path);
 	void Draw(GLuint shader);
 };
 

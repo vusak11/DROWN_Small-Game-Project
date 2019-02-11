@@ -8,8 +8,9 @@
 #include <GL/glew.h>
 #include <SFML/Window.hpp>
 #include "Camera/camera_handler.h"
+#include "forwardRendering.h"
+#include "Object/object_handler.h"
 
-#include "render.h"
 class Game {
 private:
 	enum STATES {
@@ -21,7 +22,9 @@ private:
 
 	CameraHandler* cam_handler_ptr_;
 	//ObjectHandler* obj_handler_ptr_;
-	Render render_;
+	ForwardRendering forwardRender_;
+	ObjectHandler* obj_handler_ptr_;
+	//Render render_;
 	void InputFromDevices(float in_deltatime);
 public:
 	Game();
