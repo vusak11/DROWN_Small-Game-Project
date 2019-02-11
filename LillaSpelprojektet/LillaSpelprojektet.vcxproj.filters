@@ -178,5 +178,8 @@
     <None Include="glsl\textshader_fs.glsl">
       <Filter>Source Files\GLSL</Filter>
     </None>
+    <None Include="glsl\textshader_vs.glsl">
+      <Filter>Source Files\GLSL</Filter>
+    </None>
   </ItemGroup>
 </Project>

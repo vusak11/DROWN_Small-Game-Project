@@ -145,3 +145,31 @@ void Menu::RenderText(
 	glBindVertexArray(0);
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
+
+//// RenderQuad() Renders a 1x1 quad in NDC, best used for framebuffer color targets
+//// and post-processing effects.
+//void Menu::RenderQuad() {
+//	if (vertex_array_object_ == 0)
+//	{
+//		GLfloat quad_vertices[] = {
+//			// Positions        // Texture Coords
+//			-1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+//			-1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
+//			1.0f, 1.0f, 0.0f, 1.0f, 1.0f,
+//			1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
+//		};
+//		// Setup plane VAO
+//		glGenVertexArrays(1, &vertex_array_object_);
+//		glGenBuffers(1, &vertex_buffer_object_);
+//		glBindVertexArray(vertex_array_object_);
+//		glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_object_);
+//		glBufferData(GL_ARRAY_BUFFER, sizeof(quad_vertices), &quad_vertices, GL_STATIC_DRAW);
+//		glEnableVertexAttribArray(0);
+//		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)0);
+//		glEnableVertexAttribArray(1);
+//		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+//	}
+//	glBindVertexArray(vertex_array_object_);
+//	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+//	glBindVertexArray(0);
+//}

@@ -181,6 +181,7 @@
     <None Include="glsl\lightingpass\lighting_fs.glsl" />
     <None Include="glsl\lightingpass\lighting_vs.glsl" />
     <None Include="glsl\textshader_fs.glsl" />
+    <None Include="glsl\textshader_vs.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

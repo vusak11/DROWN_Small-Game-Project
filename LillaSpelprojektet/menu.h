@@ -39,6 +39,7 @@ public:
 		GLfloat scale,
 		glm::vec3 color
 	);
+	//void RenderQuad();
 };
 
 #endif

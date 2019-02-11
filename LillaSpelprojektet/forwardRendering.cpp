@@ -6,7 +6,7 @@ ForwardRendering::ForwardRendering() {
 		"glsl/forward_fs.glsl"
 	);
 	textShader = new ShaderHandler(
-		"glsl/forward_vs.glsl",
+		"glsl/textshader_vs.glsl",
 		"glsl/textshader_fs.glsl"
 	);
 
@@ -41,8 +41,8 @@ void ForwardRendering::RenderScreen() {
 	menu_.RenderText(
 		textShader,
 		"POOPsicle",
-		WINDOW_WIDTH/2,
-		WINDOW_HEIGHT/2,
+		((float)WINDOW_WIDTH)/2.0f,
+		((float)WINDOW_HEIGHT)/2.0f,
 		2.0f,
 		glm::vec3(1.0f, 0.0f, 0.0f)
 	);
