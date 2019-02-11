@@ -24,6 +24,8 @@ void ForwardRendering::HelloScreen() {
 	//map_->Buffer(forwardRenderingShader->GetProgram());
 
 	glEnable(GL_CULL_FACE);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	menu_.Initiliaze();
 }
 

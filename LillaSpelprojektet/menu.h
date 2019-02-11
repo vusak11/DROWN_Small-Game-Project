@@ -1,9 +1,12 @@
 #ifndef MENU_H
 #define MENU_H
 
+#include "Globals.h"
 #include <iostream>
 #include <GL/glew.h>
 #include <GLM/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include <map>
 #include <ft2build.h>
 #include FT_FREETYPE_H
@@ -39,7 +42,6 @@ public:
 		GLfloat scale,
 		glm::vec3 color
 	);
-	//void RenderQuad();
 };
 
 #endif

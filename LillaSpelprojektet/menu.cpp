@@ -36,7 +36,7 @@ void Menu::Initiliaze() {
 		GLuint texture;
 		glGenTextures(1, &texture);
 		glBindTexture(GL_TEXTURE_2D, texture);
-		glTexSubImage2D(
+		glTexImage2D(
 			GL_TEXTURE_2D,
 			0,
 			GL_RED,
@@ -44,12 +44,12 @@ void Menu::Initiliaze() {
 			free_type_face_->glyph->bitmap.rows,
 			0,
 			GL_RED,
-			GL_UNSIGNED_INT,
+			GL_UNSIGNED_BYTE,
 			free_type_face_->glyph->bitmap.buffer
 		);
 		// Set texture options
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		// Store characters for later use
@@ -99,13 +99,16 @@ void Menu::RenderText(
 	GLfloat scale,
 	glm::vec3 color) {
 
+	glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(WINDOW_WIDTH), 0.0f, static_cast<GLfloat>(WINDOW_HEIGHT));
+
 	shader_handler->Use();
+	glUniformMatrix4fv(glGetUniformLocation(shader_handler->GetProgram(), "in_matrix"), 1, GL_FALSE, glm::value_ptr(projection));
 	glUniform3f(
 		glGetUniformLocation(shader_handler->GetProgram(), "textColor"), 
 		color.x,
 		color.y,
 		color.z
-	);	
+	);
 	glActiveTexture(GL_TEXTURE0);
 	glBindVertexArray(vertex_array_object_);
 
@@ -145,31 +148,3 @@ void Menu::RenderText(
 	glBindVertexArray(0);
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
-
-//// RenderQuad() Renders a 1x1 quad in NDC, best used for framebuffer color targets
-//// and post-processing effects.
-//void Menu::RenderQuad() {
-//	if (vertex_array_object_ == 0)
-//	{
-//		GLfloat quad_vertices[] = {
-//			// Positions        // Texture Coords
-//			-1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
-//			-1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
-//			1.0f, 1.0f, 0.0f, 1.0f, 1.0f,
-//			1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
-//		};
-//		// Setup plane VAO
-//		glGenVertexArrays(1, &vertex_array_object_);
-//		glGenBuffers(1, &vertex_buffer_object_);
-//		glBindVertexArray(vertex_array_object_);
-//		glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_object_);
-//		glBufferData(GL_ARRAY_BUFFER, sizeof(quad_vertices), &quad_vertices, GL_STATIC_DRAW);
-//		glEnableVertexAttribArray(0);
-//		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)0);
-//		glEnableVertexAttribArray(1);
-//		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
-//	}
-//	glBindVertexArray(vertex_array_object_);
-//	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-//	glBindVertexArray(0);
-//}
