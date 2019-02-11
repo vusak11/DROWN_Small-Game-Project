@@ -11,9 +11,9 @@ Game::~Game() {
 }
 
 void Game::InitializeGame() {
-	//render_.InitializeRender();
+	render_.InitializeRender();
 	this->obj_handler_ptr_->InitializeObjectHandler();
-	forwardRender_.HelloScreen();
+	//forwardRender_.HelloScreen();
 }
 
 void Game::InputFromDevices(float in_deltatime) {
@@ -100,51 +100,15 @@ void Game::InputFromDevices(float in_deltatime) {
 
 void Game::GameLoop(float in_deltatime) {
 	InputFromDevices(in_deltatime);
-		
+	
+	// This updates the player position.
+	std::vector<ObjectPackage> object_vector;
+	object_vector = this->obj_handler_ptr_->UpdateAndRetrieve();
+
 	render_.UpdateRender(
 		in_deltatime,
 		cam_handler_ptr_->GetCameraPosition(),
-		cam_handler_ptr_->GetPerspectiveMatrix(),
-		cam_handler_ptr_->GetViewMatrix());*/
-	static float c = 0;
-	c += 1.0f * in_deltatime;
-
-	// This updates the player position.
-	this->obj_handler_ptr_->UpdateAndRetrieve();
-
-	//glm::mat4 m = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 10.0f));
-	glm::mat4 m = glm::translate(glm::mat4(1.0f), this->obj_handler_ptr_->GetPlayerPos());
-	m = glm::rotate(m, (90.0f + c), glm::vec3(1.0f, 1.0f, 0.0f));
-	m = glm::scale(m, glm::vec3(10.0f, 10.0f, 10.0f));
-	glm::mat4 v = this->cam_handler_ptr_->GetViewMatrix();
-	glm::mat4 p = this->cam_handler_ptr_->GetPerspectiveMatrix();
-
-	glm::mat4 matrix = p * v * m;
-
-	glUniformMatrix4fv(
-		glGetUniformLocation(forwardRender_.GetProgramFromShader(), "matrix"), 
-		1, 
-		GL_FALSE,
-		glm::value_ptr(matrix)
+		cam_handler_ptr_->GetViewPerspectiveMatrix(),
+		object_vector
 	);
-
-	forwardRender_.RenderScreen();
-	
-	matrix = glm::mat4(1);
-	m = glm::translate(glm::mat4(1.0f), glm::vec3(-100.0f, -100.0f, 100.0f));
-	m = glm::rotate(m, glm::radians(270.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-	m = glm::scale(m, glm::vec3(0.3f, 0.3f, 0.6f));
-	v = this->cam_handler_ptr_->GetViewMatrix();
-	p = this->cam_handler_ptr_->GetPerspectiveMatrix();
-
-	matrix = p * v * m;
-
-	glUniformMatrix4fv(
-		glGetUniformLocation(forwardRender_.GetProgramFromShader(), "matrix"),
-		1,
-		GL_FALSE,
-		glm::value_ptr(matrix)
-	);
-
-	forwardRender_.RenderMap();
 }

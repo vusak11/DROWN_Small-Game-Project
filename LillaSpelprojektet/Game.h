@@ -4,7 +4,7 @@
 
 #include <SFML/Window.hpp>
 #include <GLM/glm.hpp>
-
+#include "render.h"
 #include <GL/glew.h>
 #include <SFML/Window.hpp>
 #include "Camera/camera_handler.h"
@@ -13,18 +13,11 @@
 
 class Game {
 private:
-	enum STATES {
-		RENDER,
-		PAUSE
-	};
-
-	STATES state;
-
 	CameraHandler* cam_handler_ptr_;
 	//ObjectHandler* obj_handler_ptr_;
-	ForwardRendering forwardRender_;
+	//ForwardRendering forwardRender_;
 	ObjectHandler* obj_handler_ptr_;
-	//Render render_;
+	Render render_;
 	void InputFromDevices(float in_deltatime);
 public:
 	Game();

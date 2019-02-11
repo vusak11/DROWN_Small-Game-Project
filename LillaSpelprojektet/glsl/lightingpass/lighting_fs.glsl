@@ -1,7 +1,6 @@
 #version 440
 
 layout(location = 0) out vec3 screen_texture;
-//out vec4 frag_color;
 in vec2 tex_coords;
 
 uniform sampler2D g_position;
@@ -29,15 +28,6 @@ void main() {
 	float specular = texture(g_albedo_spec, tex_coords).a;
 
 	// calculate lighting
-
-	/*vec3 lighting = albedo * 0.2; // hard-coded ambient component
-	vec3 view_dir = normalize(viewPos - fragment_position);
-	for (int i = 0; i < nr_of_lights; i++) {
-		vec3 light_direction = normalize(lights[i].position - fragment_position);
-		vec3 diffuse = max(dot(normal, light_direction), 0.0) * albedo * lights[i].color;
-		lighting += diffuse;
-	}*/
-
 	vec3 ambient = 0.15 * albedo;
 	vec3 lightDir = normalize(light_position - fragment_position);
 	float diff = max(dot(lightDir, normal), 0.0);
@@ -50,6 +40,5 @@ void main() {
 
 	vec3 speculars = vec3(0.3) * spec;
 	screen_texture = vec3(ambient + diffuse + speculars);
-	//screen_texture = lighting;
 
 }

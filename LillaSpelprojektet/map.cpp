@@ -32,13 +32,11 @@ bool Map::LoadMap(char* path) {
 		for (int x = 0; x < map_width_; x++) {
 			// Read every third value
 			unsigned char color = map_data[3 * (z * map_width_ + x)];
-			float height = (map_height_ * (color / 255.0f));
+			float height = (map_height_ * (color / 255.0f)) * 0.1;
 			temp_float.push_back(height);
 		}
 		temp_height_.push_back(temp_float);
 	}
-
-	//lowerPosition();
 
 	//-------------Texture coordinates(U,V)-------------//
 
@@ -206,12 +204,12 @@ void Map::Buffer(GLuint shader) {
 
 	//Vertex
 	glEnableVertexAttribArray(0);
-	GLuint vertexPos = glGetAttribLocation(shader, "a_position");
+	GLuint vertexPos = glGetAttribLocation(shader, "position");
 	glVertexAttribPointer(vertexPos, 3, GL_FLOAT, GL_FALSE, sizeof(Triangle), BUFFER_OFFSET(0));
 
 	//Texture
 	glEnableVertexAttribArray(1);
-	GLuint texCoords = glGetAttribLocation(shader, "a_coordinates");
+	GLuint texCoords = glGetAttribLocation(shader, "tex_coordinates");
 	glVertexAttribPointer(texCoords, 2, GL_FLOAT, GL_FALSE, sizeof(Triangle),
 					BUFFER_OFFSET(sizeof(float) * 3));
 

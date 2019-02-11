@@ -17,8 +17,8 @@ Render::Render() {
 		"glsl/lightingpass/lighting_fs.glsl");
 	lights_ = new Light[nr_of_lights_];
 
-	//model_ = new Model*[nr_of_models];
-	//model_[0] = new Model((char*)"../Resources/Models/TestCharacter.obj");
+	model_ = new Model*[nr_of_models];
+	model_[0] = new Model((char*)"../Resources/Models/TestBox/testBOX.obj");
 
 	map_[0].LoadMap((char*)"../Resources/Map/TestMap.bmp");
 	map_[0].LoadTexture((char*)"../Resources/Map/rock.png");
@@ -29,10 +29,10 @@ Render::~Render() {
 	delete lighting_pass_;
 	delete[] lights_;
 
-	/*for (int i = 0; i < nr_of_models; i++) {
+	for (int i = 0; i < nr_of_models; i++) {
 		delete model_[i];
 	}
-	delete[] model_;*/
+	delete[] model_;
 }
 
 void Render::InitializeRender() {
@@ -44,12 +44,6 @@ void Render::InitializeRender() {
 		glm::vec3(0.2f, 0.2f, 0.2f),
 		glm::vec3(1.0f, 1.0f, 1.0f),
 		glm::vec3(1.0f, 1.0f, 1.0f));
-	
-	float vertices[] = {
-		0.0f, 0.5f, 0.0f,
-		-0.5f, 0.0f, 0.0f,
-		0.5f, 0.0f, 0.0f
-	};
 
 	map_[0].Buffer(geometry_pass_->GetProgram());
 }
@@ -57,41 +51,57 @@ void Render::InitializeRender() {
 void Render::UpdateRender(
 	float dt, 
 	glm::vec3 camera_position,
-	glm::mat4 perspective_matrix, 
-	glm::mat4 view_matrix) {
-	GeometryPass(camera_position, perspective_matrix, view_matrix);
+	glm::mat4 perspective_view_matrix,
+	std::vector<ObjectPackage>& object_vector) {
 
-	GeometryDrawing();
+	// Pushing Map into object vector
+	glm::mat4 map_matrix = glm::mat4(1.0f);
+	map_matrix = glm::translate(map_matrix, glm::vec3(-100.0f, 100.0, -100.0f));
+	map_matrix = glm::rotate(map_matrix, glm::radians(90.0f), glm::vec3(1, 0, 0));
+	map_matrix = glm::scale(map_matrix, glm::vec3(0.3f, 0.8f, 0.8f));
+	ObjectPackage map_package;
+	map_package.id = OBJECT_ID_MAP;
+	map_package.model_matrix = map_matrix;
+
+	object_vector.push_back(map_package);
+
+	//  GEOMETRY
+	GeometryPass(camera_position, perspective_view_matrix);
+	GeometryDrawing(object_vector);
 	
+	//  LIGHTING
 	lights_[0].SetPos(camera_position);
-
 	LightingPass(camera_position);
 
 	RenderQuad();
 }
 
-void Render::GeometryDrawing() {
-	ModelTransformation(
-		glm::vec3(-256.0f, 0.0, 0.0f),
-		glm::vec3(1, 1, 1),
-		0,
-		glm::vec3(0.8f, 0.8f, 0.8f)
-	);
-	map_[0].Draw(geometry_pass_->GetProgram());
+void Render::GeometryDrawing(std::vector<ObjectPackage>& object_vector) {
+	for (unsigned int i = 0; i < object_vector.size(); i++) {
+		if (OBJECT_ID_NULL == object_vector[i].id) {
+
+		}
+		else if (OBJECT_ID_PLAYER == object_vector[i].id) {
+			ModelTransformation(object_vector[i].model_matrix);
+			model_[0]->Draw(geometry_pass_->GetProgram());
+		}
+		else if (OBJECT_ID_JOHNNY_BRAVO == object_vector[i].id) {
+			ModelTransformation(object_vector[i].model_matrix);
+		}
+		else if (OBJECT_ID_MAP == object_vector[i].id) {
+			ModelTransformation(object_vector[i].model_matrix);
+			map_[0].Draw(geometry_pass_->GetProgram());
+		}
+	}
 }
 
-void Render::ModelTransformation(glm::vec3 m_translate, glm::vec3 m_rotate, float radians, glm::vec3 m_scale) {
-	model_matrix_ = glm::mat4(1.0f);
-	model_matrix_ = glm::translate(model_matrix_, m_translate);
-	model_matrix_ = glm::rotate(model_matrix_, glm::radians(radians), m_rotate);
-	model_matrix_ = glm::scale(model_matrix_, m_scale);
-	glUniformMatrix4fv(glGetUniformLocation(geometry_pass_->GetProgram(), "model"), 1, GL_FALSE, glm::value_ptr(model_matrix_));
+void Render::ModelTransformation(glm::mat4 model_matrix) {
+	glUniformMatrix4fv(glGetUniformLocation(geometry_pass_->GetProgram(), "model"), 1, GL_FALSE, glm::value_ptr(model_matrix));
 }
 
 void Render::GeometryPass(
 	glm::vec3 camera_position,
-	glm::mat4 perspective_matrix,
-	glm::mat4 view_matrix) {
+	glm::mat4 perspective_view_matrix) {
 	glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -102,9 +112,7 @@ void Render::GeometryPass(
 	glUniform3fv(glGetUniformLocation(
 		geometry_pass_->GetProgram(), "view_position"), 1, glm::value_ptr(camera_position)); //OBS camera position
 	glUniformMatrix4fv(glGetUniformLocation(
-		geometry_pass_->GetProgram(), "projection"), 1, GL_FALSE, glm::value_ptr(perspective_matrix)); //OBS projection
-	glUniformMatrix4fv(glGetUniformLocation(
-		geometry_pass_->GetProgram(), "view"), 1, GL_FALSE, glm::value_ptr(view_matrix)); //OBS view
+		geometry_pass_->GetProgram(), "projection_view"), 1, GL_FALSE, glm::value_ptr(perspective_view_matrix)); //OBS view
 }
 
 void Render::LightingPass(glm::vec3 camera_position) {
@@ -123,14 +131,6 @@ void Render::LightingPass(glm::vec3 camera_position) {
 	glActiveTexture(GL_TEXTURE2);
 	glBindTexture(GL_TEXTURE_2D, geometry_pass_->GetAlbedoSpecular());
 
-	std::string name;
-	/*for (int i = 0; i < nr_of_lights_; i++) {
-		name = "lights[" + std::to_string(i) + "].position";
-		glUniform3fv(glGetUniformLocation(lighting_pass_->GetProgram(), name.c_str()), 1, glm::value_ptr(lights_[i].GetPos()));
-		name = "lights[" + std::to_string(i) + "].color";
-		glUniform3fv(glGetUniformLocation(lighting_pass_->GetProgram(), name.c_str()), 1, glm::value_ptr(lights_[i].GetAmbientLight()));
-	}*/
-	
 	glUniform3f(
 		glGetUniformLocation(lighting_pass_->GetProgram(), "light_position"),
 		camera_position.x, camera_position.y, camera_position.z

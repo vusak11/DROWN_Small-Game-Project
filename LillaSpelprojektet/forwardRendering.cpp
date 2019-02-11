@@ -7,7 +7,6 @@ ForwardRendering::ForwardRendering() {
 		"glsl/forward_fs.glsl"
 	);
 
-	model_ = new Model((char*)"../Resources/Models/TestBox/testBOX.obj");
 	map_ = new Map((char*)"../Resources/Map/TestMap.bmp");
 }
 

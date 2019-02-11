@@ -32,18 +32,22 @@ public:
 	void UpdateRender(
 		float dt, 
 		glm::vec3 camera_position,
-		glm::mat4 perspective_matrix,
-		glm::mat4 view_matrix);
+		glm::mat4 perspective_view_matrix,
+		std::vector<ObjectPackage>& object_vector
+		);
 
 	void GeometryPass(
 		glm::vec3 camera_position,
-		glm::mat4 perspective_matrix,
-		glm::mat4 view_matrix);
+		glm::mat4 perspective_view_matrix);
 	void LightingPass(
 		glm::vec3 camera_position);
 
-	void GeometryDrawing();
-	void ModelTransformation(glm::vec3 m_translate, glm::vec3 m_rotate, float radians, glm::vec3 m_scale);
+	//void GeometryDrawing();
+	//void ModelTransformation(glm::vec3 m_translate, glm::vec3 m_rotate, float radians, glm::vec3 m_scale);
+
+	//ON HOLD
+	void GeometryDrawing(std::vector<ObjectPackage>& object_vector);
+	void ModelTransformation(glm::mat4 model_matrix);
 	void RenderQuad();
 };
 

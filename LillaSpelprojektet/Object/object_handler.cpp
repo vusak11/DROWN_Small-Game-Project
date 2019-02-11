@@ -74,11 +74,11 @@ void ObjectHandler::DeterminePlayerAction() {
 
 	if (player_input_.attack)
 	{
-
+		
 	}
 	if (player_input_.jump)
 	{
-		//player_ptr_.se
+
 	}
 	if (player_input_.left)
 	{
@@ -142,7 +142,7 @@ ObjectHandler::~ObjectHandler() {
 
 void ObjectHandler::InitializeObjectHandler() {
 
-	this->player_ptr_ = new ObjectClass(glm::vec3(100.0f, 0.0f, 0.0f), OBJECT_ID_PLAYER);
+	this->player_ptr_ = new ObjectClass(glm::vec3(0.0f, 0.0f, 0.0f), OBJECT_ID_PLAYER);
 
 	//this->TestObjectHandler();		//NTS: Just for testing
 
@@ -175,11 +175,11 @@ void ObjectHandler::PlayerPickUp() {
 
 std::vector<ObjectPackage> ObjectHandler::UpdateAndRetrieve() {
 
-	std::vector<ObjectClass*> relevant_nps_ptr_vector;
+	std::vector<ObjectClass*> relevant_npc_ptr_vector;
 	std::vector<ObjectClass*> relevant_drops_ptr_vector;
 
 	//Cull NPCs
-	relevant_nps_ptr_vector = this->CullAndRetrieveObjectPtrs(this->npc_ptr_vector_);
+	relevant_npc_ptr_vector = this->CullAndRetrieveObjectPtrs(this->npc_ptr_vector_);
 
 	//Cull Drops
 	relevant_drops_ptr_vector = this->CullAndRetrieveObjectPtrs(this->drop_ptr_vector_);
@@ -201,7 +201,7 @@ std::vector<ObjectPackage> ObjectHandler::UpdateAndRetrieve() {
 	std::vector<ObjectPackage> package_vector;
 	
 	this->PackObjectIntoVector(this->player_ptr_, package_vector);
-	this->PackObjectVectorIntoVector(relevant_nps_ptr_vector, package_vector);
+	this->PackObjectVectorIntoVector(relevant_npc_ptr_vector, package_vector);
 	this->PackObjectVectorIntoVector(relevant_drops_ptr_vector, package_vector);
 
 	return package_vector;
