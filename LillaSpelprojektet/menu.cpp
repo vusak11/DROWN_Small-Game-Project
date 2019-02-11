@@ -36,7 +36,7 @@ void Menu::Initiliaze() {
 		GLuint texture;
 		glGenTextures(1, &texture);
 		glBindTexture(GL_TEXTURE_2D, texture);
-		glTexImage2D(
+		glTexSubImage2D(
 			GL_TEXTURE_2D,
 			0,
 			GL_RED,

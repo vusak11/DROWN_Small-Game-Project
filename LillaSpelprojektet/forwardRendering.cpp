@@ -32,24 +32,19 @@ void ForwardRendering::RenderScreen() {
 	glClear(GL_COLOR_BUFFER_BIT);
 
 
-	forwardRenderingShader->Use();
+	//forwardRenderingShader->Use();
 
 	//map_->Draw(forwardRenderingShader->GetProgram());
-	model_->Draw(forwardRenderingShader->GetProgram());
+	//model_->Draw(forwardRenderingShader->GetProgram());
 
-
-	/*glClearColor(0.0f, 0.0f, 0.5f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT);*/
-
-	textShader->Use();
 
 	menu_.RenderText(
 		textShader,
-		"This is a test text from forwardRendering class",
-		25.0f,
-		25.0f,
-		1.0f,
-		glm::vec3(1.0f, 0.9f, 0.5f)
+		"POOPsicle",
+		WINDOW_WIDTH/2,
+		WINDOW_HEIGHT/2,
+		2.0f,
+		glm::vec3(1.0f, 0.0f, 0.0f)
 	);
 }
 

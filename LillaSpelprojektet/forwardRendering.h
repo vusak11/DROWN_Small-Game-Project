@@ -1,4 +1,5 @@
 #pragma once
+#include "Globals.h"
 #include <GL/glew.h>
 #include "shader_handler.h"
 #include "model.h"
