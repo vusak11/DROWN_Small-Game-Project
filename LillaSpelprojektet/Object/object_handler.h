@@ -7,6 +7,7 @@
 
 #include "object_class.h"
 #include "../globals.h"
+#include "Physics/physics_engine.h"
 
 #include <iostream>			//Included for output in test function.
 
@@ -29,6 +30,8 @@ private:
 	std::vector<ObjectClass*> drop_ptr_vector_;		//Things dropped on the ground (e.g. power-ups, health)
 
 	PlayerInput player_input_;
+
+	PhysicsEngine* physics_engine_ptr_;
 
 	//std::vector<std::function<void()>> player_action_queue_;		//NTS: Not at home in ObjectHandler?
 	

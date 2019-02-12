@@ -12,9 +12,9 @@
 
 //Objects--------------------------------------------------
 #define OBJECT_CULLING_DISTANCE 1380
-
-#define OBJECT_MAX_VELOCITY 100
 #define OBJECT_TURN_RATE 45 //degrees
+#define OBJECT_MAX_VELOCITY 100
+#define GRAVITATIONAL_ACCELERATION 10
 
 //NOTE:
 //Object ID:s are used to determine what type of object is created

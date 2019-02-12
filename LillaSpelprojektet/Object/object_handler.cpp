@@ -103,6 +103,7 @@ void ObjectHandler::PackObjectVectorIntoVector(std::vector<ObjectClass*>& in_ptr
 
 ObjectHandler::ObjectHandler() {
 	this->player_ptr_ = NULL;
+	this->physics_engine_ptr_ = NULL;
 }
 
 ObjectHandler::~ObjectHandler() {
@@ -110,11 +111,15 @@ ObjectHandler::~ObjectHandler() {
 	this->ClearPtrVector(this->npc_ptr_vector_);
 	this->ClearPtrVector(this->drop_ptr_vector_);
 
+	delete this->physics_engine_ptr_;
+
 }
 
 void ObjectHandler::InitializeObjectHandler() {
 
 	this->player_ptr_ = new ObjectClass(glm::vec3(0.0f, 0.0f, 0.0f), OBJECT_ID_PLAYER);
+
+	this->physics_engine_ptr_ = new PhysicsEngine(GRAVITATIONAL_ACCELERATION, OBJECT_MAX_VELOCITY);
 
 	//this->TestObjectHandler();		//NTS: Just for testing
 
