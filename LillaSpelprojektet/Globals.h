@@ -13,8 +13,13 @@
 //Objects--------------------------------------------------
 #define OBJECT_CULLING_DISTANCE 1380
 #define OBJECT_TURN_RATE 45 //degrees
+#define GRAVITATIONAL_ACCELERATION -10	//-g on y-axis
 #define OBJECT_MAX_VELOCITY 100
-#define GRAVITATIONAL_ACCELERATION 10
+#define OBJECT_MIN_VELOCITY 0.1			//The lowest velocity an object can have that isn't 0
+										//If an velocity is lower than this it sets to 0
+#define OBJECT_DECCELERATION 0.1		//0.1 = 10%
+
+
 
 //NOTE:
 //Object ID:s are used to determine what type of object is created

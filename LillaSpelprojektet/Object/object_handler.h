@@ -51,7 +51,7 @@ private:
 	void ResolvePlayerAction();							//Move player, apply hitboxes, etc.
 	void ResolveNPCAction(ObjectClass* in_npc);			//Move npc, apply hitboxes, etc.
 
-	void ResolveDropBehaviour(ObjectClass* in_drop);		//Rotates drop, counts towards its despawn, etc.
+	void ResolveDropBehaviour(ObjectClass* in_drop);	//Rotates drop, counts towards its despawn, etc.
 
 	void ClearPlayerInput();							//Sets all values in player_input_ to false. Should be called at the end of each Update()
 
@@ -78,7 +78,7 @@ public:
 	//	- Call AI functions and decide behaviour
 	//	- Execute NPC actions and determine effects
 	//	- Call physics to determine new positions (<- Should be called at every step when a creature moves instead?)
-	std::vector<ObjectPackage> UpdateAndRetrieve();
+	std::vector<ObjectPackage> UpdateAndRetrieve(float in_deltatime);
 
 	glm::vec3 GetPlayerPos();
 

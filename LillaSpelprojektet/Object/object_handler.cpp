@@ -119,7 +119,12 @@ void ObjectHandler::InitializeObjectHandler() {
 
 	this->player_ptr_ = new ObjectClass(glm::vec3(0.0f, 0.0f, 0.0f), OBJECT_ID_PLAYER);
 
-	this->physics_engine_ptr_ = new PhysicsEngine(GRAVITATIONAL_ACCELERATION, OBJECT_MAX_VELOCITY);
+	this->physics_engine_ptr_ = new PhysicsEngine(
+		GRAVITATIONAL_ACCELERATION,
+		OBJECT_MAX_VELOCITY,
+		OBJECT_MIN_VELOCITY,
+		OBJECT_DECCELERATION
+	);
 
 	//this->TestObjectHandler();		//NTS: Just for testing
 
@@ -150,7 +155,7 @@ void ObjectHandler::PlayerPickUp() {
 	this->player_input_.pick_up = true;
 }
 
-std::vector<ObjectPackage> ObjectHandler::UpdateAndRetrieve() {
+std::vector<ObjectPackage> ObjectHandler::UpdateAndRetrieve(float in_deltatime) {
 
 	std::vector<ObjectClass*> relevant_nps_ptr_vector;
 	std::vector<ObjectClass*> relevant_drops_ptr_vector;

@@ -9,15 +9,22 @@ class PhysicsEngine {
 private:
 	float gravitational_acceleration_;
 	float object_max_velocity_;
+	float object_min_velocity_;
+	float object_decceleration_;
 
-	void UpdateVelocity(ObjectClass*& in_object_ptr);	//Changes an object's velocity by applying acceleration
-	void UpdatePosition(ObjectClass*& in_object_ptr);	//Changes an object's position by applying velocity
+	void UpdateVelocity(float& in_deltatime, ObjectClass*& in_object_ptr);	//Changes an object's velocity by applying acceleration
+	void UpdatePosition(float& in_deltatime, ObjectClass*& in_object_ptr);	//Changes an object's position by applying velocity
 
 public:
-	PhysicsEngine(float in_gravitational_acceleration, float in_object_max_velocity);
+	PhysicsEngine(
+		float in_gravitational_acceleration,
+		float in_object_max_velocity,
+		float in_object_min_velocity,
+		float in_object_decceleration
+	);
 	~PhysicsEngine();
 
-	void ApplyPhysics(std::vector<ObjectClass*>& in_object_ptr_vector);
+	void ApplyPhysics(float& in_deltatime, std::vector<ObjectClass*>& in_object_ptr_vector);
 };
 
 #endif // !PHYSICS_ENGINE_H
