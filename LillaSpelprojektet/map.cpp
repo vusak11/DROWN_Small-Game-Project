@@ -142,8 +142,10 @@ bool Map::LoadMap(char* path) {
 			indices_.push_back(p4);
 			indices_.push_back(p5);
 			indices_.push_back(p6);
+
 		}
-		//indices_.push_back(map_width_*map_height_); //"degenerate"
+        indices_.push_back(0);
+		indices_.push_back(map_width_*map_height_); //"degenerate"
 	}
 
 	//-------------Create triangles-------------//
@@ -226,20 +228,12 @@ void Map::Draw(GLuint shader) {
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texture_);
 
-	/*glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, gTexture1);
-
-	glActiveTexture(GL_TEXTURE2);
-	glBindTexture(GL_TEXTURE_2D, gTexture2);*/
-
 	glUniform1i(glGetUniformLocation(shader, "texture_diffuse"), 0);
-	/*glUniform1i(glGetUniformLocation(shader.GetgProgram(), "rock"), 1);
-	glUniform1i(glGetUniformLocation(shader.GetgProgram(), "snow"), 2);*/
 
 	glBindVertexArray(vertex_array_object_);
 	glEnable(GL_PRIMITIVE_RESTART);
 	glPrimitiveRestartIndex(map_width_ * map_height_);
-
+	
 	glDrawElements(GL_TRIANGLE_STRIP, indices_.size(), GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
 }

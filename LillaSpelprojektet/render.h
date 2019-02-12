@@ -1,4 +1,6 @@
-#pragma once
+#ifndef RENDER_H
+#define RENDER_H
+
 #include "shader_handler.h"
 #include "light.h"
 #include <GLM\glm.hpp>
@@ -19,7 +21,7 @@ private:
 	ShaderHandler* lighting_pass_;
 	Light* lights_;
 
-	int nr_of_models = 1;
+	int nr_of_models_ = 1;
 	Model** model_;
 
 	Map map_[1];
@@ -50,4 +52,4 @@ public:
 	void ModelTransformation(glm::mat4 model_matrix);
 	void RenderQuad();
 };
-
+#endif

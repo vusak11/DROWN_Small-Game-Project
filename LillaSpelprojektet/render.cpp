@@ -17,7 +17,7 @@ Render::Render() {
 		"glsl/lightingpass/lighting_fs.glsl");
 	lights_ = new Light[nr_of_lights_];
 
-	model_ = new Model*[nr_of_models];
+	model_ = new Model*[nr_of_models_];
 	model_[0] = new Model((char*)"../Resources/Models/TestBox/testBOX.obj");
 
 	map_[0].LoadMap((char*)"../Resources/Map/TestMap.bmp");
@@ -29,7 +29,7 @@ Render::~Render() {
 	delete lighting_pass_;
 	delete[] lights_;
 
-	for (int i = 0; i < nr_of_models; i++) {
+	for (int i = 0; i < nr_of_models_; i++) {
 		delete model_[i];
 	}
 	delete[] model_;

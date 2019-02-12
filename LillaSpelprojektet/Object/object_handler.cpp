@@ -72,30 +72,24 @@ void ObjectHandler::DeterminePlayerAction() {
 
 	// Collision detection will be implemented at a later stage.
 
-	if (player_input_.attack)
-	{
+	if (player_input_.attack) {
 		
 	}
-	if (player_input_.jump)
-	{
+	if (player_input_.jump) {
 
 	}
-	if (player_input_.left)
-	{
+	if (player_input_.left) {
 		glm::vec3 pos = player_ptr_->GetPosition();
 		player_ptr_->SetPosition(pos.x - 1, pos.y, pos.z);
 	}
-	if (player_input_.right)
-	{
+	if (player_input_.right) {
 		glm::vec3 pos = player_ptr_->GetPosition();
 		player_ptr_->SetPosition(pos.x + 1, pos.y, pos.z);
 	}
-	if (player_input_.pick_up)
-	{
+	if (player_input_.pick_up) {
 
 	}
-	if (player_input_.use_ability)
-	{
+	if (player_input_.use_ability) {
 
 	}
 }
