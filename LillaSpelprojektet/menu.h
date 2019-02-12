@@ -15,7 +15,6 @@
 
 class Menu {
 private:
-
 	struct Character {
 		GLuint texture_id;
 		glm::ivec2 size;
@@ -23,25 +22,31 @@ private:
 		GLuint advance;
 	};
 	std::map<GLchar, Character> characters_;
-
+	
 	FT_Library free_type_lib_;
 	FT_Face free_type_face_;
 
 	GLuint vertex_array_object_;
 	GLuint vertex_buffer_object_;
-public:
-	Menu();
-	~Menu();
 
-	void Initiliaze();
 	void RenderText(
 		ShaderHandler* shader_handler,
 		std::string text,
 		GLfloat x,
-		GLfloat y, 
+		GLfloat y,
 		GLfloat scale,
 		glm::vec3 color
 	);
+public:
+	int selected_item_index_;
+
+	Menu();
+	~Menu();
+
+	void Initiliaze();
+	void NavigateUp();
+	void NavigateDown();
+	void RenderMenu(ShaderHandler* shader_handler);
 };
 
 #endif

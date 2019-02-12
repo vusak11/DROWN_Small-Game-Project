@@ -9,6 +9,7 @@
 #include <SFML/Window.hpp>
 #include "Camera/camera_handler.h"
 #include "forwardRendering.h"
+#include "menu.h"
 
 class Game {
 private:
@@ -22,6 +23,7 @@ private:
 		PAUSE
 	};
 	GameState State_;
+	Menu menu_;
 
 	void InputFromDevices(float in_deltatime);
 public:

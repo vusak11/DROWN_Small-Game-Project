@@ -26,28 +26,23 @@ void ForwardRendering::HelloScreen() {
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	menu_.Initiliaze();
+}
+
+void ForwardRendering::RenderMenuState(Menu menu_)
+{
+	glClearColor(0.22f, 0.22f, 0.22f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT);
+	menu_.RenderMenu(textShader);
 }
 
 void ForwardRendering::RenderScreen() {
-	glClearColor(0.0f, 0.0f, 0.5f, 1.0f);
+	glClearColor(0.22f, 0.22f, 0.22f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 
-
-	//forwardRenderingShader->Use();
+	forwardRenderingShader->Use();
 
 	//map_->Draw(forwardRenderingShader->GetProgram());
-	//model_->Draw(forwardRenderingShader->GetProgram());
-
-
-	menu_.RenderText(
-		textShader,
-		"POOPsicle",
-		((float)WINDOW_WIDTH)/2.0f,
-		((float)WINDOW_HEIGHT)/2.0f,
-		2.0f,
-		glm::vec3(1.0f, 0.0f, 0.0f)
-	);
+	model_->Draw(forwardRenderingShader->GetProgram());
 }
 
 GLuint ForwardRendering::GetProgramFromShader() const {

@@ -1,6 +1,7 @@
 #include "menu.h"
 
 Menu::Menu() {
+	selected_item_index_ = 0;
 }
 
 Menu::~Menu() {
@@ -89,6 +90,94 @@ void Menu::Initiliaze() {
 	);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
+}
+
+void Menu::NavigateUp()
+{
+	if (selected_item_index_ == 0) {
+		selected_item_index_ = 2;
+	}
+	else {
+		selected_item_index_--;
+	}
+}
+
+void Menu::NavigateDown()
+{
+	if (selected_item_index_ == 2) {
+		selected_item_index_ = 0;
+	}
+	else {
+		selected_item_index_++;
+	}
+}
+
+void Menu::RenderMenu(ShaderHandler * shader_handler) {
+	// ---------- START ----------
+	if (selected_item_index_ == 0) {
+		RenderText(
+			shader_handler,
+			"Start",
+			((float)WINDOW_WIDTH) / 2.0f - 80.0f,
+			(((float)WINDOW_HEIGHT) / 10.0f) * 8.0f,
+			2.0f,
+			glm::vec3(1.0f, 1.0f, 1.0f)
+		);
+	}
+	else {
+		RenderText(
+			shader_handler,
+			"Start",
+			((float)WINDOW_WIDTH) / 2.0f - 80.0f,
+			(((float)WINDOW_HEIGHT) / 10.0f) * 8.0f,
+			2.0f,
+			glm::vec3(0.26f, 0.54f, 0.59f)
+		);
+	}
+
+	// ---------- OPTIONS ----------
+	if (selected_item_index_ == 1) {
+		RenderText(
+			shader_handler,
+			"Options",
+			((float)WINDOW_WIDTH) / 2.0f - 105.0f,
+			((float)WINDOW_HEIGHT) / 10.0f * 6.0f,
+			2.0f,
+			glm::vec3(1.0f, 1.0f, 1.0f)
+		);
+	}
+	else {
+		RenderText(
+			shader_handler,
+			"Options",
+			((float)WINDOW_WIDTH) / 2.0f - 105.0f,
+			((float)WINDOW_HEIGHT) / 10.0f * 6.0f,
+			2.0f,
+			glm::vec3(0.26f, 0.54f, 0.59f)
+		);
+	}
+
+	// ---------- QUIT ----------
+	if (selected_item_index_ == 2) {
+		RenderText(
+			shader_handler,
+			"Quit",
+			((float)WINDOW_WIDTH) / 2.0f - 75.0f,
+			((float)WINDOW_HEIGHT) / 10.0f * 2.0f,
+			2.0f,
+			glm::vec3(1.0f, 1.0f, 1.0f)
+		);
+	}
+	else {
+		RenderText(
+			shader_handler,
+			"Quit",
+			((float)WINDOW_WIDTH) / 2.0f - 75.0f,
+			((float)WINDOW_HEIGHT) / 10.0f * 2.0f,
+			2.0f,
+			glm::vec3(0.26f, 0.54f, 0.59f)
+		);
+	}
 }
 
 void Menu::RenderText(

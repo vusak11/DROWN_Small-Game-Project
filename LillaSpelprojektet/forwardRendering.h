@@ -12,7 +12,6 @@ private:
 	
 	Model* model_;
 	Map* map_;
-	Menu menu_;
 public:
 	ForwardRendering();
 	~ForwardRendering();
@@ -21,9 +20,9 @@ public:
 
 	void HelloScreen();
 
+	void RenderMenuState(Menu menu_);
 	void RenderScreen();
 
 	GLuint GetProgramFromShader() const;
-
 };
 
