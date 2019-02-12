@@ -16,6 +16,12 @@ ObjectClass::ObjectClass(glm::vec3 start_pos, ObjectID id) {
 
 	this->position_ = start_pos;
 
+	this->id_ = id;
+
+	this->scaling_matrix_ = glm::mat4(1.0f);
+	this->rotation_matrix_ = glm::mat4(1.0f);
+	this->translation_matrix_ = glm::mat4(1.0f);
+
 	//TBA: Use the ID to determine the specs of a Object (Character/Drop/etc)
 
 	this->model_matrix_up_to_date_ = false;
@@ -36,7 +42,7 @@ void ObjectClass::SetPosition(float in_x, float in_y, float in_z) {
 	position_.z = in_z;
 
 	//Translate an identity matrix to position_ and set it as the model's translation matrix
-	this->translation_matrix_ = glm::translate(glm::mat4(), position_);
+	this->translation_matrix_ = glm::translate(glm::mat4(1.0f), position_);
 
 	//Model matrix is now out of date
 	this->model_matrix_up_to_date_ = false;

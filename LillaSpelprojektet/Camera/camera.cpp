@@ -86,5 +86,5 @@ glm::vec3 Camera::GetCameraPosition() const
 }
 
 glm::mat4 Camera::GetViewPerspectiveMatrix() const {
-	return this->view_mat_ * this->perspective_mat_;
+	return this->perspective_mat_ * this->view_mat_;
 }
