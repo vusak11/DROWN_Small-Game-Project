@@ -24,7 +24,8 @@
 enum ObjectID {
 	OBJECT_ID_NULL,			//0:
 	OBJECT_ID_PLAYER,			//1:
-	OBJECT_ID_JOHNNY_BRAVO		//2:
+	OBJECT_ID_JOHNNY_BRAVO,		//2:
+	OBJECT_ID_MAP			//3
 };
 
 //Package Structs------------------------------------------
