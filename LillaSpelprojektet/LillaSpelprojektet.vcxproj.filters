@@ -96,7 +96,7 @@
     <ClCompile Include="light.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="forwardRendering.cpp">
+    <ClCompile Include="render.cpp">
       <Filter>Source Files\Core</Filter>
     </ClCompile>
   </ItemGroup>
@@ -140,11 +140,10 @@
     <ClInclude Include="globals.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-
     <ClInclude Include="light.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="forwardRendering.h">
+    <ClInclude Include="render.h">
       <Filter>Header Files\Core</Filter>
     </ClInclude>
   </ItemGroup>

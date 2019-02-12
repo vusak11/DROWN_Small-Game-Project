@@ -68,6 +68,32 @@ float ObjectHandler::DistanceBetween(const ObjectClass* in_object_a, const Objec
 	return glm::distance(in_object_a->GetPosition(), in_object_b->GetPosition());
 }
 
+void ObjectHandler::DeterminePlayerAction() {
+
+	// Collision detection will be implemented at a later stage.
+
+	if (player_input_.attack) {
+		
+	}
+	if (player_input_.jump) {
+
+	}
+	if (player_input_.left) {
+		glm::vec3 pos = player_ptr_->GetPosition();
+		player_ptr_->SetPosition(pos.x - 1, pos.y, pos.z);
+	}
+	if (player_input_.right) {
+		glm::vec3 pos = player_ptr_->GetPosition();
+		player_ptr_->SetPosition(pos.x + 1, pos.y, pos.z);
+	}
+	if (player_input_.pick_up) {
+
+	}
+	if (player_input_.use_ability) {
+
+	}
+}
+
 void ObjectHandler::ClearPlayerInput() {
 	this->player_input_.left = false;
 	this->player_input_.right = false;
@@ -134,25 +160,25 @@ void ObjectHandler::PlayerAttack() {
 }
 
 void ObjectHandler::PlayerUseAbility() {
-	this->player_input_.use_ability;
+	this->player_input_.use_ability = true;
 }
 
 void ObjectHandler::PlayerPickUp() {
-	this->player_input_.pick_up;
+	this->player_input_.pick_up = true;
 }
 
 std::vector<ObjectPackage> ObjectHandler::UpdateAndRetrieve() {
 
-	std::vector<ObjectClass*> relevant_nps_ptr_vector;
+	std::vector<ObjectClass*> relevant_npc_ptr_vector;
 	std::vector<ObjectClass*> relevant_drops_ptr_vector;
 
 	//Cull NPCs
-	relevant_nps_ptr_vector = this->CullAndRetrieveObjectPtrs(this->npc_ptr_vector_);
+	relevant_npc_ptr_vector = this->CullAndRetrieveObjectPtrs(this->npc_ptr_vector_);
 
 	//Cull Drops
 	relevant_drops_ptr_vector = this->CullAndRetrieveObjectPtrs(this->drop_ptr_vector_);
 
-	//DeterminePlayerAction();
+	DeterminePlayerAction();
 	
 	//DetermineNPCAction(/*vector.at(i)*/);
 
@@ -169,7 +195,7 @@ std::vector<ObjectPackage> ObjectHandler::UpdateAndRetrieve() {
 	std::vector<ObjectPackage> package_vector;
 	
 	this->PackObjectIntoVector(this->player_ptr_, package_vector);
-	this->PackObjectVectorIntoVector(relevant_nps_ptr_vector, package_vector);
+	this->PackObjectVectorIntoVector(relevant_npc_ptr_vector, package_vector);
 	this->PackObjectVectorIntoVector(relevant_drops_ptr_vector, package_vector);
 
 	return package_vector;

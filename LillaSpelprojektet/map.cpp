@@ -32,13 +32,11 @@ bool Map::LoadMap(char* path) {
 		for (int x = 0; x < map_width_; x++) {
 			// Read every third value
 			unsigned char color = map_data[3 * (z * map_width_ + x)];
-			float height = (map_height_ * (color / 255.0f));
+			float height = (map_height_ * (color / 255.0f)) * 0.1;
 			temp_float.push_back(height);
 		}
 		temp_height_.push_back(temp_float);
 	}
-
-	//lowerPosition();
 
 	//-------------Texture coordinates(U,V)-------------//
 
@@ -144,8 +142,10 @@ bool Map::LoadMap(char* path) {
 			indices_.push_back(p4);
 			indices_.push_back(p5);
 			indices_.push_back(p6);
+
 		}
-		//indices_.push_back(map_width_*map_height_); //"degenerate"
+        indices_.push_back(0);
+		indices_.push_back(map_width_*map_height_); //"degenerate"
 	}
 
 	//-------------Create triangles-------------//
@@ -206,12 +206,12 @@ void Map::Buffer(GLuint shader) {
 
 	//Vertex
 	glEnableVertexAttribArray(0);
-	GLuint vertexPos = glGetAttribLocation(shader, "a_position");
+	GLuint vertexPos = glGetAttribLocation(shader, "position");
 	glVertexAttribPointer(vertexPos, 3, GL_FLOAT, GL_FALSE, sizeof(Triangle), BUFFER_OFFSET(0));
 
 	//Texture
 	glEnableVertexAttribArray(1);
-	GLuint texCoords = glGetAttribLocation(shader, "a_coordinates");
+	GLuint texCoords = glGetAttribLocation(shader, "tex_coordinates");
 	glVertexAttribPointer(texCoords, 2, GL_FLOAT, GL_FALSE, sizeof(Triangle),
 					BUFFER_OFFSET(sizeof(float) * 3));
 
@@ -228,20 +228,12 @@ void Map::Draw(GLuint shader) {
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texture_);
 
-	/*glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, gTexture1);
-
-	glActiveTexture(GL_TEXTURE2);
-	glBindTexture(GL_TEXTURE_2D, gTexture2);*/
-
 	glUniform1i(glGetUniformLocation(shader, "texture_diffuse"), 0);
-	/*glUniform1i(glGetUniformLocation(shader.GetgProgram(), "rock"), 1);
-	glUniform1i(glGetUniformLocation(shader.GetgProgram(), "snow"), 2);*/
 
 	glBindVertexArray(vertex_array_object_);
 	glEnable(GL_PRIMITIVE_RESTART);
 	glPrimitiveRestartIndex(map_width_ * map_height_);
-
+	
 	glDrawElements(GL_TRIANGLE_STRIP, indices_.size(), GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
 }

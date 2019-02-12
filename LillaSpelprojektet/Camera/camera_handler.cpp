@@ -46,6 +46,10 @@ glm::mat4 CameraHandler::GetViewMatrix() const
 	return cams_[mode_].GetViewMatrix();
 }
 
+glm::mat4 CameraHandler::GetViewPerspectiveMatrix() const {
+	return cams_[mode_].GetViewPerspectiveMatrix();
+}
+
 glm::vec3 CameraHandler::GetCameraPosition() const
 {
 	return cams_[mode_].GetCameraPosition();
