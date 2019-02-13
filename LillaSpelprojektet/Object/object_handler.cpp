@@ -125,6 +125,7 @@ void ObjectHandler::PackObjectVectorIntoVector(std::vector<ObjectClass*>& in_ptr
 
 ObjectHandler::ObjectHandler() {
 	this->player_ptr_ = NULL;
+	this->physics_engine_ptr_ = NULL;
 }
 
 ObjectHandler::~ObjectHandler() {
@@ -132,11 +133,20 @@ ObjectHandler::~ObjectHandler() {
 	this->ClearPtrVector(this->npc_ptr_vector_);
 	this->ClearPtrVector(this->drop_ptr_vector_);
 
+	delete this->physics_engine_ptr_;
+
 }
 
 void ObjectHandler::InitializeObjectHandler() {
 
 	this->player_ptr_ = new ObjectClass(glm::vec3(0.0f, 0.0f, 0.0f), OBJECT_ID_PLAYER);
+
+	this->physics_engine_ptr_ = new PhysicsEngine(
+		GRAVITATIONAL_ACCELERATION,
+		OBJECT_MAX_VELOCITY,
+		OBJECT_MIN_VELOCITY,
+		OBJECT_DECCELERATION
+	);
 
 	//this->TestObjectHandler();		//NTS: Just for testing
 
@@ -167,7 +177,7 @@ void ObjectHandler::PlayerPickUp() {
 	this->player_input_.pick_up = true;
 }
 
-std::vector<ObjectPackage> ObjectHandler::UpdateAndRetrieve() {
+std::vector<ObjectPackage> ObjectHandler::UpdateAndRetrieve(float in_deltatime) {
 
 	std::vector<ObjectClass*> relevant_npc_ptr_vector;
 	std::vector<ObjectClass*> relevant_drops_ptr_vector;
@@ -266,6 +276,6 @@ void ObjectHandler::TestObjectHandler() {
 	std::cout << "	Move one drop to (3000, 3000)" << std::endl;
 	this->drop_ptr_vector_.at(0)->SetPosition(3000, 3000);
 	std::cout << "	Call UpdateAndRetrieve and check returned vector length (should be 4: One Player, Two NPCs, One Drop)" << std::endl;
-	std::vector<ObjectPackage> pckg_vector = this->UpdateAndRetrieve();
+	std::vector<ObjectPackage> pckg_vector = this->UpdateAndRetrieve(1.0f);
 	std::cout << "	pckg_vec length: " << pckg_vector.size() << std::endl;
 }

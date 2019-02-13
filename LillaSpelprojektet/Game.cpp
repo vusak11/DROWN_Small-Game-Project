@@ -130,7 +130,7 @@ void Game::GameLoop(float in_deltatime) {
 	else if (state_ == GAME) {
 		// This updates the player position.
 		std::vector<ObjectPackage> object_vector;
-		object_vector = this->obj_handler_ptr_->UpdateAndRetrieve();
+		object_vector = this->obj_handler_ptr_->UpdateAndRetrieve(in_deltatime);
 
 		render_.UpdateRender(
 			in_deltatime,

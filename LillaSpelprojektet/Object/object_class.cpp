@@ -86,15 +86,6 @@ void ObjectClass::SetRotation(int in_x, int in_y, int in_z) {
 }
 
 void ObjectClass::SetVelocity(float in_velocity) {
-	//If the velocity given is greater than our allowed maximum
-	//clamp it down to it
-	if (in_velocity > OBJECT_MAX_VELOCITY) {
-		in_velocity = OBJECT_MAX_VELOCITY;
-	}
-	else if (in_velocity < -OBJECT_MAX_VELOCITY) {
-		in_velocity = -OBJECT_MAX_VELOCITY;
-	}
-
 	//Normalize the current vector and then scale it in accordance with the new velocity
 	this->velocity_vec_ = glm::normalize(this->velocity_vec_) * in_velocity;
 }
@@ -102,10 +93,6 @@ void ObjectClass::SetVelocity(float in_velocity) {
 void ObjectClass::SetVelocityVec(glm::vec3 in_velocity_vec) {
 	//Set the velocity vector to be the new velocity
 	this->velocity_vec_ = in_velocity_vec;
-
-	//Then call the SetVelocity function to clamp the value below OBJECT_MAX_VELOCITY
-	this->SetVelocity(glm::length(this->velocity_vec_));
-
 }
 
 ObjectID ObjectClass::GetObjectID() const {
@@ -140,7 +127,6 @@ void ObjectClass::UpdatePosition(float in_deltatime) {
 	//NTS: This function has no stops. It does not stop by walls. Keep in mind that even with
 	//the function moving back if we end up in a wall enough velocity would just carry us through it
 }
-
 
 void ObjectClass::AlterVelocityVec(glm::vec3 in_vec) {
 	//Alter the current velocity vector with the new given one

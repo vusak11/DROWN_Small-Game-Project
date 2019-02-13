@@ -149,6 +149,7 @@
     <ClCompile Include="model.cpp" />
     <ClCompile Include="map.cpp" />
     <ClCompile Include="map_handler.cpp" />
+    <ClCompile Include="Object\Physics\physics_engine.cpp" />
     <ClCompile Include="render.cpp" />
     <ClCompile Include="shader_handler.cpp" />
     <ClCompile Include="sound_unit.cpp" />
@@ -162,6 +163,7 @@
     <ClInclude Include="Object\object_handler.h" />
     <ClInclude Include="mesh.h" />
     <ClInclude Include="model.h" />
+    <ClInclude Include="Object\Physics\physics_engine.h" />
     <ClInclude Include="render.h" />
     <ClInclude Include="sound_unit.h" />
     <ClInclude Include="Camera\camera.h" />
