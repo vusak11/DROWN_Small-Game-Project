@@ -13,10 +13,164 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\GLSL">
+      <UniqueIdentifier>{9118221a-206c-4047-9d9c-b12f2cd23c4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Camera">
+      <UniqueIdentifier>{07f691db-0423-4d9c-a664-b48eed30ad9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Camera">
+      <UniqueIdentifier>{4d0c2209-95a1-489c-b225-3379b261d508}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Map">
+      <UniqueIdentifier>{00f63352-c645-4934-b62a-b8582f98b37f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Map">
+      <UniqueIdentifier>{103d5921-09a0-4ada-ac0f-af6c38c42795}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Core">
+      <UniqueIdentifier>{ea6b1da2-20d6-4052-b982-57d45d1a7b71}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Core">
+      <UniqueIdentifier>{89b2bb9b-6130-49c0-a4c5-f8725063101a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Object">
+      <UniqueIdentifier>{2ddb0f38-102a-41d2-a294-994726192e68}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object">
+      <UniqueIdentifier>{57212a88-3768-4928-aef2-65af495b461f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Object\Character">
+      <UniqueIdentifier>{3eaf8cd7-1933-44f7-bbb6-eeaf16c8ed0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object\Character">
+      <UniqueIdentifier>{46a5f418-71db-4013-a96c-b21262127cc1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GLSL\LightingPass">
+      <UniqueIdentifier>{96981d59-932d-4a2d-a362-03d3588bb5c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GLSL\GeometryPass">
+      <UniqueIdentifier>{c79053f2-ea70-4b39-a0a1-e1f34f1b31f5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="game.cpp">
+      <Filter>Source Files\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera\camera.cpp">
+      <Filter>Source Files\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera\camera_handler.cpp">
+      <Filter>Source Files\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="map.cpp">
+      <Filter>Source Files\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="map_handler.cpp">
+      <Filter>Source Files\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="shader_handler.cpp">
+      <Filter>Source Files\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="sound_unit.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\object_class.cpp">
+      <Filter>Source Files\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Character\character.cpp">
+      <Filter>Source Files\Object\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="mesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="model.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\object_handler.cpp">
+      <Filter>Source Files\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="light.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="render.cpp">
+      <Filter>Source Files\Core</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="map_handler.h">
+      <Filter>Header Files\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="map.h">
+      <Filter>Header Files\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera\camera.h">
+      <Filter>Header Files\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera\camera_handler.h">
+      <Filter>Header Files\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="game.h">
+      <Filter>Header Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="shader_handler.h">
+      <Filter>Header Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="sound_unit.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\object_class.h">
+      <Filter>Header Files\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Character\character.h">
+      <Filter>Header Files\Object\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\object_handler.h">
+      <Filter>Header Files\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="mesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="model.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="globals.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="light.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="render.h">
+      <Filter>Header Files\Core</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="glsl\forward_vs.glsl">
+      <Filter>Source Files\GLSL</Filter>
+    </None>
+    <None Include="glsl\forward_fs.glsl">
+      <Filter>Source Files\GLSL</Filter>
+    </None>
+    <None Include="glsl\geometrypass\geometry_vs.glsl">
+      <Filter>Source Files\GLSL\GeometryPass</Filter>
+    </None>
+    <None Include="glsl\geometrypass\geometry_gs.glsl">
+      <Filter>Source Files\GLSL\GeometryPass</Filter>
+    </None>
+    <None Include="glsl\geometrypass\geometry_fs.glsl">
+      <Filter>Source Files\GLSL\GeometryPass</Filter>
+    </None>
+    <None Include="glsl\lightingpass\lighting_vs.glsl">
+      <Filter>Source Files\GLSL\LightingPass</Filter>
+    </None>
+    <None Include="glsl\lightingpass\lighting_fs.glsl">
+      <Filter>Source Files\GLSL\LightingPass</Filter>
+    </None>
+    <None Include="glsl\forward_gs.glsl">
+      <Filter>Source Files\GLSL</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -73,13 +73,27 @@
     <IncludePath>$(SolutionDir)Externals\Include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Externals\Lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IncludePath>$(SolutionDir)Externals\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)Externals\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>$(SolutionDir)Externals\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)Externals\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <PreprocessorDefinitions>SFML_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)Externals\include</AdditionalIncludeDirectories>
     </ClCompile>
+    <Link>
+      <AdditionalDependencies>glew32.lib;glew32s.lib;sfml-audio.lib;sfml-graphics.lib;sfml-system.lib;sfml-window.lib;opengl32.lib;SOIL.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Externals\lib</AdditionalLibraryDirectories>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -100,10 +114,14 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <PreprocessorDefinitions>SFML_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)Externals\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>glew32.lib;glew32s.lib;sfml-audio.lib;sfml-graphics.lib;sfml-system.lib;sfml-window.lib;opengl32.lib;SOIL.lib;openal32.lib;assimp-vc140-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Externals\lib</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -121,7 +139,50 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Camera\camera.cpp" />
+    <ClCompile Include="Camera\camera_handler.cpp" />
+    <ClCompile Include="game.cpp" />
+    <ClCompile Include="light.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Object\Character\character.cpp" />
+    <ClCompile Include="Object\object_class.cpp" />
+    <ClCompile Include="Object\object_handler.cpp" />
+    <ClCompile Include="mesh.cpp" />
+    <ClCompile Include="model.cpp" />
+    <ClCompile Include="map.cpp" />
+    <ClCompile Include="map_handler.cpp" />
+    <ClCompile Include="render.cpp" />
+    <ClCompile Include="shader_handler.cpp" />
+    <ClCompile Include="sound_unit.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="globals.h" />
+    <ClInclude Include="Object\Character\character.h" />
+    <ClInclude Include="Object\object_class.h" />
+    <ClInclude Include="Object\object_handler.h" />
+    <ClInclude Include="mesh.h" />
+    <ClInclude Include="model.h" />
+    <ClInclude Include="render.h" />
+    <ClInclude Include="sound_unit.h" />
+    <ClInclude Include="Camera\camera.h" />
+    <ClInclude Include="Camera\camera_handler.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="light.h" />
+    <ClInclude Include="shader_handler.h" />
+    <ClInclude Include="game.h" />
+    <ClInclude Include="map.h" />
+    <ClInclude Include="map_handler.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="glsl\forward_fs.glsl" />
+    <None Include="glsl\forward_gs.glsl" />
+    <None Include="glsl\forward_vs.glsl" />
+    <None Include="glsl\geometrypass\geometry_fs.glsl" />
+    <None Include="glsl\geometrypass\geometry_gs.glsl" />
+    <None Include="glsl\geometrypass\geometry_vs.glsl" />
+    <None Include="glsl\lightingpass\lighting_fs.glsl" />
+    <None Include="glsl\lightingpass\lighting_vs.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
