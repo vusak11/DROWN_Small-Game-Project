@@ -43,15 +43,9 @@ Render::~Render() {
 	delete[] model_;
 }
 
-void Render::InitializeRender(GameState state) {
-	if (state == MENU) {
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	}
-	else if (state == GAME) {
-		glDisable(GL_BLEND);
-		glEnable(GL_DEPTH_TEST);
-	}
+void Render::InitializeRender() {
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	
 	geometry_pass_->GeometryFrameBuffers();
 
@@ -70,8 +64,9 @@ void Render::UpdateRender(
 	glm::vec3 camera_position,
 	glm::mat4 perspective_view_matrix,
 	std::vector<ObjectPackage>& object_vector) {
-	
+
 	glDisable(GL_BLEND);
+	glEnable(GL_DEPTH_TEST);
 
 	// Pushing Map into object vector
 	glm::mat4 map_matrix = glm::mat4(1.0f);

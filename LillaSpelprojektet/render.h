@@ -34,7 +34,7 @@ public:
 	Render();
 	~Render();
 
-	void InitializeRender(GameState state);
+	void InitializeRender();
 	void UpdateRender(
 		float dt, 
 		glm::vec3 camera_position,
