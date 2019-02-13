@@ -19,6 +19,9 @@ Map::~Map() {
 
 bool Map::LoadMap(char* path) {
 
+	float depth_constant = 0.2f;
+	float map_scale = 5;
+
 	int map_width_, map_height_;
 	unsigned char* map_data = SOIL_load_image(path, &map_width_, &map_height_, 0, SOIL_LOAD_RGB);
 
@@ -32,7 +35,7 @@ bool Map::LoadMap(char* path) {
 		for (int x = 0; x < map_width_; x++) {
 			// Read every third value
 			unsigned char color = map_data[3 * (z * map_width_ + x)];
-			float height = (map_height_ * (color / 255.0f)) * 0.1;
+			float height = (map_height_ * (color / 255.0f)) * depth_constant;
 			temp_float.push_back(height);
 		}
 		temp_height_.push_back(temp_float);
@@ -154,9 +157,9 @@ bool Map::LoadMap(char* path) {
 
 	for (int z = 0; z < map_height_; z++) {
 		for (int x = 0; x < map_width_; x++) {
-			temp_triangle.x = (float)x;
+			temp_triangle.x = (float)x * map_scale;
 			temp_triangle.y = temp_height_[z][x];
-			temp_triangle.z = (float)z;
+			temp_triangle.z = (float)z * map_scale;
 			temp_triangle.u = tex_coord_[z][x].x;
 			temp_triangle.v = tex_coord_[z][x].y;
 			temp_triangle.x_normal = normals_[z][x].x;
