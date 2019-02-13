@@ -142,7 +142,7 @@ ObjectHandler::~ObjectHandler() {
 
 void ObjectHandler::InitializeObjectHandler() {
 
-	this->player_ptr_ = new ObjectClass(glm::vec3(100.0f, 0.0f, 0.0f), OBJECT_ID_PLAYER);
+	this->player_ptr_ = new ObjectClass(glm::vec3(0.0f, 0.0f, 0.0f), OBJECT_ID_PLAYER);
 
 	//this->TestObjectHandler();		//NTS: Just for testing
 
