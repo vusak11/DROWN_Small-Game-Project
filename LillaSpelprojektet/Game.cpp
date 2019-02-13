@@ -109,7 +109,7 @@ void Game::GameLoop(float in_deltatime) {
 	c += 1.0f * in_deltatime;
 
 	// This updates the player position.
-	this->obj_handler_ptr_->UpdateAndRetrieve();
+	this->obj_handler_ptr_->UpdateAndRetrieve(in_deltatime);
 
 	//glm::mat4 m = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 10.0f));
 	glm::mat4 m = glm::translate(glm::mat4(1.0f), this->obj_handler_ptr_->GetPlayerPos());
