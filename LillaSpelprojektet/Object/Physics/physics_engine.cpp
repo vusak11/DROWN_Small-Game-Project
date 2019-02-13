@@ -46,7 +46,10 @@ void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_
 	//Displace the object using its velocity during deltatime
 	object_pos += in_object_ptr->GetVelocityVec()*in_deltatime;
 
-	//TBA: COLLISION DETECTION VS MAP
+	//TBA(?): COLLISION DETECTION VS MAP
+
+	//TEMP: DON'T LET AN OBJECT BELOW THE "GROUND" PLANE
+	if (object_pos.y < 0.0f) { object_pos.y = 0.0f; }
 
 	//Set the object's new position
 	in_object_ptr->SetPosition(object_pos.x, object_pos.y);
@@ -71,5 +74,13 @@ PhysicsEngine::~PhysicsEngine() {
 }
 
 void PhysicsEngine::ApplyPhysics(float& in_deltatime, std::vector<ObjectClass*>& in_object_ptr_vector) {
+	
+	//Loop through all objects in vector
+	for (unsigned int i = 0; i < in_object_ptr_vector.size(); i++) {
+		this->UpdateVelocity(in_deltatime, in_object_ptr_vector.at(i));
+		this->UpdatePosition(in_deltatime, in_object_ptr_vector.at(i));
+		//TBA(?): COLLISION DETECTION VS MAP
+	}
+
 
 }
