@@ -1,11 +1,11 @@
 #include "forwardRendering.h"
 
 ForwardRendering::ForwardRendering() {
-	forwardRenderingShader = new ShaderHandler(
+	forward_rendering_shaders_ = new ShaderHandler(
 		"glsl/forward_vs.glsl",
 		"glsl/forward_fs.glsl"
 	);
-	textShader = new ShaderHandler(
+	text_shaders_ = new ShaderHandler(
 		"glsl/textshader_vs.glsl",
 		"glsl/textshader_fs.glsl"
 	);
@@ -15,13 +15,13 @@ ForwardRendering::ForwardRendering() {
 }
 
 ForwardRendering::~ForwardRendering() {
-	delete forwardRenderingShader;
+	delete forward_rendering_shaders_;
 	delete model_;
 	//delete map_;
 }
 
 void ForwardRendering::HelloScreen() {
-	//map_->Buffer(forwardRenderingShader->GetProgram());
+	//map_->Buffer(forward_rendering_shaders_->GetProgram());
 
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_BLEND);
@@ -32,19 +32,19 @@ void ForwardRendering::RenderMenuState(Menu menu_)
 {
 	glClearColor(0.22f, 0.22f, 0.22f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
-	menu_.RenderMenu(textShader);
+	menu_.RenderMenu(text_shaders_);
 }
 
 void ForwardRendering::RenderScreen() {
 	glClearColor(0.22f, 0.22f, 0.22f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	forwardRenderingShader->Use();
+	forward_rendering_shaders_->Use();
 
-	//map_->Draw(forwardRenderingShader->GetProgram());
-	model_->Draw(forwardRenderingShader->GetProgram());
+	//map_->Draw(forward_rendering_shaders_->GetProgram());
+	model_->Draw(forward_rendering_shaders_->GetProgram());
 }
 
 GLuint ForwardRendering::GetProgramFromShader() const {
-	return forwardRenderingShader->GetProgram();
+	return forward_rendering_shaders_->GetProgram();
 }

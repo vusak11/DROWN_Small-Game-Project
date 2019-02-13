@@ -7,8 +7,8 @@
 #include "menu.h"
 class ForwardRendering {
 private:
-	ShaderHandler* forwardRenderingShader;
-	ShaderHandler* textShader;
+	ShaderHandler* forward_rendering_shaders_;
+	ShaderHandler* text_shaders_;
 	
 	Model* model_;
 	Map* map_;

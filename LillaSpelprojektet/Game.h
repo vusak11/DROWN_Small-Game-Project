@@ -15,14 +15,14 @@ class Game {
 private:
 	CameraHandler* cam_handler_ptr_;
 	//ObjectHandler* obj_handler_ptr_;
-	ForwardRendering forwardRender_;
+	ForwardRendering forward_render_;
 
 	enum GameState {
 		GAME,
 		MENU,
 		PAUSE
 	};
-	GameState State_;
+	GameState state_;
 	Menu menu_;
 
 	void InputFromDevices(float in_deltatime);

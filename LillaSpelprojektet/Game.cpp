@@ -3,7 +3,7 @@
 Game::Game() {
 	this->cam_handler_ptr_ = new CameraHandler(glm::vec3(0.0f), 10.0f);
 	menu_.Initiliaze();
-	State_ = MENU;
+    state_ = MENU;
 }
 
 Game::~Game() {
@@ -12,11 +12,11 @@ Game::~Game() {
 
 void Game::InitializeGame() {
 	//render_.InitializeRender();
-	forwardRender_.HelloScreen();
+	forward_render_.HelloScreen();
 }
 
 void Game::InputFromDevices(float in_deltatime) {
-	if (State_ == MENU) {
+	if (state_ == MENU) {
 		//Navigate up
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
 			menu_.NavigateUp();
@@ -29,7 +29,7 @@ void Game::InputFromDevices(float in_deltatime) {
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)) {
 			switch (menu_.selected_item_index_) {
 			case 0:
-				State_ = GAME;
+                state_ = GAME;
 				break;
 			case 1:
 				break;
@@ -39,7 +39,7 @@ void Game::InputFromDevices(float in_deltatime) {
 		}
 	}
 	
-	else if (State_ == GAME) {
+	else if (state_ == GAME) {
 		/*---------------Keyboard inputs-----------------*/
 		//Walk up
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
@@ -124,10 +124,10 @@ void Game::InputFromDevices(float in_deltatime) {
 void Game::GameLoop(float in_deltatime) {
 	InputFromDevices(in_deltatime);
 
-	if (State_ == MENU) {
-		forwardRender_.RenderMenuState(menu_);
+	if (state_ == MENU) {
+		forward_render_.RenderMenuState(menu_);
 	}
-	else if (State_ == GAME) {
+	else if (state_ == GAME) {
 		/*render_.UpdateRender(
 			in_deltatime,
 			cam_handler_ptr_->GetCameraPosition(),
@@ -145,15 +145,15 @@ void Game::GameLoop(float in_deltatime) {
 		//glm::mat4 matrix = m;
 
 		glUniformMatrix4fv(
-			glGetUniformLocation(forwardRender_.GetProgramFromShader(), "in_matrix"),
+			glGetUniformLocation(forward_render_.GetProgramFromShader(), "in_matrix"),
 			1,
 			GL_FALSE,
 			glm::value_ptr(matrix)
 		);
 
-		forwardRender_.RenderScreen();
+		forward_render_.RenderScreen();
 	}
-	//else if (State_ == PAUSE) {
+	//else if (state_ == PAUSE) {
 		// PAUSE TIME
 	//}
 }

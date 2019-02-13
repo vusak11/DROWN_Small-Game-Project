@@ -193,7 +193,7 @@ void Menu::RenderText(
 	shader_handler->Use();
 	glUniformMatrix4fv(glGetUniformLocation(shader_handler->GetProgram(), "in_matrix"), 1, GL_FALSE, glm::value_ptr(projection));
 	glUniform3f(
-		glGetUniformLocation(shader_handler->GetProgram(), "textColor"), 
+		glGetUniformLocation(shader_handler->GetProgram(), "text_color"), 
 		color.x,
 		color.y,
 		color.z
