@@ -34,4 +34,11 @@ struct ObjectPackage {
 	glm::mat4 model_matrix;
 };
 
+//States---------------------------------------------------
+enum GameState {
+	GAME,
+	MENU,
+	PAUSE
+};
+
 #endif // !GLOBALS_H

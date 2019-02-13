@@ -1,7 +1,7 @@
 #include "game.h"
 
 Game::Game() {
-	this->cam_handler_ptr_ = new CameraHandler(glm::vec3(0.0), 50.0);
+	this->cam_handler_ptr_ = new CameraHandler(glm::vec3(0.0f), 10.0f);
 	this->obj_handler_ptr_ = new ObjectHandler();
 	menu_.Initiliaze();
     state_ = MENU;
@@ -15,11 +15,9 @@ Game::~Game() {
 void Game::InitializeGame() {
 	render_.InitializeRender();
 	this->obj_handler_ptr_->InitializeObjectHandler();
-	//forwardRender_.HelloScreen();
 }
 
 void Game::InputFromDevices(float in_deltatime) {
-
 	if (state_ == MENU) {
 		// Navigate up
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
@@ -32,38 +30,39 @@ void Game::InputFromDevices(float in_deltatime) {
 		// Choose selected item
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)) {
 			switch (menu_.selected_item_index_) {
-			case 0:
+			case 0:						//START
 				state_ = GAME;
 				break;
-			case 1:
+			case 1:						//OPTIONS
 				break;
-			case 2:
+			case 2:						//QUIT
 				exit(-1);
 			}
 		}
-	} else if (state_ == GAME) {
-	/*---------------Keyboard inputs-----------------*/
-	//Walk up
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-		this->obj_handler_ptr_->PlayerJump();
 	}
-	//Walk down
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-		//Do something
-	}
-	//Walk right
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-		this->obj_handler_ptr_->PlayerMoveRight();
-	}
-	//Walk left
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-		this->obj_handler_ptr_->PlayerMoveLeft();
-	}
-	//Pick up
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::E)) {
-		//Do something
-	}
-	/*---------------End Keyboard inputs-----------------*/
+	else if (state_ == GAME) {
+		/*---------------Keyboard inputs-----------------*/
+		//Walk up
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
+			this->obj_handler_ptr_->PlayerJump();
+		}
+		//Walk down
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
+			//Do something
+		}
+		//Walk right
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+			this->obj_handler_ptr_->PlayerMoveRight();
+		}
+		//Walk left
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
+			this->obj_handler_ptr_->PlayerMoveLeft();
+		}
+		//Pick up
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::E)) {
+			//Do something
+		}
+		/*---------------End Keyboard inputs-----------------*/
 
 		/*---------------Mouse inputs-----------------*/
 		//Attack
@@ -76,9 +75,9 @@ void Game::InputFromDevices(float in_deltatime) {
 		}
 		/*---------------End Mouse inputs-----------------*/
 
-	/*---------------Secondary Camera Control-----------------*/
-	float cam_speed = 150.0f * in_deltatime;
-	bool secondary = cam_handler_ptr_->GetMode();		//Primary is 0 (boolean false), Secondeary is 1 (boolean !false)
+		/*---------------Secondary Camera Control-----------------*/
+		float cam_speed = 150.0f * in_deltatime;
+		bool secondary = cam_handler_ptr_->GetMode();		//Primary is 0 (boolean false), Secondeary is 1 (boolean !false)
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::O)) {
 			//Swap camera (Primary/Secondary)
@@ -90,29 +89,29 @@ void Game::InputFromDevices(float in_deltatime) {
 			cam_handler_ptr_->MoveCamera(0.0f, cam_speed);
 		}
 
-	if (secondary && sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-		//Move active camera leftwards
-		cam_handler_ptr_->MoveCamera(-cam_speed, 0.0f);
-	}
+		if (secondary && sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+			//Move active camera leftwards
+			cam_handler_ptr_->MoveCamera(-cam_speed, 0.0f);
+		}
 
-	if (secondary && sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-		//Move active camera rightwards
-		cam_handler_ptr_->MoveCamera(cam_speed, 0.0f);
-	}
+		if (secondary && sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+			//Move active camera rightwards
+			cam_handler_ptr_->MoveCamera(cam_speed, 0.0f);
+		}
 
 		if (secondary && sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
 			//Move active camera downwards
 			cam_handler_ptr_->MoveCamera(0.0f, -cam_speed);
 		}
 
-	if (secondary && sf::Keyboard::isKeyPressed(sf::Keyboard::Add)) {
-		//Move active camera forwards ("zoom in")
-		cam_handler_ptr_->MoveCamera(0.0, 0.0, -cam_speed);
-	}
-	else if (secondary && sf::Keyboard::isKeyPressed(sf::Keyboard::Subtract)) {
-		//Move active camera backwards ("zoom out")
-		cam_handler_ptr_->MoveCamera(0.0, 0.0, cam_speed);
-	}
+		if (secondary && sf::Keyboard::isKeyPressed(sf::Keyboard::Add)) {
+			//Move active camera forwards ("zoom in")
+			cam_handler_ptr_->MoveCamera(0.0, 0.0, -cam_speed);
+		}
+		else if (secondary && sf::Keyboard::isKeyPressed(sf::Keyboard::Subtract)) {
+			//Move active camera backwards ("zoom out")
+			cam_handler_ptr_->MoveCamera(0.0, 0.0, cam_speed);
+		}
 
 		if (secondary && sf::Keyboard::isKeyPressed(sf::Keyboard::P)) {
 			//Move active camera forwards ("zoom in")
@@ -120,23 +119,24 @@ void Game::InputFromDevices(float in_deltatime) {
 		}
 
 		/*---------------End Secondary Camera Control-----------------*/
-		}
 	}
 }
 
 void Game::GameLoop(float in_deltatime) {
 	InputFromDevices(in_deltatime);
 	if (state_ == MENU) {
-		forward_render_.RenderMenuState(menu_);
+		render_.RenderMenuState(menu_);
 	}
-	// This updates the player position.
-	std::vector<ObjectPackage> object_vector;
-	object_vector = this->obj_handler_ptr_->UpdateAndRetrieve();
+	else if (state_ == GAME) {
+		// This updates the player position.
+		std::vector<ObjectPackage> object_vector;
+		object_vector = this->obj_handler_ptr_->UpdateAndRetrieve();
 
-	render_.UpdateRender(
-		in_deltatime,
-		cam_handler_ptr_->GetCameraPosition(),
-		cam_handler_ptr_->GetViewPerspectiveMatrix(),
-		object_vector
-	);
+		render_.UpdateRender(
+			in_deltatime,
+			cam_handler_ptr_->GetCameraPosition(),
+			cam_handler_ptr_->GetViewPerspectiveMatrix(),
+			object_vector
+		);
+	}
 }

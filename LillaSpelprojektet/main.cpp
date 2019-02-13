@@ -28,7 +28,6 @@ int main() {
 	
 	/*-----------Initialize---------------*/
 	game.InitializeGame();
-	glEnable(GL_DEPTH_TEST);
 	/*-----------End Initialize---------------*/
 
 	while (running) {

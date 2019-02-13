@@ -8,6 +8,10 @@ Render::Render() {
 	quad_vertex_buffer_object_ = 0;
 	nr_of_lights_ = 1;
 
+	text_shaders_ = new ShaderHandler(
+		"glsl/textshader_vs.glsl",
+		"glsl/textshader_fs.glsl"
+	);
 	geometry_pass_ = new ShaderHandler(
 		"glsl/geometrypass/geometry_vs.glsl",
 		"glsl/geometrypass/geometry_gs.glsl",
@@ -22,6 +26,8 @@ Render::Render() {
 
 	map_[0].LoadMap((char*)"../Resources/Map/TestMapMediumHard.bmp");
 	map_[0].LoadTexture((char*)"../Resources/Map/rock.png");
+
+	
 }
 
 Render::~Render() {
@@ -29,13 +35,24 @@ Render::~Render() {
 	delete lighting_pass_;
 	delete[] lights_;
 
+	delete text_shaders_;
+
 	for (int i = 0; i < nr_of_models_; i++) {
 		delete model_[i];
 	}
 	delete[] model_;
 }
 
-void Render::InitializeRender() {
+void Render::InitializeRender(GameState state) {
+	if (state == MENU) {
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	}
+	else if (state == GAME) {
+		glDisable(GL_BLEND);
+		glEnable(GL_DEPTH_TEST);
+	}
+	
 	geometry_pass_->GeometryFrameBuffers();
 
 	lights_[0].LightDefault(
@@ -53,6 +70,8 @@ void Render::UpdateRender(
 	glm::vec3 camera_position,
 	glm::mat4 perspective_view_matrix,
 	std::vector<ObjectPackage>& object_vector) {
+	
+	glDisable(GL_BLEND);
 
 	// Pushing Map into object vector
 	glm::mat4 map_matrix = glm::mat4(1.0f);
@@ -137,6 +156,13 @@ void Render::LightingPass(glm::vec3 camera_position) {
 	);
 	glUniform3fv(glGetUniformLocation(lighting_pass_->GetProgram(), "viewPos"), 1, glm::value_ptr(camera_position)); //Add camera positions
 
+}
+
+void Render::RenderMenuState(Menu menu_) {
+	glClearColor(0.22f, 0.22f, 0.22f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT);
+
+	menu_.RenderMenu(text_shaders_);
 }
 
 // RenderQuad() Renders a 1x1 quad in NDC, best used for framebuffer color targets

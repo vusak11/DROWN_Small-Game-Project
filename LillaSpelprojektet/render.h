@@ -8,6 +8,7 @@
 #include <GLM\gtc\type_ptr.hpp>
 #include "model.h"
 #include "map.h"
+#include "menu.h"
 
 
 class Render {
@@ -17,6 +18,7 @@ private:
 	int nr_of_lights_;
 	void DrawScene();
 
+	
 	ShaderHandler* geometry_pass_;
 	ShaderHandler* lighting_pass_;
 	Light* lights_;
@@ -24,13 +26,15 @@ private:
 	int nr_of_models_ = 1;
 	Model** model_;
 
+	ShaderHandler* text_shaders_;
+
 	Map map_[1];
 	glm::mat4 model_matrix_;
 public:
 	Render();
 	~Render();
 
-	void InitializeRender();
+	void InitializeRender(GameState state);
 	void UpdateRender(
 		float dt, 
 		glm::vec3 camera_position,
@@ -44,6 +48,8 @@ public:
 	void LightingPass(
 		glm::vec3 camera_position);
 
+
+	void RenderMenuState(Menu menu_);
 	//void GeometryDrawing();
 	//void ModelTransformation(glm::vec3 m_translate, glm::vec3 m_rotate, float radians, glm::vec3 m_scale);
 
