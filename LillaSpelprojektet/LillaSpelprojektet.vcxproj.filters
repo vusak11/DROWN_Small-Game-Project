@@ -52,6 +52,12 @@
     <Filter Include="Source Files\GLSL\GeometryPass">
       <UniqueIdentifier>{c79053f2-ea70-4b39-a0a1-e1f34f1b31f5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Object\Physics">
+      <UniqueIdentifier>{c69e7378-7ee1-44c9-95b5-edfaf9edc73a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object\Physics">
+      <UniqueIdentifier>{82d238f0-d9db-4431-a4d6-634c3c72b062}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -99,6 +105,9 @@
     <ClCompile Include="forwardRendering.cpp">
       <Filter>Source Files\Core</Filter>
     </ClCompile>
+    <ClCompile Include="Object\Physics\physics_engine.cpp">
+      <Filter>Source Files\Object\Physics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="map_handler.h">
@@ -140,12 +149,14 @@
     <ClInclude Include="globals.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-
     <ClInclude Include="light.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="forwardRendering.h">
       <Filter>Header Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Physics\physics_engine.h">
+      <Filter>Header Files\Object\Physics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

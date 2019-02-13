@@ -7,6 +7,7 @@
 
 #include "object_class.h"
 #include "../globals.h"
+#include "Physics/physics_engine.h"
 
 #include <iostream>			//Included for output in test function.
 
@@ -30,6 +31,8 @@ private:
 
 	PlayerInput player_input_;
 
+	PhysicsEngine* physics_engine_ptr_;
+
 	//std::vector<std::function<void()>> player_action_queue_;		//NTS: Not at home in ObjectHandler?
 	
 
@@ -48,7 +51,7 @@ private:
 	void ResolvePlayerAction();							//Move player, apply hitboxes, etc.
 	void ResolveNPCAction(ObjectClass* in_npc);			//Move npc, apply hitboxes, etc.
 
-	void ResolveDropBehaviour(ObjectClass* in_drop);		//Rotates drop, counts towards its despawn, etc.
+	void ResolveDropBehaviour(ObjectClass* in_drop);	//Rotates drop, counts towards its despawn, etc.
 
 	void ClearPlayerInput();							//Sets all values in player_input_ to false. Should be called at the end of each Update()
 
@@ -75,7 +78,7 @@ public:
 	//	- Call AI functions and decide behaviour
 	//	- Execute NPC actions and determine effects
 	//	- Call physics to determine new positions (<- Should be called at every step when a creature moves instead?)
-	std::vector<ObjectPackage> UpdateAndRetrieve();
+	std::vector<ObjectPackage> UpdateAndRetrieve(float in_deltatime);
 
 	glm::vec3 GetPlayerPos();
 
