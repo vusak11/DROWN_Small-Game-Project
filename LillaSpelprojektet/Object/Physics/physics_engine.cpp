@@ -33,11 +33,23 @@ void PhysicsEngine::UpdateVelocity(float& in_deltatime, ObjectClass*& in_object_
 		velocity_vec = glm::normalize(velocity_vec) * this->object_max_velocity_;
 	}
 
-	//WORKING HERE
+	//Set the new velocity of the object
+	in_object_ptr->SetVelocityVec(velocity_vec);
 
 }
 
 void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_ptr) {
+
+	//Get the object's position
+	glm::vec3 object_pos = in_object_ptr->GetPosition();
+
+	//Displace the object using its velocity during deltatime
+	object_pos += in_object_ptr->GetVelocityVec()*in_deltatime;
+
+	//TBA: COLLISION DETECTION VS MAP
+
+	//Set the object's new position
+	in_object_ptr->SetPosition(object_pos.x, object_pos.y);
 
 }
 

@@ -254,6 +254,6 @@ void ObjectHandler::TestObjectHandler() {
 	std::cout << "	Move one drop to (3000, 3000)" << std::endl;
 	this->drop_ptr_vector_.at(0)->SetPosition(3000, 3000);
 	std::cout << "	Call UpdateAndRetrieve and check returned vector length (should be 4: One Player, Two NPCs, One Drop)" << std::endl;
-	std::vector<ObjectPackage> pckg_vector = this->UpdateAndRetrieve();
+	std::vector<ObjectPackage> pckg_vector = this->UpdateAndRetrieve(1.0f);
 	std::cout << "	pckg_vec length: " << pckg_vector.size() << std::endl;
 }
