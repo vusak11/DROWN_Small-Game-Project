@@ -137,7 +137,6 @@
   <ItemGroup>
     <ClCompile Include="Camera\camera.cpp" />
     <ClCompile Include="Camera\camera_handler.cpp" />
-    <ClCompile Include="forwardRendering.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="light.cpp" />
     <ClCompile Include="main.cpp" />
@@ -155,7 +154,6 @@
     <ClCompile Include="sound_unit.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="forwardRendering.h" />
     <ClInclude Include="menu.h" />
     <ClInclude Include="globals.h" />
     <ClInclude Include="Object\Character\character.h" />
