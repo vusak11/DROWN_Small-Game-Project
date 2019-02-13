@@ -25,4 +25,3 @@ public:
 
 	GLuint GetProgramFromShader() const;
 };
-

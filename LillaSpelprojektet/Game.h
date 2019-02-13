@@ -15,8 +15,7 @@
 class Game {
 private:
 	CameraHandler* cam_handler_ptr_;
-	//ObjectHandler* obj_handler_ptr_;
-	ForwardRendering forward_render_;
+	ObjectHandler* obj_handler_ptr_;
 
 	enum GameState {
 		GAME,
@@ -26,7 +25,6 @@ private:
 	GameState state_;
 	Menu menu_;
 
-	ObjectHandler* obj_handler_ptr_;
 	Render render_;
 	void InputFromDevices(float in_deltatime);
 public:

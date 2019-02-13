@@ -102,6 +102,9 @@
     <ClCompile Include="menu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="forwardRendering.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="map_handler.h">
@@ -150,6 +153,9 @@
       <Filter>Header Files\Core</Filter>
     </ClInclude>
     <ClInclude Include="menu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="forwardRendering.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
