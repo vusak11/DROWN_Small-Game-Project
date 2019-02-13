@@ -41,11 +41,12 @@ public:
 	int GetHeight();
 	int GetWidth();
 private:
-	int map_width_;			// Width of map image
-	int map_height_;		// Height of map image
+		int map_width_;			// Width of map image
+		int map_height_;		// Height of map image
 
 	std::vector<Triangle> vertices_;
 	std::vector<std::vector<float>> temp_height_;
+    std::vector<std::vector<float>> height_map_;
 	std::vector<std::vector<glm::vec2>> tex_coord_;
 	std::vector<std::vector<glm::vec3>> normals_;
 	std::vector<int> indices_;

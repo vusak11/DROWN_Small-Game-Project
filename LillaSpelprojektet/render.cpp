@@ -57,8 +57,8 @@ void Render::UpdateRender(
 	// Pushing Map into object vector
 	glm::mat4 map_matrix = glm::mat4(1.0f);
 	map_matrix = glm::translate(map_matrix, glm::vec3(-100.0f, 100.0, -100.0f));
-	map_matrix = glm::rotate(map_matrix, glm::radians(90.0f), glm::vec3(1, 0, 0));
-	map_matrix = glm::scale(map_matrix, glm::vec3(0.3f, 0.8f, 0.8f));
+	//map_matrix = glm::rotate(map_matrix, glm::radians(90.0f), glm::vec3(1, 0, 0));
+	map_matrix = glm::scale(map_matrix, glm::vec3(1.0f, 1.0f, 0.1f));
 	ObjectPackage map_package;
 	map_package.id = OBJECT_ID_MAP;
 	map_package.model_matrix = map_matrix;
