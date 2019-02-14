@@ -70,30 +70,51 @@ float ObjectHandler::DistanceBetween(const ObjectClass* in_object_a, const Objec
 
 void ObjectHandler::DeterminePlayerAction() {
 
-	// Collision detection will be implemented at a later stage.
 
-	if (player_input_.attack) {
+	//Determine player movement on the x-axis
+	if (this->player_input_.left) {
+		//Set player velocity towards negative x
+		glm::vec3 velocity_change;
+
+		if (this->player_ptr_->object_metadata_.airborne) {
+			velocity_change = glm::vec3((float)-PLAYER_X_AIR_SPEED, 0.0f, 0.0f);
+		}
+		else {
+			velocity_change = glm::vec3((float)-PLAYER_X_SPEED, 0.0f, 0.0f);
+		}
+
+		this->player_ptr_->AlterVelocityVec(velocity_change);
+	}
+	if (this->player_input_.right) {
+		//Set player velocity towards positive x
+		glm::vec3 velocity_change;
+
+		if (this->player_ptr_->object_metadata_.airborne) {
+			velocity_change = glm::vec3((float)PLAYER_X_AIR_SPEED, 0.0f, 0.0f);
+		}
+		else {
+			velocity_change = glm::vec3((float)PLAYER_X_SPEED, 0.0f, 0.0f);
+		}
+
+		this->player_ptr_->AlterVelocityVec(velocity_change);
+	}
+
+	if (this->player_input_.jump && !this->player_ptr_->object_metadata_.airborne) {
+		//Set player velocity towards positive y
+		glm::vec3 velocity_change = glm::vec3(0.0f, (float)PLAYER_Y_SPEED, 0.0f);
+		this->player_ptr_->AlterVelocityVec(velocity_change);
+		
+		//Then set the object to be airborne
+		this->player_ptr_->object_metadata_.airborne = true;
+	}
+
+	if (this->player_input_.attack) {
 		
 	}
-	if (player_input_.jump) {
-		//Set player velocity towards positive y
-		glm::vec3 velocity_change = glm::vec3(0.0f, (float)OBJECT_PLAYER_Y_SPEED, 0.0f);
-		this->player_ptr_->AlterVelocityVec(velocity_change);
-	}
-	if (player_input_.left) {
-		//Set player velocity towards negative x
-		glm::vec3 velocity_change = glm::vec3((float)-OBJECT_PLAYER_X_SPEED, 0.0f, 0.0f);
-		this->player_ptr_->AlterVelocityVec(velocity_change);
-	}
-	if (player_input_.right) {
-		//Set player velocity towards positive x
-		glm::vec3 velocity_change = glm::vec3((float)OBJECT_PLAYER_X_SPEED, 0.0f, 0.0f);
-		this->player_ptr_->AlterVelocityVec(velocity_change);
-	}
-	if (player_input_.pick_up) {
+	if (this->player_input_.pick_up) {
 
 	}
-	if (player_input_.use_ability) {
+	if (this->player_input_.use_ability) {
 
 	}
 }

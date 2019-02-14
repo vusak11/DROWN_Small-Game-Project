@@ -15,13 +15,18 @@
 
 #define OBJECT_TURN_RATE 45 //degrees	//Purely for the turn function in ObjectClass as of this writing
 
-#define GRAVITATIONAL_ACCELERATION -10	//-g on y-axis	//Affects fall speed
+#define GRAVITATIONAL_ACCELERATION -100	//-g on y-axis	//Affects fall speed
 #define OBJECT_MAX_VELOCITY 100
 #define OBJECT_MIN_VELOCITY 0.1			//The lowest velocity an object can have that isn't 0
 										//If an velocity is lower than this it sets to 0
 #define OBJECT_DECCELERATION 0.1		//0.1 = 10%
-#define OBJECT_PLAYER_X_SPEED 5
-#define OBJECT_PLAYER_Y_SPEED 20
+
+//Player object--------------------------------------------
+//These numbers are specific to the player. Consider using these as base input for the
+//constructor and then altering internal variables
+#define PLAYER_X_SPEED 5
+#define PLAYER_X_AIR_SPEED 2.5
+#define PLAYER_Y_SPEED 100
 
 
 

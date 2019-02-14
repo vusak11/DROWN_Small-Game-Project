@@ -49,7 +49,13 @@ void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_
 	//TBA(?): COLLISION DETECTION VS MAP
 
 	//TEMP: DON'T LET AN OBJECT BELOW THE "GROUND" PLANE
-	if (object_pos.y < 0.0f) { object_pos.y = 0.0f; }
+	if (object_pos.y < 0.0f) {
+		object_pos.y = 0.0f;
+		glm::vec3 grounded_velocity = in_object_ptr->GetVelocityVec();
+		grounded_velocity.y = 0.0f;
+		in_object_ptr->SetVelocityVec(grounded_velocity);
+		in_object_ptr->object_metadata_.airborne = false;
+	}
 
 	//Set the object's new position
 	in_object_ptr->SetPosition(object_pos.x, object_pos.y);

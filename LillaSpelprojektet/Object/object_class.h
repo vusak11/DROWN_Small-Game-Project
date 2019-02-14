@@ -55,6 +55,16 @@ private:
 	//HitBot hitbox_;
 
 public:
+
+	//WIP
+
+	struct ObjectMetadata {				//An object's metadata tell us things
+		bool airborne = false;					//about the object's current situation
+	};
+	ObjectMetadata object_metadata_;
+
+	//
+
 	ObjectClass(glm::vec3 start_pos = glm::vec3(0.0f, 0.0f, 0.0f), ObjectID id = OBJECT_ID_NULL);
 	~ObjectClass();
 
