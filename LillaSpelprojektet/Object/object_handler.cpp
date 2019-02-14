@@ -99,6 +99,7 @@ void ObjectHandler::DeterminePlayerAction() {
 		this->player_ptr_->AlterVelocityVec(velocity_change);
 	}
 
+	//If input is jump and player is not in the air
 	if (this->player_input_.jump && !this->player_ptr_->object_metadata_.airborne) {
 		//Set player velocity towards positive y
 		glm::vec3 velocity_change = glm::vec3(0.0f, (float)PLAYER_Y_SPEED, 0.0f);

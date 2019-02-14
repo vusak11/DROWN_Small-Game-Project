@@ -114,6 +114,9 @@
     <ClCompile Include="Object\Physics\physics_engine.cpp">
       <Filter>Source Files\Object\Physics</Filter>
     </ClCompile>
+    <ClCompile Include="Object\Character\player_character.cpp">
+      <Filter>Source Files\Object\Character</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="map_handler.h">
@@ -169,6 +172,9 @@
     </ClInclude>
     <ClInclude Include="Object\Physics\physics_engine.h">
       <Filter>Header Files\Object\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Character\player_character.h">
+      <Filter>Header Files\Object\Character</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
