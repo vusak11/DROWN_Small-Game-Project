@@ -76,18 +76,18 @@ void ObjectHandler::DeterminePlayerAction() {
 		
 	}
 	if (player_input_.jump) {
-
+		//Set player velocity towards positive y
+		glm::vec3 velocity_change = glm::vec3(0.0f, (float)OBJECT_PLAYER_Y_SPEED, 0.0f);
+		this->player_ptr_->AlterVelocityVec(velocity_change);
 	}
 	if (player_input_.left) {
-		//glm::vec3 pos = player_ptr_->GetPosition();
-		//player_ptr_->SetPosition(pos.x - 1, pos.y, pos.z);
-		glm::vec3 velocity_change = glm::vec3((float)-OBJECT_PLAYER_ACCELERATION, 0.0f, 0.0f);
+		//Set player velocity towards negative x
+		glm::vec3 velocity_change = glm::vec3((float)-OBJECT_PLAYER_X_SPEED, 0.0f, 0.0f);
 		this->player_ptr_->AlterVelocityVec(velocity_change);
 	}
 	if (player_input_.right) {
-		//glm::vec3 pos = player_ptr_->GetPosition();
-		//player_ptr_->SetPosition(pos.x + 1, pos.y, pos.z);
-		glm::vec3 velocity_change = glm::vec3((float)OBJECT_PLAYER_ACCELERATION, 0.0f, 0.0f);
+		//Set player velocity towards positive x
+		glm::vec3 velocity_change = glm::vec3((float)OBJECT_PLAYER_X_SPEED, 0.0f, 0.0f);
 		this->player_ptr_->AlterVelocityVec(velocity_change);
 	}
 	if (player_input_.pick_up) {

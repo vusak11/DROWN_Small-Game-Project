@@ -20,7 +20,9 @@
 #define OBJECT_MIN_VELOCITY 0.1			//The lowest velocity an object can have that isn't 0
 										//If an velocity is lower than this it sets to 0
 #define OBJECT_DECCELERATION 0.1		//0.1 = 10%
-#define OBJECT_PLAYER_ACCELERATION 5
+#define OBJECT_PLAYER_X_SPEED 5
+#define OBJECT_PLAYER_Y_SPEED 20
+
 
 
 
