@@ -19,7 +19,9 @@
 										//If an velocity is lower than this it sets to 0
 #define OBJECT_DECCELERATION 0.1		//0.1 = 10%
 
-
+//Map------------------------------------------------------
+#define MAP_SCALE 5						//1 -> each vertex have 1 position unit in between
+#define MAP_DEPTH 0.2					//The depth of the heightmap
 
 //NOTE:
 //Object ID:s are used to determine what type of object is created

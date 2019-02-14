@@ -14,7 +14,7 @@ Game::~Game() {
 
 void Game::InitializeGame() {
 	render_.InitializeRender();
-	this->obj_handler_ptr_->InitializeObjectHandler();
+	this->obj_handler_ptr_->InitializeObjectHandler(render_.getMapPointer(0)->GetTempHeightList());
 }
 
 void Game::InputFromDevices(float in_deltatime) {
@@ -44,11 +44,12 @@ void Game::InputFromDevices(float in_deltatime) {
 		/*---------------Keyboard inputs-----------------*/
 		//Walk up
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-			this->obj_handler_ptr_->PlayerJump();
+			this->obj_handler_ptr_->PlayerJump();		// Used to temporary test in obj handler class
 		}
 		//Walk down
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-			//Do something
+			this->obj_handler_ptr_->PlayerUseAbility();	// Used to temporary test in obj handler class
+			std::cout << "Player y position: " << obj_handler_ptr_->GetPlayerPos().y << std::endl;
 		}
 		//Walk right
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {

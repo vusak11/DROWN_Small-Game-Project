@@ -35,8 +35,7 @@ public:
 	void SetHeight(int height);
 	void SetWidth(int width);
 
-	float GetTempHeight(int x, int z);
-	void LowerPosition();
+	std::vector<std::vector<float>>* GetTempHeightList();	// Used to pass the map height data to physics
 
 	int GetHeight();
 	int GetWidth();

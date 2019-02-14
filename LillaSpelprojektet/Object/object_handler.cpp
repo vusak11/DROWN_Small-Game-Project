@@ -76,21 +76,22 @@ void ObjectHandler::DeterminePlayerAction() {
 		
 	}
 	if (player_input_.jump) {
-
+		glm::vec3 p = player_ptr_->GetPosition();
+		player_ptr_->SetPosition(395.0f, p.y, p.z);
 	}
 	if (player_input_.left) {
 		glm::vec3 pos = player_ptr_->GetPosition();
-		player_ptr_->SetPosition(pos.x - 1, pos.y, pos.z);
+		player_ptr_->SetPosition(pos.x, pos.y -1, pos.z);
 	}
 	if (player_input_.right) {
 		glm::vec3 pos = player_ptr_->GetPosition();
-		player_ptr_->SetPosition(pos.x + 1, pos.y, pos.z);
+		player_ptr_->SetPosition(pos.x, pos.y + 1, pos.z);
 	}
 	if (player_input_.pick_up) {
 
 	}
 	if (player_input_.use_ability) {
-
+		
 	}
 }
 
@@ -137,15 +138,17 @@ ObjectHandler::~ObjectHandler() {
 
 }
 
-void ObjectHandler::InitializeObjectHandler() {
+void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map_height_list) {
 
-	this->player_ptr_ = new ObjectClass(glm::vec3(0.0f, 0.0f, 0.0f), OBJECT_ID_PLAYER);
+	// z = ~90-95
+	this->player_ptr_ = new ObjectClass(glm::vec3(84.0f, 0.0f, -80.0f), OBJECT_ID_PLAYER);
 
 	this->physics_engine_ptr_ = new PhysicsEngine(
 		GRAVITATIONAL_ACCELERATION,
 		OBJECT_MAX_VELOCITY,
 		OBJECT_MIN_VELOCITY,
-		OBJECT_DECCELERATION
+		OBJECT_DECCELERATION,
+		map_height_list
 	);
 
 	//this->TestObjectHandler();		//NTS: Just for testing

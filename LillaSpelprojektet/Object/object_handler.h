@@ -62,7 +62,8 @@ public:
 	ObjectHandler();
 	~ObjectHandler();
 
-	void InitializeObjectHandler();		//Function creates player object, loads in enemies for the zones etc. Call from InitiateGame();
+	// Takes map data to send to physics engine.
+	void InitializeObjectHandler(std::vector<std::vector<float>>* map_height_list);		//Function creates player object, loads in enemies for the zones etc. Call from InitiateGame();
 
 	//Functions for controlling the player
 	//Call these functions when pressing buttons
