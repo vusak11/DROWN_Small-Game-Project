@@ -131,9 +131,6 @@ void ObjectClass::UpdatePosition(float in_deltatime) {
 void ObjectClass::AlterVelocityVec(glm::vec3 in_vec) {
 	//Alter the current velocity vector with the new given one
 	this->velocity_vec_ = this->velocity_vec_ + in_vec;
-
-	//Then call the SetVelocity function to clam the value below OBJECT_MAX_VELOCITY
-	this->SetVelocity(glm::length(this->velocity_vec_));
 }
 
 void ObjectClass::TurnLeft() {

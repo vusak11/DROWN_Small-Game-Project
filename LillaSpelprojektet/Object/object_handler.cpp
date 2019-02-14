@@ -79,12 +79,16 @@ void ObjectHandler::DeterminePlayerAction() {
 
 	}
 	if (player_input_.left) {
-		glm::vec3 pos = player_ptr_->GetPosition();
-		player_ptr_->SetPosition(pos.x - 1, pos.y, pos.z);
+		//glm::vec3 pos = player_ptr_->GetPosition();
+		//player_ptr_->SetPosition(pos.x - 1, pos.y, pos.z);
+		glm::vec3 velocity_change = glm::vec3((float)-OBJECT_PLAYER_ACCELERATION, 0.0f, 0.0f);
+		this->player_ptr_->AlterVelocityVec(velocity_change);
 	}
 	if (player_input_.right) {
-		glm::vec3 pos = player_ptr_->GetPosition();
-		player_ptr_->SetPosition(pos.x + 1, pos.y, pos.z);
+		//glm::vec3 pos = player_ptr_->GetPosition();
+		//player_ptr_->SetPosition(pos.x + 1, pos.y, pos.z);
+		glm::vec3 velocity_change = glm::vec3((float)OBJECT_PLAYER_ACCELERATION, 0.0f, 0.0f);
+		this->player_ptr_->AlterVelocityVec(velocity_change);
 	}
 	if (player_input_.pick_up) {
 
@@ -179,17 +183,32 @@ void ObjectHandler::PlayerPickUp() {
 
 std::vector<ObjectPackage> ObjectHandler::UpdateAndRetrieve(float in_deltatime) {
 
-	std::vector<ObjectClass*> relevant_npc_ptr_vector;
+	
+	std::vector<ObjectClass*> relevant_npcs_ptr_vector;		//Two vectors to hold the NPC:s and drops that are within the culling distance
 	std::vector<ObjectClass*> relevant_drops_ptr_vector;
+	std::vector<ObjectClass*> physical_objects_ptr_vector;	//A vector to hold everything that is affected by physics
+	
 
-	//Cull NPCs
-	relevant_npc_ptr_vector = this->CullAndRetrieveObjectPtrs(this->npc_ptr_vector_);
+	//Cull NPC:s
+	relevant_npcs_ptr_vector = this->CullAndRetrieveObjectPtrs(this->npc_ptr_vector_);
 
 	//Cull Drops
 	relevant_drops_ptr_vector = this->CullAndRetrieveObjectPtrs(this->drop_ptr_vector_);
 
+	//Fill physical vector with the player and all NPC:s
+	physical_objects_ptr_vector.push_back(this->player_ptr_);
+	physical_objects_ptr_vector.insert(
+		physical_objects_ptr_vector.end(),
+		relevant_npcs_ptr_vector.begin(),
+		relevant_npcs_ptr_vector.end()
+	);
+
+	//Take input from player (i.e. set velocity, attack flags, etc)
 	DeterminePlayerAction();
 	
+	//Apply physics such as moving or falling
+	this->physics_engine_ptr_->ApplyPhysics(in_deltatime, physical_objects_ptr_vector);
+
 	//DetermineNPCAction(/*vector.at(i)*/);
 
 	//ResolvePlayerAction();
@@ -205,7 +224,7 @@ std::vector<ObjectPackage> ObjectHandler::UpdateAndRetrieve(float in_deltatime) 
 	std::vector<ObjectPackage> package_vector;
 	
 	this->PackObjectIntoVector(this->player_ptr_, package_vector);
-	this->PackObjectVectorIntoVector(relevant_npc_ptr_vector, package_vector);
+	this->PackObjectVectorIntoVector(relevant_npcs_ptr_vector, package_vector);
 	this->PackObjectVectorIntoVector(relevant_drops_ptr_vector, package_vector);
 
 	return package_vector;
