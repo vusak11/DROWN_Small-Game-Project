@@ -2,6 +2,7 @@
 #define PHYSICS_ENGINE_H
 
 #include <vector>
+#include <cstdlib>	//Has abs()
 
 #include "../object_class.h"
 

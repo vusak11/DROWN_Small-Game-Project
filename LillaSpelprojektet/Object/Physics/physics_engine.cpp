@@ -26,7 +26,7 @@ void PhysicsEngine::UpdateVelocity(float& in_deltatime, ObjectClass*& in_object_
 	//If the new velocity is too low set it to 0
 	//v = v*(1-d)
 	velocity_vec.x = velocity_vec.x * (1 - this->object_decceleration_);
-	if (velocity_vec.x < this->object_min_velocity_) { velocity_vec.x = 0.0f; }
+	if (std::abs(velocity_vec.x) < this->object_min_velocity_) { velocity_vec.x = 0.0f; }
 
 	//Check if the new velocity exceeds maximum and if so clamp it to max
 	if (glm::length(velocity_vec) > this->object_max_velocity_) {
