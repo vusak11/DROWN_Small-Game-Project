@@ -17,9 +17,8 @@ Map::Map(char* path) {
 Map::~Map() {
 }
 
-bool Map::LoadMap(char* path) {
+bool Map::LoadMap(const char* path) {
 
-	int map_width_, map_height_;
 	unsigned char* map_data = SOIL_load_image(path, &map_width_, &map_height_, 0, SOIL_LOAD_RGB);
 
 	std::cout << "MAP: " << path << SOIL_last_result() << std::endl;
@@ -36,7 +35,7 @@ bool Map::LoadMap(char* path) {
 		}
 		temp_height_.push_back(temp_float);
 	}
-	std::cout << "test " << std::endl;
+
 	//-------------Texture coordinates(U,V)-------------//
 
 	std::vector<glm::vec2> temp_coord;
@@ -53,19 +52,10 @@ bool Map::LoadMap(char* path) {
 
 	//------------ Normals ------------//
 
-	glm::vec3 point1;
-	glm::vec3 point2;
-	glm::vec3 point3;
-	glm::vec3 point4;
-
-	glm::vec3 edge1;
-	glm::vec3 edge2;
-
-	std::vector<glm::vec3> temp_norm_0;
-	std::vector<glm::vec3> temp_norm_1;
-
-	std::vector<std::vector<glm::vec3>> triangle_norm_0;
-	std::vector<std::vector<glm::vec3>> triangle_norm_1;
+	glm::vec3 point1, point2, point3, point4;
+	glm::vec3 edge1, edge2;
+	std::vector<glm::vec3> temp_norm_0, temp_norm_1;
+	std::vector<std::vector<glm::vec3>> triangle_norm_0, triangle_norm_1;
 
 	for (int z = 0; z < map_height_ - 1; z++) {
 		temp_norm_0.clear();
@@ -143,7 +133,6 @@ bool Map::LoadMap(char* path) {
 			indices_.push_back(p6);
 
 		}
-        indices_.push_back(0);
 		indices_.push_back(map_width_*map_height_); //"degenerate"
 	}
 

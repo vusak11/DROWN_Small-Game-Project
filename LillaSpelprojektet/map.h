@@ -2,8 +2,7 @@
 #define MAP_H
 
 #include <GLM/glm.hpp>
-
-#include "shader_handler.h"
+#include <GL/glew.h>
 #include "glm\gtc\matrix_transform.hpp"
 #include "glm\gtc\type_ptr.hpp"	// To be able to use vector variables in class.
 #include <iostream>
@@ -26,7 +25,7 @@ public:
 	~Map();
 
 	// This function is not complete.
-	bool LoadMap(char* path);	// Returns a bool to trouble shoot while loading new maps.
+	bool LoadMap(const char* path);	// Returns a bool to trouble shoot while loading new maps.
 	void LoadTexture(char* texture_name);
 
 	void Buffer(GLuint shader);
@@ -34,9 +33,6 @@ public:
 
 	void SetHeight(int height);
 	void SetWidth(int width);
-
-	float GetTempHeight(int x, int z);
-	void LowerPosition();
 
 	int GetHeight();
 	int GetWidth();

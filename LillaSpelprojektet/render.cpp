@@ -20,8 +20,9 @@ Render::Render() {
 	model_ = new Model*[nr_of_models_];
 	model_[0] = new Model((char*)"../Resources/Models/TestBox/testBOX.obj");
 
-	map_[0].LoadMap((char*)"../Resources/Map/TestMap.bmp");
-	map_[0].LoadTexture((char*)"../Resources/Map/rock.png");
+	map_handler_.InitializeMaps(
+		"../Resources/Map/TestMap_Sliced/TestMap_",
+		"../Resources/Map/rock.png");
 }
 
 Render::~Render() {
@@ -45,7 +46,8 @@ void Render::InitializeRender() {
 		glm::vec3(1.0f, 1.0f, 1.0f),
 		glm::vec3(1.0f, 1.0f, 1.0f));
 
-	map_[0].Buffer(geometry_pass_->GetProgram());
+	map_handler_.InitializeBuffers(geometry_pass_->GetProgram());
+	//map_[0].Buffer(geometry_pass_->GetProgram());
 }
 
 void Render::UpdateRender(
@@ -77,7 +79,7 @@ void Render::UpdateRender(
 }
 
 void Render::GeometryDrawing(std::vector<ObjectPackage>& object_vector) {
-	for (unsigned int i = 0; i < object_vector.size(); i++) {
+	/*for (unsigned int i = 0; i < object_vector.size(); i++) {
 		if (OBJECT_ID_NULL == object_vector[i].id) {
 
 		}
@@ -90,7 +92,16 @@ void Render::GeometryDrawing(std::vector<ObjectPackage>& object_vector) {
 		}
 		else if (OBJECT_ID_MAP == object_vector[i].id) {
 			ModelTransformation(object_vector[i].model_matrix);
-			map_[0].Draw(geometry_pass_->GetProgram());
+			map_handler_.Draw(geometry_pass_->GetProgram());
+		}
+	}*/
+	for (int j = 0; j < map_handler_.GetHeightSize(); j++) {
+		for (int i = 0; i < map_handler_.GetWidthSize(j); i++) {
+			glm::mat4 model = glm::mat4(1.0f);
+			model = glm::translate(model, map_handler_.Transformation(i, j));
+			model = glm::scale(model, glm::vec3(1.0f, 1.0f, 0.1f));
+			ModelTransformation(model);
+			map_handler_.Draw(geometry_pass_->GetProgram(), i, j);
 		}
 	}
 }

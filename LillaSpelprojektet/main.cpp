@@ -17,9 +17,6 @@ int main() {
 		std::cout << "GLEW not linking" << std::endl;
 	}
 
-	//glEnable(GL_DEPTH_TEST);
-	//glDepthFunc(GL_LESS);
-
 	/*----------Variables----------*/
 	sf::Clock gameTime;
 	Game game;

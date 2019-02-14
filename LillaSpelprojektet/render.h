@@ -7,7 +7,7 @@
 #include <GLM\gtc\matrix_transform.hpp>
 #include <GLM\gtc\type_ptr.hpp>
 #include "model.h"
-#include "map.h"
+#include "map_handler.h"
 
 
 class Render {
@@ -24,7 +24,8 @@ private:
 	int nr_of_models_ = 1;
 	Model** model_;
 
-	Map map_[1];
+	MapHandler map_handler_;
+	//Map map_[1];
 	glm::mat4 model_matrix_;
 public:
 	Render();
