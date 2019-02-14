@@ -9,6 +9,7 @@
 #include "model.h"
 #include "map.h"
 #include "menu.h"
+#include "gui.h"
 
 
 class Render {
@@ -27,9 +28,12 @@ private:
 	Model** model_;
 
 	ShaderHandler* text_shaders_;
+	ShaderHandler* gui_shaders_;
 
 	Map map_[1];
 	glm::mat4 model_matrix_;
+
+	GUI hud;
 public:
 	Render();
 	~Render();

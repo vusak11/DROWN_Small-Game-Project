@@ -88,6 +88,8 @@ void Render::UpdateRender(
 	LightingPass(camera_position);
 
 	RenderQuad();
+
+	hud.RenderGUI(text_shaders_);
 }
 
 void Render::GeometryDrawing(std::vector<ObjectPackage>& object_vector) {
