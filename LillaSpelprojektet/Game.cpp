@@ -1,10 +1,10 @@
 #include "game.h"
 
 Game::Game() {
-	this->cam_handler_ptr_ = new CameraHandler(glm::vec3(0.0f), 10.0f);
+	this->cam_handler_ptr_ = new CameraHandler(glm::vec3(100.0f, -200.0f, -80.0f), 80.0f);
 	this->obj_handler_ptr_ = new ObjectHandler();
 	menu_.Initiliaze();
-    state_ = MENU;
+    state_ = GAME;
 }
 
 Game::~Game() {

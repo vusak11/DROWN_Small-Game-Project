@@ -55,7 +55,7 @@ void ObjectClass::SetScale(float in_s) {
 	scale_ = glm::vec3(in_s, in_s, in_s);
 
 	//Scale an identity matrix by scale_
-	this->scaling_matrix_ = glm::scale(glm::mat4(), this->scale_);
+	this->scaling_matrix_ = glm::scale(glm::mat4(1.0f), this->scale_);
 
 	//Model matrix is now out of date
 	this->model_matrix_up_to_date_ = false;
@@ -65,7 +65,7 @@ void ObjectClass::SetScale(float in_x, float in_y, float in_z) {
 	scale_ = glm::vec3(in_x, in_y, in_z);
 
 	//Scale an identity matrix by scale_
-	this->scaling_matrix_ = glm::scale(glm::mat4(), this->scale_);
+	this->scaling_matrix_ = glm::scale(glm::mat4(1.0f), this->scale_);
 
 	//Model matrix is now out of date
 	this->model_matrix_up_to_date_ = false;

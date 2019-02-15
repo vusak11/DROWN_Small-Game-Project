@@ -1,4 +1,5 @@
 #include "physics_engine.h"
+#include <iostream>
 
 //Private--------------------------------------------------
 
@@ -59,16 +60,16 @@ void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_
 
 	// Get intervals of points to check in the map data from the players position + a radius
 	// This could probably be replaced by something less computation heavy
-	int player_tile_pos_x = in_object_ptr->GetPosition().x / MAP_SCALE;
-	if ((int)in_object_ptr->GetPosition().x % MAP_SCALE > MAP_SCALE)
+	int player_tile_pos_x = object_pos.x / MAP_SCALE;
+	if ((int)object_pos.x % MAP_SCALE > MAP_SCALE)
 	{
 		player_tile_pos_x++;
 	}
 	int x_min = __max(player_tile_pos_x - radius_constant, 0);
 	int x_max = __min(x_min + 2 * radius_constant, MAP_SCALE * map_size - MAP_SCALE);
 
-	int player_tile_pos_y = in_object_ptr->GetPosition().y / MAP_SCALE;
-	if ((int)in_object_ptr->GetPosition().x % MAP_SCALE > MAP_SCALE)
+	int player_tile_pos_y = object_pos.y / MAP_SCALE;
+	if ((int)object_pos.y % MAP_SCALE > MAP_SCALE)
 	{
 		player_tile_pos_y++;
 	}
@@ -82,43 +83,45 @@ void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_
 
 	// precalculate the hitbox position on the grid;
 
+	HitBox tmp_hitbox = HitBox(glm::vec3(player_tile_pos_x, player_tile_pos_y, 0.0f), in_object_ptr->GetScale());
+
 	//---------Point_0---------//
-	int pos_0_x = in_object_ptr->GetHitBox().hb_pos0_.x / MAP_SCALE;
-	if ((int)in_object_ptr->GetHitBox().hb_pos0_.x % MAP_SCALE > MAP_SCALE)
+	int pos_0_x = tmp_hitbox.hb_pos0_.x / MAP_SCALE;
+	if ((int)tmp_hitbox.hb_pos0_.x % MAP_SCALE > MAP_SCALE)
 		pos_0_x++;
 
-	int pos_0_y = in_object_ptr->GetHitBox().hb_pos0_.y / MAP_SCALE;
-	if ((int)in_object_ptr->GetHitBox().hb_pos0_.y % MAP_SCALE > MAP_SCALE)
+	int pos_0_y = tmp_hitbox.hb_pos0_.y / MAP_SCALE;
+	if ((int)tmp_hitbox.hb_pos0_.y % MAP_SCALE > MAP_SCALE)
 		pos_0_y++;
 
 	//---------Point_1---------//
 
-	int pos_1_x = in_object_ptr->GetHitBox().hb_pos1_.x / MAP_SCALE;
-	if ((int)in_object_ptr->GetHitBox().hb_pos1_.x % MAP_SCALE > MAP_SCALE)
+	int pos_1_x = tmp_hitbox.hb_pos1_.x / MAP_SCALE;
+	if ((int)tmp_hitbox.hb_pos1_.x % MAP_SCALE > MAP_SCALE)
 		pos_1_x++;
 
-	int pos_1_y = in_object_ptr->GetHitBox().hb_pos1_.y / MAP_SCALE;
-	if ((int)in_object_ptr->GetHitBox().hb_pos1_.y % MAP_SCALE > MAP_SCALE)
+	int pos_1_y = tmp_hitbox.hb_pos1_.y / MAP_SCALE;
+	if ((int)tmp_hitbox.hb_pos1_.y % MAP_SCALE > MAP_SCALE)
 		pos_1_y++;
 
 	//---------Point_2---------//
 
-	int pos_2_x = in_object_ptr->GetHitBox().hb_pos2_.x / MAP_SCALE;
-	if ((int)in_object_ptr->GetHitBox().hb_pos2_.x % MAP_SCALE > MAP_SCALE)
+	int pos_2_x = tmp_hitbox.hb_pos2_.x / MAP_SCALE;
+	if ((int)tmp_hitbox.hb_pos2_.x % MAP_SCALE > MAP_SCALE)
 		pos_2_x++;
 
-	int pos_2_y = in_object_ptr->GetHitBox().hb_pos2_.y / MAP_SCALE;
-	if ((int)in_object_ptr->GetHitBox().hb_pos2_.y % MAP_SCALE > MAP_SCALE)
+	int pos_2_y = tmp_hitbox.hb_pos2_.y / MAP_SCALE;
+	if ((int)tmp_hitbox.hb_pos2_.y % MAP_SCALE > MAP_SCALE)
 		pos_2_y++;
 
 	//---------Point_3---------//
 
-	int pos_3_x = in_object_ptr->GetHitBox().hb_pos3_.x / MAP_SCALE;
-	if ((int)in_object_ptr->GetHitBox().hb_pos3_.x % MAP_SCALE > MAP_SCALE)
+	int pos_3_x = tmp_hitbox.hb_pos3_.x / MAP_SCALE;
+	if ((int)tmp_hitbox.hb_pos3_.x % MAP_SCALE > MAP_SCALE)
 		pos_3_x++;
 
-	int pos_3_y = in_object_ptr->GetHitBox().hb_pos3_.y / MAP_SCALE;
-	if ((int)in_object_ptr->GetHitBox().hb_pos3_.y % MAP_SCALE > MAP_SCALE)
+	int pos_3_y = tmp_hitbox.hb_pos3_.y / MAP_SCALE;
+	if ((int)tmp_hitbox.hb_pos3_.y % MAP_SCALE > MAP_SCALE)
 		pos_3_y++;
 
 
@@ -132,7 +135,7 @@ void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_
 	{
 		for (int j = y_min; j < y_max; j++)
 		{
-			float height_index = (*map_height_list_)[i][j];
+			float height_index = (*map_height_list_)[map_size - i][j];
 			if (height_index > 0.9f)
 			{
 				// if point 0 in hitbox is on a tile with a vertex from the map, collision_0 = true;
@@ -164,43 +167,57 @@ void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_
 	
 	if (collision_0 && collision_1)	// Bot collision
 	{
-		//object_pos.x
+		object_pos.y++;
+		std::cout << "Bot Collision" << std::endl;
 	}
 	else if (collision_0 && collision_3)	// Left collision
 	{
-
+		object_pos.x++;
+		std::cout << "Left Collision" << std::endl;
 	}
 	else if (collision_1 && collision_2)	// Right collision
 	{
-
+		object_pos.x--;
+		std::cout << "Right Collision" << std::endl;
 	}
 	else if (collision_3 && collision_2)	// Top collision
 	{
-
+		object_pos.y--;
+		std::cout << "Top Collision" << std::endl;
 	}
 	else if (collision_0)
 	{
 
+		std::cout << "0 Collision" << std::endl;
 	}
 	else if (collision_1)
 	{
 
+		std::cout << "1 Collision" << std::endl;
 	}
 	else if (collision_2)
 	{
 
+		std::cout << "2 Collision" << std::endl;
 	}
 	else if (collision_3)
 	{
 
+		std::cout << "3 Collision" << std::endl;
 	}
+
+	// Reset the flags
+	collision_0 = false;
+	collision_1 = false;
+	collision_2 = false;
+	collision_3 = false;
 
 	///												
 
 
 
 	//TEMP: DON'T LET AN OBJECT BELOW THE "GROUND" PLANE
-	if (object_pos.y < 0.0f) { object_pos.y = 0.0f; }
+	//if (object_pos.y < 0.0f) { object_pos.y = 0.0f; }
 
 	//Set the object's new position
 	in_object_ptr->SetPosition(object_pos.x, object_pos.y);

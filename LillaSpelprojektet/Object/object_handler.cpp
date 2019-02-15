@@ -76,16 +76,16 @@ void ObjectHandler::DeterminePlayerAction() {
 		
 	}
 	if (player_input_.jump) {
-		glm::vec3 p = player_ptr_->GetPosition();
-		player_ptr_->SetPosition(395.0f, p.y, p.z);
+		//glm::vec3 p = player_ptr_->GetPosition();
+		//player_ptr_->SetPosition(395.0f, p.y, p.z);
 	}
 	if (player_input_.left) {
-		glm::vec3 pos = player_ptr_->GetPosition();
-		player_ptr_->SetPosition(pos.x, pos.y -1, pos.z);
+		glm::vec3 p = player_ptr_->GetVelocityVec();
+		player_ptr_->SetVelocityVec(glm::vec3(-10, p.y, p.z));
 	}
 	if (player_input_.right) {
-		glm::vec3 pos = player_ptr_->GetPosition();
-		player_ptr_->SetPosition(pos.x, pos.y + 1, pos.z);
+		glm::vec3 p = player_ptr_->GetVelocityVec();
+		player_ptr_->SetVelocityVec(glm::vec3(10, p.y, p.z));
 	}
 	if (player_input_.pick_up) {
 
@@ -141,7 +141,8 @@ ObjectHandler::~ObjectHandler() {
 void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map_height_list) {
 
 	// z = ~90-95
-	this->player_ptr_ = new ObjectClass(glm::vec3(84.0f, 0.0f, -80.0f), OBJECT_ID_PLAYER);
+	this->player_ptr_ = new ObjectClass(glm::vec3(100.0f, -200.0f, -95.0f), OBJECT_ID_PLAYER);
+	this->player_ptr_->SetScale(10.0f);
 
 	this->physics_engine_ptr_ = new PhysicsEngine(
 		GRAVITATIONAL_ACCELERATION,
@@ -151,6 +152,7 @@ void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map
 		map_height_list
 	);
 
+	
 	//this->TestObjectHandler();		//NTS: Just for testing
 
 
