@@ -1,5 +1,7 @@
 #include "object_class.h"
 
+#include <iostream>			//TEMP
+
 //Private--------------------------------------------------
 
 void ObjectClass::CalculateModelMatrix() {
@@ -147,6 +149,8 @@ void ObjectClass::TurnLeft(const float& in_deltatime) {
 	//and we snap back to 90
 	if ((new_rotation > 90) && (new_rotation < 180)) { new_rotation = 90; }
 
+	std::cout << "Rot L: " << new_rotation << std::endl;
+
 	this->SetRotation(this->rotation_around_x_, new_rotation, this->rotation_around_z_);
 }
 
@@ -157,9 +161,11 @@ void ObjectClass::TurnRight(const float& in_deltatime) {
 	//Adjust for deltatime
 	//new_rotation = (int)((float)new_rotation*in_deltatime);
 
-	//If the new orientation lies somewhere in [180, 270] we have turned too far
+	//If the new orientation lies somewhere in [-90, -180] = [180, 270] we have turned too far
 	//and we snap back to 270
-	if ((new_rotation > 180) && (new_rotation < 270)) { new_rotation = 270; }
+	if ((new_rotation < -90) && (new_rotation > -180)) { new_rotation = -90; }
+
+	std::cout << "Rot R: " << new_rotation << std::endl;
 
 	this->SetRotation(this->rotation_around_x_, new_rotation, this->rotation_around_z_);
 }
