@@ -3,7 +3,7 @@
 CameraHandler::CameraHandler(glm::vec3 in_target, float in_dist) {
 	this->cams_[PRIMARY] = Camera(in_target, in_dist);
 	this->cams_[SECONDARY] = Camera(in_target, in_dist+10);			//Place the secondary camera (debug) a bit further away than the primary one
-	this->mode_ = SECONDARY;
+	this->mode_ = PRIMARY;
 }
 
 CameraHandler::~CameraHandler() {
@@ -34,6 +34,14 @@ glm::mat4 CameraHandler::SetCameraPos(float in_x, float in_y, float in_z) {
 
 	//Return the active camera's View*Perspective Matrix
 	return this->cams_[this->mode_].GetViewPerspectiveMatrix();
+}
+
+glm::mat4 CameraHandler::SetPrimaryCameraPos(glm::vec3 p)
+{
+	this->cams_[0].SetCameraPos(p.x, p.y, cams_[0].GetCameraPosition().z);
+
+	//Return the active camera's View*Perspective Matrix
+	return this->cams_[0].GetViewPerspectiveMatrix();
 }
 
 glm::mat4 CameraHandler::GetPerspectiveMatrix() const

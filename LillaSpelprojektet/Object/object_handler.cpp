@@ -113,7 +113,8 @@ void ObjectHandler::DeterminePlayerAction() {
 		
 	}
 	if (this->player_input_.pick_up) {
-
+		glm::vec3 p = player_ptr_->GetPosition();
+		//this->player_ptr_->SetPosition(200, 0, p.z);
 	}
 	if (this->player_input_.use_ability) {
 
@@ -166,7 +167,7 @@ ObjectHandler::~ObjectHandler() {
 void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map_height_list) {
 
 	// z = ~90-95
-	this->player_ptr_ = new ObjectClass(glm::vec3(100.0f, -200.0f, -95.0f), OBJECT_ID_PLAYER);
+	this->player_ptr_ = new ObjectClass(glm::vec3(100.0f, -400.0f, -95.0f), OBJECT_ID_PLAYER);
 	this->player_ptr_->SetScale(10.0f);
 
 	this->physics_engine_ptr_ = new PhysicsEngine(
