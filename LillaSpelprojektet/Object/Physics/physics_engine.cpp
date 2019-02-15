@@ -27,14 +27,16 @@ void PhysicsEngine::UpdateVelocity(float& in_deltatime, ObjectClass*& in_object_
 	velocity_vec.y = velocity_vec.y + this->gravitational_acceleration_ * in_deltatime;
 
 	//Apply the x-axis decceleration (Different for ground/air)
-	//v = v*(1-d)
-	if (in_object_ptr->object_metadata_.airborne) {
-		velocity_vec.x = velocity_vec.x * (1 - this->object_air_decceleration_);
-	}
-	else {
-		velocity_vec.x = velocity_vec.x * (1 - this->object_ground_decceleration_);
-	}
+	//v = v0 + (-v0*lr)*t;
+	float loss_ratio = (in_object_ptr->object_metadata_.airborne) ?
+		this->object_air_loss_ratio_ :
+		this->object_ground_loss_ratio_;
 	
+	//v = v(1-d);
+	//v = v + (-v)d*t
+	float decceleration = -velocity_vec.x*loss_ratio;
+
+	velocity_vec.x = velocity_vec.x + decceleration * in_deltatime;
 
 	//If the new velocity is too low set it to 0
 	if (std::abs(velocity_vec.x) < this->object_min_velocity_) { velocity_vec.x = 0.0f; }
@@ -78,8 +80,8 @@ PhysicsEngine::PhysicsEngine() {
 	this->gravitational_acceleration_	= GRAVITATIONAL_ACCELERATION;
 	this->object_max_velocity_			= OBJECT_MAX_VELOCITY;
 	this->object_min_velocity_			= OBJECT_MIN_VELOCITY;
-	this->object_ground_decceleration_	= OBJECT_GROUND_DECCELERATION;
-	this->object_air_decceleration_		= OBJECT_AIR_DECCELERATION;
+	this->object_ground_loss_ratio_		= OBJECT_GROUND_LOSS_RATIO;
+	this->object_air_loss_ratio_		= OBJECT_AIR_LOSS_RATIO;
 }
 
 PhysicsEngine::~PhysicsEngine() {

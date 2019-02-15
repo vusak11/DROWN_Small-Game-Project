@@ -19,10 +19,10 @@
 //Physics--------------------------------------------------
 #define GRAVITATIONAL_ACCELERATION -100	//-g on y-axis	//Affects fall speed
 #define OBJECT_MAX_VELOCITY 100
-#define OBJECT_MIN_VELOCITY 0.1			//The lowest velocity an object can have that isn't 0
+#define OBJECT_MIN_VELOCITY 0.5			//The lowest velocity an object can have that isn't 0
 										//If an velocity is lower than this it sets to 0
-#define OBJECT_GROUND_DECCELERATION 0.1		//0.1 = 10%
-#define OBJECT_AIR_DECCELERATION 0.05
+#define OBJECT_GROUND_LOSS_RATIO 1.95	//0.1 = 10%		//WHAT.
+#define OBJECT_AIR_LOSS_RATIO 1.00
 
 //Player object--------------------------------------------
 //These numbers are specific to the player. Consider using these as base input for the

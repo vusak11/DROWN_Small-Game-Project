@@ -11,8 +11,8 @@ private:
 	float gravitational_acceleration_;
 	float object_max_velocity_;
 	float object_min_velocity_;
-	float object_ground_decceleration_;
-	float object_air_decceleration_;
+	float object_ground_loss_ratio_;
+	float object_air_loss_ratio_;
 
 	void UpdateVelocity(float& in_deltatime, ObjectClass*& in_object_ptr);	//Changes an object's velocity by applying acceleration
 	void UpdatePosition(float& in_deltatime, ObjectClass*& in_object_ptr);	//Changes an object's position by applying velocity
