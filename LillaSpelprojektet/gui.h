@@ -13,7 +13,9 @@
 
 class GUI {
 private:
-	GLuint texture_;
+	GLuint health_bar_texture_;
+	GLuint quick_slot_texture_;
+
 	int health_bar_length_;
 
 	GLuint vertex_array_object_;
@@ -21,8 +23,11 @@ private:
 public:
 	GUI();
 	~GUI();
+	void RenderHealthBar();
+	void RenderSkillSlots();
 	void RenderGUI(ShaderHandler* shader_program);
-	void LoadTexture(char* texture_name);
+	void LoadHealthBarTexture(char* texture_name);
+	void LoadQuickSlotTexture(char* texture_name);
 };
 
 #endif

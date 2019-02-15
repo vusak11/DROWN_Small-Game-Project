@@ -31,7 +31,7 @@ Render::Render() {
 	map_[0].LoadMap((char*)"../Resources/Map/TestMapMediumHard.bmp");
 	map_[0].LoadTexture((char*)"../Resources/Map/rock.png");
 
-	hud.LoadTexture((char*)"../Resources/GUI/healthbar.png");
+	hud.LoadHealthBarTexture((char*)"../Resources/GUI/healthbar.png");
 }
 
 Render::~Render() {

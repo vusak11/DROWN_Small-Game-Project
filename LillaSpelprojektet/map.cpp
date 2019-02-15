@@ -191,7 +191,6 @@ void Map::LoadTexture(char * texture_name) {
 
 	glGenerateMipmap(GL_TEXTURE_2D);
 	SOIL_free_image_data(image);
-
 }
 
 void Map::Buffer(GLuint shader) {
