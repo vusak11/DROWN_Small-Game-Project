@@ -13,7 +13,7 @@
 //Objects--------------------------------------------------
 #define OBJECT_CULLING_DISTANCE 1380	//Distance beyond which objects are not updated nor rendered
 
-#define OBJECT_TURN_RATE 45 //degrees	//Purely for the turn function in ObjectClass as of this writing
+#define OBJECT_TURN_RATE 5 //degrees	//Purely for the turn function in ObjectClass as of this writing
 
 
 //Physics--------------------------------------------------
@@ -27,7 +27,7 @@
 //Player object--------------------------------------------
 //These numbers are specific to the player. Consider using these as base input for the
 //constructor and then altering internal variables
-#define PLAYER_TOP_SPEED 10
+#define PLAYER_TOP_SPEED 5
 #define PLAYER_JUMP_VELOCITY 50
 
 

@@ -14,9 +14,13 @@ void ObjectClass::CalculateModelMatrix() {
 
 ObjectClass::ObjectClass(glm::vec3 start_pos, ObjectID id) {
 
+	this->id_ = id;
+
 	this->position_ = start_pos;
 
-	this->id_ = id;
+	int rotation_around_x_ = 0;
+	int rotation_around_y_ = 0;
+	int rotation_around_z_ = 0;
 
 	this->scaling_matrix_ = glm::mat4(1.0f);
 	this->rotation_matrix_ = glm::mat4(1.0f);
@@ -132,9 +136,12 @@ glm::mat4 ObjectClass::GetModelMatrix() {
 	return this->model_matrix_;
 }
 
-void ObjectClass::TurnLeft() {
+void ObjectClass::TurnLeft(const float& in_deltatime) {
 	//Turn the model leftwards (positive direction)
 	int new_rotation = (this->rotation_around_y_ + OBJECT_TURN_RATE) % 360;
+
+	//Adjust for deltatime
+	//new_rotation = (int)((float)new_rotation*in_deltatime);
 
 	//If the new orientation lies somewhere in [90, 180] we have turned too far
 	//and we snap back to 90
@@ -143,9 +150,12 @@ void ObjectClass::TurnLeft() {
 	this->SetRotation(this->rotation_around_x_, new_rotation, this->rotation_around_z_);
 }
 
-void ObjectClass::TurnRight() {
+void ObjectClass::TurnRight(const float& in_deltatime) {
 	//Turn the model rightwards (negative direction)
 	int new_rotation = (this->rotation_around_y_ - OBJECT_TURN_RATE) % 360;
+
+	//Adjust for deltatime
+	//new_rotation = (int)((float)new_rotation*in_deltatime);
 
 	//If the new orientation lies somewhere in [180, 270] we have turned too far
 	//and we snap back to 270

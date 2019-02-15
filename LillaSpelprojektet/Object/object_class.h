@@ -92,8 +92,8 @@ public:
 	glm::mat4 GetModelMatrix();					//NTS: Should check if model matrix is up to date before returning, and update it if it isn't
 
 	//Other Functions--------------------------------------
-	void TurnLeft();
-	void TurnRight();
+	void TurnLeft(const float& in_deltatime);
+	void TurnRight(const float& in_deltatime);
 
 
 };
