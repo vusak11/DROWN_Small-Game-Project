@@ -57,7 +57,5 @@ public:
 	void GeometryDrawing(std::vector<ObjectPackage>& object_vector);
 	void ModelTransformation(glm::mat4 model_matrix);
 	void RenderQuad();
-
-	Map* getMapPointer(int index);
 };
 #endif

@@ -49,7 +49,7 @@ void Game::InputFromDevices(float in_deltatime) {
 		//Walk down
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
 			this->obj_handler_ptr_->PlayerUseAbility();	// Used to temporary test in obj handler class
-			std::cout << "Player y position: " << obj_handler_ptr_->GetPlayerPos().y << std::endl;
+			std::cout << "X: " << obj_handler_ptr_->GetPlayerPos().x << "Y: " << obj_handler_ptr_->GetPlayerPos().y << " Z: " << obj_handler_ptr_->GetPlayerPos().z << std::endl;
 		}
 		//Walk right
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
@@ -61,7 +61,12 @@ void Game::InputFromDevices(float in_deltatime) {
 		}
 		//Pick up
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::E)) {
-			//Do something
+			this->obj_handler_ptr_->PlayerPickUp();
+			//float player_tile_pos_x = this->obj_handler_ptr_->GetPlayerPos().x / (100*MAP_SCALE - MAP_SCALE);
+			//float test = 44.63 % MAP_SCALE;
+			
+			//std::cout << "x pos: " << this->obj_handler_ptr_->GetPlayerPos().x << "Test Value: " << player_tile_pos_x << std::endl;
+
 		}
 		/*---------------End Keyboard inputs-----------------*/
 
@@ -132,6 +137,7 @@ void Game::GameLoop(float in_deltatime) {
 		// This updates the player position.
 		std::vector<ObjectPackage> object_vector;
 		object_vector = this->obj_handler_ptr_->UpdateAndRetrieve(in_deltatime);
+		cam_handler_ptr_->SetPrimaryCameraPos(this->obj_handler_ptr_->GetPlayerPos());
 
 		render_.UpdateRender(
 			in_deltatime,
