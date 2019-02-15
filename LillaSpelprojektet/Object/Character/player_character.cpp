@@ -19,7 +19,7 @@ PlayerCharacter::~PlayerCharacter() {
 
 }
 
-void PlayerCharacter::MoveLeft(const float& in_deltatime) {
+void PlayerCharacter::MoveLeft() {
 
 	//Set player velocity towards negative x
 	glm::vec3 new_velocity = this->GetVelocityVec();
@@ -29,7 +29,7 @@ void PlayerCharacter::MoveLeft(const float& in_deltatime) {
 	this->SetVelocityVec(new_velocity);
 }
 
-void PlayerCharacter::MoveRight(const float& in_deltatime) {
+void PlayerCharacter::MoveRight() {
 
 	//Set player velocity towards positive x
 	glm::vec3 new_velocity = this->GetVelocityVec();

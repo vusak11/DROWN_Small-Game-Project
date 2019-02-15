@@ -4,14 +4,27 @@
 #include "character.h"
 
 //WIP: Placeholder for proper weapons and abilities
-enum Weapon {
+enum WeaponID {
 	SWORD
 };
 
-enum Ability {
+enum AbilityID {
 	NONE,
 	DOUBLE_JUMP
 };
+
+struct Weapon {
+	WeaponID id;
+	int damage;
+	float cooldown;
+	//Hitbox data
+};
+
+struct Ability {
+	AbilityID id;
+	float cooldown;
+};
+
 //
 
 class PlayerCharacter : public Character {
@@ -28,8 +41,8 @@ public:
 	PlayerCharacter(glm::vec3 start_pos);
 	~PlayerCharacter();
 
-	void MoveLeft(const float& in_deltatime);
-	void MoveRight(const float& in_deltatime);
+	void MoveLeft();
+	void MoveRight();
 	void Jump();
 
 };

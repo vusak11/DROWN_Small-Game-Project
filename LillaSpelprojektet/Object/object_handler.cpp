@@ -73,10 +73,10 @@ void ObjectHandler::DeterminePlayerAction(const float& in_deltatime) {
 
 	//Determine player movement on the x-axis
 	if (this->player_input_.left) {
-		this->player_ptr_->MoveLeft(in_deltatime);
+		this->player_ptr_->MoveLeft();
 	}
 	if (this->player_input_.right) {
-		this->player_ptr_->MoveRight(in_deltatime);
+		this->player_ptr_->MoveRight();
 	}
 	//If input is jump
 	if (this->player_input_.jump) {
