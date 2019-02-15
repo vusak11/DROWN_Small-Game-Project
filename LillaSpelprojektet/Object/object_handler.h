@@ -50,7 +50,7 @@ private:
 				
 	float DistanceBetween(const ObjectClass* in_object_a, const ObjectClass* in_object_b) const;			//Returns the distance between the two given objects
 
-	void DeterminePlayerAction();						//Read player_input_ and determine legal actions, such as changes to velocity or if we can attack this frame
+	void DeterminePlayerAction(const float& in_deltatime);						//Read player_input_ and determine legal actions, such as changes to velocity or if we can attack this frame
 	void DetermineNPCAction(ObjectClass* in_npc);		//Call the AI of the npc object to see what the npc does, then determine legal actions
 
 	void ResolvePlayerAction();							//Move player, apply hitboxes, etc.

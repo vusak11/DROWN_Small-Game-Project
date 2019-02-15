@@ -46,7 +46,9 @@ private:
 	bool model_matrix_up_to_date_;		//NTS:	Variable should be set to false anytime we change one of the other matrices
 	glm::mat4 model_matrix_;
 
+	//Physics
 	glm::vec3 velocity_vec_;
+	glm::vec3 acceleration_vec_;
 
 	//Functions----------------------------------------------
 	void CalculateModelMatrix();	//Function calculates model matrix from scratch
@@ -75,19 +77,21 @@ public:
 	void SetScale(float in_s);
 	void SetScale(float in_x, float in_y, float in_z);
 	void SetRotation(int in_x, int in_y, int in_z);
-	void SetVelocity(float in_velocity);					//Set current velocity to in-parameter (does not change direction)
-	void SetVelocityVec(glm::vec3 in_velocity_vec);			//Set curren velocity and movement direction to match in-parameter
 	
+	//Physics
+	void SetVelocity(float in_velocity);					//Set current velocity to in-parameter (does not change direction)
+	void SetVelocityVec(glm::vec3 in_velocity_vec);			//Set current velocity and movement direction to match in-parameter
+	void SetAccelerationVec(glm::vec3 in_acceleration_vec);	//Set current acceleration to in-parameter
+
 	//Get Functions----------------------------------------
 	ObjectID GetObjectID() const;
 	glm::vec3 GetPosition() const;				//Returns the object's x, y and z coordinates
 	float GetVelocity() const;					//Returns a float with the opject's velocity
 	glm::vec3 GetVelocityVec() const;			//Returns a vec3 with the object's velocity vector
+	glm::vec3 GetAccelerationVec() const;		//Returns a vec3 with the object's acceleration vector 
 	glm::mat4 GetModelMatrix();					//NTS: Should check if model matrix is up to date before returning, and update it if it isn't
 
 	//Other Functions--------------------------------------
-	void UpdatePosition(float in_deltatime);		//Moves object along it's velocity vector in accorance with time elapsed
-	void AlterVelocityVec(glm::vec3 in_vec);		//Add in parameter to current velocity and use result as new velocity
 	void TurnLeft();
 	void TurnRight();
 

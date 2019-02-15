@@ -25,6 +25,9 @@ ObjectClass::ObjectClass(glm::vec3 start_pos, ObjectID id) {
 	//TBA: Use the ID to determine the specs of a Object (Character/Drop/etc)
 
 	this->model_matrix_up_to_date_ = false;
+
+	this->velocity_vec_ = glm::vec3(0.0f);
+	this->acceleration_vec_ = glm::vec3(0.0f);
 }
 
 ObjectClass::~ObjectClass() {
@@ -95,6 +98,11 @@ void ObjectClass::SetVelocityVec(glm::vec3 in_velocity_vec) {
 	this->velocity_vec_ = in_velocity_vec;
 }
 
+void ObjectClass::SetAccelerationVec(glm::vec3 in_acceleration_vec) {
+	//Set the acceleration vector to be the new velocity
+	this->acceleration_vec_ = in_acceleration_vec;
+}
+
 ObjectID ObjectClass::GetObjectID() const {
 	return this->id_;
 }
@@ -111,6 +119,10 @@ glm::vec3 ObjectClass::GetVelocityVec() const {
 	return this->velocity_vec_;
 }
 
+glm::vec3 ObjectClass::GetAccelerationVec() const {
+	return this->acceleration_vec_;
+}
+
 glm::mat4 ObjectClass::GetModelMatrix() {
 	//If the model matrix is not up to date call the function calculating it
 	if (!this->model_matrix_up_to_date_) {
@@ -118,19 +130,6 @@ glm::mat4 ObjectClass::GetModelMatrix() {
 	}
 	
 	return this->model_matrix_;
-}
-
-void ObjectClass::UpdatePosition(float in_deltatime) {
-	//Updates object position in accordance with how far its velocity would have taken it
-	this->position_ = this->position_ + (in_deltatime * this->velocity_vec_);
-
-	//NTS: This function has no stops. It does not stop by walls. Keep in mind that even with
-	//the function moving back if we end up in a wall enough velocity would just carry us through it
-}
-
-void ObjectClass::AlterVelocityVec(glm::vec3 in_vec) {
-	//Alter the current velocity vector with the new given one
-	this->velocity_vec_ = this->velocity_vec_ + in_vec;
 }
 
 void ObjectClass::TurnLeft() {

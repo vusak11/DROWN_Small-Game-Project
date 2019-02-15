@@ -17,9 +17,8 @@ enum Ability {
 class PlayerCharacter : public Character {
 private:
 	//Player stats
-	float move_speed_;		//player movement on x-axis
-	float air_speed_;
-	float jump_speed_;		//speed that is set when player jumps
+	float top_speed_;
+	float jump_speed_;
 
 	Weapon weapon_;
 	Ability ability_;
@@ -29,8 +28,8 @@ public:
 	PlayerCharacter(glm::vec3 start_pos);
 	~PlayerCharacter();
 
-	void MoveLeft();
-	void MoveRight();
+	void MoveLeft(const float& in_deltatime);
+	void MoveRight(const float& in_deltatime);
 	void Jump();
 
 };

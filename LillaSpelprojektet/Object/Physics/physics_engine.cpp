@@ -18,6 +18,10 @@ void PhysicsEngine::UpdateVelocity(float& in_deltatime, ObjectClass*& in_object_
 	//Get the object's velocity
 	glm::vec3 velocity_vec = in_object_ptr->GetVelocityVec();
 
+	//Apply the object's acceleration to its velocity
+	//v = v0 + a*t
+	velocity_vec = velocity_vec + in_object_ptr->GetAccelerationVec() * in_deltatime;
+
 	//Apply gravity to the y velocity
 	//v = v0 + g*t
 	velocity_vec.y = velocity_vec.y + this->gravitational_acceleration_ * in_deltatime;

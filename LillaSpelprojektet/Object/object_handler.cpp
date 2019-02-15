@@ -68,15 +68,15 @@ float ObjectHandler::DistanceBetween(const ObjectClass* in_object_a, const Objec
 	return glm::distance(in_object_a->GetPosition(), in_object_b->GetPosition());
 }
 
-void ObjectHandler::DeterminePlayerAction() {
+void ObjectHandler::DeterminePlayerAction(const float& in_deltatime) {
 
 
 	//Determine player movement on the x-axis
 	if (this->player_input_.left) {
-		this->player_ptr_->MoveLeft();
+		this->player_ptr_->MoveLeft(in_deltatime);
 	}
 	if (this->player_input_.right) {
-		this->player_ptr_->MoveRight();
+		this->player_ptr_->MoveRight(in_deltatime);
 	}
 	//If input is jump
 	if (this->player_input_.jump) {
@@ -195,7 +195,7 @@ std::vector<ObjectPackage> ObjectHandler::UpdateAndRetrieve(float in_deltatime) 
 	);
 
 	//Take input from player (i.e. set velocity, attack flags, etc)
-	DeterminePlayerAction();
+	this->DeterminePlayerAction(in_deltatime);
 	
 	//Apply physics such as moving or falling
 	this->physics_engine_ptr_->ApplyPhysics(in_deltatime, physical_objects_ptr_vector);

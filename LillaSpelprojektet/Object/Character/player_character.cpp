@@ -7,7 +7,7 @@
 
 //Public---------------------------------------------------
 PlayerCharacter::PlayerCharacter(glm::vec3 start_pos) : Character(start_pos, OBJECT_ID_PLAYER) {
-	this->move_speed_ = PLAYER_MOVE_VELOCITY;
+	this->top_speed_ = PLAYER_TOP_SPEED;
 	this->jump_speed_ = PLAYER_JUMP_VELOCITY;
 
 	this->weapon_ = SWORD;
@@ -19,20 +19,22 @@ PlayerCharacter::~PlayerCharacter() {
 
 }
 
-void PlayerCharacter::MoveLeft() {
+void PlayerCharacter::MoveLeft(const float& in_deltatime) {
+
 	//Set player velocity towards negative x
 	glm::vec3 new_velocity = this->GetVelocityVec();
-
-	new_velocity.x = -this->move_speed_;
+	
+	new_velocity.x = -this->top_speed_;
 
 	this->SetVelocityVec(new_velocity);
 }
 
-void PlayerCharacter::MoveRight() {
+void PlayerCharacter::MoveRight(const float& in_deltatime) {
+
 	//Set player velocity towards positive x
 	glm::vec3 new_velocity = this->GetVelocityVec();
-
-	new_velocity.x = this->move_speed_;
+	
+	new_velocity.x = this->top_speed_;
 
 	this->SetVelocityVec(new_velocity);
 }
