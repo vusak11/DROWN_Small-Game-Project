@@ -15,12 +15,46 @@
 // Example:
 //    class Character : ObjectClass
 
+struct HitBox // Struct used for checking collision
+	{
+		//    3       2
+		//	  ________ 
+		//	  |		  | 
+		//	  |  Box  |
+		//	  |		  | 
+		//	  ---------
+		//    0       1
+		glm::vec2 hb_pos0_;
+		glm::vec2 hb_pos1_;
+		glm::vec2 hb_pos2_;
+		glm::vec2 hb_pos3_;
+
+		HitBox() {}
+		HitBox(glm::vec3 p, glm::vec3 s) {
+			// Initialize the hitbox to player position.
+			hb_pos0_ = glm::vec2(p.x + (-1 * s.x), p.y + (-1 * s.y));
+			hb_pos1_ = glm::vec2(p.x + ( 1 * s.x), p.y + (-1 * s.y));
+			hb_pos2_ = glm::vec2(p.x + ( 1 * s.x), p.y + ( 1 * s.y));
+			hb_pos3_ = glm::vec2(p.x + (-1 * s.x), p.y + ( 1 * s.y));
+		}
+		~HitBox(){}
+		void Update(glm::vec3 p, glm::vec3 s) {
+			hb_pos0_ = glm::vec2(p.x + (-1 * s.x), p.y + (-1 * s.y));
+			hb_pos1_ = glm::vec2(p.x + (1 * s.x), p.y + (-1 * s.y));
+			hb_pos2_ = glm::vec2(p.x + (1 * s.x), p.y + (1 * s.y));
+			hb_pos3_ = glm::vec2(p.x + (-1 * s.x), p.y + (1 * s.y));
+		}
+	};
 
 class ObjectClass {
 private:
+
+	
+
 	//Variables-----------------------------------------------
 	ObjectID id_;
-	
+	HitBox hit_box_;
+
 	glm::vec3 position_;
 	//glm::vec3 rotation_;		//Vector with	rotation around x-axis on x,
 								//				rotation around y-axis on y
@@ -80,7 +114,9 @@ public:
 	
 	//Get Functions----------------------------------------
 	ObjectID GetObjectID() const;
+	HitBox GetHitBox();					//Returns the hitbox points of the object
 	glm::vec3 GetPosition() const;				//Returns the object's x, y and z coordinates
+	glm::vec3 GetScale() const;					//Returns the object's x, y and z scale variables
 	float GetVelocity() const;					//Returns a float with the opject's velocity
 	glm::vec3 GetVelocityVec() const;			//Returns a vec3 with the object's velocity vector
 	glm::mat4 GetModelMatrix();					//NTS: Should check if model matrix is up to date before returning, and update it if it isn't

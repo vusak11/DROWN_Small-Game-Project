@@ -13,6 +13,8 @@ private:
 	float object_min_velocity_;
 	float object_decceleration_;
 
+	std::vector<std::vector<float>>* map_height_list_;
+
 	void UpdateVelocity(float& in_deltatime, ObjectClass*& in_object_ptr);	//Changes an object's velocity by applying acceleration
 	void UpdatePosition(float& in_deltatime, ObjectClass*& in_object_ptr);	//Changes an object's position by applying velocity
 
@@ -21,7 +23,8 @@ public:
 		float in_gravitational_acceleration,
 		float in_object_max_velocity,
 		float in_object_min_velocity,
-		float in_object_decceleration
+		float in_object_decceleration,
+		std::vector<std::vector<float>>* in_map_height_list
 	);
 	~PhysicsEngine();
 

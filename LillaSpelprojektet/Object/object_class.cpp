@@ -7,6 +7,7 @@ void ObjectClass::CalculateModelMatrix() {
 	//The order is important here.
 	//First we scale, then we rotate and finally we translate
 	this->model_matrix_ = this->translation_matrix_ * this->rotation_matrix_ * this->scaling_matrix_;
+	this->hit_box_.Update(position_, scale_);
 }
 
 
@@ -15,6 +16,7 @@ void ObjectClass::CalculateModelMatrix() {
 ObjectClass::ObjectClass(glm::vec3 start_pos, ObjectID id) {
 
 	this->position_ = start_pos;
+	this->scale_ = glm::vec3(1.0f, 1.0f, 1.0f);
 
 	this->id_ = id;
 
@@ -22,6 +24,7 @@ ObjectClass::ObjectClass(glm::vec3 start_pos, ObjectID id) {
 	this->rotation_matrix_ = glm::mat4(1.0f);
 	this->translation_matrix_ = glm::mat4(1.0f);
 
+	hit_box_ = HitBox(position_, scale_);
 	//TBA: Use the ID to determine the specs of a Object (Character/Drop/etc)
 
 	this->model_matrix_up_to_date_ = false;
@@ -52,7 +55,7 @@ void ObjectClass::SetScale(float in_s) {
 	scale_ = glm::vec3(in_s, in_s, in_s);
 
 	//Scale an identity matrix by scale_
-	this->scaling_matrix_ = glm::scale(glm::mat4(), this->scale_);
+	this->scaling_matrix_ = glm::scale(glm::mat4(1.0f), this->scale_);
 
 	//Model matrix is now out of date
 	this->model_matrix_up_to_date_ = false;
@@ -62,7 +65,7 @@ void ObjectClass::SetScale(float in_x, float in_y, float in_z) {
 	scale_ = glm::vec3(in_x, in_y, in_z);
 
 	//Scale an identity matrix by scale_
-	this->scaling_matrix_ = glm::scale(glm::mat4(), this->scale_);
+	this->scaling_matrix_ = glm::scale(glm::mat4(1.0f), this->scale_);
 
 	//Model matrix is now out of date
 	this->model_matrix_up_to_date_ = false;
@@ -99,8 +102,18 @@ ObjectID ObjectClass::GetObjectID() const {
 	return this->id_;
 }
 
+HitBox ObjectClass::GetHitBox()
+{
+	return this->hit_box_;
+}
+
 glm::vec3 ObjectClass::GetPosition() const {
 	return this->position_;
+}
+
+glm::vec3 ObjectClass::GetScale() const
+{
+	return this->scale_;
 }
 
 float ObjectClass::GetVelocity() const {

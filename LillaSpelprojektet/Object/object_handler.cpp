@@ -163,17 +163,21 @@ ObjectHandler::~ObjectHandler() {
 
 }
 
-void ObjectHandler::InitializeObjectHandler() {
+void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map_height_list) {
 
-	this->player_ptr_ = new ObjectClass(glm::vec3(0.0f, 0.0f, 0.0f), OBJECT_ID_PLAYER);
+	// z = ~90-95
+	this->player_ptr_ = new ObjectClass(glm::vec3(100.0f, -200.0f, -95.0f), OBJECT_ID_PLAYER);
+	this->player_ptr_->SetScale(10.0f);
 
 	this->physics_engine_ptr_ = new PhysicsEngine(
 		GRAVITATIONAL_ACCELERATION,
 		OBJECT_MAX_VELOCITY,
 		OBJECT_MIN_VELOCITY,
-		OBJECT_DECCELERATION
+		OBJECT_DECCELERATION,
+		map_height_list
 	);
 
+	
 	//this->TestObjectHandler();		//NTS: Just for testing
 
 
