@@ -3,12 +3,15 @@
 
 
 MapHandler::MapHandler(){
+	grid_column_ = 5;
+	grid_row_ = 5;
 }
 
 MapHandler::~MapHandler(){
 }
 
-void MapHandler::InitializeMaps(std::string map_path, std::string texture_path) {
+//-----------------Method 1
+/*void MapHandler::InitializeMaps(std::string map_path, std::string texture_path) {
 	bool check = true;
 	unsigned int quantity = 0;
 	std::vector<GridMap> grid_maps;
@@ -62,18 +65,50 @@ void MapHandler::InitializeBuffers(GLuint shader) {
 	}
 }
 
+glm::vec3 MapHandler::Transformation(unsigned int i, unsigned int j) {
+	return grid_map_[j][i].translate;
+}*/
+
+//------------- Method 2
+void MapHandler::InitializeMaps(std::string map_path, std::string texture_path) {
+
+	Map ancillary_map;
+	ancillary_map.LoadMap(map_path.c_str());
+
+	GridMap grid_cell;
+	std::vector<GridMap> grid_cells;
+
+	for (int j = 0; j < grid_row_; j++) {
+		grid_cells.clear();
+		for (int i = 0; i < grid_column_; i++) {
+			ancillary_map.CreateCells(grid_column_, grid_row_, j, i);
+			ancillary_map.UVCoordinates();
+			ancillary_map.CalculateNormals(); //FIX
+			//ancillary_map.CreateTriangles(); //FIX
+			grid_cell.map_cell_ = ancillary_map;
+			grid_cells.push_back(grid_cell);
+		}
+		grid_map_.push_back(grid_cells);
+	}
+	std::cout << "hej" << std::endl;
+}
+
+void MapHandler::InitializeBuffers(GLuint shader) {
+	for (int j = 0; j < grid_map_.size(); j++) {
+		for (int i = 0; i < grid_map_.size(); i++) {
+			grid_map_[j][i].map_cell_.Buffer(shader);
+		}
+	}
+}
+
 void MapHandler::Draw(GLuint shader, unsigned int i, unsigned int j) {
 	grid_map_[j][i].map_cell_.Draw(shader);
 }
 
-glm::vec3 MapHandler::Transformation(unsigned int i, unsigned int j) {
-	return grid_map_[j][i].translate;
-}
 
 void MapHandler::CurrentCell(glm::vec3 current_position) {
 	//for (int j = 0; j < )
 }
-
 
 int MapHandler::GetHeightSize() const {
 	return grid_map_.size();

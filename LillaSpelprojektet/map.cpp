@@ -17,7 +17,8 @@ Map::Map(char* path) {
 Map::~Map() {
 }
 
-bool Map::LoadMap(const char* path) {
+//-------------------Method 1
+/*bool Map::LoadMap(const char* path) {
 
 	unsigned char* map_data = SOIL_load_image(path, &map_width_, &map_height_, 0, SOIL_LOAD_RGB);
 
@@ -156,6 +157,250 @@ bool Map::LoadMap(const char* path) {
 
 	return true;
 }
+*/
+
+//-------------------- Method 2
+bool Map::LoadMap(const char* path) {
+	unsigned char* map_data = SOIL_load_image(path, &map_width_, &map_height_, 0, SOIL_LOAD_RGB);
+
+	std::cout << "MAP: " << path << SOIL_last_result() << std::endl;
+	std::vector<float> temp_float;
+
+	//-------------Height-------------//
+	for (int z = 0; z < map_height_; z++) {
+		temp_float.clear();
+		for (int x = 0; x < map_width_; x++) {
+			// Read every third value
+			unsigned char color = map_data[3 * (z * map_width_ + x)];
+			float height = color;
+			temp_float.push_back(height);
+		}
+		height_map_.push_back(temp_float);
+	}
+}
+
+void Map::CreateCells(unsigned int grid_column, unsigned int grid_row, int j, int i) {
+	float cell_width = map_width_ / grid_column;
+	float cell_height = map_height_ / grid_row;
+
+	std::vector<float> temp_cell_width;
+	std::vector<std::vector<std::vector<float>>> temp_cell_storage;
+
+	if (j == 0 && i == 0) {
+		for (int y = 0 + (cell_height * j); y < (cell_height * (j + 1)) + 1; y++) {
+			temp_cell_width.clear();
+			for (int x = 0 + (cell_width * i); x < (cell_width * (i + 1)) + 1; x++) {
+				temp_cell_width.push_back(height_map_[y][x]);
+			}
+			cell_vertex_.push_back(temp_cell_width);
+		}
+	}
+
+	if (j == (grid_row - 1) && i == 0) {
+		for (int y = -1 + (cell_height * j); y < (cell_height * (j + 1)); y++) {
+			temp_cell_width.clear();
+			for (int x = 0 + (cell_width * i); x < (cell_width * (i + 1)) + 1; x++) {
+				temp_cell_width.push_back(height_map_[y][x]);
+			}
+			cell_vertex_.push_back(temp_cell_width);
+		}
+	}
+
+	if (j == 0 && i == (grid_column - 1)) {
+		for (int y = 0 + (cell_height * j); y < (cell_height * (j + 1)) + 1; y++) {
+			temp_cell_width.clear();
+			for (int x = -1 + (cell_width * i); x < (cell_width * (i + 1)); x++) {
+				temp_cell_width.push_back(height_map_[y][x]);
+			}
+			cell_vertex_.push_back(temp_cell_width);
+		}
+	}
+
+	if (j == (grid_row - 1) && i == (grid_column - 1)) {
+		for (int y = -1 + (cell_height * j); y < (cell_height * (j + 1)); y++) {
+			temp_cell_width.clear();
+			for (int x = -1 + (cell_width * i); x < (cell_width * (i + 1)); x++) {
+				temp_cell_width.push_back(height_map_[y][x]);
+			}
+			cell_vertex_.push_back(temp_cell_width);
+		}
+	}
+
+	if (j == 0 && i > 0 && i < grid_column - 1) {
+		for (int y = 0 + (cell_height * j); y < (cell_height * (j + 1)) + 1; y++) {
+			temp_cell_width.clear();
+			for (int x = -1 + (cell_width * i); x < (cell_width * (i + 1)) + 1; x++) {
+				temp_cell_width.push_back(height_map_[y][x]);
+			}
+			cell_vertex_.push_back(temp_cell_width);
+		}
+	}
+
+	if (j > 0 && j < grid_row - 1 && i == 0) {
+		for (int y = -1 + (cell_height * j); y < (cell_height * (j + 1)) + 1; y++) {
+			temp_cell_width.clear();
+			for (int x = 0 + (cell_width * i); x < (cell_width * (i + 1)) + 1; x++) {
+				temp_cell_width.push_back(height_map_[y][x]);
+			}
+			cell_vertex_.push_back(temp_cell_width);
+		}
+	}
+
+	if (j > 0 && j < grid_row - 1 && i == (grid_column - 1)) {
+		for (int y = -1 + (cell_height * j); y < (cell_height * (j + 1)) + 1; y++) {
+			temp_cell_width.clear();
+			for (int x = -1 + (cell_width * i); x < (cell_width * (i + 1)); x++) {
+				temp_cell_width.push_back(height_map_[y][x]);
+			}
+			cell_vertex_.push_back(temp_cell_width);
+		}
+	}
+
+	if (j == (grid_row - 1) && i > 0 && i < grid_column - 1) {
+		for (int y = -1 + (cell_height * j); y < (cell_height * (j + 1)); y++) {
+			temp_cell_width.clear();
+			for (int x = -1 + (cell_width * i); x < (cell_width * (i + 1)) + 1; x++) {
+				temp_cell_width.push_back(height_map_[y][x]);
+			}
+			cell_vertex_.push_back(temp_cell_width);
+		}
+	}
+
+	if (j != 0 && i != 0 && j != grid_row - 1 && i != grid_column - 1) {
+		for (int y = -1 + (cell_height * j); y < (cell_height * (j + 1)) + 1; y++) {
+			temp_cell_width.clear();
+			for (int x = -1 + (cell_width * i); x < (cell_width * (i + 1)) + 1; x++) {
+				temp_cell_width.push_back(height_map_[y][x]);
+			}
+			cell_vertex_.push_back(temp_cell_width);
+		}
+	}
+
+	cell_width_ = cell_vertex_[j].size();
+	cell_height_ = cell_vertex_.size();
+}
+
+void Map::UVCoordinates() {
+	std::vector<glm::vec2> temp_coord;
+
+	for (int z = 0; z < cell_height_; z++) {
+		temp_coord.clear();
+		for (int x = 0; x < cell_width_; x++) {
+			float f_scale_c = (float(x) / float(cell_width_ - 1)) * 10;
+			float f_scale_r = (float(z) / float(cell_height_ - 1)) * 10;
+			temp_coord.push_back(glm::vec2(f_scale_c, f_scale_r));
+		}
+		tex_coordinates_.push_back(temp_coord);
+	}
+}
+
+void Map::CalculateNormals() {
+	glm::vec3 point_1, point_2, point_3, point_4;
+	glm::vec3 edge_1, edge_2;
+	std::vector<glm::vec3> ancillary_normal_0, ancillary_normal_1;
+	std::vector<std::vector<glm::vec3>> triangle_normal_0, triangle_normal_1;
+
+	for (int z = 0; z < cell_height_ - 1; z++) {
+		ancillary_normal_0.clear();
+		ancillary_normal_1.clear();
+		for (int x = 0; x < cell_width_ - 1; x++) {
+
+			point_1 = glm::vec3((float)x, height_map_[z][x], (float)z);
+			point_2 = glm::vec3((float)x, height_map_[z + 1][x], (float)z + 1);
+			point_3 = glm::vec3((float)x + 1, height_map_[z + 1][x + 1], (float)z + 1);
+			point_4 = glm::vec3((float)x + 1, height_map_[z][x + 1], float(z));
+
+			//---------Triangle 1-------------//
+			edge_1 = glm::vec3(point_2 - point_1);
+			edge_2 = glm::vec3(point_3 - point_1);
+
+			glm::vec3 normal_0 = glm::normalize(glm::cross(edge_1, edge_2));
+
+			//--------Triangle 2-------------//
+			edge_1 = glm::vec3(point_1 - point_4);
+			edge_2 = glm::vec3(point_3 - point_4);
+
+			glm::vec3 normal_1 = glm::normalize(glm::cross(edge_1, edge_2));
+
+			ancillary_normal_0.push_back(normal_0);
+			ancillary_normal_1.push_back(normal_1);
+		}
+		triangle_normal_0.push_back(ancillary_normal_0);
+		triangle_normal_1.push_back(ancillary_normal_1);
+	}
+
+	//---------------Sum Normals(adjacent)------------//
+
+	std::vector<glm::vec3> temp_sum;
+	for (int z = 0; z < cell_height_; z++) {
+		temp_sum.clear();
+		for (int x = 0; x < cell_width_; x++) {
+			glm::vec3 sum_normal = glm::vec3(0.0f, 0.0f, 0.0f);
+			if (z != 0 && x != 0) {
+				sum_normal += triangle_normal_0[z - 1][x - 1];
+				sum_normal += triangle_normal_1[z - 1][x - 1];
+			}
+			if (z != 0 && x != cell_width_ - 1) {
+				sum_normal += triangle_normal_0[z - 1][x];
+			}
+			if (z != cell_height_ - 1 && x != cell_width_ - 1) {
+				sum_normal += triangle_normal_0[z][x];
+				sum_normal += triangle_normal_1[z][x];
+			}
+			if (z != cell_height_ - 1 && x != 0) {
+				sum_normal += triangle_normal_1[z][x - 1];
+			}
+			sum_normal = glm::normalize(sum_normal);
+			temp_sum.push_back(sum_normal);
+		}
+		normals_.push_back(temp_sum);
+	}
+}
+
+void Map::CreateTriangles() {
+	Triangle temp_triangle;
+	int index = 0;
+
+	for (int z = 0; z < cell_height_; z++) {
+		for (int x = 0; x < cell_width_; x++) {
+			temp_triangle.x = (float)x;
+			temp_triangle.y = (float)z * -1;
+			temp_triangle.z = height_map_[z][x];
+			temp_triangle.u = tex_coordinates_[z][x].x;
+			temp_triangle.v = tex_coordinates_[z][x].y;
+			temp_triangle.x_normal = normals_[z][x].x;
+			temp_triangle.y_normal = normals_[z][x].z * -1;
+			temp_triangle.z_normal = normals_[z][x].y;
+			vertices_.push_back(temp_triangle);
+		}
+	}
+}
+
+void Map::CreateIndices() {
+
+	for (int z = 0; z < cell_height_ - 1; z++) {
+		for (int x = 0; x < cell_width_ - 1; x++) {
+			int index = (z * cell_width_) + x;
+
+			int p1 = index;
+			int p2 = index + cell_width_ + 1;
+			int p3 = index + 1;
+
+			int p4 = index;
+			int p5 = index + cell_width_;
+			int p6 = index + cell_width_ + 1;
+
+			indices_.push_back(p1);
+			indices_.push_back(p2);
+			indices_.push_back(p3);
+			indices_.push_back(p4);
+			indices_.push_back(p5);
+			indices_.push_back(p6);
+
+		}
+		indices_.push_back(cell_width_*cell_height_); //"degenerate"
+	}
+}
 
 void Map::LoadTexture(char * texture_name) {
 	int texWidth, texHeight;
@@ -220,7 +465,7 @@ void Map::Draw(GLuint shader) {
 
 	glBindVertexArray(vertex_array_object_);
 	glEnable(GL_PRIMITIVE_RESTART);
-	glPrimitiveRestartIndex(map_width_ * map_height_);
+	glPrimitiveRestartIndex(cell_width_ * cell_height_);
 	
 	glDrawElements(GL_TRIANGLE_STRIP, indices_.size(), GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);

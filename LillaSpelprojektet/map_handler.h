@@ -17,11 +17,16 @@ private:
 	//Map* maps_;	// A list of all the maps in the current game.
 	struct GridMap {
 		Map map_cell_;
-		glm::vec3 translate;
+		glm::vec3 translate_;
 	};
 
 	std::vector<std::vector<GridMap>> grid_map_;
-
+	
+	float grid_column_;
+	float grid_row_;
+	float height_;
+	float width_;
+	
 public:
 	MapHandler();
 	~MapHandler();

@@ -25,7 +25,7 @@ public:
 	~Map();
 
 	// This function is not complete.
-	bool LoadMap(const char* path);	// Returns a bool to trouble shoot while loading new maps.
+	//bool LoadMap(const char* path);	// Returns a bool to trouble shoot while loading new maps.
 	void LoadTexture(char* texture_name);
 
 	void Buffer(GLuint shader);
@@ -36,14 +36,26 @@ public:
 
 	int GetHeight();
 	int GetWidth();
+	//-------Test
+
+	bool LoadMap(const char* path);
+	void CreateCells(unsigned int grid_column, unsigned int grid_row, int j, int i);
+	void UVCoordinates();
+	void CalculateNormals();
+	void CreateTriangles();
+	void CreateIndices();
+
 private:
 		int map_width_;			// Width of map image
 		int map_height_;		// Height of map image
 
+	std::vector<std::vector<float>> cell_vertex_;
+	float cell_width_;
+	float cell_height_;
+
 	std::vector<Triangle> vertices_;
-	std::vector<std::vector<float>> temp_height_;
-    std::vector<std::vector<float>> height_map_;
-	std::vector<std::vector<glm::vec2>> tex_coord_;
+	std::vector<std::vector<float>> height_map_;
+	std::vector<std::vector<glm::vec2>> tex_coordinates_;
 	std::vector<std::vector<glm::vec3>> normals_;
 	std::vector<int> indices_;
 
@@ -52,7 +64,6 @@ private:
 	GLuint element_buffer_object_;
 
 	GLuint texture_;
-
 };
 
 #endif

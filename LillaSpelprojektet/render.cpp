@@ -20,8 +20,12 @@ Render::Render() {
 	model_ = new Model*[nr_of_models_];
 	model_[0] = new Model((char*)"../Resources/Models/TestBox/testBOX.obj");
 
-	map_handler_.InitializeMaps(
+	/*map_handler_.InitializeMaps(
 		"../Resources/Map/TestMap_Sliced/TestMap_",
+		"../Resources/Map/rock.png");*/
+
+	map_handler_.InitializeMaps(
+		"../Resources/Map/TestMap.bmp",
 		"../Resources/Map/rock.png");
 }
 
@@ -95,15 +99,15 @@ void Render::GeometryDrawing(std::vector<ObjectPackage>& object_vector) {
 			map_handler_.Draw(geometry_pass_->GetProgram());
 		}
 	}*/
-	for (int j = 0; j < map_handler_.GetHeightSize(); j++) {
+	/*for (int j = 0; j < map_handler_.GetHeightSize(); j++) {
 		for (int i = 0; i < map_handler_.GetWidthSize(j); i++) {
 			glm::mat4 model = glm::mat4(1.0f);
-			model = glm::translate(model, map_handler_.Transformation(i, j));
+			//model = glm::translate(model, map_handler_.Transformation(i, j));
 			model = glm::scale(model, glm::vec3(1.0f, 1.0f, 0.1f));
 			ModelTransformation(model);
 			map_handler_.Draw(geometry_pass_->GetProgram(), i, j);
 		}
-	}
+	}*/
 }
 
 void Render::ModelTransformation(glm::mat4 model_matrix) {
