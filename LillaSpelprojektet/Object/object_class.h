@@ -58,8 +58,8 @@ public:
 
 	//WIP
 
-	struct ObjectMetadata {				//An object's metadata tell us things
-		bool airborne = false;					//about the object's current situation
+	struct ObjectMetadata {				//An object's metadata tells us things
+		bool airborne = false;			//about the object's current situation
 	};
 	ObjectMetadata object_metadata_;
 

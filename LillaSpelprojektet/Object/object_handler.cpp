@@ -139,15 +139,9 @@ ObjectHandler::~ObjectHandler() {
 
 void ObjectHandler::InitializeObjectHandler() {
 
-	//this->player_ptr_ = new ObjectClass(glm::vec3(0.0f, 0.0f, 0.0f), OBJECT_ID_PLAYER);
 	this->player_ptr_ = new PlayerCharacter(glm::vec3(0.0f, 0.0f, 0.0f));
 
-	this->physics_engine_ptr_ = new PhysicsEngine(
-		GRAVITATIONAL_ACCELERATION,
-		OBJECT_MAX_VELOCITY,
-		OBJECT_MIN_VELOCITY,
-		OBJECT_DECCELERATION
-	);
+	this->physics_engine_ptr_ = new PhysicsEngine();
 
 	//this->TestObjectHandler();		//NTS: Just for testing
 

@@ -22,10 +22,17 @@ void PhysicsEngine::UpdateVelocity(float& in_deltatime, ObjectClass*& in_object_
 	//v = v0 + g*t
 	velocity_vec.y = velocity_vec.y + this->gravitational_acceleration_ * in_deltatime;
 
-	//Apply the x-axis decceleration
-	//If the new velocity is too low set it to 0
+	//Apply the x-axis decceleration (Different for ground/air)
 	//v = v*(1-d)
-	velocity_vec.x = velocity_vec.x * (1 - this->object_decceleration_);
+	if (in_object_ptr->object_metadata_.airborne) {
+		velocity_vec.x = velocity_vec.x * (1 - this->object_air_decceleration_);
+	}
+	else {
+		velocity_vec.x = velocity_vec.x * (1 - this->object_ground_decceleration_);
+	}
+	
+
+	//If the new velocity is too low set it to 0
 	if (std::abs(velocity_vec.x) < this->object_min_velocity_) { velocity_vec.x = 0.0f; }
 
 	//Check if the new velocity exceeds maximum and if so clamp it to max
@@ -63,16 +70,12 @@ void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_
 }
 
 //Public---------------------------------------------------
-PhysicsEngine::PhysicsEngine(
-	float in_gravitational_acceleration,
-	float in_object_max_velocity,
-	float in_object_min_velocity,
-	float in_object_decceleration
-) {
-	this->gravitational_acceleration_ = in_gravitational_acceleration;
-	this->object_max_velocity_ = in_object_max_velocity;
-	this->object_min_velocity_ = in_object_min_velocity;
-	this->object_decceleration_ = in_object_decceleration;
+PhysicsEngine::PhysicsEngine() {
+	this->gravitational_acceleration_	= GRAVITATIONAL_ACCELERATION;
+	this->object_max_velocity_			= OBJECT_MAX_VELOCITY;
+	this->object_min_velocity_			= OBJECT_MIN_VELOCITY;
+	this->object_ground_decceleration_	= OBJECT_GROUND_DECCELERATION;
+	this->object_air_decceleration_		= OBJECT_AIR_DECCELERATION;
 }
 
 PhysicsEngine::~PhysicsEngine() {

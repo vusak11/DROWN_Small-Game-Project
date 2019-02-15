@@ -30,7 +30,6 @@ private:
 	};
 
 	//Variables-----------------------------------------------
-	//ObjectClass* player_ptr_;						//Player
 	PlayerCharacter* player_ptr_;
 	std::vector<ObjectClass*> npc_ptr_vector_;		//All enemies
 	std::vector<ObjectClass*> drop_ptr_vector_;		//Things dropped on the ground (e.g. power-ups, health)
