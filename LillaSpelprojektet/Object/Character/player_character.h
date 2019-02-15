@@ -18,6 +18,7 @@ class PlayerCharacter : public Character {
 private:
 	//Player stats
 	float move_speed_;		//player movement on x-axis
+	float air_speed_;
 	float jump_speed_;		//speed that is set when player jumps
 
 	Weapon weapon_;

@@ -22,13 +22,13 @@
 #define OBJECT_MIN_VELOCITY 0.1			//The lowest velocity an object can have that isn't 0
 										//If an velocity is lower than this it sets to 0
 #define OBJECT_GROUND_DECCELERATION 0.1		//0.1 = 10%
-#define OBJECT_AIR_DECCELERATION 0.001
+#define OBJECT_AIR_DECCELERATION 0.05
 
 //Player object--------------------------------------------
 //These numbers are specific to the player. Consider using these as base input for the
 //constructor and then altering internal variables
-#define PLAYER_X_SPEED 5
-#define PLAYER_Y_SPEED 100
+#define PLAYER_MOVE_VELOCITY 50
+#define PLAYER_JUMP_VELOCITY 100
 
 
 
