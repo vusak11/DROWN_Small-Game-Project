@@ -73,40 +73,14 @@ void ObjectHandler::DeterminePlayerAction() {
 
 	//Determine player movement on the x-axis
 	if (this->player_input_.left) {
-		//Set player velocity towards negative x
-		glm::vec3 velocity_change;
-
-		if (this->player_ptr_->object_metadata_.airborne) {
-			velocity_change = glm::vec3((float)-PLAYER_X_AIR_SPEED, 0.0f, 0.0f);
-		}
-		else {
-			velocity_change = glm::vec3((float)-PLAYER_X_SPEED, 0.0f, 0.0f);
-		}
-
-		this->player_ptr_->AlterVelocityVec(velocity_change);
+		this->player_ptr_->MoveLeft();
 	}
 	if (this->player_input_.right) {
-		//Set player velocity towards positive x
-		glm::vec3 velocity_change;
-
-		if (this->player_ptr_->object_metadata_.airborne) {
-			velocity_change = glm::vec3((float)PLAYER_X_AIR_SPEED, 0.0f, 0.0f);
-		}
-		else {
-			velocity_change = glm::vec3((float)PLAYER_X_SPEED, 0.0f, 0.0f);
-		}
-
-		this->player_ptr_->AlterVelocityVec(velocity_change);
+		this->player_ptr_->MoveRight();
 	}
-
-	//If input is jump and player is not in the air
-	if (this->player_input_.jump && !this->player_ptr_->object_metadata_.airborne) {
-		//Set player velocity towards positive y
-		glm::vec3 velocity_change = glm::vec3(0.0f, (float)PLAYER_Y_SPEED, 0.0f);
-		this->player_ptr_->AlterVelocityVec(velocity_change);
-		
-		//Then set the object to be airborne
-		this->player_ptr_->object_metadata_.airborne = true;
+	//If input is jump
+	if (this->player_input_.jump) {
+		this->player_ptr_->Jump();
 	}
 
 	if (this->player_input_.attack) {
@@ -165,7 +139,8 @@ ObjectHandler::~ObjectHandler() {
 
 void ObjectHandler::InitializeObjectHandler() {
 
-	this->player_ptr_ = new ObjectClass(glm::vec3(0.0f, 0.0f, 0.0f), OBJECT_ID_PLAYER);
+	//this->player_ptr_ = new ObjectClass(glm::vec3(0.0f, 0.0f, 0.0f), OBJECT_ID_PLAYER);
+	this->player_ptr_ = new PlayerCharacter(glm::vec3(0.0f, 0.0f, 0.0f));
 
 	this->physics_engine_ptr_ = new PhysicsEngine(
 		GRAVITATIONAL_ACCELERATION,

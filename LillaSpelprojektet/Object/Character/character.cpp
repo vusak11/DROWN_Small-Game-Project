@@ -1,6 +1,9 @@
 #include "character.h"
 
 Character::Character(glm::vec3 start_pos, ObjectID id) : ObjectClass(start_pos, id){
+
+	//Set stats using ID
+
 }
 
 Character::~Character(){
