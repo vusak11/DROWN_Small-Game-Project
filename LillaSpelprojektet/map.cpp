@@ -238,6 +238,8 @@ void Map::Draw(GLuint shader) {
 	glPrimitiveRestartIndex(map_width_ * map_height_);
 	
 	glDrawElements(GL_TRIANGLE_STRIP, indices_.size(), GL_UNSIGNED_INT, 0);
+
+	glDisable(GL_PRIMITIVE_RESTART);
 	glBindVertexArray(0);
 }
 

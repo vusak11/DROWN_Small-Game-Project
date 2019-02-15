@@ -7,12 +7,13 @@
 #include <GLM/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include <map>
+#include <SOIL/SOIL.h>
 
 #include "shader_handler.h"
 
 class GUI {
 private:
+	GLuint texture_;
 	int health_bar_length_;
 
 	GLuint vertex_array_object_;
@@ -21,6 +22,7 @@ public:
 	GUI();
 	~GUI();
 	void RenderGUI(ShaderHandler* shader_program);
-}
+	void LoadTexture(char* texture_name);
+};
 
 #endif

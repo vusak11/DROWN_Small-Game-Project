@@ -183,6 +183,8 @@
     <None Include="glsl\geometrypass\geometry_fs.glsl" />
     <None Include="glsl\geometrypass\geometry_gs.glsl" />
     <None Include="glsl\geometrypass\geometry_vs.glsl" />
+    <None Include="glsl\guishader_fs.glsl" />
+    <None Include="glsl\guishader_vs.glsl" />
     <None Include="glsl\lightingpass\lighting_fs.glsl" />
     <None Include="glsl\lightingpass\lighting_vs.glsl" />
     <None Include="glsl\textshader_fs.glsl" />
