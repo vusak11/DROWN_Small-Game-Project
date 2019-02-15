@@ -41,9 +41,15 @@ void PlayerCharacter::MoveRight() {
 
 void PlayerCharacter::Jump() {
 
-	//If player is already in the air, don't do anything
-	if (this->object_metadata_.airborne) { return; }
-
+	//If player is in the air
+	if (this->object_metadata_.airborne) {
+		//If the player do not have double jump return
+		if (this->ability_.id != DOUBLE_JUMP) { return; }
+		
+		//If the player has double jump available
+		//DO DOUBLE JUMP
+	}
+	
 	//Set player velocity towards positive y
 	glm::vec3 new_velocity = this->GetVelocityVec();
 	
