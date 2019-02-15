@@ -13,7 +13,7 @@
 //Objects--------------------------------------------------
 #define OBJECT_CULLING_DISTANCE 1380	//Distance beyond which objects are not updated nor rendered
 
-#define OBJECT_TURN_RATE 5 //degrees	//Purely for the turn function in ObjectClass as of this writing
+#define OBJECT_TURN_RATE 45 //degrees	//Purely for the turn function in ObjectClass as of this writing
 
 
 //Physics--------------------------------------------------
