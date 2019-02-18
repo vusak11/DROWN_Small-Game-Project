@@ -133,16 +133,16 @@ void Game::GameLoop(float in_deltatime) {
 		std::vector<ObjectPackage> object_vector;
 		object_vector = this->obj_handler_ptr_->UpdateAndRetrieve(in_deltatime);
 
-		PlayerInfoPackage tempPlayerData;
-		tempPlayerData.max_hp = 100;
-		tempPlayerData.current_hp = 100;
+		PlayerInfoPackage temp_player_data;
+		temp_player_data.max_hp = 100;
+		temp_player_data.current_hp = 100;
 
 		render_.UpdateRender(
 			in_deltatime,
 			cam_handler_ptr_->GetCameraPosition(),
 			cam_handler_ptr_->GetViewPerspectiveMatrix(),
 			object_vector,
-			tempPlayerData
+			temp_player_data
 		);
 	}
 }

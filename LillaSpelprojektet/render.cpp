@@ -41,6 +41,7 @@ Render::~Render() {
 	delete[] lights_;
 
 	delete text_shaders_;
+	delete gui_shaders_;
 
 	for (int i = 0; i < nr_of_models_; i++) {
 		delete model_[i];
