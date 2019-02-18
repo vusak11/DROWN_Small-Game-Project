@@ -23,11 +23,17 @@ private:
 public:
 	GUI();
 	~GUI();
+
+	void Initiliaze();
+
 	void RenderHealthBar();
-	void RenderSkillSlots();
-	void RenderGUI(ShaderHandler* shader_program);
+	void RenderSkillSlots(float xpos, float ypos, float offset);
+
+	void RenderGUI(ShaderHandler* shader_program, PlayerInfoPackage player_data);
+
 	void LoadHealthBarTexture(char* texture_name);
 	void LoadQuickSlotTexture(char* texture_name);
+	void updateHUD(PlayerInfoPackage player_data);
 };
 
 #endif

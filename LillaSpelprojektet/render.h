@@ -43,7 +43,8 @@ public:
 		float dt, 
 		glm::vec3 camera_position,
 		glm::mat4 perspective_view_matrix,
-		std::vector<ObjectPackage>& object_vector
+		std::vector<ObjectPackage>& object_vector,
+		PlayerInfoPackage player_data
 		);
 
 	void GeometryPass(

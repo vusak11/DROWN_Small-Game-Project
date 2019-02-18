@@ -40,7 +40,10 @@ struct ObjectPackage {
 };
 
 struct PlayerInfoPackage {
-	int hp;
+	int max_hp;
+	int current_hp;
+	//ability1
+	//ability2
 };
 
 //States---------------------------------------------------

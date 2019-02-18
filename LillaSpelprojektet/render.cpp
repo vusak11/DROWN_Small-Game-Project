@@ -32,6 +32,7 @@ Render::Render() {
 	map_[0].LoadTexture((char*)"../Resources/Map/rock.png");
 
 	hud.LoadHealthBarTexture((char*)"../Resources/GUI/healthbar.png");
+	hud.LoadQuickSlotTexture((char*)"../Resources/GUI/quickslot.png");
 }
 
 Render::~Render() {
@@ -51,6 +52,8 @@ void Render::InitializeRender() {
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	
+	hud.Initiliaze();
+
 	geometry_pass_->GeometryFrameBuffers();
 
 	lights_[0].LightDefault(
@@ -67,7 +70,8 @@ void Render::UpdateRender(
 	float dt, 
 	glm::vec3 camera_position,
 	glm::mat4 perspective_view_matrix,
-	std::vector<ObjectPackage>& object_vector) {
+	std::vector<ObjectPackage>& object_vector,
+	PlayerInfoPackage player_data) {
 
 	glDisable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
@@ -104,7 +108,7 @@ void Render::UpdateRender(
 	glDisable(GL_DEPTH_TEST);
 	glLoadIdentity();
 
-	hud.RenderGUI(gui_shaders_);
+	hud.RenderGUI(gui_shaders_, player_data);
 
 	glFlush();
 	//swap_buffers(?)
