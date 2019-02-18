@@ -36,22 +36,22 @@ bool Map::LoadMap(const char* path) {
 	}
 }
 
-void Map::CreateCells(unsigned int grid_column, unsigned int grid_row, int j, int i) {
+void Map::CreateCells(int grid_column, int grid_row, int j, int i) {
 	cell_vertices_.clear();
 	float cell_width = image_width_ / grid_column;
 	float cell_height = image_height_ / grid_row;
 
-	// Add extra vertices depending on what cell for filling gaps between cells
+	// Create cells and add extra vertices depending on what cell for filling gaps between cells
 	if (j == 0 && i == 0) // Upper left corner
 		CalculateBorders(0, 2, 0, 2, cell_width, cell_height, j, i);
 
-	if (j == (grid_row - 1) && i == 0) // Down left corner
+	if (j == (grid_row - 1) && i == 0) // Lower left corner
 		CalculateBorders(2, 0, 0, 2, cell_width, cell_height, j, i);
 	
 	if (j == 0 && i == (grid_column - 1)) // Upper right corner
 		CalculateBorders(0, 2, 2, 0, cell_width, cell_height, j, i);
 	
-	if (j == (grid_row - 1) && i == (grid_column - 1)) // Down corner right
+	if (j == (grid_row - 1) && i == (grid_column - 1)) // Lower corner right
 		CalculateBorders(2, 0, 2, 0, cell_width, cell_height, j, i);
 	
 	if (j == 0 && i > 0 && i < grid_column - 1) // Upper side
@@ -63,7 +63,7 @@ void Map::CreateCells(unsigned int grid_column, unsigned int grid_row, int j, in
 	if (j > 0 && j < grid_row - 1 && i == (grid_column - 1)) // Right side
 		CalculateBorders(1, 1, 2, 0, cell_width, cell_height, j, i);
 	
-	if (j == (grid_row - 1) && i > 0 && i < grid_column - 1) // Down side
+	if (j == (grid_row - 1) && i > 0 && i < grid_column - 1) // Lower side
 		CalculateBorders(2, 0, 1, 1, cell_width, cell_height, j, i);
 	
 	if (j != 0 && i != 0 && j != grid_row - 1 && i != grid_column - 1) // Inner
@@ -74,14 +74,10 @@ void Map::CreateCells(unsigned int grid_column, unsigned int grid_row, int j, in
 }
 
 void Map::CalculateBorders(
-	int b_1,
-	int b_2,
-	int b_3, 
-	int b_4,
-	float cell_width,
-	float cell_height,
-	int j,
-	int i) {
+	int b_1, int b_2, int b_3, int b_4,
+	float cell_width, float cell_height,
+	int j, int i) {
+
 	std::vector<float> temp_cell_width;
 
 	for (int y = (cell_height * j) - b_1; y < (cell_height * (j + 1)) + b_2; y++) {
@@ -92,7 +88,6 @@ void Map::CalculateBorders(
 		cell_vertices_.push_back(temp_cell_width);
 	}
 }
-
 
 void Map::UVCoordinates() {
 	std::vector<glm::vec2> temp_coord;
@@ -217,7 +212,7 @@ void Map::CreateIndices() {
 	}
 }
 
-void Map::LoadTexture(char * texture_name) {
+void Map::LoadTexture(const char * texture_name) {
 	int texWidth, texHeight;
 	unsigned char* image = SOIL_load_image(texture_name, &texWidth, &texHeight, 0, SOIL_LOAD_RGB);
 

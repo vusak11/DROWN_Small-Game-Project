@@ -27,23 +27,16 @@ public:
 	// This function is not complete.
 	//bool LoadMap(const char* path);	// Returns a bool to trouble shoot while loading new maps.
 	bool LoadMap(const char* path);
-	void LoadTexture(char* texture_name);
+	void LoadTexture(const char* texture_name);
 
 	void CreateCells(
-		unsigned int grid_column,
-		unsigned int grid_row,
-		int j,
-		int i
+		int grid_column, int grid_row,
+		int j, int i
 	);
 	void CalculateBorders(
-		int b_1,
-		int b_2,
-		int b_3,
-		int b_4,
-		float cell_width,
-		float cell_height,
-		int j,
-		int i
+		int b_1, int b_2, int b_3, int b_4,
+		float cell_width, float cell_height,
+		int j, int i
 	);
 	void UVCoordinates();
 	void CalculateNormals();
@@ -63,7 +56,7 @@ private:
 	std::vector<std::vector<float>> cell_vertices_;
 	float cell_width_;
 	float cell_height_;
-
+	
 	std::vector<Triangle> vertices_;
 	std::vector<std::vector<float>> height_map_;
 	std::vector<std::vector<glm::vec2>> tex_coordinates_;

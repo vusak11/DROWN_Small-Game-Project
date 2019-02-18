@@ -26,7 +26,7 @@ Render::Render() {
 
 	map_handler_.InitializeMaps(
 		"../Resources/Map/TestMap.bmp",
-		(char*)"../Resources/Map/rock.png");
+		"../Resources/Map/rock.png");
 }
 
 Render::~Render() {
@@ -61,11 +61,9 @@ void Render::UpdateRender(
 
 	// Pushing Map into object vector
 	glm::mat4 map_matrix = glm::mat4(1.0f);
-	map_matrix = glm::scale(map_matrix, glm::vec3(1.0f, 1.0f, 0.1f));
 	ObjectPackage map_package;
 	map_package.id = OBJECT_ID_MAP;
 	map_package.model_matrix = map_matrix;
-
 	object_vector.push_back(map_package);
 
 	//  GEOMETRY
@@ -80,89 +78,27 @@ void Render::UpdateRender(
 }
 
 void Render::GeometryDrawing(std::vector<ObjectPackage>& object_vector) {
-	/*for (unsigned int i = 0; i < object_vector.size(); i++) {
-		if (OBJECT_ID_NULL == object_vector[i].id) {
+	while (!object_vector.empty()) {
+		if (OBJECT_ID_NULL == object_vector.back().id) {
 
 		}
-		else if (OBJECT_ID_PLAYER == object_vector[i].id) {
-			ModelTransformation(object_vector[i].model_matrix);
+		else if (OBJECT_ID_PLAYER == object_vector.back().id) {
+			ModelTransformation(object_vector.back().model_matrix);
 			model_[0]->Draw(geometry_pass_->GetProgram());
 		}
-		else if (OBJECT_ID_JOHNNY_BRAVO == object_vector[i].id) {
-			ModelTransformation(object_vector[i].model_matrix);
+		else if (OBJECT_ID_JOHNNY_BRAVO == object_vector.back().id) {
+			ModelTransformation(object_vector.back().model_matrix);
 		}
-		else if (OBJECT_ID_MAP == object_vector[i].id) {
-			ModelTransformation(object_vector[i].model_matrix);
-			map_handler_.Draw(geometry_pass_->GetProgram());
+		else if (OBJECT_ID_MAP == object_vector.back().id) {
+			std::vector<glm::vec2> cells = map_handler_.GridCulling(
+				map_handler_.CurrentCell(glm::vec3(10.0f, -143.0f, 30.0f))); //OBS Player's position should be here
+			while (!cells.empty()) {
+				ModelTransformation(map_handler_.Transformation((int)cells.back().x, (int)cells.back().y));
+				map_handler_.Draw(geometry_pass_->GetProgram(), (int)cells.back().x, (int)cells.back().y);
+				cells.pop_back();
+			}
 		}
-	}*/
-	/*for (int j = 0; j < map_handler_.GetHeightSize(); j++) {
-		for (int i = 0; i < map_handler_.GetWidthSize(j); i++) {
-			glm::mat4 model = glm::mat4(1.0f);
-			model = glm::translate(model, map_handler_.Transformation(i, j));
-			model = glm::scale(model, glm::vec3(1.0f, 1.0f, 0.1f));
-			ModelTransformation(model);
-			map_handler_.Draw(geometry_pass_->GetProgram(), i, j);
-		}
-	}*/
-	glm::vec2 hej = map_handler_.CurrentCell(glm::vec3(10.0f, -10.0f, 30.0f));
-	std::vector<int> test;
-	test = map_handler_.GridCulling(hej);
-
-	glm::mat4 model = glm::mat4(1.0f);
-	if (test[0] == 1) {
-		model = glm::mat4(1.0f);
-		model = glm::translate(model, map_handler_.Transformation(hej.x - 1, hej.y - 1));
-		model = glm::scale(model, glm::vec3(1.0f, 1.0f, 0.1f));
-		map_handler_.Draw(geometry_pass_->GetProgram(), hej.x - 1, hej.y - 1);
-	}
-	if (test[1] == 1) {
-		model = glm::mat4(1.0f);
-		model = glm::translate(model, map_handler_.Transformation(hej.x, hej.y - 1));
-		model = glm::scale(model, glm::vec3(1.0f, 1.0f, 0.1f));
-		map_handler_.Draw(geometry_pass_->GetProgram(), hej.x, hej.y - 1);
-	}
-	if (test[2] == 1) {
-		model = glm::mat4(1.0f);
-		model = glm::translate(model, map_handler_.Transformation(hej.x + 1, hej.y - 1));
-		model = glm::scale(model, glm::vec3(1.0f, 1.0f, 0.1f));
-		map_handler_.Draw(geometry_pass_->GetProgram(), hej.x + 1, hej.y - 1);
-	}
-	if (test[3] == 1) {
-		model = glm::mat4(1.0f);
-		model = glm::translate(model, map_handler_.Transformation(hej.x - 1, hej.y));
-		model = glm::scale(model, glm::vec3(1.0f, 1.0f, 0.1f));
-		map_handler_.Draw(geometry_pass_->GetProgram(), hej.x - 1, hej.y);
-	}
-	if (test[4] == 1) {
-	model = glm::mat4(1.0f);
-		model = glm::translate(model, map_handler_.Transformation(hej.x, hej.y));
-		model = glm::scale(model, glm::vec3(1.0f, 1.0f, 0.1f));
-		map_handler_.Draw(geometry_pass_->GetProgram(), hej.x, hej.y);
-	}
-	if (test[5] == 1) {
-		model = glm::mat4(1.0f);
-		model = glm::translate(model, map_handler_.Transformation(hej.x + 1, hej.y));
-		model = glm::scale(model, glm::vec3(1.0f, 1.0f, 0.1f));
-		map_handler_.Draw(geometry_pass_->GetProgram(), hej.x + 1, hej.y);
-	}
-	if (test[6] == 1) {
-		model = glm::mat4(1.0f);
-		model = glm::translate(model, map_handler_.Transformation(hej.x - 1, hej.y + 1));
-		model = glm::scale(model, glm::vec3(1.0f, 1.0f, 0.1f));
-		map_handler_.Draw(geometry_pass_->GetProgram(), hej.x - 1, hej.y + 1);
-	}
-	if (test[7] == 1) {
-		model = glm::mat4(1.0f);
-		model = glm::translate(model, map_handler_.Transformation(hej.x, hej.y + 1));
-		model = glm::scale(model, glm::vec3(1.0f, 1.0f, 0.1f));
-		map_handler_.Draw(geometry_pass_->GetProgram(), hej.x, hej.y + 1);
-	}
-	if (test[8] == 1) {
-		model = glm::mat4(1.0f);
-		model = glm::translate(model, map_handler_.Transformation(hej.x + 1, hej.y + 1));
-		model = glm::scale(model, glm::vec3(1.0f, 1.0f, 0.1f));
-		map_handler_.Draw(geometry_pass_->GetProgram(), hej.x + 1, hej.y + 1);
+		object_vector.pop_back();
 	}
 }
 

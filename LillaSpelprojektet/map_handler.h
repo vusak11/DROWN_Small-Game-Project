@@ -22,7 +22,7 @@ private:
 	};
 
 	std::vector<std::vector<GridMap>> grid_map_;
-	std::vector<int> cells_to_draw_;
+	std::vector<glm::vec2> cells_to_draw_;
 	//int* cells_to_draw_;
 	
 	float grid_column_;
@@ -32,18 +32,14 @@ public:
 	MapHandler();
 	~MapHandler();
 
-	void InitializeMaps(std::string map_path, char* texture_path);
+	void InitializeMaps(std::string map_path, std::string texture_path);
 	void InitializeBuffers(GLuint shader);
 
-	glm::vec3 Transformation(unsigned int i, unsigned int j);
-	void Draw(GLuint shader, unsigned int i, unsigned int j);
+	glm::mat4 Transformation(int i, int j);
+	void Draw(GLuint shader, int i, int j);
 	
 	glm::vec2 CurrentCell(glm::vec3 players_current_position);
-	std::vector<int> GridCulling(glm::vec2 current_cell);
-
-	int GetHeightSize() const;
-	int GetWidthSize(unsigned int i) const;
-	Map GetMap(int cam_index = 0);
+	std::vector<glm::vec2> GridCulling(glm::vec2 current_cell);
 };
 
 #endif

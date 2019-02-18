@@ -8,15 +8,15 @@ MapHandler::MapHandler(){
 }
 
 MapHandler::~MapHandler(){
-	//delete cells_to_draw_;
+
 }
 
-void MapHandler::InitializeMaps(std::string map_path, char* texture_path) {
+void MapHandler::InitializeMaps(std::string map_path, std::string texture_path) {
 	float width, height = 0;
 
 	Map ancillary_map;
 	ancillary_map.LoadMap(map_path.c_str());
-	ancillary_map.LoadTexture(texture_path);
+	ancillary_map.LoadTexture(texture_path.c_str());
 
 	GridMap grid_cell;
 	std::vector<GridMap> grid_cells;
@@ -53,11 +53,14 @@ void MapHandler::InitializeBuffers(GLuint shader) {
 	}
 }
 
-glm::vec3 MapHandler::Transformation(unsigned int i, unsigned int j) {
-	return grid_map_[j][i].translate_;
+glm::mat4 MapHandler::Transformation(int i, int j) {
+	glm::mat4 model_matrix(1.0f);
+	model_matrix = glm::translate(model_matrix, grid_map_[j][i].translate_);
+	model_matrix = glm::scale(model_matrix, glm::vec3(1.0f, 1.0f, 0.1f));
+	return model_matrix;
 }
 
-void MapHandler::Draw(GLuint shader, unsigned int i, unsigned int j) {
+void MapHandler::Draw(GLuint shader, int i, int j) {
 	grid_map_[j][i].map_cell_.Draw(shader);
 }
 
@@ -76,184 +79,70 @@ glm::vec2 MapHandler::CurrentCell(glm::vec3 players_current_position) {
 	return glm::vec2(x, y);
 }
 
-std::vector<int> MapHandler::GridCulling(glm::vec2 current_cell) {
+std::vector<glm::vec2> MapHandler::GridCulling(glm::vec2 current_cell) {
 	cells_to_draw_.clear();
-	if (current_cell.x == 0 && current_cell.y == 0) {// Upper left corner
-		cells_to_draw_.push_back(0);
-		cells_to_draw_.push_back(0);
-		cells_to_draw_.push_back(0);
-		cells_to_draw_.push_back(0);
-		cells_to_draw_.push_back(1);
-		cells_to_draw_.push_back(1);
-		cells_to_draw_.push_back(0);
-		cells_to_draw_.push_back(1);
-		cells_to_draw_.push_back(1);
-
-		/*cells_to_draw_ = new int[9] {
-			0, 0, 0,
-			0, 1, 1,
-			0, 1, 1
-		};*/
-	}
-
-	if (current_cell.x == (grid_column_ - 1) && current_cell.y == 0) {// Upper right corner
-		cells_to_draw_.push_back(0);
-		cells_to_draw_.push_back(0);
-		cells_to_draw_.push_back(0);
-		cells_to_draw_.push_back(1);
-		cells_to_draw_.push_back(1);
-		cells_to_draw_.push_back(0);
-		cells_to_draw_.push_back(1);
-		cells_to_draw_.push_back(1);
-		cells_to_draw_.push_back(0);
-
-		/*cells_to_draw_ = new int[9] {
-			0, 0, 0,
-			1, 1, 0,
-			1, 1, 0
-		};*/
-	}
-
-	if (current_cell.x == 0 && current_cell.y == (grid_row_ - 1)) {// Down left corner
-		cells_to_draw_.push_back(0);
-		cells_to_draw_.push_back(1);
-		cells_to_draw_.push_back(1);
-		cells_to_draw_.push_back(0);
-		cells_to_draw_.push_back(1);
-		cells_to_draw_.push_back(1);
-		cells_to_draw_.push_back(0);
-		cells_to_draw_.push_back(0);
-		cells_to_draw_.push_back(0);
-
-		/*cells_to_draw_ = new int[9] {
-			0, 1, 1,
-			0, 1, 1,
-			0, 0, 0
-		};*/
-	}
-
-	if (current_cell.x == (grid_column_ - 1) && current_cell.y == (grid_row_ - 1)) {// Down right corner
-		cells_to_draw_.push_back(1);
-		cells_to_draw_.push_back(1);
-		cells_to_draw_.push_back(0);
-		cells_to_draw_.push_back(1);
-		cells_to_draw_.push_back(1);
-		cells_to_draw_.push_back(0);
-		cells_to_draw_.push_back(0);
-		cells_to_draw_.push_back(0);
-		cells_to_draw_.push_back(0);
-
-		/*cells_to_draw_ = new int[9] {
-			1, 1, 0,
-			1, 1, 0,
-			0, 0, 0
-		};*/
-	}
-
-	if (current_cell.x > 0 && current_cell.x < grid_column_ && // Upper side
-		current_cell.y == 0) {
-		cells_to_draw_.push_back(0);
-		cells_to_draw_.push_back(0);
-		cells_to_draw_.push_back(0);
-		cells_to_draw_.push_back(1);
-		cells_to_draw_.push_back(1);
-		cells_to_draw_.push_back(1);
-		cells_to_draw_.push_back(1);
-		cells_to_draw_.push_back(1);
-		cells_to_draw_.push_back(1);
-
-		/*cells_to_draw_ = new int[9] {
-			0, 0, 0,
-			1, 1, 1,
-			1, 1, 1
-		};*/
-	}
-	if (current_cell.x == 0 && current_cell.y > 0 && current_cell.y < grid_row_) {// Left side
-		cells_to_draw_.push_back(0);
-		cells_to_draw_.push_back(0);
-		cells_to_draw_.push_back(0);
-		cells_to_draw_.push_back(0);
-		cells_to_draw_.push_back(1);
-		cells_to_draw_.push_back(1);
-		cells_to_draw_.push_back(0);
-		cells_to_draw_.push_back(1);
-		cells_to_draw_.push_back(1);
-
-
-		/*cells_to_draw_ = new int[9] {
-			0, 1, 1,
-			0, 1, 1,
-			0, 1, 1
-		};*/
-	}
-
-	if (current_cell.x == (grid_column_ - 1) && // Right side
-		current_cell.y > 0 && current_cell.y < grid_row_) {
-		cells_to_draw_.push_back(1);
-		cells_to_draw_.push_back(1);
-		cells_to_draw_.push_back(0);
-		cells_to_draw_.push_back(1);
-		cells_to_draw_.push_back(1);
-		cells_to_draw_.push_back(0);
-		cells_to_draw_.push_back(1);
-		cells_to_draw_.push_back(1);
-		cells_to_draw_.push_back(0);
-
-		/*cells_to_draw_ = new int[9]{
-			1, 1, 0,
-			1, 1, 0,
-			1, 1, 0
-		};*/
-	}
-
-	if (current_cell.x > 0 && current_cell.x < grid_column_ && // Down side
-		current_cell.y == (grid_row_ - 1)) {
-		cells_to_draw_.push_back(1);
-		cells_to_draw_.push_back(1);
-		cells_to_draw_.push_back(1);
-		cells_to_draw_.push_back(1);
-		cells_to_draw_.push_back(1);
-		cells_to_draw_.push_back(1);
-		cells_to_draw_.push_back(0);
-		cells_to_draw_.push_back(0);
-		cells_to_draw_.push_back(0);
-
-		/*cells_to_draw_ = new int[9]{
-			1, 1, 1,
-			1, 1, 1,
-			0, 0, 0
-		};*/
-	}
-	if (current_cell.x > 0 && current_cell.y > 0 &&
-		current_cell.x < grid_column_ && current_cell.y < grid_row_) {
-		cells_to_draw_.push_back(0);
-		cells_to_draw_.push_back(0);
-		cells_to_draw_.push_back(0);
-		cells_to_draw_.push_back(0);
-		cells_to_draw_.push_back(1);
-		cells_to_draw_.push_back(1);
-		cells_to_draw_.push_back(0);
-		cells_to_draw_.push_back(1);
-		cells_to_draw_.push_back(1);
-
-		/*cells_to_draw_ = new int[9] {
-			1, 1, 1,
-			1, 1, 1,
-			1, 1, 1
-		};*/
+	if (current_cell.x == 0 && current_cell.y == 0) {							// Upper left corner
+		cells_to_draw_.push_back(glm::vec2(current_cell.x, current_cell.y));			// 0, 0, 0
+		cells_to_draw_.push_back(glm::vec2(current_cell.x + 1, current_cell.y));		// 0, 1, 1
+		cells_to_draw_.push_back(glm::vec2(current_cell.x, current_cell.y + 1));		// 0, 1, 1
+		cells_to_draw_.push_back(glm::vec2(current_cell.x + 1, current_cell.y + 1));
+	} else if (current_cell.x == (grid_column_ - 1) && current_cell.y == 0) {	// Upper right corner
+		cells_to_draw_.push_back(glm::vec2(current_cell.x - 1, current_cell.y));		// 0, 0, 0
+		cells_to_draw_.push_back(glm::vec2(current_cell.x, current_cell.y));			// 1, 1, 0
+		cells_to_draw_.push_back(glm::vec2(current_cell.x - 1, current_cell.y + 1));	// 1, 1, 0
+		cells_to_draw_.push_back(glm::vec2(current_cell.x, current_cell.y + 1));
+	} else if (current_cell.x == 0 && current_cell.y == (grid_row_ - 1)) {		// Lower left corner
+		cells_to_draw_.push_back(glm::vec2(current_cell.x, current_cell.y - 1));		// 0, 1, 1
+		cells_to_draw_.push_back(glm::vec2(current_cell.x + 1, current_cell.y - 1));	// 0, 1, 1
+		cells_to_draw_.push_back(glm::vec2(current_cell.x, current_cell.y));			// 0, 0, 0
+		cells_to_draw_.push_back(glm::vec2(current_cell.x + 1, current_cell.y));
+	} else if (current_cell.x == (grid_column_ - 1) && current_cell.y == (grid_row_ - 1)) {// Lower right corner
+		cells_to_draw_.push_back(glm::vec2(current_cell.x - 1, current_cell.y - 1));	// 1, 1, 0
+		cells_to_draw_.push_back(glm::vec2(current_cell.x, current_cell.y - 1));		// 1, 1, 0
+		cells_to_draw_.push_back(glm::vec2(current_cell.x - 1, current_cell.y));		// 0, 0, 0
+		cells_to_draw_.push_back(glm::vec2(current_cell.x, current_cell.y));		
+	} else if (current_cell.x > 0 && current_cell.x < grid_column_ &&			// Upper side
+		current_cell.y == 0) {															// 0, 0, 0
+		cells_to_draw_.push_back(glm::vec2(current_cell.x - 1, current_cell.y));		// 1, 1, 1
+		cells_to_draw_.push_back(glm::vec2(current_cell.x, current_cell.y));			// 1, 1, 1
+		cells_to_draw_.push_back(glm::vec2(current_cell.x + 1, current_cell.y));
+		cells_to_draw_.push_back(glm::vec2(current_cell.x - 1, current_cell.y + 1));
+		cells_to_draw_.push_back(glm::vec2(current_cell.x, current_cell.y + 1));
+		cells_to_draw_.push_back(glm::vec2(current_cell.x + 1, current_cell.y + 1));
+	} else if (current_cell.x == 0 && current_cell.y > 0 && current_cell.y < grid_row_) {// Left side
+		cells_to_draw_.push_back(glm::vec2(current_cell.x, current_cell.y - 1));
+		cells_to_draw_.push_back(glm::vec2(current_cell.x + 1, current_cell.y - 1));
+		cells_to_draw_.push_back(glm::vec2(current_cell.x, current_cell.y));
+		cells_to_draw_.push_back(glm::vec2(current_cell.x + 1, current_cell.y));
+		cells_to_draw_.push_back(glm::vec2(current_cell.x, current_cell.y + 1));
+		cells_to_draw_.push_back(glm::vec2(current_cell.x + 1, current_cell.y + 1));
+	} else if (current_cell.x == (grid_column_ - 1) &&							// Right side
+		current_cell.y > 0 && current_cell.y < grid_row_) {								// 1, 1, 0
+		cells_to_draw_.push_back(glm::vec2(current_cell.x - 1, current_cell.y - 1));	// 1, 1, 0
+		cells_to_draw_.push_back(glm::vec2(current_cell.x, current_cell.y - 1));		// 1, 1, 0
+		cells_to_draw_.push_back(glm::vec2(current_cell.x - 1, current_cell.y));
+		cells_to_draw_.push_back(glm::vec2(current_cell.x, current_cell.y));	
+		cells_to_draw_.push_back(glm::vec2(current_cell.x - 1, current_cell.y + 1));
+		cells_to_draw_.push_back(glm::vec2(current_cell.x, current_cell.y + 1));
+	} else if (current_cell.x > 0 && current_cell.x < grid_column_ &&			// Lower side
+		current_cell.y == (grid_row_ - 1)) {											// 1, 1, 1
+		cells_to_draw_.push_back(glm::vec2(current_cell.x - 1, current_cell.y - 1));	// 1, 1, 1
+		cells_to_draw_.push_back(glm::vec2(current_cell.x, current_cell.y - 1));		// 0, 0, 0
+		cells_to_draw_.push_back(glm::vec2(current_cell.x + 1, current_cell.y - 1));
+		cells_to_draw_.push_back(glm::vec2(current_cell.x - 1, current_cell.y));
+		cells_to_draw_.push_back(glm::vec2(current_cell.x, current_cell.y));
+		cells_to_draw_.push_back(glm::vec2(current_cell.x + 1, current_cell.y));
+	} else if (current_cell.x > 0 && current_cell.y > 0 &&						// Inner
+		current_cell.x < grid_column_ && current_cell.y < grid_row_) {					// 1, 1 ,1
+		cells_to_draw_.push_back(glm::vec2(current_cell.x - 1, current_cell.y - 1));	// 1, 1, 1
+		cells_to_draw_.push_back(glm::vec2(current_cell.x, current_cell.y - 1));		// 1, 1, 1
+		cells_to_draw_.push_back(glm::vec2(current_cell.x + 1, current_cell.y - 1));
+		cells_to_draw_.push_back(glm::vec2(current_cell.x - 1, current_cell.y));
+		cells_to_draw_.push_back(glm::vec2(current_cell.x, current_cell.y));
+		cells_to_draw_.push_back(glm::vec2(current_cell.x + 1, current_cell.y));
+		cells_to_draw_.push_back(glm::vec2(current_cell.x - 1, current_cell.y + 1));
+		cells_to_draw_.push_back(glm::vec2(current_cell.x, current_cell.y + 1));
+		cells_to_draw_.push_back(glm::vec2(current_cell.x + 1, current_cell.y + 1));
 	}
 	return cells_to_draw_;
-}
-
-int MapHandler::GetHeightSize() const {
-	return grid_map_.size();
-}
-
-int MapHandler::GetWidthSize(unsigned int i) const {
-	return grid_map_[i].size();
-}
-
-Map MapHandler::GetMap(int cam_index)
-{
-	//return maps_[cam_index];
 }
