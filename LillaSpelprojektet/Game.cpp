@@ -3,8 +3,8 @@
 Game::Game() {
 	this->cam_handler_ptr_ = new CameraHandler(glm::vec3(0.0f), 10.0f);
 	this->obj_handler_ptr_ = new ObjectHandler();
-	menu_.Initiliaze();
-    state_ = MENU;
+
+	state_ = MENU;
 }
 
 Game::~Game() {
@@ -14,6 +14,7 @@ Game::~Game() {
 
 void Game::InitializeGame() {
 	render_.InitializeRender();
+	menu_.Initiliaze();
 	this->obj_handler_ptr_->InitializeObjectHandler();
 }
 
@@ -132,11 +133,16 @@ void Game::GameLoop(float in_deltatime) {
 		std::vector<ObjectPackage> object_vector;
 		object_vector = this->obj_handler_ptr_->UpdateAndRetrieve(in_deltatime);
 
+		PlayerInfoPackage temp_player_data;
+		temp_player_data.max_hp = 100;
+		temp_player_data.current_hp = 100;
+
 		render_.UpdateRender(
 			in_deltatime,
 			cam_handler_ptr_->GetCameraPosition(),
 			cam_handler_ptr_->GetViewPerspectiveMatrix(),
-			object_vector
+			object_vector,
+			temp_player_data
 		);
 	}
 }

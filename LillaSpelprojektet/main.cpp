@@ -37,13 +37,13 @@ int main() {
 			if (event.type == sf::Event::Closed) {
 				running = false;
 			}
-			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
-				running = false;
-			}
 			else if (event.type == sf::Event::Resized) {
 				glViewport(0, 0, event.size.width, event.size.height);
 			}
 			/*----------------Only exit window commands-----------*/
+			/*----------------Input from mouse / keyboard---------*/
+			game.InputForMenu(gameTime.restart().asSeconds(), event);
+			/*----------------Input from mouse / keyboard---------*/
 		}
 
 		//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
