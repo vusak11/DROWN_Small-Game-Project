@@ -29,6 +29,10 @@ private:
 	GLuint vertex_array_object_;
 	GLuint vertex_buffer_object_;
 
+	int selected_item_index_;
+	int nr_of_items_;
+	
+
 	void RenderText(
 		ShaderHandler* shader_handler,
 		std::string text,
@@ -38,7 +42,6 @@ private:
 		glm::vec3 color
 	);
 public:
-	int selected_item_index_;
 
 	Menu();
 	~Menu();
@@ -47,6 +50,10 @@ public:
 	void NavigateUp();
 	void NavigateDown();
 	void RenderMenu(ShaderHandler* shader_handler);
+	void RenderPauseMenu(ShaderHandler* shader_handler);
+	void StateManager(GameState state);
+
+	int GetSelectedItemIndex() const;
 };
 
 #endif

@@ -43,7 +43,8 @@ struct ObjectPackage {
 enum GameState {
 	GAME,
 	MENU,
-	PAUSE
+	PAUSE, 
+	OPTIONS
 };
 
 #endif // !GLOBALS_H

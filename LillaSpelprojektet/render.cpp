@@ -153,11 +153,20 @@ void Render::LightingPass(glm::vec3 camera_position) {
 
 }
 
-void Render::RenderMenuState(Menu menu_) {
+void Render::RenderMenuState(Menu menu) {
+	glClearColor(0.22f, 0.22f, 0.22f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT);
+	
+	menu.RenderMenu(text_shaders_);
+}
+
+void Render::RenderPauseMenu(Menu menu) {
+	glDisable(GL_DEPTH_TEST);
+	glEnable(GL_BLEND);
 	glClearColor(0.22f, 0.22f, 0.22f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	menu_.RenderMenu(text_shaders_);
+	menu.RenderPauseMenu(text_shaders_);
 }
 
 // RenderQuad() Renders a 1x1 quad in NDC, best used for framebuffer color targets
@@ -167,7 +176,6 @@ void Render::RenderQuad() {
 	{
 		GLfloat quad_vertices[] = {
 			// Positions        // Texture Coords
-			-1.0f,  1.0f, 0.0f, 0.0f, 1.0f, //MORE PASTA
 			-1.0f,  1.0f, 0.0f, 0.0f, 1.0f,
 			-1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
 			 1.0f,  1.0f, 0.0f, 1.0f, 1.0f,

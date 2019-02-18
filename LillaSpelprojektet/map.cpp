@@ -239,6 +239,7 @@ void Map::Draw(GLuint shader) {
 	
 	glDrawElements(GL_TRIANGLE_STRIP, indices_.size(), GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
+	glDisable(GL_PRIMITIVE_RESTART);
 }
 
 void Map::SetHeight(int height) {
