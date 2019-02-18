@@ -94,8 +94,7 @@ void Menu::Initiliaze() {
 	glBindVertexArray(0);
 }
 
-void Menu::NavigateUp()
-{
+void Menu::NavigateUp() {
 	if (selected_item_index_ == 0) {
 		selected_item_index_ = (nr_of_items_ - 1);
 	}

@@ -122,7 +122,7 @@ void Game::GameLoop(float in_deltatime) {
 	}
 }
 
-void Game::InputForMenuAndSomeExtra(float in_deltatime, sf::Event event) {
+void Game::InputForMenu(float in_deltatime, sf::Event event) {
 	if (state_ == MENU) {
 		menu_.StateManager(state_);
 		switch (event.type) {

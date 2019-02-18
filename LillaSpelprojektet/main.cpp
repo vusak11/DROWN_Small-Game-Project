@@ -42,7 +42,7 @@ int main() {
 			}
 			/*----------------Only exit window commands-----------*/
 			/*----------------Input from mouse / keyboard---------*/
-			game.InputForMenuAndSomeExtra(gameTime.restart().asSeconds(), event);
+			game.InputForMenu(gameTime.restart().asSeconds(), event);
 			/*----------------Input from mouse / keyboard---------*/
 		}
 

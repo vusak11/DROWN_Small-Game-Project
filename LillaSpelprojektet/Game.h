@@ -28,7 +28,7 @@ public:
 
 	void InitializeGame();
 	void GameLoop(float in_deltatime);
-	void InputForMenuAndSomeExtra(float in_deltatime, sf::Event event);
+	void InputForMenu(float in_deltatime, sf::Event event);
 };
 
 #endif // !GAME_H
