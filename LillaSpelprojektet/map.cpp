@@ -41,7 +41,7 @@ void Map::CreateCells(unsigned int grid_column, unsigned int grid_row, int j, in
 	float cell_width = image_width_ / grid_column;
 	float cell_height = image_height_ / grid_row;
 
-	// Add extra vertices depending on what cell and fill the gaps
+	// Add extra vertices depending on what cell for filling gaps between cells
 	if (j == 0 && i == 0) // Upper left corner
 		CalculateBorders(0, 2, 0, 2, cell_width, cell_height, j, i);
 
@@ -193,8 +193,8 @@ void Map::CreateTriangles() {
 void Map::CreateIndices() {
 	indices_.clear();
 
-	for (int z = 0; z < cell_height_ - 1; z++) {
-		for (int x = 0; x < cell_width_ - 1; x++) {
+	for (int z = 0; z < cell_height_ - 1; z++) { // -1 so that we don't reach out of bounds
+		for (int x = 0; x < cell_width_ - 1; x++) { // -------- || ------------
 			int index = (z * cell_width_) + x;
 
 			int p1 = index;
@@ -213,7 +213,7 @@ void Map::CreateIndices() {
 			indices_.push_back(p6);
 
 		}
-		indices_.push_back(cell_width_*cell_height_); //"degenerate"
+		indices_.push_back(cell_width_*cell_height_); //degenerate strips
 	}
 }
 

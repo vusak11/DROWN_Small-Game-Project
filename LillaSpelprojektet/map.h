@@ -29,7 +29,12 @@ public:
 	bool LoadMap(const char* path);
 	void LoadTexture(char* texture_name);
 
-	void CreateCells(unsigned int grid_column, unsigned int grid_row, int j, int i);
+	void CreateCells(
+		unsigned int grid_column,
+		unsigned int grid_row,
+		int j,
+		int i
+	);
 	void CalculateBorders(
 		int b_1,
 		int b_2,
@@ -38,7 +43,8 @@ public:
 		float cell_width,
 		float cell_height,
 		int j,
-		int i);
+		int i
+	);
 	void UVCoordinates();
 	void CalculateNormals();
 	void CreateTriangles();

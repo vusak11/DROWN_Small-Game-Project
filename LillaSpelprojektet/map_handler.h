@@ -18,14 +18,15 @@ private:
 	struct GridMap {
 		Map map_cell_;
 		glm::vec3 translate_;
+		glm::vec2 cell_position_;
 	};
 
 	std::vector<std::vector<GridMap>> grid_map_;
+	std::vector<int> cells_to_draw_;
+	//int* cells_to_draw_;
 	
 	float grid_column_;
 	float grid_row_;
-	float height_;
-	float width_;
 	
 public:
 	MapHandler();
@@ -37,7 +38,8 @@ public:
 	glm::vec3 Transformation(unsigned int i, unsigned int j);
 	void Draw(GLuint shader, unsigned int i, unsigned int j);
 	
-	void CurrentCell(glm::vec3 current_position);
+	glm::vec2 CurrentCell(glm::vec3 players_current_position);
+	std::vector<int> GridCulling(glm::vec2 current_cell);
 
 	int GetHeightSize() const;
 	int GetWidthSize(unsigned int i) const;
