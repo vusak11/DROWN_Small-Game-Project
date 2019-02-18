@@ -26,27 +26,29 @@ public:
 
 	// This function is not complete.
 	//bool LoadMap(const char* path);	// Returns a bool to trouble shoot while loading new maps.
+	bool LoadMap(const char* path);
 	void LoadTexture(char* texture_name);
 
-	void Buffer(GLuint shader);
-	void Draw(GLuint shader);
-
-	//void SetHeight(int height);
-	//void SetWidth(int width);
-
-	int GetImageHeight();
-	int GetImageWidth();
-
-	int GetCellHeight() const;
-	int GetCellWidth() const;
-	//-------Test
-
-	bool LoadMap(const char* path);
 	void CreateCells(unsigned int grid_column, unsigned int grid_row, int j, int i);
+	void CalculateBorders(
+		int b_1,
+		int b_2,
+		int b_3,
+		int b_4,
+		float cell_width,
+		float cell_height,
+		int j,
+		int i);
 	void UVCoordinates();
 	void CalculateNormals();
 	void CreateTriangles();
 	void CreateIndices();
+
+	void Buffer(GLuint shader);
+	void Draw(GLuint shader);
+
+	int GetCellHeight() const;
+	int GetCellWidth() const;
 
 private:
 		int image_width_;			// Width of map image

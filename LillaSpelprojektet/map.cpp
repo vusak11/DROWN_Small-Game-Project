@@ -17,149 +17,6 @@ Map::Map(char* path) {
 Map::~Map() {
 }
 
-//-------------------Method 1
-/*bool Map::LoadMap(const char* path) {
-
-	unsigned char* map_data = SOIL_load_image(path, &map_width_, &map_height_, 0, SOIL_LOAD_RGB);
-
-	std::cout << "MAP: " << path << SOIL_last_result() << std::endl;
-	std::vector<float> temp_float;
-
-	//-------------Height-------------//
-	for (int z = 0; z < map_height_; z++) {
-		temp_float.clear();
-		for (int x = 0; x < map_width_; x++) {
-			// Read every third value
-			unsigned char color = map_data[3 * (z * map_width_ + x)];
-			float height = color;
-			temp_float.push_back(height);
-		}
-		temp_height_.push_back(temp_float);
-	}
-
-	//-------------Texture coordinates(U,V)-------------//
-
-	std::vector<glm::vec2> temp_coord;
-
-	for (int z = 0; z < temp_height_.size(); z++) {
-		temp_coord.clear();
-		for (int x = 0; x < map_width_; x++) {
-			float f_scale_c = (float(x) / float(map_width_ - 1)) * 10;
-			float f_scale_r = (float(z) / float(temp_height_.size() - 1)) * 10;
-			temp_coord.push_back(glm::vec2(f_scale_c, f_scale_r));
-		}
-		tex_coord_.push_back(temp_coord);
-	}
-
-	//------------ Normals ------------//
-
-	glm::vec3 point1, point2, point3, point4;
-	glm::vec3 edge1, edge2;
-	std::vector<glm::vec3> temp_norm_0, temp_norm_1;
-	std::vector<std::vector<glm::vec3>> triangle_norm_0, triangle_norm_1;
-
-	for (int z = 0; z < map_height_ - 1; z++) {
-		temp_norm_0.clear();
-		temp_norm_1.clear();
-		for (int x = 0; x < map_width_ - 1; x++) {
-
-			point1 = glm::vec3((float)x, temp_height_[z][x], (float)z);
-			point2 = glm::vec3((float)x, temp_height_[z + 1][x], (float)z + 1);
-			point3 = glm::vec3((float)x + 1, temp_height_[z + 1][x + 1], (float)z + 1);
-			point4 = glm::vec3((float)x + 1, temp_height_[z][x + 1], float(z));
-
-			//---------Triangle 1-------------//
-			edge1 = glm::vec3(point2 - point1);
-			edge2 = glm::vec3(point3 - point1);
-
-			glm::vec3 normal0 = glm::normalize(glm::cross(edge1, edge2));
-
-			//--------Triangle 2-------------//
-			edge1 = glm::vec3(point1 - point4);
-			edge2 = glm::vec3(point3 - point4);
-
-			glm::vec3 normal1 = glm::normalize(glm::cross(edge1, edge2));
-
-			temp_norm_0.push_back(normal0);
-			temp_norm_1.push_back(normal1);
-		}
-		triangle_norm_0.push_back(temp_norm_0);
-		triangle_norm_1.push_back(temp_norm_1);
-	}
-
-	//---------------Sum Normals(adjacent)------------//
-
-	std::vector<glm::vec3> temp_sum;
-	for (int z = 0; z < map_height_; z++) {
-		temp_sum.clear();
-		for (int x = 0; x < map_width_; x++) {
-			glm::vec3 sum_normal = glm::vec3(0.0f, 0.0f, 0.0f);
-			if (z != 0 && x != 0) {
-				sum_normal += triangle_norm_0[z - 1][x - 1];
-				sum_normal += triangle_norm_1[z - 1][x - 1];
-			}
-			if (z != 0 && x != map_width_ - 1) {
-				sum_normal += triangle_norm_0[z - 1][x];
-			}
-			if (z != map_height_ - 1 && x != map_width_ - 1) {
-				sum_normal += triangle_norm_0[z][x];
-				sum_normal += triangle_norm_1[z][x];
-			}
-			if (z != map_height_ - 1 && x != 0) {
-				sum_normal += triangle_norm_1[z][x - 1];
-			}
-			sum_normal = glm::normalize(sum_normal);
-			temp_sum.push_back(sum_normal);
-		}
-		normals_.push_back(temp_sum);
-	}
-
-	for (int z = 0; z < map_height_ - 1; z++) {
-		for (int x = 0; x < map_width_ - 1; x++) {
-			int index = (z * map_width_) + x;
-
-			int p1 = index;
-			int p2 = index + map_width_ + 1;
-			int p3 = index + 1;
-
-			int p4 = index;
-			int p5 = index + map_width_;
-			int p6 = index + map_width_ + 1;
-
-			indices_.push_back(p1);
-			indices_.push_back(p2);
-			indices_.push_back(p3);
-			indices_.push_back(p4);
-			indices_.push_back(p5);
-			indices_.push_back(p6);
-
-		}
-		indices_.push_back(map_width_*map_height_); //"degenerate"
-	}
-
-	//-------------Create triangles-------------//
-	Triangle temp_triangle;
-	int index = 0;
-
-	for (int z = 0; z < map_height_; z++) {
-		for (int x = 0; x < map_width_; x++) {
-			temp_triangle.x = (float)x;
-			temp_triangle.y = (float)z * -1;
-			temp_triangle.z = temp_height_[z][x];
-			temp_triangle.u = tex_coord_[z][x].x;
-			temp_triangle.v = tex_coord_[z][x].y;
-			temp_triangle.x_normal = normals_[z][x].x;
-			temp_triangle.y_normal = normals_[z][x].z * -1;
-			temp_triangle.z_normal = normals_[z][x].y;
-			vertices_.push_back(temp_triangle);
-		}
-	}
-
-	return true;
-}
-*/
-
-//-------------------- Method 2
 bool Map::LoadMap(const char* path) {
 	unsigned char* map_data = SOIL_load_image(path, &image_width_, &image_height_, 0, SOIL_LOAD_RGB);
 
@@ -184,106 +41,62 @@ void Map::CreateCells(unsigned int grid_column, unsigned int grid_row, int j, in
 	float cell_width = image_width_ / grid_column;
 	float cell_height = image_height_ / grid_row;
 
-	std::vector<float> temp_cell_width;
-	std::vector<std::vector<std::vector<float>>> temp_cell_storage;
+	// Add extra vertices depending on what cell and fill the gaps
+	if (j == 0 && i == 0) // Upper left corner
+		CalculateBorders(0, 2, 0, 2, cell_width, cell_height, j, i);
 
-	if (j == 0 && i == 0) { // Upper left corner
-		for (int y = (cell_height * j) - 0; y < (cell_height * (j + 1)) + 2; y++) {
-			temp_cell_width.clear();
-			for (int x = (cell_width * i) - 0; x < (cell_width * (i + 1)) + 2; x++) {
-				temp_cell_width.push_back(height_map_[y][x]);
-			}
-			cell_vertices_.push_back(temp_cell_width);
-		}
-	}
+	if (j == (grid_row - 1) && i == 0) // Down left corner
+		CalculateBorders(2, 0, 0, 2, cell_width, cell_height, j, i);
 	
-	if (j == (grid_row - 1) && i == 0) { // Down left corner
-		for (int y = (cell_height * j) - 2; y < (cell_height * (j + 1)); y++) {
-			temp_cell_width.clear();
-			for (int x = (cell_width * i) - 0; x < (cell_width * (i + 1)) + 2; x++) {
-				temp_cell_width.push_back(height_map_[y][x]);
-			}
-			cell_vertices_.push_back(temp_cell_width);
-		}
-	}
+	if (j == 0 && i == (grid_column - 1)) // Upper right corner
+		CalculateBorders(0, 2, 2, 0, cell_width, cell_height, j, i);
 	
-	if (j == 0 && i == (grid_column - 1)) { // Upper right corner
-		for (int y = (cell_height * j) - 0; y < (cell_height * (j + 1)) + 2; y++) {
-			temp_cell_width.clear();
-			for (int x = (cell_width * i) - 2; x < (cell_width * (i + 1)); x++) {
-				temp_cell_width.push_back(height_map_[y][x]);
-			}
-			cell_vertices_.push_back(temp_cell_width);
-		}
-	}
+	if (j == (grid_row - 1) && i == (grid_column - 1)) // Down corner right
+		CalculateBorders(2, 0, 2, 0, cell_width, cell_height, j, i);
 	
-	if (j == (grid_row - 1) && i == (grid_column - 1)) { // Down corner right
-		for (int y = (cell_height * j) - 2; y < (cell_height * (j + 1)); y++) {
-			temp_cell_width.clear();
-			for (int x = (cell_width * i) - 2; x < (cell_width * (i + 1)); x++) {
-				temp_cell_width.push_back(height_map_[y][x]);
-			}
-			cell_vertices_.push_back(temp_cell_width);
-		}
-	}
+	if (j == 0 && i > 0 && i < grid_column - 1) // Upper side
+		CalculateBorders(0, 2, 1, 1, cell_width, cell_height, j, i);
 	
-	if (j == 0 && i > 0 && i < grid_column - 1) { // Upper side
-		for (int y = (cell_height * j) - 0; y < (cell_height * (j + 1)) + 2; y++) {
-			temp_cell_width.clear();
-			for (int x = (cell_width * i) - 1; x < (cell_width * (i + 1)) + 1; x++) {
-				temp_cell_width.push_back(height_map_[y][x]);
-			}
-			cell_vertices_.push_back(temp_cell_width);
-		}
-	}
+	if (j > 0 && j < grid_row - 1 && i == 0) // Left side
+		CalculateBorders(1, 1, 0, 2, cell_width, cell_height, j, i);
 	
-	if (j > 0 && j < grid_row - 1 && i == 0) { // Left side
-		for (int y = (cell_height * j) - 1; y < (cell_height * (j + 1)) + 1; y++) {
-			temp_cell_width.clear();
-			for (int x = (cell_width * i) - 0; x < (cell_width * (i + 1)) + 2; x++) {
-				temp_cell_width.push_back(height_map_[y][x]);
-			}
-			cell_vertices_.push_back(temp_cell_width);
-		}
-	}
+	if (j > 0 && j < grid_row - 1 && i == (grid_column - 1)) // Right side
+		CalculateBorders(1, 1, 2, 0, cell_width, cell_height, j, i);
 	
-	if (j > 0 && j < grid_row - 1 && i == (grid_column - 1)) { // Right side
-		for (int y = (cell_height * j) - 1; y < (cell_height * (j + 1)) + 1; y++) {
-			temp_cell_width.clear();
-			for (int x = (cell_width * i) - 2; x < (cell_width * (i + 1)); x++) {
-				temp_cell_width.push_back(height_map_[y][x]);
-			}
-			cell_vertices_.push_back(temp_cell_width);
-		}
-	}
+	if (j == (grid_row - 1) && i > 0 && i < grid_column - 1) // Down side
+		CalculateBorders(2, 0, 1, 1, cell_width, cell_height, j, i);
 	
-	if (j == (grid_row - 1) && i > 0 && i < grid_column - 1) { // Down side
-		for (int y = (cell_height * j) - 2; y < (cell_height * (j + 1)); y++) {
-			temp_cell_width.clear();
-			for (int x = (cell_width * i) - 1; x < (cell_width * (i + 1)) + 1; x++) {
-				temp_cell_width.push_back(height_map_[y][x]);
-			}
-			cell_vertices_.push_back(temp_cell_width);
-		}
-	}
-	
-	if (j != 0 && i != 0 && j != grid_row - 1 && i != grid_column - 1) { // Inner
-		for (int y = -1 + (cell_height * j); y < (cell_height * (j + 1)) + 1; y++) {
-			temp_cell_width.clear();
-			for (int x = -1 + (cell_width * i); x < (cell_width * (i + 1)) + 1; x++) {
-				temp_cell_width.push_back(height_map_[y][x]);
-			}
-			cell_vertices_.push_back(temp_cell_width);
-		}
-	}
+	if (j != 0 && i != 0 && j != grid_row - 1 && i != grid_column - 1) // Inner
+		CalculateBorders(1, 1, 1, 1, cell_width, cell_height, j, i);
 
 	cell_width_ = cell_vertices_[j].size();
 	cell_height_ = cell_vertices_.size();
 }
 
+void Map::CalculateBorders(
+	int b_1,
+	int b_2,
+	int b_3, 
+	int b_4,
+	float cell_width,
+	float cell_height,
+	int j,
+	int i) {
+	std::vector<float> temp_cell_width;
+
+	for (int y = (cell_height * j) - b_1; y < (cell_height * (j + 1)) + b_2; y++) {
+		temp_cell_width.clear();
+		for (int x = (cell_width * i) - b_3; x < (cell_width * (i + 1)) + b_4; x++) {
+			temp_cell_width.push_back(height_map_[y][x]);
+		}
+		cell_vertices_.push_back(temp_cell_width);
+	}
+}
+
+
 void Map::UVCoordinates() {
 	std::vector<glm::vec2> temp_coord;
-
+	tex_coordinates_.clear();
 	for (int z = 0; z < cell_height_; z++) {
 		temp_coord.clear();
 		for (int x = 0; x < cell_width_; x++) {
@@ -480,12 +293,4 @@ int Map::GetCellHeight() const {
 
 int Map::GetCellWidth() const {
 	return cell_width_;
-}
-
-int Map::GetImageHeight() {
-	return image_height_;
-}
-
-int Map::GetImageWidth() {
-	return image_width_;
 }
