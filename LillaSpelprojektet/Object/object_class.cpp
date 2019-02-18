@@ -17,6 +17,7 @@ void ObjectClass::CalculateModelMatrix() {
 ObjectClass::ObjectClass(glm::vec3 start_pos, ObjectID id) {
 
 	this->id_ = id;
+	this->airborne_ = false;
 
 	this->position_ = start_pos;
 
@@ -168,4 +169,12 @@ void ObjectClass::TurnRight(const float& in_deltatime) {
 	std::cout << "Rot R: " << new_rotation << std::endl;
 
 	this->SetRotation(this->rotation_around_x_, new_rotation, this->rotation_around_z_);
+}
+
+bool ObjectClass::IsAirborne() {
+	return this->airborne_;
+}
+
+void ObjectClass::SetAirborne(bool in_bool) {
+	this->airborne_ = in_bool;
 }

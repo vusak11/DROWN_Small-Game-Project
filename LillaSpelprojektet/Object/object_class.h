@@ -19,25 +19,20 @@
 class ObjectClass {
 private:
 	//Variables-----------------------------------------------
-	ObjectID id_;
-	
-	glm::vec3 position_;
-	//glm::vec3 rotation_;		//Vector with	rotation around x-axis on x,
-								//				rotation around y-axis on y
-								//				and rotation around z-axis on z
-								//Rotation represented in degrees
 
+	//Metadata/Math
+	glm::vec3 position_;
+
+	//Math
 	int rotation_around_x_;			//The rotation of the object in degrees 
 	int rotation_around_y_;			//around the x, y and z-axises
 	int rotation_around_z_;			//NTS:	0 rotation around y is default (model look towards screen[positive z])
-										//		-90 (or 270) rotation around y is looking towards the right[positive x]
-										//		90 rotation around y is looking towards the left[negative x]
+									//		-90 (or 270) rotation around y is looking towards the right[positive x]
+									//		90 rotation around y is looking towards the left[negative x]
 
 	glm::vec3 scale_;			//Vector with	x scaling on x,
 								//				y scaling on y
 								//				and z scaling on z
-
-
 
 	glm::mat4 translation_matrix_;
 	glm::mat4 scaling_matrix_;
@@ -53,20 +48,13 @@ private:
 	//Functions----------------------------------------------
 	void CalculateModelMatrix();	//Function calculates model matrix from scratch
 
-	//Model* model_; // The model class will contain a TextureClass 
+protected:
+	//Metadata
+	ObjectID id_;
+	bool airborne_;
 	//HitBot hitbox_;
 
 public:
-
-	//WIP
-
-	struct ObjectMetadata {				//An object's metadata tells us things
-		bool airborne = false;			//about the object's current situation
-	};
-	ObjectMetadata object_metadata_;
-
-	//
-
 	ObjectClass(glm::vec3 start_pos = glm::vec3(0.0f, 0.0f, 0.0f), ObjectID id = OBJECT_ID_NULL);
 	~ObjectClass();
 
@@ -94,6 +82,8 @@ public:
 	//Other Functions--------------------------------------
 	void TurnLeft(const float& in_deltatime);
 	void TurnRight(const float& in_deltatime);
+	bool IsAirborne();
+	virtual void SetAirborne(bool in_bool);
 
 
 };

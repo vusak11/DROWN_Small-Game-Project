@@ -28,7 +28,7 @@ void PhysicsEngine::UpdateVelocity(float& in_deltatime, ObjectClass*& in_object_
 
 	//Apply the x-axis decceleration (Different for ground/air)
 	//v = v0 + (-v0*lr)*t;
-	float loss_ratio = (in_object_ptr->object_metadata_.airborne) ?
+	float loss_ratio = (in_object_ptr->IsAirborne()) ?
 		this->object_air_loss_ratio_ :
 		this->object_ground_loss_ratio_;
 	
@@ -62,13 +62,13 @@ void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_
 	//TBA(?): COLLISION DETECTION VS MAP
 
 	//TEMP: DON'T LET AN OBJECT BELOW THE "GROUND" PLANE
-	in_object_ptr->object_metadata_.airborne = true;
+	in_object_ptr->SetAirborne(true);
 	if (object_pos.y < 0.0f) {
 		object_pos.y = 0.0f;
 		glm::vec3 grounded_velocity = in_object_ptr->GetVelocityVec();
 		grounded_velocity.y = 0.0f;
 		in_object_ptr->SetVelocityVec(grounded_velocity);
-		in_object_ptr->object_metadata_.airborne = false;
+		in_object_ptr->SetAirborne(false);
 	}
 
 	//Set the object's new position
@@ -81,7 +81,7 @@ PhysicsEngine::PhysicsEngine() {
 	this->gravitational_acceleration_	= GRAVITATIONAL_ACCELERATION;
 	this->object_max_velocity_			= OBJECT_MAX_VELOCITY;
 	this->object_min_velocity_			= OBJECT_MIN_VELOCITY;
-	this->object_ground_loss_ratio_		= OBJECT_GROUND_LOSS_RATIO;
+	this->object_ground_loss_ratio_		= (float)OBJECT_GROUND_LOSS_RATIO;
 	this->object_air_loss_ratio_		= OBJECT_AIR_LOSS_RATIO;
 }
 

@@ -45,6 +45,8 @@ public:
 	void MoveRight();
 	void Jump();
 
+	void SetAirborne(bool in_bool);
+
 };
 
 

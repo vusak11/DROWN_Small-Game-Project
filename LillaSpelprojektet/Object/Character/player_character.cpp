@@ -42,7 +42,7 @@ void PlayerCharacter::MoveRight() {
 void PlayerCharacter::Jump() {
 
 	//If player is in the air
-	if (this->object_metadata_.airborne) {
+	if (this->airborne_) {
 		//If the player do not have double jump return
 		if (this->ability_.id != DOUBLE_JUMP) { return; }
 		
@@ -56,4 +56,8 @@ void PlayerCharacter::Jump() {
 	new_velocity.y = this->jump_speed_;
 
 	this->SetVelocityVec(new_velocity);
+}
+
+void PlayerCharacter::SetAirborne(bool in_bool) {
+	this->airborne_ = in_bool;
 }
