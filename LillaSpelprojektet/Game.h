@@ -20,14 +20,15 @@ private:
 
 	GameState state_;
 	Menu menu_;
-		
-	void InputFromDevices(float in_deltatime);
+
+	void InputForGame(float in_deltatime);
 public:
 	Game();
 	~Game();
 
 	void InitializeGame();
 	void GameLoop(float in_deltatime);
+	void InputForMenuAndSomeExtra(float in_deltatime, sf::Event event);
 };
 
 #endif // !GAME_H

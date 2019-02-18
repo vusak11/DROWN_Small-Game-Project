@@ -49,7 +49,8 @@ public:
 		glm::vec3 camera_position);
 
 
-	void RenderMenuState(Menu menu_);
+	void RenderMenuState(Menu menu);
+	void RenderPauseMenu(Menu menu);
 	//void GeometryDrawing();
 	//void ModelTransformation(glm::vec3 m_translate, glm::vec3 m_rotate, float radians, glm::vec3 m_scale);
 
