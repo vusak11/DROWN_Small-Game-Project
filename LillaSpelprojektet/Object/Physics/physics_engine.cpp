@@ -41,12 +41,15 @@ void PhysicsEngine::UpdateVelocity(float& in_deltatime, ObjectClass*& in_object_
 
 void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_ptr) {
 
+	int map_size = 100;	// OBS this variable needs to be collected from the map
+	int radius_constant = 5;
+
+	// | 1 | Get new position from acceleration and velocity.
+
 	//Get the object's position
 	glm::vec3 object_pos = in_object_ptr->GetPosition();
-
 	//Displace the object using its velocity during deltatime
 	object_pos += in_object_ptr->GetVelocityVec()*in_deltatime;
-
 
 	/*
 	//TBA(?): COLLISION DETECTION VS MAP
@@ -225,29 +228,30 @@ void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_
 	*/
 
 
-	int map_size = 100;	// OBS this variable needs to be collected from the map
-	int radius_constant = 3;
 	
-	for (int i = 0; i < 3; i++)
+	// Do collision check 3 times each frame
+	for (int k = 0; k < 3; k++)
 	{
 
-
-
 		
-
+		// Reset collosion flags
 		bool collision_0 = false;
 		bool collision_1 = false;
 		bool collision_2 = false;
 		bool collision_3 = false;
 
-		float x_0 = (object_pos.x - in_object_ptr->GetScale().x) / 495;
-		float x_1 = (object_pos.x + in_object_ptr->GetScale().x) / 495;
-		float y_0 = (object_pos.y - in_object_ptr->GetScale().y) / 495;
-		float y_1 = (object_pos.y + in_object_ptr->GetScale().y) / 495;
+		// | 2 | Make values to 4 points surrounding the object like a box.
+		float x_0 = object_pos.x - in_object_ptr->GetScale().x;
+		float x_1 = __min((object_pos.x + in_object_ptr->GetScale().x), 495);
+		float y_0 = object_pos.y - in_object_ptr->GetScale().y;
+		float y_1 = __min((object_pos.y + in_object_ptr->GetScale().y), 495);
 
-		// Normalize player pos
-		//float player_tile_pos_x = object_pos.x / 495;//(MAP_SCALE * map_size - MAP_SCALE);
-		//float player_tile_pos_y = object_pos.y / 495;//(MAP_SCALE * map_size - MAP_SCALE);
+		// | 3 | Normalize each pos to later match with map location.
+		x_0 = x_0 / (map_size * MAP_SCALE - MAP_SCALE);
+		x_1 = x_1 / (map_size * MAP_SCALE - MAP_SCALE);
+		y_0 = y_0 / (map_size * MAP_SCALE - MAP_SCALE);
+		y_1 = y_1 / (map_size * MAP_SCALE - MAP_SCALE);
+
 
 		// Get map index from normalized value
 		int x_0_index = x_0 * (map_size - 1);
@@ -267,23 +271,25 @@ void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_
 			y_1_index++;
 
 
-
+		// | 4 | Get an interval of map points to test against each object point.
 		int x_min = __max(x_0_index - radius_constant, 0);
-		x_min = __min(x_min, MAP_SCALE * map_size - MAP_SCALE);
-		int x_max = __min(x_0_index + in_object_ptr->GetScale().x + radius_constant, MAP_SCALE * map_size - MAP_SCALE);
+		x_min = __min(x_min, map_size - 1);
+		int x_max = __min(x_0_index + 2 * in_object_ptr->GetScale().x + radius_constant, map_size - 1);
 		x_max = __max(x_max, 0);
 
-
 		int y_min = __max(y_0_index - radius_constant, 0);
-		y_min = __min(y_min, MAP_SCALE * map_size - MAP_SCALE);
-		int y_max = __min(y_0_index + in_object_ptr->GetScale().y + radius_constant, MAP_SCALE * map_size - MAP_SCALE);
+		y_min = __min(y_min, map_size - 1);
+		int y_max = __min(y_0_index + 2 * in_object_ptr->GetScale().y + radius_constant, map_size - 1);
 		y_max = __max(y_max, 0);
 
+		//std::cout << "xmin: " << x_min << ", xmax= " << x_max << ", ymin: " << y_min << ", ymax: " << y_max << std::endl;
+
+		// | 5 | Check each point in the interval with a height, with each point in the object.
 		for (int i = x_min; i < x_max; i++)
 		{
 			for (int j = y_min; j < y_max; j++)
 			{
-				if ((*map_height_list_)[i][j] > 0.5)
+				if ((*map_height_list_)[j][i] > 0.5)
 				{
 					if (x_0_index == i && y_0_index == j)
 					{
@@ -305,114 +311,107 @@ void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_
 			}
 		}
 
-		// Finally do things in a switch case if colliding.
-
+		// | 5 | Finally do things in a switch case if colliding.
+		bool doublecollision = false;
 		if (collision_0 && collision_1)	// Bot collision
 		{
-			object_pos.y += 0.1f;
+			object_pos.y += 0.2f;
 			std::cout << "Bot Collision" << std::endl;
-			
+			doublecollision = true;
 			in_object_ptr->SetVelocityVec(glm::vec3(in_object_ptr->GetVelocityVec().x, 0.0f, in_object_ptr->GetVelocityVec().z));
 		}
-		else if (collision_0 && collision_3)	// Left collision
+
+		if (collision_0 && collision_3)	// Left collision
 		{
-			object_pos.x += 0.1;
+			object_pos.x += 0.2f;
 			std::cout << "Left Collision" << std::endl;
-
+			doublecollision = true;
 			in_object_ptr->SetVelocityVec(glm::vec3(0.0f, in_object_ptr->GetVelocityVec().y, in_object_ptr->GetVelocityVec().z));
 		}
-		else if (collision_1 && collision_2)	// Right collision
+
+		if (collision_1 && collision_2)	// Right collision
 		{
-			object_pos.x -= 0.05;
+			object_pos.x -= 0.2f;
 			std::cout << "Right Collision" << std::endl;
-
+			doublecollision = true;
 			in_object_ptr->SetVelocityVec(glm::vec3(0.0f, in_object_ptr->GetVelocityVec().y, in_object_ptr->GetVelocityVec().z));
 		}
-		else if (collision_3 && collision_2)	// Top collision
+
+		if (collision_3 && collision_2)	// Top collision
 		{
-			object_pos.y -= 0.05;
+			object_pos.y -= 0.2f;
 			std::cout << "Top Collision" << std::endl;
+			doublecollision = true;
 			in_object_ptr->SetVelocityVec(glm::vec3(in_object_ptr->GetVelocityVec().x, 0.0f, in_object_ptr->GetVelocityVec().z));
 		}
-		else if (collision_0)
+
+		if (!doublecollision)
 		{
-			object_pos.x += 0.025;
-			object_pos.y += 0.025;
-			std::cout << "0 Collision" << std::endl;
-		}
-		else if (collision_1)
-		{
-
-			object_pos.x -= 0.025;
-			object_pos.y += 0.025;
-			std::cout << "1 Collision" << std::endl;
-		}
-		else if (collision_2)
-		{
-			object_pos.x -= 0.025;
-			object_pos.y -= 0.025;
-			std::cout << "2 Collision" << std::endl;
-		}
-		else if (collision_3)
-		{
-			object_pos.x += 0.025;
-			object_pos.y -= 0.025;
-			std::cout << "3 Collision" << std::endl;
-		}
-
-		// Reset the flags
-		collision_0 = false;
-		collision_1 = false;
-		collision_2 = false;
-		collision_3 = false;
-
-
-
-		//if ((*map_height_list_)[x_index][y_index] > 0.5)
-		//{
-		//	//std::cout << "map_index_x: " << x_index << "map_index_y: " << y_index << " height value: " << (*map_height_list_)[x_index][y_index] << std::endl;
-		//	object_pos.y += 0.05;
-	
-		//	in_object_ptr->SetVelocityVec(glm::vec3(in_object_ptr->GetVelocityVec().x,0.0f,0.0f));
-		//}
-
-		/*
-
-
-		// Get through the interval and check each point which is in not in the background
-		for (int i = x_min; i < x_max; i++)
-		{
-			for (int j = y_min; j < y_max; j++)
+			glm::vec3 obj_velocity = in_object_ptr->GetVelocityVec();
+			if (collision_0)
 			{
-				float height_index = (*map_height_list_)[map_size - i][j];
-				if (height_index > 15.0f)	// Height map is not normalized. currently height 20
+				if (obj_velocity.x < 0)
 				{
-					// if point 0 in hitbox is on a tile with a vertex from the map, collision_0 = true;
-					//---------Point_0---------//
-					if (pos_0_x == i && pos_0_y == j)
+					if ((*map_height_list_)[x_0_index][y_0_index - 1] <= 0.5)
 					{
-						collision_0 = true;
+						in_object_ptr->SetVelocityVec(glm::vec3(obj_velocity.x, 0.0f, obj_velocity.z));
+						object_pos.y += 0.5;
+					}
+					else
+					{
+						in_object_ptr->SetVelocityVec(glm::vec3(obj_velocity.x, 0.0f, obj_velocity.z));
+						object_pos.x += 0.5;
+						object_pos.y += 0.5;
 					}
 				}
+				if (obj_velocity.x >= 0)
+				{
+					object_pos.y += 0.5;
+				}
+
+				std::cout << "0 Collision" << std::endl;
+			}
+			else if (collision_1)
+			{
+
+				if (obj_velocity.x > 0)
+				{
+					if ((*map_height_list_)[x_0_index][y_0_index - 1] <= 0.5)
+					{
+						in_object_ptr->SetVelocityVec(glm::vec3(obj_velocity.x, 0.0f, obj_velocity.z));
+						object_pos.y += 0.5;
+					}
+					else
+					{
+						in_object_ptr->SetVelocityVec(glm::vec3(obj_velocity.x, 0.0f, obj_velocity.z));
+						object_pos.x += 0.5;
+						object_pos.y += 0.5;
+					}
+				}
+				if (obj_velocity.x <= 0)
+				{
+					object_pos.y += 0.5;
+				}
+
+				std::cout << "1 Collision" << std::endl;
+			}
+			else if (collision_2)
+			{
+				object_pos.x -= 0.2;
+				object_pos.y -= 0.2;
+				std::cout << "2 Collision" << std::endl;
+				in_object_ptr->SetVelocityVec(glm::vec3(in_object_ptr->GetVelocityVec().x, 0.0f, in_object_ptr->GetVelocityVec().z));
+				in_object_ptr->SetVelocityVec(glm::vec3(0.0f, in_object_ptr->GetVelocityVec().y, in_object_ptr->GetVelocityVec().z));
+			}
+			else if (collision_3)
+			{
+				object_pos.x += 0.2;
+				object_pos.y -= 0.2;
+				std::cout << "3 Collision" << std::endl;
+				in_object_ptr->SetVelocityVec(glm::vec3(in_object_ptr->GetVelocityVec().x, 0.0f, in_object_ptr->GetVelocityVec().z));
+				in_object_ptr->SetVelocityVec(glm::vec3(0.0f, in_object_ptr->GetVelocityVec().y, in_object_ptr->GetVelocityVec().z));
 			}
 		}
-
-		// Finally do things in a switch case if colliding.
-
-		if (collision_0)
-		{
-			std::cout << "0 Collision" << std::endl;
-		}
-	
-		// Reset the flags
-		collision_0 = false;
-		
-		*/
-
-
-
-
-		
 	}
 	
 

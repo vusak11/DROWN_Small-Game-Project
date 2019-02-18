@@ -192,7 +192,7 @@ void Render::RenderQuad() {
 	glBindVertexArray(0);
 }
 
-Map * Render::getMapPointer(int index)
+Map * Render::GetMapPointer(int index)
 {
 	return &map_[index];
 }

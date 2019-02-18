@@ -14,7 +14,7 @@ Game::~Game() {
 
 void Game::InitializeGame() {
 	render_.InitializeRender();
-	this->obj_handler_ptr_->InitializeObjectHandler(render_.getMapPointer(0)->GetTempHeightList());
+	this->obj_handler_ptr_->InitializeObjectHandler(render_.GetMapPointer(0)->GetTempHeightList());
 }
 
 void Game::InputFromDevices(float in_deltatime) {
