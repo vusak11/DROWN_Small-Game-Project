@@ -1,5 +1,5 @@
 #include "player_character.h"
-
+//#include "ability.h"	//Follow through on forward declaraction
 #include "../../globals.h"
 
 //Private--------------------------------------------------
@@ -11,7 +11,7 @@ PlayerCharacter::PlayerCharacter(glm::vec3 start_pos) : Character(start_pos, OBJ
 	this->jump_speed_ = PLAYER_JUMP_VELOCITY;
 
 	this->weapon_.id = SWORD;
-	this->ability_.id = NONE;
+	this->ability_->id_ = NONE;
 
 }
 
@@ -44,7 +44,7 @@ void PlayerCharacter::Jump() {
 	//If player is in the air
 	if (this->airborne_) {
 		//If the player do not have double jump return
-		if (this->ability_.id != DOUBLE_JUMP) { return; }
+		if (this->ability_->id_ != DOUBLE_JUMP) { return; }
 		
 		//If the player has double jump available
 		//DO DOUBLE JUMP

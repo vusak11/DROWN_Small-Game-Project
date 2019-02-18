@@ -117,6 +117,9 @@
     <ClCompile Include="Object\Character\player_character.cpp">
       <Filter>Source Files\Object\Character</Filter>
     </ClCompile>
+    <ClCompile Include="Object\Character\ability.cpp">
+      <Filter>Source Files\Object\Character</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="map_handler.h">
@@ -174,6 +177,9 @@
       <Filter>Header Files\Object\Physics</Filter>
     </ClInclude>
     <ClInclude Include="Object\Character\player_character.h">
+      <Filter>Header Files\Object\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Character\ability.h">
       <Filter>Header Files\Object\Character</Filter>
     </ClInclude>
   </ItemGroup>
