@@ -31,11 +31,14 @@ public:
 	void Buffer(GLuint shader);
 	void Draw(GLuint shader);
 
-	void SetHeight(int height);
-	void SetWidth(int width);
+	//void SetHeight(int height);
+	//void SetWidth(int width);
 
-	int GetHeight();
-	int GetWidth();
+	int GetImageHeight();
+	int GetImageWidth();
+
+	int GetCellHeight() const;
+	int GetCellWidth() const;
 	//-------Test
 
 	bool LoadMap(const char* path);
@@ -46,10 +49,10 @@ public:
 	void CreateIndices();
 
 private:
-		int map_width_;			// Width of map image
-		int map_height_;		// Height of map image
+		int image_width_;			// Width of map image
+		int image_height_;		// Height of map image
 
-	std::vector<std::vector<float>> cell_vertex_;
+	std::vector<std::vector<float>> cell_vertices_;
 	float cell_width_;
 	float cell_height_;
 

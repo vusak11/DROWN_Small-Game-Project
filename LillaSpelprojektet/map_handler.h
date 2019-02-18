@@ -31,7 +31,7 @@ public:
 	MapHandler();
 	~MapHandler();
 
-	void InitializeMaps(std::string map_path, std::string texture_path);
+	void InitializeMaps(std::string map_path, char* texture_path);
 	void InitializeBuffers(GLuint shader);
 
 	glm::vec3 Transformation(unsigned int i, unsigned int j);

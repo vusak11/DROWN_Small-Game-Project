@@ -161,17 +161,17 @@ Map::~Map() {
 
 //-------------------- Method 2
 bool Map::LoadMap(const char* path) {
-	unsigned char* map_data = SOIL_load_image(path, &map_width_, &map_height_, 0, SOIL_LOAD_RGB);
+	unsigned char* map_data = SOIL_load_image(path, &image_width_, &image_height_, 0, SOIL_LOAD_RGB);
 
 	std::cout << "MAP: " << path << SOIL_last_result() << std::endl;
 	std::vector<float> temp_float;
 
 	//-------------Height-------------//
-	for (int z = 0; z < map_height_; z++) {
+	for (int z = 0; z < image_height_; z++) {
 		temp_float.clear();
-		for (int x = 0; x < map_width_; x++) {
+		for (int x = 0; x < image_width_; x++) {
 			// Read every third value
-			unsigned char color = map_data[3 * (z * map_width_ + x)];
+			unsigned char color = map_data[3 * (z * image_width_ + x)];
 			float height = color;
 			temp_float.push_back(height);
 		}
@@ -180,104 +180,105 @@ bool Map::LoadMap(const char* path) {
 }
 
 void Map::CreateCells(unsigned int grid_column, unsigned int grid_row, int j, int i) {
-	float cell_width = map_width_ / grid_column;
-	float cell_height = map_height_ / grid_row;
+	cell_vertices_.clear();
+	float cell_width = image_width_ / grid_column;
+	float cell_height = image_height_ / grid_row;
 
 	std::vector<float> temp_cell_width;
 	std::vector<std::vector<std::vector<float>>> temp_cell_storage;
 
-	if (j == 0 && i == 0) {
-		for (int y = 0 + (cell_height * j); y < (cell_height * (j + 1)) + 1; y++) {
+	if (j == 0 && i == 0) { // Upper left corner
+		for (int y = (cell_height * j) - 0; y < (cell_height * (j + 1)) + 2; y++) {
 			temp_cell_width.clear();
-			for (int x = 0 + (cell_width * i); x < (cell_width * (i + 1)) + 1; x++) {
+			for (int x = (cell_width * i) - 0; x < (cell_width * (i + 1)) + 2; x++) {
 				temp_cell_width.push_back(height_map_[y][x]);
 			}
-			cell_vertex_.push_back(temp_cell_width);
+			cell_vertices_.push_back(temp_cell_width);
 		}
 	}
-
-	if (j == (grid_row - 1) && i == 0) {
-		for (int y = -1 + (cell_height * j); y < (cell_height * (j + 1)); y++) {
+	
+	if (j == (grid_row - 1) && i == 0) { // Down left corner
+		for (int y = (cell_height * j) - 2; y < (cell_height * (j + 1)); y++) {
 			temp_cell_width.clear();
-			for (int x = 0 + (cell_width * i); x < (cell_width * (i + 1)) + 1; x++) {
+			for (int x = (cell_width * i) - 0; x < (cell_width * (i + 1)) + 2; x++) {
 				temp_cell_width.push_back(height_map_[y][x]);
 			}
-			cell_vertex_.push_back(temp_cell_width);
+			cell_vertices_.push_back(temp_cell_width);
 		}
 	}
-
-	if (j == 0 && i == (grid_column - 1)) {
-		for (int y = 0 + (cell_height * j); y < (cell_height * (j + 1)) + 1; y++) {
+	
+	if (j == 0 && i == (grid_column - 1)) { // Upper right corner
+		for (int y = (cell_height * j) - 0; y < (cell_height * (j + 1)) + 2; y++) {
 			temp_cell_width.clear();
-			for (int x = -1 + (cell_width * i); x < (cell_width * (i + 1)); x++) {
+			for (int x = (cell_width * i) - 2; x < (cell_width * (i + 1)); x++) {
 				temp_cell_width.push_back(height_map_[y][x]);
 			}
-			cell_vertex_.push_back(temp_cell_width);
+			cell_vertices_.push_back(temp_cell_width);
 		}
 	}
-
-	if (j == (grid_row - 1) && i == (grid_column - 1)) {
-		for (int y = -1 + (cell_height * j); y < (cell_height * (j + 1)); y++) {
+	
+	if (j == (grid_row - 1) && i == (grid_column - 1)) { // Down corner right
+		for (int y = (cell_height * j) - 2; y < (cell_height * (j + 1)); y++) {
 			temp_cell_width.clear();
-			for (int x = -1 + (cell_width * i); x < (cell_width * (i + 1)); x++) {
+			for (int x = (cell_width * i) - 2; x < (cell_width * (i + 1)); x++) {
 				temp_cell_width.push_back(height_map_[y][x]);
 			}
-			cell_vertex_.push_back(temp_cell_width);
+			cell_vertices_.push_back(temp_cell_width);
 		}
 	}
-
-	if (j == 0 && i > 0 && i < grid_column - 1) {
-		for (int y = 0 + (cell_height * j); y < (cell_height * (j + 1)) + 1; y++) {
+	
+	if (j == 0 && i > 0 && i < grid_column - 1) { // Upper side
+		for (int y = (cell_height * j) - 0; y < (cell_height * (j + 1)) + 2; y++) {
+			temp_cell_width.clear();
+			for (int x = (cell_width * i) - 1; x < (cell_width * (i + 1)) + 1; x++) {
+				temp_cell_width.push_back(height_map_[y][x]);
+			}
+			cell_vertices_.push_back(temp_cell_width);
+		}
+	}
+	
+	if (j > 0 && j < grid_row - 1 && i == 0) { // Left side
+		for (int y = (cell_height * j) - 1; y < (cell_height * (j + 1)) + 1; y++) {
+			temp_cell_width.clear();
+			for (int x = (cell_width * i) - 0; x < (cell_width * (i + 1)) + 2; x++) {
+				temp_cell_width.push_back(height_map_[y][x]);
+			}
+			cell_vertices_.push_back(temp_cell_width);
+		}
+	}
+	
+	if (j > 0 && j < grid_row - 1 && i == (grid_column - 1)) { // Right side
+		for (int y = (cell_height * j) - 1; y < (cell_height * (j + 1)) + 1; y++) {
+			temp_cell_width.clear();
+			for (int x = (cell_width * i) - 2; x < (cell_width * (i + 1)); x++) {
+				temp_cell_width.push_back(height_map_[y][x]);
+			}
+			cell_vertices_.push_back(temp_cell_width);
+		}
+	}
+	
+	if (j == (grid_row - 1) && i > 0 && i < grid_column - 1) { // Down side
+		for (int y = (cell_height * j) - 2; y < (cell_height * (j + 1)); y++) {
+			temp_cell_width.clear();
+			for (int x = (cell_width * i) - 1; x < (cell_width * (i + 1)) + 1; x++) {
+				temp_cell_width.push_back(height_map_[y][x]);
+			}
+			cell_vertices_.push_back(temp_cell_width);
+		}
+	}
+	
+	if (j != 0 && i != 0 && j != grid_row - 1 && i != grid_column - 1) { // Inner
+		for (int y = -1 + (cell_height * j); y < (cell_height * (j + 1)) + 1; y++) {
 			temp_cell_width.clear();
 			for (int x = -1 + (cell_width * i); x < (cell_width * (i + 1)) + 1; x++) {
 				temp_cell_width.push_back(height_map_[y][x]);
 			}
-			cell_vertex_.push_back(temp_cell_width);
+			cell_vertices_.push_back(temp_cell_width);
 		}
 	}
 
-	if (j > 0 && j < grid_row - 1 && i == 0) {
-		for (int y = -1 + (cell_height * j); y < (cell_height * (j + 1)) + 1; y++) {
-			temp_cell_width.clear();
-			for (int x = 0 + (cell_width * i); x < (cell_width * (i + 1)) + 1; x++) {
-				temp_cell_width.push_back(height_map_[y][x]);
-			}
-			cell_vertex_.push_back(temp_cell_width);
-		}
-	}
-
-	if (j > 0 && j < grid_row - 1 && i == (grid_column - 1)) {
-		for (int y = -1 + (cell_height * j); y < (cell_height * (j + 1)) + 1; y++) {
-			temp_cell_width.clear();
-			for (int x = -1 + (cell_width * i); x < (cell_width * (i + 1)); x++) {
-				temp_cell_width.push_back(height_map_[y][x]);
-			}
-			cell_vertex_.push_back(temp_cell_width);
-		}
-	}
-
-	if (j == (grid_row - 1) && i > 0 && i < grid_column - 1) {
-		for (int y = -1 + (cell_height * j); y < (cell_height * (j + 1)); y++) {
-			temp_cell_width.clear();
-			for (int x = -1 + (cell_width * i); x < (cell_width * (i + 1)) + 1; x++) {
-				temp_cell_width.push_back(height_map_[y][x]);
-			}
-			cell_vertex_.push_back(temp_cell_width);
-		}
-	}
-
-	if (j != 0 && i != 0 && j != grid_row - 1 && i != grid_column - 1) {
-		for (int y = -1 + (cell_height * j); y < (cell_height * (j + 1)) + 1; y++) {
-			temp_cell_width.clear();
-			for (int x = -1 + (cell_width * i); x < (cell_width * (i + 1)) + 1; x++) {
-				temp_cell_width.push_back(height_map_[y][x]);
-			}
-			cell_vertex_.push_back(temp_cell_width);
-		}
-	}
-
-	cell_width_ = cell_vertex_[j].size();
-	cell_height_ = cell_vertex_.size();
+	cell_width_ = cell_vertices_[j].size();
+	cell_height_ = cell_vertices_.size();
 }
 
 void Map::UVCoordinates() {
@@ -305,10 +306,10 @@ void Map::CalculateNormals() {
 		ancillary_normal_1.clear();
 		for (int x = 0; x < cell_width_ - 1; x++) {
 
-			point_1 = glm::vec3((float)x, height_map_[z][x], (float)z);
-			point_2 = glm::vec3((float)x, height_map_[z + 1][x], (float)z + 1);
-			point_3 = glm::vec3((float)x + 1, height_map_[z + 1][x + 1], (float)z + 1);
-			point_4 = glm::vec3((float)x + 1, height_map_[z][x + 1], float(z));
+			point_1 = glm::vec3((float)x, cell_vertices_[z][x], (float)z);
+			point_2 = glm::vec3((float)x, cell_vertices_[z + 1][x], (float)z + 1);
+			point_3 = glm::vec3((float)x + 1, cell_vertices_[z + 1][x + 1], (float)z + 1);
+			point_4 = glm::vec3((float)x + 1, cell_vertices_[z][x + 1], float(z));
 
 			//---------Triangle 1-------------//
 			edge_1 = glm::vec3(point_2 - point_1);
@@ -330,7 +331,7 @@ void Map::CalculateNormals() {
 	}
 
 	//---------------Sum Normals(adjacent)------------//
-
+	normals_.clear();
 	std::vector<glm::vec3> temp_sum;
 	for (int z = 0; z < cell_height_; z++) {
 		temp_sum.clear();
@@ -359,13 +360,13 @@ void Map::CalculateNormals() {
 
 void Map::CreateTriangles() {
 	Triangle temp_triangle;
+	vertices_.clear();
 	int index = 0;
-
 	for (int z = 0; z < cell_height_; z++) {
 		for (int x = 0; x < cell_width_; x++) {
 			temp_triangle.x = (float)x;
 			temp_triangle.y = (float)z * -1;
-			temp_triangle.z = height_map_[z][x];
+			temp_triangle.z = cell_vertices_[z][x];
 			temp_triangle.u = tex_coordinates_[z][x].x;
 			temp_triangle.v = tex_coordinates_[z][x].y;
 			temp_triangle.x_normal = normals_[z][x].x;
@@ -377,6 +378,7 @@ void Map::CreateTriangles() {
 }
 
 void Map::CreateIndices() {
+	indices_.clear();
 
 	for (int z = 0; z < cell_height_ - 1; z++) {
 		for (int x = 0; x < cell_width_ - 1; x++) {
@@ -469,20 +471,21 @@ void Map::Draw(GLuint shader) {
 	
 	glDrawElements(GL_TRIANGLE_STRIP, indices_.size(), GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
+	glDisable(GL_PRIMITIVE_RESTART);
 }
 
-void Map::SetHeight(int height) {
-	map_height_ = height;
+int Map::GetCellHeight() const {
+	return cell_height_;
 }
 
-void Map::SetWidth(int width) {
-	map_width_ = width;
+int Map::GetCellWidth() const {
+	return cell_width_;
 }
 
-int Map::GetHeight() {
-	return map_height_;
+int Map::GetImageHeight() {
+	return image_height_;
 }
 
-int Map::GetWidth() {
-	return map_width_;
+int Map::GetImageWidth() {
+	return image_width_;
 }
