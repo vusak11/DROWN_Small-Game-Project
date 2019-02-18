@@ -138,6 +138,7 @@
     <ClCompile Include="Camera\camera.cpp" />
     <ClCompile Include="Camera\camera_handler.cpp" />
     <ClCompile Include="game.cpp" />
+    <ClCompile Include="gui.cpp" />
     <ClCompile Include="light.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="menu.cpp" />
@@ -154,6 +155,7 @@
     <ClCompile Include="sound_unit.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="gui.h" />
     <ClInclude Include="menu.h" />
     <ClInclude Include="globals.h" />
     <ClInclude Include="Object\Character\character.h" />
@@ -181,6 +183,8 @@
     <None Include="glsl\geometrypass\geometry_fs.glsl" />
     <None Include="glsl\geometrypass\geometry_gs.glsl" />
     <None Include="glsl\geometrypass\geometry_vs.glsl" />
+    <None Include="glsl\guishader_fs.glsl" />
+    <None Include="glsl\guishader_vs.glsl" />
     <None Include="glsl\lightingpass\lighting_fs.glsl" />
     <None Include="glsl\lightingpass\lighting_vs.glsl" />
     <None Include="glsl\textshader_fs.glsl" />

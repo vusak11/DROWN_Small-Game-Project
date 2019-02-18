@@ -39,6 +39,13 @@ struct ObjectPackage {
 	glm::mat4 model_matrix;
 };
 
+struct PlayerInfoPackage {
+	int max_hp;
+	int current_hp;
+	//ability1
+	//ability2
+};
+
 //States---------------------------------------------------
 enum GameState {
 	GAME,

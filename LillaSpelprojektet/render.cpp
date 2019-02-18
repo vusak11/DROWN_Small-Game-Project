@@ -12,6 +12,10 @@ Render::Render() {
 		"glsl/textshader_vs.glsl",
 		"glsl/textshader_fs.glsl"
 	);
+	gui_shaders_ = new ShaderHandler(
+		"glsl/guishader_vs.glsl",
+		"glsl/guishader_fs.glsl"
+	);
 	geometry_pass_ = new ShaderHandler(
 		"glsl/geometrypass/geometry_vs.glsl",
 		"glsl/geometrypass/geometry_gs.glsl",
@@ -27,7 +31,8 @@ Render::Render() {
 	map_[0].LoadMap((char*)"../Resources/Map/TestMapMediumHard.bmp");
 	map_[0].LoadTexture((char*)"../Resources/Map/rock.png");
 
-	
+	hud.LoadHealthBarTexture((char*)"../Resources/GUI/healthbar.png");
+	hud.LoadQuickSlotTexture((char*)"../Resources/GUI/quickslot.png");
 }
 
 Render::~Render() {
@@ -36,6 +41,7 @@ Render::~Render() {
 	delete[] lights_;
 
 	delete text_shaders_;
+	delete gui_shaders_;
 
 	for (int i = 0; i < nr_of_models_; i++) {
 		delete model_[i];
@@ -47,6 +53,8 @@ void Render::InitializeRender() {
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	
+	hud.Initiliaze();
+
 	geometry_pass_->GeometryFrameBuffers();
 
 	lights_[0].LightDefault(
@@ -63,10 +71,16 @@ void Render::UpdateRender(
 	float dt, 
 	glm::vec3 camera_position,
 	glm::mat4 perspective_view_matrix,
-	std::vector<ObjectPackage>& object_vector) {
+	std::vector<ObjectPackage>& object_vector,
+	PlayerInfoPackage player_data) {
 
 	glDisable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
+
+	//SET UP FOR 3D
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	// Pushing Map into object vector
 	glm::mat4 map_matrix = glm::mat4(1.0f);
@@ -88,6 +102,17 @@ void Render::UpdateRender(
 	LightingPass(camera_position);
 
 	RenderQuad();
+
+	//SET UP FOR 2D
+	glLoadIdentity();
+	glMatrixMode(GL_PROJECTION);
+	glDisable(GL_DEPTH_TEST);
+	glLoadIdentity();
+
+	hud.RenderGUI(gui_shaders_, player_data);
+
+	glFlush();
+	//swap_buffers(?)
 }
 
 void Render::GeometryDrawing(std::vector<ObjectPackage>& object_vector) {
@@ -189,12 +214,11 @@ void Render::RenderQuad() {
 		glBufferData(GL_ARRAY_BUFFER, sizeof(quad_vertices), &quad_vertices, GL_STATIC_DRAW);
 
 		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)nullptr);
 		glEnableVertexAttribArray(1);
 		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
-		
 	}
 	glBindVertexArray(quad_vertex_array_object_);
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, 5);
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	glBindVertexArray(0);
 }

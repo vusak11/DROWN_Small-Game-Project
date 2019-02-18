@@ -191,7 +191,6 @@ void Map::LoadTexture(char * texture_name) {
 
 	glGenerateMipmap(GL_TEXTURE_2D);
 	SOIL_free_image_data(image);
-
 }
 
 void Map::Buffer(GLuint shader) {
@@ -238,6 +237,8 @@ void Map::Draw(GLuint shader) {
 	glPrimitiveRestartIndex(map_width_ * map_height_);
 	
 	glDrawElements(GL_TRIANGLE_STRIP, indices_.size(), GL_UNSIGNED_INT, 0);
+
+	glDisable(GL_PRIMITIVE_RESTART);
 	glBindVertexArray(0);
 	glDisable(GL_PRIMITIVE_RESTART);
 }
