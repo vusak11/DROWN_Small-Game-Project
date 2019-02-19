@@ -73,7 +73,7 @@ void PlayerCharacter::SetAirborne(bool in_air) {
 
 }
 
-void PlayerCharacter::UpdateStatus(float in_deltatime) {
+void PlayerCharacter::UpdateStatus(const float& in_deltatime) {
 	
 	//Check if the current ability is a cooldown ability
 	CooldownClass* cd_class_ptr = dynamic_cast<CooldownClass*>(this->ability_ptr_);

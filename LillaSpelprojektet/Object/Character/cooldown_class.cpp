@@ -18,7 +18,7 @@ void CooldownClass::ResetCooldown() {
 	this->remaining_cooldown_ = 0.0f;
 }
 
-bool CooldownClass::UpdateCooldown(float in_deltatime) {
+bool CooldownClass::UpdateCooldown(const float& in_deltatime) {
 	//If the cooldown is already 0, return true
 	if (this->IsOffCooldown()) { return true; }
 

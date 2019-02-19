@@ -70,6 +70,8 @@ float ObjectHandler::DistanceBetween(const ObjectClass* in_object_a, const Objec
 
 void ObjectHandler::DeterminePlayerAction(const float& in_deltatime) {
 
+	//Update the player's status (such as cooldowns)
+	this->player_ptr_->UpdateStatus(in_deltatime);
 
 	//Determine player movement on the x-axis
 	if (this->player_input_.left) {
@@ -84,6 +86,10 @@ void ObjectHandler::DeterminePlayerAction(const float& in_deltatime) {
 	if (this->player_input_.jump) {
 		this->player_ptr_->Jump();
 	}
+	//If input is use ability
+	if (this->player_input_.use_ability) {
+		this->player_ptr_->UseAbility();
+	}
 
 	if (this->player_input_.attack) {
 		
@@ -91,9 +97,7 @@ void ObjectHandler::DeterminePlayerAction(const float& in_deltatime) {
 	if (this->player_input_.pick_up) {
 
 	}
-	if (this->player_input_.use_ability) {
-
-	}
+	
 }
 
 void ObjectHandler::ClearPlayerInput() {

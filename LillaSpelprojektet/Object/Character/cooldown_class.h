@@ -11,7 +11,7 @@ public:
 
 	void BeginCooldown();
 	void ResetCooldown();
-	bool UpdateCooldown(float in_deltatime);	//Returns true if the cooldown reaches 0
+	bool UpdateCooldown(const float& in_deltatime);	//Returns true if the cooldown reaches 0
 	bool IsOffCooldown();
 };
 

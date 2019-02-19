@@ -45,9 +45,9 @@ public:
 	void UseAbility();
 
 	void SetAirborne(bool in_bool);
-	void UpdateStatus(float in_deltatime);		//Updates time related stuff
-												//e.g. cooldown on abilities
-												//or attack windows
+	void UpdateStatus(const float& in_deltatime);		//Updates time related stuff
+														//e.g. cooldown on abilities
+														//or attack windows
 
 };
 
