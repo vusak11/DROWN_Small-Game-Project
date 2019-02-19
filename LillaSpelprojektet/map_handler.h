@@ -28,7 +28,10 @@ public:
 	MapHandler();
 	~MapHandler();
 
-	void InitializeMaps(std::string map_path, std::string texture_path);
+	void InitializeMaps(
+		std::string map_path,
+		std::string texture_path_0,
+		std::string texture_path_1);
 	void InitializeBuffers(GLuint shader);
 
 	glm::mat4 Transformation(int column, int row);

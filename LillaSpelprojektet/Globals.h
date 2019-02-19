@@ -20,8 +20,8 @@
 #define OBJECT_DECCELERATION 0.1		//0.1 = 10%
 
 //Map------------------------------------------------------
-#define GRID_COLUMN 10
-#define GRID_ROW 10
+#define GRID_COLUMN 5
+#define GRID_ROW 5
 
 //NOTE:
 //Object ID:s are used to determine what type of object is created
