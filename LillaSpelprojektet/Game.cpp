@@ -1,46 +1,7 @@
 #include "game.h"
 
-Game::Game() {
-	this->cam_handler_ptr_ = new CameraHandler(glm::vec3(100.0f, -200.0f, -80.0f), 80.0f);
-	this->obj_handler_ptr_ = new ObjectHandler();
-	menu_.Initiliaze();
-    state_ = GAME;
-}
-
-Game::~Game() {
-	delete cam_handler_ptr_;
-	delete this->obj_handler_ptr_;
-}
-
-void Game::InitializeGame() {
-	render_.InitializeRender();
-	this->obj_handler_ptr_->InitializeObjectHandler(render_.GetMapPointer(0)->GetTempHeightList());
-}
-
-void Game::InputFromDevices(float in_deltatime) {
-	if (state_ == MENU) {
-		// Navigate up
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-		menu_.NavigateUp();
-		}
-		// Navigate down
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-		menu_.NavigateDown();
-		}
-		// Choose selected item
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)) {
-			switch (menu_.selected_item_index_) {
-			case 0:						//START
-				state_ = GAME;
-				break;
-			case 1:						//OPTIONS
-				break;
-			case 2:						//QUIT
-				exit(-1);
-			}
-		}
-	}
-	else if (state_ == GAME) {
+void Game::InputForGame(float in_deltatime) {
+	if (state_ == GAME) {
 		/*---------------Keyboard inputs-----------------*/
 		//Walk up
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
@@ -82,10 +43,10 @@ void Game::InputFromDevices(float in_deltatime) {
 		float cam_speed = 150.0f * in_deltatime;
 		bool secondary = cam_handler_ptr_->GetMode();		//Primary is 0 (boolean false), Secondeary is 1 (boolean !false)
 
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::O)) {
+		/*if (sf::Keyboard::isKeyPressed(sf::Keyboard::O)) {
 			//Swap camera (Primary/Secondary)
 			cam_handler_ptr_->SwapCamera();
-		}
+		}*/
 
 		if (secondary && sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
 			//Move active camera upwards
@@ -125,8 +86,25 @@ void Game::InputFromDevices(float in_deltatime) {
 	}
 }
 
+Game::Game() {
+	this->cam_handler_ptr_ = new CameraHandler(glm::vec3(100.0f, -200.0f, -80.0f), 80.0f);
+	this->obj_handler_ptr_ = new ObjectHandler();
+	state_ = MENU;
+	menu_.Initiliaze();
+}
+
+Game::~Game() {
+	delete cam_handler_ptr_;
+	delete this->obj_handler_ptr_;
+}
+
+void Game::InitializeGame() {
+	render_.InitializeRender();
+	this->obj_handler_ptr_->InitializeObjectHandler(render_.GetMapPointer(0)->GetTempHeightList());
+}
+
 void Game::GameLoop(float in_deltatime) {
-	InputFromDevices(in_deltatime);
+	InputForGame(in_deltatime);
 	if (state_ == MENU) {
 		render_.RenderMenuState(menu_);
 	}
@@ -136,11 +114,138 @@ void Game::GameLoop(float in_deltatime) {
 		object_vector = this->obj_handler_ptr_->UpdateAndRetrieve(in_deltatime);
 		cam_handler_ptr_->SetPrimaryCameraPos(this->obj_handler_ptr_->GetPlayerPos());
 
+		PlayerInfoPackage temp_player_data;
+		temp_player_data.max_hp = 100;
+		temp_player_data.current_hp = 100;
+
 		render_.UpdateRender(
 			in_deltatime,
 			cam_handler_ptr_->GetCameraPosition(),
 			cam_handler_ptr_->GetViewPerspectiveMatrix(),
-			object_vector
+			object_vector,
+			temp_player_data
 		);
+
+		/*--------------Restart Game when death occurs--------------*/
+		if (temp_player_data.current_hp == 0) { //Use this one
+			state_ = DEATH;
+		}
+		/*----------End Restart Game when death occurs--------------*/
+	}
+	else if (state_ == PAUSE) {
+		render_.RenderPauseMenu(menu_);
+	}
+	else if (state_ == DEATH) {
+		render_.RenderDeathMenu(menu_);
 	}
 }
+
+void Game::InputForMenu(float in_deltatime, sf::Event event) {
+	if (state_ == MENU) {
+		menu_.StateManager(state_);
+		switch (event.type) {
+		case sf::Event::KeyReleased:
+			if (event.key.code == sf::Keyboard::W) {
+				menu_.NavigateUp();
+			}
+			if (event.key.code == sf::Keyboard::S) {
+				menu_.NavigateDown();
+			}
+			if (event.key.code == sf::Keyboard::Enter) {
+				switch (menu_.GetSelectedItemIndex()) {
+				case 0:						//Start
+					state_ = GAME;
+					break;
+				case 1:						//Options
+					//state_ = OPTIONS; //REAL case
+					//menu_.StateManager(state_);
+					//Do something, change FOV and so on
+					break;
+				case 2:						//Quit
+					exit(-1);
+				}
+			}
+			break;
+		default:
+			break;
+		}
+	}
+	else if (state_ == GAME) {
+		switch (event.type) {
+		case sf::Event::KeyReleased:
+			if (event.key.code == sf::Keyboard::O) {
+				cam_handler_ptr_->SwapCamera();
+			}
+			if (event.key.code == sf::Keyboard::Escape) {
+				state_ = PAUSE;
+				menu_.StateManager(state_);
+			}
+			break;
+		default:
+			break;
+		}
+	}
+	else if (state_ == PAUSE) {
+		switch (event.type) {
+		case sf::Event::KeyReleased:
+			if (event.key.code == sf::Keyboard::W) {
+				menu_.NavigateUp();
+			}
+			if (event.key.code == sf::Keyboard::S) {
+				menu_.NavigateDown();
+			}
+			if (event.key.code == sf::Keyboard::Escape) {
+				state_ = GAME;
+				menu_.StateManager(state_);
+			}
+			if (event.key.code == sf::Keyboard::Enter) {
+				switch (menu_.GetSelectedItemIndex()) {
+				case 0:						//Continue
+					state_ = GAME;
+					menu_.StateManager(state_);
+					break;
+				case 1:						//Save score
+					//Save highscore
+					break;
+				case 2:
+					//state_ = OPTIONS;		//Options
+					//menu_.StateManager(state_);
+					break;
+				case 3:						//Quit
+					exit(-1);
+				}
+			}
+			break;
+		default:
+			break;
+		}
+	}
+	else if (state_ == DEATH) {
+		switch (event.type) {
+		case sf::Event::KeyReleased:
+			if (event.key.code == sf::Keyboard::W) {
+				menu_.NavigateUp();
+			}
+			if (event.key.code == sf::Keyboard::S) {
+				menu_.NavigateDown();
+			}
+			if (event.key.code == sf::Keyboard::Enter) {
+				switch (menu_.GetSelectedItemIndex()) {
+				case 0:						//Restart
+					system("restartGame.cmd"); // TEST case
+					exit(-1);
+					break;
+				case 1:						//Save score
+					//Save highscore
+					break;
+				case 2:						//QUIT
+					exit(-1);
+				}
+			}
+			break;
+		default:
+			break;
+		}
+	}
+}
+

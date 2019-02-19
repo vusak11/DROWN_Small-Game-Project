@@ -1,8 +1,11 @@
 #ifndef MAP_HANDLER_H
 #define MAP_HANDLER_H
-
+#include "map.h"
+#include "Globals.h"
+#include <fstream>
+#include <string>
+#include <cmath>
 // Forward declaration
-class Map;
 
 // This class is used as a handler of the map(s) and how it will work in the game.  
 // Example:
@@ -10,16 +13,32 @@ class Map;
 //   
 
 
-class MapHandler
-{
+class MapHandler {
+private:
+	struct GridMap {
+		Map map_cell;
+		glm::vec3 translate;
+		glm::vec2 cell_position;
+	};
+
+	std::vector<std::vector<GridMap>> grid_map_;
+	std::vector<glm::vec2> cells_to_draw_;
+
 public:
 	MapHandler();
 	~MapHandler();
 
-	Map GetMap(int cam_index = 0);
+	void InitializeMaps(
+		std::string map_path,
+		std::string texture_path_0,
+		std::string texture_path_1);
+	void InitializeBuffers(GLuint shader);
 
-private:
-	Map* maps_;	// A list of all the maps in the current game.
+	glm::mat4 Transformation(int column, int row);
+	void Draw(GLuint shader, int column, int row);
+	
+	glm::vec2 CurrentCell(glm::vec3 players_current_position);
+	std::vector<glm::vec2> GridCulling(glm::vec2 current_cell);
 };
 
 #endif

@@ -2,7 +2,9 @@
 
 Menu::Menu() {
 	selected_item_index_ = 0;
+	nr_of_items_ = 0;
 }
+
 
 Menu::~Menu() {
 }
@@ -49,8 +51,8 @@ void Menu::Initiliaze() {
 			free_type_face_->glyph->bitmap.buffer
 		);
 		// Set texture options
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		// Store characters for later use
@@ -92,10 +94,9 @@ void Menu::Initiliaze() {
 	glBindVertexArray(0);
 }
 
-void Menu::NavigateUp()
-{
+void Menu::NavigateUp() {
 	if (selected_item_index_ == 0) {
-		selected_item_index_ = 2;
+		selected_item_index_ = (nr_of_items_ - 1);
 	}
 	else {
 		selected_item_index_--;
@@ -104,7 +105,7 @@ void Menu::NavigateUp()
 
 void Menu::NavigateDown()
 {
-	if (selected_item_index_ == 2) {
+	if (selected_item_index_ == (nr_of_items_ - 1)) {
 		selected_item_index_ = 0;
 	}
 	else {
@@ -113,13 +114,23 @@ void Menu::NavigateDown()
 }
 
 void Menu::RenderMenu(ShaderHandler * shader_handler) {
+	/*----------------Title---------------*/
+	RenderText(
+		shader_handler,
+		"Main Menu",
+		((float)WINDOW_WIDTH) / 2.0f - 530.0f,
+		(((float)WINDOW_HEIGHT) / 10.0f) * 8.0f,
+		3.0f,
+		glm::vec3(1.0f, 1.0f, 1.0f)
+	);
+	/*----------------End Title-----------*/
 	// ---------- START ----------
 	if (selected_item_index_ == 0) {
 		RenderText(
 			shader_handler,
 			"Start",
-			((float)WINDOW_WIDTH) / 2.0f - 80.0f,
-			(((float)WINDOW_HEIGHT) / 10.0f) * 8.0f,
+			((float)WINDOW_WIDTH) / 2.0f - 530.0f,
+			(((float)WINDOW_HEIGHT) / 10.0f) * 6.0f,
 			2.0f,
 			glm::vec3(1.0f, 1.0f, 1.0f)
 		);
@@ -128,8 +139,8 @@ void Menu::RenderMenu(ShaderHandler * shader_handler) {
 		RenderText(
 			shader_handler,
 			"Start",
-			((float)WINDOW_WIDTH) / 2.0f - 80.0f,
-			(((float)WINDOW_HEIGHT) / 10.0f) * 8.0f,
+			((float)WINDOW_WIDTH) / 2.0f - 530.0f,
+			(((float)WINDOW_HEIGHT) / 10.0f) * 6.0f,
 			2.0f,
 			glm::vec3(0.26f, 0.54f, 0.59f)
 		);
@@ -140,8 +151,8 @@ void Menu::RenderMenu(ShaderHandler * shader_handler) {
 		RenderText(
 			shader_handler,
 			"Options",
-			((float)WINDOW_WIDTH) / 2.0f - 105.0f,
-			((float)WINDOW_HEIGHT) / 10.0f * 6.0f,
+			((float)WINDOW_WIDTH) / 2.0f - 530.0f,
+			((float)WINDOW_HEIGHT) / 10.0f * 4.0f,
 			2.0f,
 			glm::vec3(1.0f, 1.0f, 1.0f)
 		);
@@ -150,8 +161,8 @@ void Menu::RenderMenu(ShaderHandler * shader_handler) {
 		RenderText(
 			shader_handler,
 			"Options",
-			((float)WINDOW_WIDTH) / 2.0f - 105.0f,
-			((float)WINDOW_HEIGHT) / 10.0f * 6.0f,
+			((float)WINDOW_WIDTH) / 2.0f - 530.0f,
+			((float)WINDOW_HEIGHT) / 10.0f * 4.0f,
 			2.0f,
 			glm::vec3(0.26f, 0.54f, 0.59f)
 		);
@@ -162,7 +173,7 @@ void Menu::RenderMenu(ShaderHandler * shader_handler) {
 		RenderText(
 			shader_handler,
 			"Quit",
-			((float)WINDOW_WIDTH) / 2.0f - 75.0f,
+			((float)WINDOW_WIDTH) / 2.0f - 530.0f,
 			((float)WINDOW_HEIGHT) / 10.0f * 2.0f,
 			2.0f,
 			glm::vec3(1.0f, 1.0f, 1.0f)
@@ -172,12 +183,207 @@ void Menu::RenderMenu(ShaderHandler * shader_handler) {
 		RenderText(
 			shader_handler,
 			"Quit",
-			((float)WINDOW_WIDTH) / 2.0f - 75.0f,
+			((float)WINDOW_WIDTH) / 2.0f - 530.0f,
 			((float)WINDOW_HEIGHT) / 10.0f * 2.0f,
 			2.0f,
 			glm::vec3(0.26f, 0.54f, 0.59f)
 		);
 	}
+}
+
+void Menu::RenderPauseMenu(ShaderHandler * shader_handler) {
+	/*----------------Title---------------------*/
+	RenderText(
+		shader_handler,
+		"Pause",
+		((float)WINDOW_WIDTH) / 2.0f - 530.0f,
+		(((float)WINDOW_HEIGHT) / 10.0f) * 8.0f,
+		3.0f,
+		glm::vec3(1.0f, 1.0f, 1.0f)
+	);
+	/*----------------End Title-----------------*/
+	//----------------Continue-------------------*/
+	if (selected_item_index_ == 0) {
+		RenderText(
+			shader_handler,
+			"Continue",
+			((float)WINDOW_WIDTH) / 2.0f - 530.0f,
+			((float)WINDOW_HEIGHT) / 10.0f * 6.0f,
+			2.0f,
+			glm::vec3(1.0f, 1.0f, 1.0f)
+		);
+	}
+	else {
+		RenderText(
+			shader_handler,
+			"Continue",
+			((float)WINDOW_WIDTH) / 2.0f - 530.0f,
+			((float)WINDOW_HEIGHT) / 10.0f * 6.0f,
+			2.0f,
+			glm::vec3(0.26f, 0.54f, 0.59f)
+		);
+	}
+	//----------------End Continue---------------*/
+	//----------------Save score---------------*/
+	if (selected_item_index_ == 1) {
+		RenderText(
+			shader_handler,
+			"Save score",
+			((float)WINDOW_WIDTH) / 2.0f - 530.0f,
+			((float)WINDOW_HEIGHT) / 10.0f * 4.5f,
+			2.0f,
+			glm::vec3(1.0f, 1.0f, 1.0f)
+		);
+	}
+	else {
+		RenderText(
+			shader_handler,
+			"Save score",
+			((float)WINDOW_WIDTH) / 2.0f - 530.0f,
+			((float)WINDOW_HEIGHT) / 10.0f * 4.5f,
+			2.0f,
+			glm::vec3(0.26f, 0.54f, 0.59f)
+		);
+	}
+	//----------------End Save score-----------*/
+	//----------------Options---------------*/
+	if (selected_item_index_ == 2) {
+		RenderText(
+			shader_handler,
+			"Options",
+			((float)WINDOW_WIDTH) / 2.0f - 530.0f,
+			((float)WINDOW_HEIGHT) / 10.0f * 3.0f,
+			2.0f,
+			glm::vec3(1.0f, 1.0f, 1.0f)
+		);
+	}
+	else {
+		RenderText(
+			shader_handler,
+			"Options",
+			((float)WINDOW_WIDTH) / 2.0f - 530.0f,
+			((float)WINDOW_HEIGHT) / 10.0f * 3.0f,
+			2.0f,
+			glm::vec3(0.26f, 0.54f, 0.59f)
+		);
+	}
+	//----------------End Options-----------*/
+	// ---------- QUIT ----------
+	if (selected_item_index_ == 3) {
+		RenderText(
+			shader_handler,
+			"Quit",
+			((float)WINDOW_WIDTH) / 2.0f - 530.0f,
+			((float)WINDOW_HEIGHT) / 10.0f * 1.5f,
+			2.0f,
+			glm::vec3(1.0f, 1.0f, 1.0f)
+		);
+	}
+	else {
+		RenderText(
+			shader_handler,
+			"Quit",
+			((float)WINDOW_WIDTH) / 2.0f - 530.0f,
+			((float)WINDOW_HEIGHT) / 10.0f * 1.5f,
+			2.0f,
+			glm::vec3(0.26f, 0.54f, 0.59f)
+		);
+	}
+}
+
+void Menu::RenderDeathMenu(ShaderHandler * shader_handler) {
+	/*----------------Title---------------------*/
+	RenderText(
+		shader_handler,
+		"You are dead, rekt",
+		((float)WINDOW_WIDTH) / 2.0f - 530.0f,
+		(((float)WINDOW_HEIGHT) / 10.0f) * 8.0f,
+		3.0f,
+		glm::vec3(1.0f, 1.0f, 1.0f)
+	);
+	/*----------------End Title-----------------*/
+	/*----------------Restart-----------------*/
+	if (selected_item_index_ == 0) {
+		RenderText(
+			shader_handler,
+			"Restart",
+			((float)WINDOW_WIDTH) / 2.0f - 530.0f,
+			((float)WINDOW_HEIGHT) / 10.0f * 6.0f,
+			2.0f,
+			glm::vec3(1.0f, 1.0f, 1.0f)
+		);
+	}
+	else {
+		RenderText(
+			shader_handler,
+			"Restart",
+			((float)WINDOW_WIDTH) / 2.0f - 530.0f,
+			((float)WINDOW_HEIGHT) / 10.0f * 6.0f,
+			2.0f,
+			glm::vec3(0.26f, 0.54f, 0.59f)
+		);
+	}
+	/*------------End Restart-----------------*/
+	/*----------------Save score-----------------*/
+	if (selected_item_index_ == 1) {
+		RenderText(
+			shader_handler,
+			"Save score",
+			((float)WINDOW_WIDTH) / 2.0f - 530.0f,
+			((float)WINDOW_HEIGHT) / 10.0f * 4.0f,
+			2.0f,
+			glm::vec3(1.0f, 1.0f, 1.0f)
+		);
+	}
+	else {
+		RenderText(
+			shader_handler,
+			"Save score",
+			((float)WINDOW_WIDTH) / 2.0f - 530.0f,
+			((float)WINDOW_HEIGHT) / 10.0f * 4.0f,
+			2.0f,
+			glm::vec3(0.26f, 0.54f, 0.59f)
+		);
+	}
+	/*------------End Save score-----------------*/
+	/*------------Quit-----------------*/
+	if (selected_item_index_ == 2) {
+		RenderText(
+			shader_handler,
+			"Quit",
+			((float)WINDOW_WIDTH) / 2.0f - 530.0f,
+			((float)WINDOW_HEIGHT) / 10.0f * 2.0f,
+			2.0f,
+			glm::vec3(1.0f, 1.0f, 1.0f)
+		);
+	}
+	else {
+		RenderText(
+			shader_handler,
+			"Quit",
+			((float)WINDOW_WIDTH) / 2.0f - 530.0f,
+			((float)WINDOW_HEIGHT) / 10.0f * 2.0f,
+			2.0f,
+			glm::vec3(0.26f, 0.54f, 0.59f)
+		);
+	}
+	/*---------End Quit-----------------*/
+}
+
+void Menu::StateManager(GameState state) {
+	if (state == MENU || state == DEATH) {
+		nr_of_items_ = 3;
+	}
+	else if (state == PAUSE) {
+		nr_of_items_ = 4;
+	}
+	else if (state == OPTIONS) {
+
+	}
+}
+
+int Menu::GetSelectedItemIndex() const {
+	return selected_item_index_;
 }
 
 void Menu::RenderText(

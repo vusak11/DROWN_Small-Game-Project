@@ -58,6 +58,12 @@
     <Filter Include="Source Files\Object\Physics">
       <UniqueIdentifier>{82d238f0-d9db-4431-a4d6-634c3c72b062}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\UI">
+      <UniqueIdentifier>{996bc5d3-956b-45a8-a64a-edbbeed86f84}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\UI">
+      <UniqueIdentifier>{89789ba0-9a16-4825-90fd-79b6ed350a5f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -81,35 +87,38 @@
     <ClCompile Include="shader_handler.cpp">
       <Filter>Source Files\Core</Filter>
     </ClCompile>
-    <ClCompile Include="sound_unit.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Object\object_class.cpp">
       <Filter>Source Files\Object</Filter>
     </ClCompile>
     <ClCompile Include="Object\Character\character.cpp">
       <Filter>Source Files\Object\Character</Filter>
     </ClCompile>
-    <ClCompile Include="mesh.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="model.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Object\object_handler.cpp">
       <Filter>Source Files\Object</Filter>
-    </ClCompile>
-    <ClCompile Include="light.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="render.cpp">
       <Filter>Source Files\Core</Filter>
     </ClCompile>
-    <ClCompile Include="menu.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Object\Physics\physics_engine.cpp">
       <Filter>Source Files\Object\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="light.cpp">
+      <Filter>Source Files\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="gui.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="menu.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="mesh.cpp">
+      <Filter>Source Files\Object\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="model.cpp">
+      <Filter>Source Files\Object\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="sound_unit.cpp">
+      <Filter>Source Files\Core</Filter>
     </ClCompile>
     <ClCompile Include="Object\Character\player_character.cpp">
       <Filter>Source Files\Object\Character</Filter>
@@ -140,9 +149,6 @@
     <ClInclude Include="shader_handler.h">
       <Filter>Header Files\Core</Filter>
     </ClInclude>
-    <ClInclude Include="sound_unit.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Object\object_class.h">
       <Filter>Header Files\Object</Filter>
     </ClInclude>
@@ -152,26 +158,32 @@
     <ClInclude Include="Object\object_handler.h">
       <Filter>Header Files\Object</Filter>
     </ClInclude>
-    <ClInclude Include="mesh.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="model.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="globals.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="light.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="render.h">
       <Filter>Header Files\Core</Filter>
     </ClInclude>
-    <ClInclude Include="menu.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Object\Physics\physics_engine.h">
       <Filter>Header Files\Object\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="light.h">
+      <Filter>Header Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="gui.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="menu.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="model.h">
+      <Filter>Header Files\Object\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="mesh.h">
+      <Filter>Header Files\Object\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="sound_unit.h">
+      <Filter>Header Files\Core</Filter>
     </ClInclude>
     <ClInclude Include="Object\Character\player_character.h">
       <Filter>Header Files\Object\Character</Filter>
@@ -212,6 +224,12 @@
       <Filter>Source Files\GLSL</Filter>
     </None>
     <None Include="glsl\textshader_vs.glsl">
+      <Filter>Source Files\GLSL</Filter>
+    </None>
+    <None Include="glsl\guishader_fs.glsl">
+      <Filter>Source Files\GLSL</Filter>
+    </None>
+    <None Include="glsl\guishader_vs.glsl">
       <Filter>Source Files\GLSL</Filter>
     </None>
   </ItemGroup>

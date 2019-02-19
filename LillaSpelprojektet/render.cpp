@@ -12,6 +12,10 @@ Render::Render() {
 		"glsl/textshader_vs.glsl",
 		"glsl/textshader_fs.glsl"
 	);
+	gui_shaders_ = new ShaderHandler(
+		"glsl/guishader_vs.glsl",
+		"glsl/guishader_fs.glsl"
+	);
 	geometry_pass_ = new ShaderHandler(
 		"glsl/geometrypass/geometry_vs.glsl",
 		"glsl/geometrypass/geometry_gs.glsl",
@@ -24,10 +28,14 @@ Render::Render() {
 	model_ = new Model*[nr_of_models_];
 	model_[0] = new Model((char*)"../Resources/Models/TestBox/testBOX.obj");
 
-	map_[0].LoadMap((char*)"../Resources/Map/TestMapMediumHard2.bmp");
-	map_[0].LoadTexture((char*)"../Resources/Map/rock.png");
+	map_handler_.InitializeMaps(
+		"../Resources/Map/TestMap.bmp",
+		"../Resources/Map/rock.png",
+		"../Resources/Map/v4.png");
 
-	
+
+	hud.LoadHealthBarTexture((char*)"../Resources/GUI/healthbar.png");
+	hud.LoadQuickSlotTexture((char*)"../Resources/GUI/quickslot.png");
 }
 
 Render::~Render() {
@@ -36,6 +44,7 @@ Render::~Render() {
 	delete[] lights_;
 
 	delete text_shaders_;
+	delete gui_shaders_;
 
 	for (int i = 0; i < nr_of_models_; i++) {
 		delete model_[i];
@@ -47,6 +56,8 @@ void Render::InitializeRender() {
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	
+	hud.Initiliaze();
+
 	geometry_pass_->GeometryFrameBuffers();
 
 	lights_[0].LightDefault(
@@ -56,28 +67,30 @@ void Render::InitializeRender() {
 		glm::vec3(1.0f, 1.0f, 1.0f),
 		glm::vec3(1.0f, 1.0f, 1.0f));
 
-	map_[0].Buffer(geometry_pass_->GetProgram());
+	map_handler_.InitializeBuffers(geometry_pass_->GetProgram());
 }
 
 void Render::UpdateRender(
 	float dt, 
 	glm::vec3 camera_position,
 	glm::mat4 perspective_view_matrix,
-	std::vector<ObjectPackage>& object_vector) {
+	std::vector<ObjectPackage>& object_vector,
+	PlayerInfoPackage player_data) {
 
 	glDisable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
 
+	//SET UP FOR 3D
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 	// Pushing Map into object vector
 	glm::mat4 map_matrix = glm::mat4(1.0f);
-	map_matrix = glm::translate(map_matrix, glm::vec3(0.0f, 0.0f, -100.0f));
-	map_matrix = glm::rotate(map_matrix, glm::radians(90.0f), glm::vec3(1, 0, 0));
-	//map_matrix = glm::scale(map_matrix, glm::vec3(1.0f, 1.0f, 1.0f));
 	ObjectPackage map_package;
 	map_package.id = OBJECT_ID_MAP;
 	map_package.model_matrix = map_matrix;
-
-	object_vector.push_back(map_package);
+	object_vector.insert(object_vector.begin(), map_package);
 
 	//  GEOMETRY
 	GeometryPass(camera_position, perspective_view_matrix);
@@ -88,24 +101,48 @@ void Render::UpdateRender(
 	LightingPass(camera_position);
 
 	RenderQuad();
+
+	//SET UP FOR 2D
+	glLoadIdentity();
+	glMatrixMode(GL_PROJECTION);
+	glDisable(GL_DEPTH_TEST);
+	glLoadIdentity();
+
+	hud.RenderGUI(gui_shaders_, player_data);
+
+	glFlush();
+	//swap_buffers(?)
 }
 
 void Render::GeometryDrawing(std::vector<ObjectPackage>& object_vector) {
-	for (unsigned int i = 0; i < object_vector.size(); i++) {
-		if (OBJECT_ID_NULL == object_vector[i].id) {
+	// object_vector contains all objects which should be drawn
+	// we pop it til it runs out of objects.
+	glm::vec3 players_position;
+	while (!object_vector.empty()) {
+		if (OBJECT_ID_NULL == object_vector.back().id) {
 
 		}
-		else if (OBJECT_ID_PLAYER == object_vector[i].id) {
-			ModelTransformation(object_vector[i].model_matrix);
+		else if (OBJECT_ID_PLAYER == object_vector.back().id) {
+			ModelTransformation(object_vector.back().model_matrix);
+			players_position = glm::vec3(
+				object_vector.back().model_matrix[3][0],
+				object_vector.back().model_matrix[3][1],
+				object_vector.back().model_matrix[3][2]);
 			model_[0]->Draw(geometry_pass_->GetProgram());
 		}
-		else if (OBJECT_ID_JOHNNY_BRAVO == object_vector[i].id) {
-			ModelTransformation(object_vector[i].model_matrix);
+		else if (OBJECT_ID_JOHNNY_BRAVO == object_vector.back().id) {
+			ModelTransformation(object_vector.back().model_matrix);
 		}
-		else if (OBJECT_ID_MAP == object_vector[i].id) {
-			ModelTransformation(object_vector[i].model_matrix);
-			map_[0].Draw(geometry_pass_->GetProgram());
+		else if (OBJECT_ID_MAP == object_vector.back().id) {
+			std::vector<glm::vec2> cells = map_handler_.GridCulling(
+				map_handler_.CurrentCell(players_position));
+			while (!cells.empty()) {
+				ModelTransformation(map_handler_.Transformation((int)cells.back().x, (int)cells.back().y));
+				map_handler_.Draw(geometry_pass_->GetProgram(), (int)cells.back().x, (int)cells.back().y);
+				cells.pop_back();
+			}
 		}
+		object_vector.pop_back();
 	}
 }
 
@@ -153,11 +190,29 @@ void Render::LightingPass(glm::vec3 camera_position) {
 
 }
 
-void Render::RenderMenuState(Menu menu_) {
+void Render::RenderMenuState(Menu menu) {
+	glClearColor(0.22f, 0.22f, 0.22f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT);
+	
+	menu.RenderMenu(text_shaders_);
+}
+
+void Render::RenderPauseMenu(Menu menu) {
+	glDisable(GL_DEPTH_TEST);
+	glEnable(GL_BLEND);
 	glClearColor(0.22f, 0.22f, 0.22f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	menu_.RenderMenu(text_shaders_);
+	menu.RenderPauseMenu(text_shaders_);
+}
+
+void Render::RenderDeathMenu(Menu menu) {
+	glDisable(GL_DEPTH_TEST);
+	glEnable(GL_BLEND);
+	glClearColor(0.22f, 0.22f, 0.22f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT);
+
+	menu.RenderDeathMenu(text_shaders_);
 }
 
 // RenderQuad() Renders a 1x1 quad in NDC, best used for framebuffer color targets
@@ -167,7 +222,6 @@ void Render::RenderQuad() {
 	{
 		GLfloat quad_vertices[] = {
 			// Positions        // Texture Coords
-			-1.0f,  1.0f, 0.0f, 0.0f, 1.0f, //MORE PASTA
 			-1.0f,  1.0f, 0.0f, 0.0f, 1.0f,
 			-1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
 			 1.0f,  1.0f, 0.0f, 1.0f, 1.0f,
@@ -181,13 +235,12 @@ void Render::RenderQuad() {
 		glBufferData(GL_ARRAY_BUFFER, sizeof(quad_vertices), &quad_vertices, GL_STATIC_DRAW);
 
 		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)nullptr);
 		glEnableVertexAttribArray(1);
 		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
-		
 	}
 	glBindVertexArray(quad_vertex_array_object_);
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, 5);
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	glBindVertexArray(0);
 }
 

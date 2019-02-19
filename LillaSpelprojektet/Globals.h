@@ -28,13 +28,15 @@
 #define PLAYER_TOP_SPEED 100
 #define PLAYER_JUMP_VELOCITY 300
 
+//Map------------------------------------------------------
+#define GRID_COLUMN 5
+#define GRID_ROW 5
+#define MAP_SCALE 5						//1 -> each vertex have 1 position unit in between
+#define MAP_DEPTH 0.2					//The depth of the heightmap
+
 //Ability Numbers------------------------------------------
 #define DASH_COOLDOWN 5
 #define DASH_VELOCITY 400
-
-//Map------------------------------------------------------
-#define MAP_SCALE 5						//1 -> each vertex have 1 position unit in between
-#define MAP_DEPTH 0.2					//The depth of the heightmap
 
 //NOTE:
 //Object ID:s are used to determine what type of object is created
@@ -54,11 +56,20 @@ struct ObjectPackage {
 	glm::mat4 model_matrix;
 };
 
+struct PlayerInfoPackage {
+	int max_hp;
+	int current_hp;
+	//ability1
+	//ability2
+};
+
 //States---------------------------------------------------
 enum GameState {
 	GAME,
 	MENU,
-	PAUSE
+	PAUSE, 
+	OPTIONS,
+	DEATH
 };
 
 #endif // !GLOBALS_H

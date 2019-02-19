@@ -7,8 +7,9 @@
 #include <GLM\gtc\matrix_transform.hpp>
 #include <GLM\gtc\type_ptr.hpp>
 #include "model.h"
-#include "map.h"
+#include "map_handler.h"
 #include "menu.h"
+#include "gui.h"
 
 
 class Render {
@@ -26,10 +27,14 @@ private:
 	int nr_of_models_ = 1;
 	Model** model_;
 
+	MapHandler map_handler_;
+	//Map map_[1];
 	ShaderHandler* text_shaders_;
+	ShaderHandler* gui_shaders_;
 
-	Map map_[1];
 	glm::mat4 model_matrix_;
+
+	GUI hud;
 public:
 	Render();
 	~Render();
@@ -39,7 +44,8 @@ public:
 		float dt, 
 		glm::vec3 camera_position,
 		glm::mat4 perspective_view_matrix,
-		std::vector<ObjectPackage>& object_vector
+		std::vector<ObjectPackage>& object_vector,
+		PlayerInfoPackage player_data
 		);
 
 	void GeometryPass(
@@ -49,7 +55,9 @@ public:
 		glm::vec3 camera_position);
 
 
-	void RenderMenuState(Menu menu_);
+	void RenderMenuState(Menu menu);
+	void RenderPauseMenu(Menu menu);
+	void RenderDeathMenu(Menu menu);
 	//void GeometryDrawing();
 	//void ModelTransformation(glm::vec3 m_translate, glm::vec3 m_rotate, float radians, glm::vec3 m_scale);
 
