@@ -2,9 +2,14 @@
 #define ABILITY_H
 
 //#include "player_character.h"
+#include "cooldown_class.h"
 
 //Forward declaration
 class PlayerCharacter;
+
+//---------------------------------------------------------
+//----------------------BASE-CLASS-------------------------
+//---------------------------------------------------------
 
 enum AbilityID {
 	ABILITY_NONE,
@@ -20,8 +25,10 @@ public:
 	virtual bool ExecuteAbility(PlayerCharacter& in_player);
 };
 
-
 //---------------------------------------------------------
+//--------------------DERIVED-CLASSES----------------------
+//---------------------------------------------------------
+
 class DoubleJump : public Ability {
 public:
 	bool available_;
@@ -29,14 +36,16 @@ public:
 	~DoubleJump();
 	bool ExecuteAbility(PlayerCharacter& in_player);
 };
+
 //---------------------------------------------------------
-class Dash : public Ability {
+
+class Dash : public Ability, public CooldownClass {
 public:
-	float cooldown_;
 	Dash();
 	~Dash();
 	bool ExecuteAbility(PlayerCharacter& in_player);
 };
+
 //---------------------------------------------------------
 
 #endif // !ABILITY_H

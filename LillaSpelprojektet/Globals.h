@@ -27,7 +27,7 @@
 //Player object--------------------------------------------
 //These numbers are specific to the player. Consider using these as base input for the
 //constructor and then altering internal variables
-#define PLAYER_TOP_SPEED 5
+#define PLAYER_TOP_SPEED 25
 #define PLAYER_JUMP_VELOCITY 150
 
 

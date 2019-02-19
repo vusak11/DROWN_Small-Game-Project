@@ -11,8 +11,8 @@ PlayerCharacter::PlayerCharacter(glm::vec3 start_pos) : Character(start_pos, OBJ
 	this->jump_speed_ = PLAYER_JUMP_VELOCITY;
 
 	this->weapon_.id = SWORD;
-	//this->ability_ = new Ability();
-	this->ability_ = new DoubleJump();
+	this->ability_ptr_ = new Ability();
+	//this->ability_ptr_ = new DoubleJump();
 
 }
 
@@ -50,9 +50,9 @@ void PlayerCharacter::Jump() {
 		this->SetVelocityVec(new_velocity);
 	}
 	//We now know the player to be in the air so we check if they have double jump
-	else if (this->ability_->id_ == ABILITY_DOUBLE_JUMP) {
+	else if (this->ability_ptr_->id_ == ABILITY_DOUBLE_JUMP) {
 		//If they do we call for the execution of that ability
-		this->ability_->ExecuteAbility(*this);
+		this->ability_ptr_->ExecuteAbility(*this);
 	}
 	
 	return;
@@ -63,8 +63,23 @@ void PlayerCharacter::SetAirborne(bool in_air) {
 
 	//If the player just was put out of the air
 	//and it has a double jump, set the double jump to available
-	if (!in_air && this->ability_->id_ == ABILITY_DOUBLE_JUMP) {
-		((DoubleJump*)this->ability_)->available_ = true;
+	if (!in_air && this->ability_ptr_->id_ == ABILITY_DOUBLE_JUMP) {
+		((DoubleJump*)this->ability_ptr_)->available_ = true;
+	}
+
+}
+
+void PlayerCharacter::UpdateStatus(float in_deltatime) {
+	
+	//Update ability cooldowns
+	switch (this->ability_ptr_->id_)
+	{
+	case ABILITY_DASH:
+		//WIP:
+		//Create more children an different types of ability types
+		break;
+	default:
+		break;
 	}
 
 }

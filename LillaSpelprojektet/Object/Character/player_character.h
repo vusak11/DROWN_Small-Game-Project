@@ -33,7 +33,7 @@ private:
 	float jump_speed_;
 
 	Weapon weapon_;
-	Ability* ability_;
+	Ability* ability_ptr_;
 
 public:
 	PlayerCharacter(glm::vec3 start_pos);
@@ -44,6 +44,9 @@ public:
 	void Jump();
 
 	void SetAirborne(bool in_bool);
+	void UpdateStatus(float in_deltatime);		//Updates time related stuff
+												//e.g. cooldown on abilities
+												//or attack windows
 
 };
 

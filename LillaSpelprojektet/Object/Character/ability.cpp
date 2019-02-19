@@ -42,7 +42,8 @@ bool DoubleJump::ExecuteAbility(PlayerCharacter& in_player) {
 //---------------------------------------------------------
 Dash::Dash() {
 	this->id_ = ABILITY_DASH;
-	this->cooldown_ = 5.0f;		//Placeholder value
+	this->total_cooldown_ = 5.0f;		//Placeholder value
+	
 }
 
 Dash::~Dash(){}
