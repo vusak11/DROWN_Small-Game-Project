@@ -7,7 +7,7 @@
 #include <GLM\gtc\matrix_transform.hpp>
 #include <GLM\gtc\type_ptr.hpp>
 #include "model.h"
-#include "map.h"
+#include "map_handler.h"
 #include "menu.h"
 #include "gui.h"
 
@@ -27,10 +27,11 @@ private:
 	int nr_of_models_ = 1;
 	Model** model_;
 
+	MapHandler map_handler_;
+	//Map map_[1];
 	ShaderHandler* text_shaders_;
 	ShaderHandler* gui_shaders_;
 
-	Map map_[1];
 	glm::mat4 model_matrix_;
 
 	GUI hud;

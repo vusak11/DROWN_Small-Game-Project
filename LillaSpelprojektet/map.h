@@ -2,8 +2,7 @@
 #define MAP_H
 
 #include <GLM/glm.hpp>
-
-#include "shader_handler.h"
+#include <GL/glew.h>
 #include "glm\gtc\matrix_transform.hpp"
 #include "glm\gtc\type_ptr.hpp"	// To be able to use vector variables in class.
 #include <iostream>
@@ -26,27 +25,41 @@ public:
 	~Map();
 
 	// This function is not complete.
-	bool LoadMap(char* path);	// Returns a bool to trouble shoot while loading new maps.
-	void LoadTexture(char* texture_name);
+	//bool LoadMap(const char* path);	// Returns a bool to trouble shoot while loading new maps.
+	bool LoadMap(const char* path);
+	void LoadTexture(const char* texture_name);
+
+	void CreateCells(
+		int grid_column, int grid_row,
+		int grid_y, int grid_x
+	);
+	void CalculateBorders(
+		int b_1, int b_2, int b_3, int b_4,
+		float cell_width, float cell_height,
+		int grid_y, int grid_x
+	);
+	void UVCoordinates();
+	void CalculateNormals();
+	void CreateTriangles();
+	void CreateIndices();
 
 	void Buffer(GLuint shader);
 	void Draw(GLuint shader);
 
-	void SetHeight(int height);
-	void SetWidth(int width);
+	int GetCellHeight() const;
+	int GetCellWidth() const;
 
-	float GetTempHeight(int x, int z);
-	void LowerPosition();
-
-	int GetHeight();
-	int GetWidth();
 private:
-	int map_width_;			// Width of map image
-	int map_height_;		// Height of map image
+		int image_width_;			// Width of map image
+		int image_height_;		// Height of map image
 
+	std::vector<std::vector<float>> cell_vertices_;
+	float cell_width_;
+	float cell_height_;
+	
 	std::vector<Triangle> vertices_;
-	std::vector<std::vector<float>> temp_height_;
-	std::vector<std::vector<glm::vec2>> tex_coord_;
+	std::vector<std::vector<float>> height_map_;
+	std::vector<std::vector<glm::vec2>> tex_coordinates_;
 	std::vector<std::vector<glm::vec3>> normals_;
 	std::vector<int> indices_;
 
@@ -55,7 +68,6 @@ private:
 	GLuint element_buffer_object_;
 
 	GLuint texture_;
-
 };
 
 #endif

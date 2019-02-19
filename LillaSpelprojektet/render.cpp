@@ -28,8 +28,10 @@ Render::Render() {
 	model_ = new Model*[nr_of_models_];
 	model_[0] = new Model((char*)"../Resources/Models/TestBox/testBOX.obj");
 
-	map_[0].LoadMap((char*)"../Resources/Map/TestMapMediumHard.bmp");
-	map_[0].LoadTexture((char*)"../Resources/Map/rock.png");
+	map_handler_.InitializeMaps(
+		"../Resources/Map/TestMap.bmp",
+		"../Resources/Map/rock.png");
+
 
 	hud.LoadHealthBarTexture((char*)"../Resources/GUI/healthbar.png");
 	hud.LoadQuickSlotTexture((char*)"../Resources/GUI/quickslot.png");
@@ -64,7 +66,7 @@ void Render::InitializeRender() {
 		glm::vec3(1.0f, 1.0f, 1.0f),
 		glm::vec3(1.0f, 1.0f, 1.0f));
 
-	map_[0].Buffer(geometry_pass_->GetProgram());
+	map_handler_.InitializeBuffers(geometry_pass_->GetProgram());
 }
 
 void Render::UpdateRender(
@@ -84,14 +86,10 @@ void Render::UpdateRender(
 
 	// Pushing Map into object vector
 	glm::mat4 map_matrix = glm::mat4(1.0f);
-	map_matrix = glm::translate(map_matrix, glm::vec3(-100.0f, 100.0, -100.0f));
-	map_matrix = glm::rotate(map_matrix, glm::radians(90.0f), glm::vec3(1, 0, 0));
-	map_matrix = glm::scale(map_matrix, glm::vec3(0.3f, 0.8f, 0.8f));
 	ObjectPackage map_package;
 	map_package.id = OBJECT_ID_MAP;
 	map_package.model_matrix = map_matrix;
-
-	object_vector.push_back(map_package);
+	object_vector.insert(object_vector.begin(), map_package);
 
 	//  GEOMETRY
 	GeometryPass(camera_position, perspective_view_matrix);
@@ -116,21 +114,34 @@ void Render::UpdateRender(
 }
 
 void Render::GeometryDrawing(std::vector<ObjectPackage>& object_vector) {
-	for (unsigned int i = 0; i < object_vector.size(); i++) {
-		if (OBJECT_ID_NULL == object_vector[i].id) {
+	// object_vector contains all objects which should be drawn
+	// we pop it til it runs out of objects.
+	glm::vec3 players_position;
+	while (!object_vector.empty()) {
+		if (OBJECT_ID_NULL == object_vector.back().id) {
 
 		}
-		else if (OBJECT_ID_PLAYER == object_vector[i].id) {
-			ModelTransformation(object_vector[i].model_matrix);
+		else if (OBJECT_ID_PLAYER == object_vector.back().id) {
+			ModelTransformation(object_vector.back().model_matrix);
+			players_position = glm::vec3(
+				object_vector.back().model_matrix[3][0],
+				object_vector.back().model_matrix[3][1],
+				object_vector.back().model_matrix[3][2]);
 			model_[0]->Draw(geometry_pass_->GetProgram());
 		}
-		else if (OBJECT_ID_JOHNNY_BRAVO == object_vector[i].id) {
-			ModelTransformation(object_vector[i].model_matrix);
+		else if (OBJECT_ID_JOHNNY_BRAVO == object_vector.back().id) {
+			ModelTransformation(object_vector.back().model_matrix);
 		}
-		else if (OBJECT_ID_MAP == object_vector[i].id) {
-			ModelTransformation(object_vector[i].model_matrix);
-			map_[0].Draw(geometry_pass_->GetProgram());
+		else if (OBJECT_ID_MAP == object_vector.back().id) {
+			std::vector<glm::vec2> cells = map_handler_.GridCulling(
+				map_handler_.CurrentCell(players_position)); //OBS Player's position should be here
+			while (!cells.empty()) {
+				ModelTransformation(map_handler_.Transformation((int)cells.back().x, (int)cells.back().y));
+				map_handler_.Draw(geometry_pass_->GetProgram(), (int)cells.back().x, (int)cells.back().y);
+				cells.pop_back();
+			}
 		}
+		object_vector.pop_back();
 	}
 }
 
