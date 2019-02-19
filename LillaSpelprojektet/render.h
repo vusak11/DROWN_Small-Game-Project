@@ -66,6 +66,6 @@ public:
 	void ModelTransformation(glm::mat4 model_matrix);
 	void RenderQuad();
 
-	Map* GetMapPointer(int index);
+	std::vector<std::vector<float>>* GetMapPointer();
 };
 #endif

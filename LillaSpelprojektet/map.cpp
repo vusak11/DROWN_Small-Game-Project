@@ -314,12 +314,12 @@ int Map::GetCellHeight() const {
 	return cell_height_;
 }
 std::vector<std::vector<float>>* Map::GetTempHeightList() {
-	return &temp_height_;
+	return &height_map_;
 }
 
-int Map::GetHeight() {
-	return map_height_;
-}
+//int Map::GetHeight() {
+//	return map_height_;
+//}
 
 int Map::GetCellWidth() const {
 	return cell_width_;

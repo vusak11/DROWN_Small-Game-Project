@@ -315,7 +315,7 @@ void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_
 			for (int j = y_min; j < y_max; j++)
 			{
 				//						y  x
-				if ((*map_height_list_)[j][i] > 0.5)
+				/*if ((*map_height_list_)[j][i] > 0.5)
 				{
 					if (x_0_index == i && y_0_index == j)
 					{
@@ -333,7 +333,7 @@ void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_
 					{
 						collision_3 = true;
 					}
-				}
+				}*/
 			}
 		}
 
@@ -382,14 +382,14 @@ void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_
 				object_pos.y = y_0_index * MAP_SCALE * (-1) + in_object_ptr->GetScale().y - delta_x / 7.5f;
 
 				//							  y			   x
-				if ((*map_height_list_)[y_0_index - 1][x_0_index] <= 0.5)
+				/*if ((*map_height_list_)[y_0_index - 1][x_0_index] <= 0.5)
 				{
 					in_object_ptr->SetVelocityVec(glm::vec3(obj_velocity.x, 0.0f, obj_velocity.z));
 				}
 				else
 				{
 					in_object_ptr->SetVelocityVec(glm::vec3(0.0f, 0.0f, obj_velocity.z));
-				}
+				}*/
 				
 				if (obj_velocity.y <= 0)
 				{
@@ -406,14 +406,14 @@ void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_
 				object_pos.y = y_0_index * MAP_SCALE * (-1) + in_object_ptr->GetScale().y + delta_x / 7.5f;
 
 				//							  y			   x
-				if ((*map_height_list_)[y_0_index - 1][x_0_index] <= 0.5)
+				/*if ((*map_height_list_)[y_0_index - 1][x_0_index] <= 0.5)
 				{
 					in_object_ptr->SetVelocityVec(glm::vec3(obj_velocity.x, 0.0f, obj_velocity.z));
 				}
 				else
 				{
 					in_object_ptr->SetVelocityVec(glm::vec3(0.0f, 0.0f, obj_velocity.z));
-				}
+				}*/
 
 				if (obj_velocity.y <= 0)
 				{

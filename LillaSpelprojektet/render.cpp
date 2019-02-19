@@ -29,7 +29,7 @@ Render::Render() {
 	model_[0] = new Model((char*)"../Resources/Models/TestBox/testBOX.obj");
 
 	map_handler_.InitializeMaps(
-		"../Resources/Map/TestMap.bmp",
+		"../Resources/Map/TestMapMediumHard2.bmp",
 		"../Resources/Map/rock.png",
 		"../Resources/Map/v4.png");
 
@@ -244,7 +244,7 @@ void Render::RenderQuad() {
 	glBindVertexArray(0);
 }
 
-Map * Render::GetMapPointer(int index)
+std::vector<std::vector<float>>* Render::GetMapPointer()
 {
-	return &map_[index];
+	return map_handler_.GetMapDataPointer();
 }
