@@ -51,7 +51,8 @@ enum GameState {
 	GAME,
 	MENU,
 	PAUSE, 
-	OPTIONS
+	OPTIONS,
+	DEATH
 };
 
 #endif // !GLOBALS_H

@@ -121,9 +121,18 @@ void Game::GameLoop(float in_deltatime) {
 			object_vector,
 			temp_player_data
 		);
+
+		/*--------------Restart Game when death occurs--------------*/
+		if (temp_player_data.current_hp == 0) { //Use this one
+			state_ = DEATH;
+		}
+		/*----------End Restart Game when death occurs--------------*/
 	}
 	else if (state_ == PAUSE) {
 		render_.RenderPauseMenu(menu_);
+	}
+	else if (state_ == DEATH) {
+		render_.RenderDeathMenu(menu_);
 	}
 }
 
@@ -140,15 +149,15 @@ void Game::InputForMenu(float in_deltatime, sf::Event event) {
 			}
 			if (event.key.code == sf::Keyboard::Enter) {
 				switch (menu_.GetSelectedItemIndex()) {
-				case 0:						//START
+				case 0:						//Start
 					state_ = GAME;
 					break;
-				case 1:						//OPTIONS
-					state_ = OPTIONS;
-					menu_.StateManager(state_);
+				case 1:						//Options
+					//state_ = OPTIONS; //REAL case
+					//menu_.StateManager(state_);
 					//Do something, change FOV and so on
 					break;
-				case 2:						//QUIT
+				case 2:						//Quit
 					exit(-1);
 				}
 			}
@@ -181,20 +190,51 @@ void Game::InputForMenu(float in_deltatime, sf::Event event) {
 			if (event.key.code == sf::Keyboard::S) {
 				menu_.NavigateDown();
 			}
+			if (event.key.code == sf::Keyboard::Escape) {
+				state_ = GAME;
+				menu_.StateManager(state_);
+			}
 			if (event.key.code == sf::Keyboard::Enter) {
 				switch (menu_.GetSelectedItemIndex()) {
 				case 0:						//Continue
 					state_ = GAME;
 					menu_.StateManager(state_);
 					break;
-				case 1:						//OPTIONS
+				case 1:						//Save score
 					//Save highscore
 					break;
 				case 2:
-					state_ = OPTIONS;
-					menu_.StateManager(state_);
+					//state_ = OPTIONS;		//Options
+					//menu_.StateManager(state_);
 					break;
-				case 3:						//QUIT
+				case 3:						//Quit
+					exit(-1);
+				}
+			}
+			break;
+		default:
+			break;
+		}
+	}
+	else if (state_ == DEATH) {
+		switch (event.type) {
+		case sf::Event::KeyReleased:
+			if (event.key.code == sf::Keyboard::W) {
+				menu_.NavigateUp();
+			}
+			if (event.key.code == sf::Keyboard::S) {
+				menu_.NavigateDown();
+			}
+			if (event.key.code == sf::Keyboard::Enter) {
+				switch (menu_.GetSelectedItemIndex()) {
+				case 0:						//Restart
+					system("restartGame.cmd"); // TEST case
+					exit(-1);
+					break;
+				case 1:						//Save score
+					//Save highscore
+					break;
+				case 2:						//QUIT
 					exit(-1);
 				}
 			}

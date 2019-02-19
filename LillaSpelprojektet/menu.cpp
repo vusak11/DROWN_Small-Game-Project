@@ -291,8 +291,87 @@ void Menu::RenderPauseMenu(ShaderHandler * shader_handler) {
 	}
 }
 
+void Menu::RenderDeathMenu(ShaderHandler * shader_handler) {
+	/*----------------Title---------------------*/
+	RenderText(
+		shader_handler,
+		"You are dead, rekt",
+		((float)WINDOW_WIDTH) / 2.0f - 530.0f,
+		(((float)WINDOW_HEIGHT) / 10.0f) * 8.0f,
+		3.0f,
+		glm::vec3(1.0f, 1.0f, 1.0f)
+	);
+	/*----------------End Title-----------------*/
+	/*----------------Restart-----------------*/
+	if (selected_item_index_ == 0) {
+		RenderText(
+			shader_handler,
+			"Restart",
+			((float)WINDOW_WIDTH) / 2.0f - 530.0f,
+			((float)WINDOW_HEIGHT) / 10.0f * 6.0f,
+			2.0f,
+			glm::vec3(1.0f, 1.0f, 1.0f)
+		);
+	}
+	else {
+		RenderText(
+			shader_handler,
+			"Restart",
+			((float)WINDOW_WIDTH) / 2.0f - 530.0f,
+			((float)WINDOW_HEIGHT) / 10.0f * 6.0f,
+			2.0f,
+			glm::vec3(0.26f, 0.54f, 0.59f)
+		);
+	}
+	/*------------End Restart-----------------*/
+	/*----------------Save score-----------------*/
+	if (selected_item_index_ == 1) {
+		RenderText(
+			shader_handler,
+			"Save score",
+			((float)WINDOW_WIDTH) / 2.0f - 530.0f,
+			((float)WINDOW_HEIGHT) / 10.0f * 4.0f,
+			2.0f,
+			glm::vec3(1.0f, 1.0f, 1.0f)
+		);
+	}
+	else {
+		RenderText(
+			shader_handler,
+			"Save score",
+			((float)WINDOW_WIDTH) / 2.0f - 530.0f,
+			((float)WINDOW_HEIGHT) / 10.0f * 4.0f,
+			2.0f,
+			glm::vec3(0.26f, 0.54f, 0.59f)
+		);
+	}
+	/*------------End Save score-----------------*/
+	/*------------Quit-----------------*/
+	if (selected_item_index_ == 2) {
+		RenderText(
+			shader_handler,
+			"Quit",
+			((float)WINDOW_WIDTH) / 2.0f - 530.0f,
+			((float)WINDOW_HEIGHT) / 10.0f * 2.0f,
+			2.0f,
+			glm::vec3(1.0f, 1.0f, 1.0f)
+		);
+	}
+	else {
+		RenderText(
+			shader_handler,
+			"Quit",
+			((float)WINDOW_WIDTH) / 2.0f - 530.0f,
+			((float)WINDOW_HEIGHT) / 10.0f * 2.0f,
+			2.0f,
+			glm::vec3(0.26f, 0.54f, 0.59f)
+		);
+	}
+	/*---------End Quit-----------------*/
+}
+
 void Menu::StateManager(GameState state) {
-	if (state == MENU) {
+	if (state == MENU || state == DEATH) {
 		nr_of_items_ = 3;
 	}
 	else if (state == PAUSE) {
