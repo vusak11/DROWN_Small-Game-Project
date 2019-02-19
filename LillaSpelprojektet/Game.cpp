@@ -60,7 +60,9 @@ void Game::InputFromDevices(float in_deltatime) {
 		}
 		//Pick up
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::E)) {
-			//Do something
+			//OBS!
+			//CURRENTLY BOUND TO USE ABILITY
+			this->obj_handler_ptr_->PlayerUseAbility();
 		}
 		/*---------------End Keyboard inputs-----------------*/
 
