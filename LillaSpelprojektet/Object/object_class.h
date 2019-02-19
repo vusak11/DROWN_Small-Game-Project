@@ -52,7 +52,7 @@ private:
 	
 
 	//Variables-----------------------------------------------
-	ObjectID id_;
+	//ObjectID id_;
 	HitBox hit_box_;
 
 

@@ -448,7 +448,7 @@ void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_
 
 
 	//TEMP: DON'T LET AN OBJECT OUTSIDE THE MAP
-	in_object_ptr->SetAirborne(true);
+	//in_object_ptr->SetAirborne(true);
 	if (object_pos.y < -1 * map_size * MAP_SCALE + MAP_SCALE) {
 		object_pos.y = -1 * map_size * MAP_SCALE + MAP_SCALE;
 		glm::vec3 grounded_velocity = in_object_ptr->GetVelocityVec();
