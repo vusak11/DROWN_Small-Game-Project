@@ -8,20 +8,28 @@
 //    class Player : Character
 //    class FireGuy : Character
 
-class Character : ObjectClass {
+class Character : public ObjectClass {
+private:
+	//Character Stats
+	int health_;
+	int power_ = 1;
+
+	/*
+	//Character Basic Metadata
+						//NTS: Player can have more advanced stuff such as
+	bool attacking_;				//checks for which powerups they have, e.g. double jump
+	bool invincible_;
+	*/
+
 public:
 	Character(glm::vec3 start_pos, ObjectID id);
 	~Character();
 
-	void SetHealth(int const health);
-	void SetPower(int const power);
 
+	void SetHealth(int const health);		//WIP: Sets/Gets redundant?
+	void SetPower(int const power);
 	int GetHealth();
 	int GetPower();
-private:
-	int health_;
-	int power_ = 1;
-
 };
 
 #endif // !CHARACTER_H

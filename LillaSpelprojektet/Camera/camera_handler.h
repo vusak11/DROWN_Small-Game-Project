@@ -26,6 +26,7 @@ public:
 
 	glm::mat4 MoveCamera(float in_x, float in_y, float in_z = 0.0f);
 	glm::mat4 SetCameraPos(float in_x, float in_y, float in_z = 0.0f);
+	glm::mat4 SetPrimaryCameraPos(glm::vec3 position);
 	glm::mat4 GetPerspectiveMatrix() const;
 	glm::mat4 GetViewMatrix() const;
 	glm::mat4 GetViewPerspectiveMatrix() const;
