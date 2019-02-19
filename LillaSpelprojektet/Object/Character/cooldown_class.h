@@ -12,6 +12,7 @@ public:
 	void BeginCooldown();
 	void ResetCooldown();
 	bool UpdateCooldown(float in_deltatime);	//Returns true if the cooldown reaches 0
+	bool IsOffCooldown();
 };
 
 #endif // !COOLDOWN_CLASS_H

@@ -19,18 +19,22 @@ void CooldownClass::ResetCooldown() {
 }
 
 bool CooldownClass::UpdateCooldown(float in_deltatime) {
-	
-	//NTS: There might be a smarter order to do these checks
+	//If the cooldown is already 0, return true
+	if (this->IsOffCooldown()) { return true; }
 
-	//Decrease the remaining cooldown with the given amount
+	//Other wise decrease the remaining cooldown with the given amount
 	this->remaining_cooldown_ -= in_deltatime;
 
-	//If the remaining cooldown is 0 or lower
+	//Ensure value isn't below 0
 	if (this->remaining_cooldown_ <= 0.0f) {
-		//Set it to 0 and return true
 		this->remaining_cooldown_ = 0.0f;
+		//Now that it is 0 return true
 		return true;
 	}
-
+	//Otherwise return false
 	return false;
+}
+
+bool CooldownClass::IsOffCooldown() {
+	return (this->remaining_cooldown_ == 0.0f);
 }

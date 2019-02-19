@@ -30,8 +30,9 @@
 #define PLAYER_TOP_SPEED 25
 #define PLAYER_JUMP_VELOCITY 150
 
-
-
+//Ability Numbers------------------------------------------
+#define DASH_COOLDOWN 5
+#define DASH_VELOCITY 75
 
 //NOTE:
 //Object ID:s are used to determine what type of object is created

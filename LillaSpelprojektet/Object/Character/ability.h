@@ -40,6 +40,8 @@ public:
 //---------------------------------------------------------
 
 class Dash : public Ability, public CooldownClass {
+private:
+	float dash_velocity_;
 public:
 	Dash();
 	~Dash();

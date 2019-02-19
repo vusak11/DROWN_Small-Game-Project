@@ -37,20 +37,29 @@ bool DoubleJump::ExecuteAbility(PlayerCharacter& in_player) {
 	this->available_ = false;
 
 	//Ability use successful, return true
-	return false;
+	return true;
 }
 //---------------------------------------------------------
-Dash::Dash() {
+Dash::Dash() : CooldownClass(DASH_COOLDOWN) {
 	this->id_ = ABILITY_DASH;
-	this->total_cooldown_ = 5.0f;		//Placeholder value
-	
+	this->dash_velocity_ = DASH_VELOCITY;
 }
 
 Dash::~Dash(){}
 
 bool Dash::ExecuteAbility(PlayerCharacter& in_player) {
-	float sped = in_player.top_speed_;
+	
+	//Check if the dash is off cooldown, otherwise return false
+	if (!this->IsOffCooldown()) { return false; }
 
-	return false;
+	//Get only the x-axis velocity (will give us direction of movement)
+	glm::vec3 new_velocity = glm::vec3(in_player.GetVelocityVec().x, 0.0f, 0.0f);
+
+	//Scale it in accordance with the dash velocity
+	new_velocity = glm::normalize(new_velocity) * this->dash_velocity_;
+
+	in_player.SetVelocityVec(new_velocity);
+
+	return true;
 }
 //---------------------------------------------------------
