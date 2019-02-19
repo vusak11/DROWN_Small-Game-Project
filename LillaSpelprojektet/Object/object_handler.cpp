@@ -146,7 +146,8 @@ ObjectHandler::~ObjectHandler() {
 
 void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map_height_list) {
 
-	this->player_ptr_ = new PlayerCharacter(glm::vec3(300.0f, -200.0f, -95.0f));
+	// THIS Y POS DOES NOT WORK AT ALL
+	this->player_ptr_ = new PlayerCharacter(glm::vec3(230.0f, 400.0f, -95.0f));
 
 	this->player_ptr_->SetScale(10.0f);
 

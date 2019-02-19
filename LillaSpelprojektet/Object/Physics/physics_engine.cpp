@@ -346,6 +346,7 @@ void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_
 			std::cout << "Bot Collision" << std::endl;
 			doublecollision = true;
 			in_object_ptr->SetVelocityVec(glm::vec3(in_object_ptr->GetVelocityVec().x, 0.0f, in_object_ptr->GetVelocityVec().z));
+			//in_object_ptr->SetAirborne(false);
 		}
 
 		if (collision_0 && collision_3)	// Left collision
@@ -394,6 +395,9 @@ void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_
 				{
 					in_object_ptr->SetVelocityVec(glm::vec3(obj_velocity.x, 0.0f, obj_velocity.z));
 				}
+
+				//in_object_ptr->SetAirborne(false);
+
 				//std::cout << "0 Collision" << std::endl;
 			}
 			else if (collision_1)
@@ -416,6 +420,7 @@ void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_
 					in_object_ptr->SetVelocityVec(glm::vec3(obj_velocity.x, 0.0f, obj_velocity.z));
 				}
 				
+				//in_object_ptr->SetAirborne(false);
 
 				//std::cout << "1 Collision" << std::endl;
 			}
@@ -449,6 +454,7 @@ void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_
 
 	//TEMP: DON'T LET AN OBJECT OUTSIDE THE MAP
 	//in_object_ptr->SetAirborne(true);
+
 	if (object_pos.y < -1 * map_size * MAP_SCALE + MAP_SCALE) {
 		object_pos.y = -1 * map_size * MAP_SCALE + MAP_SCALE;
 		glm::vec3 grounded_velocity = in_object_ptr->GetVelocityVec();

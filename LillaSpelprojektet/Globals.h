@@ -25,12 +25,12 @@
 //Player object--------------------------------------------
 //These numbers are specific to the player. Consider using these as base input for the
 //constructor and then altering internal variables
-#define PLAYER_TOP_SPEED 25
-#define PLAYER_JUMP_VELOCITY 150
+#define PLAYER_TOP_SPEED 100
+#define PLAYER_JUMP_VELOCITY 300
 
 //Ability Numbers------------------------------------------
 #define DASH_COOLDOWN 5
-#define DASH_VELOCITY 75
+#define DASH_VELOCITY 400
 
 //Map------------------------------------------------------
 #define MAP_SCALE 5						//1 -> each vertex have 1 position unit in between

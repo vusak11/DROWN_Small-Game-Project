@@ -21,7 +21,7 @@ ObjectClass::ObjectClass(glm::vec3 start_pos, ObjectID id) {
 	this->airborne_ = false;
 
 	//this->position_ = start_pos;
-	this->position_ = { 100.0f, -200.0f, -95.0f };	// start_pos;
+	this->position_ = start_pos;	// start_pos;
 	this->velocity_vec_ = { 0.0f,0.0f,0.0f };		// Not ilizializing this makes weiered start values.
 	this->scale_ = glm::vec3(1.0f, 1.0f, 1.0f);
 
