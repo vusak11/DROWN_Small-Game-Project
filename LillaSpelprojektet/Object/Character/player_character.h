@@ -42,6 +42,7 @@ public:
 	void MoveLeft();
 	void MoveRight();
 	void Jump();
+	void UseAbility();
 
 	void SetAirborne(bool in_bool);
 	void UpdateStatus(float in_deltatime);		//Updates time related stuff

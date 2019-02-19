@@ -58,7 +58,11 @@ bool Dash::ExecuteAbility(PlayerCharacter& in_player) {
 	//Scale it in accordance with the dash velocity
 	new_velocity = glm::normalize(new_velocity) * this->dash_velocity_;
 
+	//Set it as new player velocity
 	in_player.SetVelocityVec(new_velocity);
+
+	//Set the ability on cooldown
+	this->BeginCooldown();
 
 	return true;
 }

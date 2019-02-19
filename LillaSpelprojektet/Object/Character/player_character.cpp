@@ -58,6 +58,10 @@ void PlayerCharacter::Jump() {
 	return;
 }
 
+void PlayerCharacter::UseAbility() {
+	this->ability_ptr_->ExecuteAbility(*this);
+}
+
 void PlayerCharacter::SetAirborne(bool in_air) {
 	this->airborne_ = in_air;
 
@@ -71,6 +75,14 @@ void PlayerCharacter::SetAirborne(bool in_air) {
 
 void PlayerCharacter::UpdateStatus(float in_deltatime) {
 	
+	//Check if the current ability is a cooldown ability
+	CooldownClass* cd_class_ptr = dynamic_cast<CooldownClass*>(this->ability_ptr_);
+	if (cd_class_ptr != NULL) {
+		//If it is, update its cooldown
+		cd_class_ptr->UpdateCooldown(in_deltatime);
+	}
+
+	/*
 	//Update ability cooldowns
 	switch (this->ability_ptr_->id_)
 	{
@@ -81,5 +93,6 @@ void PlayerCharacter::UpdateStatus(float in_deltatime) {
 	default:
 		break;
 	}
+	*/
 
 }
