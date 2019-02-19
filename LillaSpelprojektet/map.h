@@ -27,7 +27,7 @@ public:
 	// This function is not complete.
 	//bool LoadMap(const char* path);	// Returns a bool to trouble shoot while loading new maps.
 	bool LoadMap(const char* path);
-	void LoadTexture(const char* texture_name);
+	void LoadTexture(const char* texture_name_0, const char* texture_name_1);
 
 	void CreateCells(
 		int grid_column, int grid_row,
@@ -67,7 +67,8 @@ private:
 	GLuint vertex_buffer_object_;
 	GLuint element_buffer_object_;
 
-	GLuint texture_;
+	GLuint texture0_;
+	GLuint texture1_;
 };
 
 #endif
