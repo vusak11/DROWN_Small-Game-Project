@@ -150,7 +150,7 @@ void ObjectClass::TurnLeft(const float& in_deltatime) {
 	//and we snap back to 90
 	if ((new_rotation > 90) && (new_rotation < 180)) { new_rotation = 90; }
 
-	std::cout << "Rot L: " << new_rotation << std::endl;
+	//std::cout << "Rot L: " << new_rotation << std::endl;
 
 	this->SetRotation(this->rotation_around_x_, new_rotation, this->rotation_around_z_);
 }
@@ -166,7 +166,7 @@ void ObjectClass::TurnRight(const float& in_deltatime) {
 	//and we snap back to 270
 	if ((new_rotation < -90) && (new_rotation > -180)) { new_rotation = -90; }
 
-	std::cout << "Rot R: " << new_rotation << std::endl;
+	//std::cout << "Rot R: " << new_rotation << std::endl;
 
 	this->SetRotation(this->rotation_around_x_, new_rotation, this->rotation_around_z_);
 }

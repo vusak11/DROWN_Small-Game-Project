@@ -11,7 +11,8 @@ PlayerCharacter::PlayerCharacter(glm::vec3 start_pos) : Character(start_pos, OBJ
 	this->jump_speed_ = PLAYER_JUMP_VELOCITY;
 
 	this->weapon_.id = SWORD;
-	this->ability_->id_ = NONE;
+	//this->ability_ = new Ability();
+	this->ability_ = new DoubleJump();
 
 }
 
@@ -41,23 +42,29 @@ void PlayerCharacter::MoveRight() {
 
 void PlayerCharacter::Jump() {
 
-	//If player is in the air
-	if (this->airborne_) {
-		//If the player do not have double jump return
-		if (this->ability_->id_ != DOUBLE_JUMP) { return; }
-		
-		//If the player has double jump available
-		//DO DOUBLE JUMP
+	//If player is not in the air
+	if (!this->airborne_) {
+		//Set player velocity towards positive y
+		glm::vec3 new_velocity = this->GetVelocityVec();
+		new_velocity.y = this->jump_speed_;
+		this->SetVelocityVec(new_velocity);
+	}
+	//We now know the player to be in the air so we check if they have double jump
+	else if (this->ability_->id_ == ABILITY_DOUBLE_JUMP) {
+		//If they do we call for the execution of that ability
+		this->ability_->ExecuteAbility(*this);
 	}
 	
-	//Set player velocity towards positive y
-	glm::vec3 new_velocity = this->GetVelocityVec();
-	
-	new_velocity.y = this->jump_speed_;
-
-	this->SetVelocityVec(new_velocity);
+	return;
 }
 
-void PlayerCharacter::SetAirborne(bool in_bool) {
-	this->airborne_ = in_bool;
+void PlayerCharacter::SetAirborne(bool in_air) {
+	this->airborne_ = in_air;
+
+	//If the player just was put out of the air
+	//and it has a double jump, set the double jump to available
+	if (!in_air && this->ability_->id_ == ABILITY_DOUBLE_JUMP) {
+		((DoubleJump*)this->ability_)->available_ = true;
+	}
+
 }

@@ -7,9 +7,9 @@
 class PlayerCharacter;
 
 enum AbilityID {
-	NONE,
-	DOUBLE_JUMP,
-	DASH
+	ABILITY_NONE,
+	ABILITY_DOUBLE_JUMP,
+	ABILITY_DASH
 };
 
 class Ability {
@@ -17,7 +17,7 @@ public:
 	AbilityID id_;
 	Ability();
 	~Ability();
-	virtual bool ExecuteAbility(PlayerCharacter& in_player) = 0;
+	virtual bool ExecuteAbility(PlayerCharacter& in_player);
 };
 
 

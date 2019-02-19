@@ -23,11 +23,10 @@ struct Weapon {
 //
 
 class PlayerCharacter : public Character {
-	//friend class Ability;
-	//friend bool Ability::ExecuteAbility(PlayerCharacter&);
 private:
-	//friend class Ability;
-	friend bool Ability::ExecuteAbility(PlayerCharacter&);
+	//friend bool Ability::ExecuteAbility(PlayerCharacter&);
+	friend bool DoubleJump::ExecuteAbility(PlayerCharacter& in_player);
+	friend bool Dash::ExecuteAbility(PlayerCharacter& in_player);
 
 	//Player stats
 	float top_speed_;
@@ -37,9 +36,6 @@ private:
 	Ability* ability_;
 
 public:
-	//friend class Ability;
-	//friend bool Ability::ExecuteAbility(PlayerCharacter&);
-
 	PlayerCharacter(glm::vec3 start_pos);
 	~PlayerCharacter();
 
