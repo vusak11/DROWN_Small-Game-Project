@@ -10,7 +10,10 @@ MapHandler::~MapHandler(){
 
 }
 
-void MapHandler::InitializeMaps(std::string map_path, std::string texture_path_0, std::string texture_path_1) {
+void MapHandler::InitializeMaps(
+	std::string map_path,
+	std::string texture_path_0,
+	std::string texture_path_1) {
 	// ancillary_map loads in the whole .bmp picture and creates a 2D vector out of it
 	// Create a grid map out of ancillary_map and calculate UV coordinates, normals,
 	// triangles, indices and translation for each cell.
