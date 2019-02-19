@@ -3,8 +3,7 @@
 
 
 MapHandler::MapHandler(){
-	grid_column_ = 5;
-	grid_row_ = 5;
+
 }
 
 MapHandler::~MapHandler(){
@@ -24,11 +23,11 @@ void MapHandler::InitializeMaps(std::string map_path, std::string texture_path) 
 	GridMap grid_cell;
 	std::vector<GridMap> grid_cells;
 
-	for (int j = 0; j < grid_row_; j++) {	
+	for (int j = 0; j < GRID_ROW; j++) {	
 		grid_cells.clear();		
 		width = 0;
-		for (int i = 0; i < grid_column_; i++) {
-			ancillary_map.CreateCells(grid_column_, grid_row_, j, i);
+		for (int i = 0; i < GRID_COLUMN; i++) {
+			ancillary_map.CreateCells(GRID_COLUMN, GRID_ROW, j, i);
 			ancillary_map.UVCoordinates();
 			ancillary_map.CalculateNormals();
 			ancillary_map.CreateTriangles();
@@ -93,22 +92,22 @@ std::vector<glm::vec2> MapHandler::GridCulling(glm::vec2 current_cell) {
 		cells_to_draw_.push_back(glm::vec2(current_cell.x + 1, current_cell.y));		// 0, 1, 1
 		cells_to_draw_.push_back(glm::vec2(current_cell.x, current_cell.y + 1));		// 0, 1, 1
 		cells_to_draw_.push_back(glm::vec2(current_cell.x + 1, current_cell.y + 1));
-	} else if (current_cell.x == (grid_column_ - 1) && current_cell.y == 0) {	// Upper right corner
+	} else if (current_cell.x == (GRID_COLUMN - 1) && current_cell.y == 0) {	// Upper right corner
 		cells_to_draw_.push_back(glm::vec2(current_cell.x - 1, current_cell.y));		// 0, 0, 0
 		cells_to_draw_.push_back(glm::vec2(current_cell.x, current_cell.y));			// 1, 1, 0
 		cells_to_draw_.push_back(glm::vec2(current_cell.x - 1, current_cell.y + 1));	// 1, 1, 0
 		cells_to_draw_.push_back(glm::vec2(current_cell.x, current_cell.y + 1));
-	} else if (current_cell.x == 0 && current_cell.y == (grid_row_ - 1)) {		// Lower left corner
+	} else if (current_cell.x == 0 && current_cell.y == (GRID_ROW - 1)) {		// Lower left corner
 		cells_to_draw_.push_back(glm::vec2(current_cell.x, current_cell.y - 1));		// 0, 1, 1
 		cells_to_draw_.push_back(glm::vec2(current_cell.x + 1, current_cell.y - 1));	// 0, 1, 1
 		cells_to_draw_.push_back(glm::vec2(current_cell.x, current_cell.y));			// 0, 0, 0
 		cells_to_draw_.push_back(glm::vec2(current_cell.x + 1, current_cell.y));
-	} else if (current_cell.x == (grid_column_ - 1) && current_cell.y == (grid_row_ - 1)) {// Lower right corner
+	} else if (current_cell.x == (GRID_COLUMN - 1) && current_cell.y == (GRID_ROW - 1)) {// Lower right corner
 		cells_to_draw_.push_back(glm::vec2(current_cell.x - 1, current_cell.y - 1));	// 1, 1, 0
 		cells_to_draw_.push_back(glm::vec2(current_cell.x, current_cell.y - 1));		// 1, 1, 0
 		cells_to_draw_.push_back(glm::vec2(current_cell.x - 1, current_cell.y));		// 0, 0, 0
 		cells_to_draw_.push_back(glm::vec2(current_cell.x, current_cell.y));		
-	} else if (current_cell.x > 0 && current_cell.x < grid_column_ &&			// Upper side
+	} else if (current_cell.x > 0 && current_cell.x < GRID_COLUMN &&			// Upper side
 		current_cell.y == 0) {															// 0, 0, 0
 		cells_to_draw_.push_back(glm::vec2(current_cell.x - 1, current_cell.y));		// 1, 1, 1
 		cells_to_draw_.push_back(glm::vec2(current_cell.x, current_cell.y));			// 1, 1, 1
@@ -116,23 +115,23 @@ std::vector<glm::vec2> MapHandler::GridCulling(glm::vec2 current_cell) {
 		cells_to_draw_.push_back(glm::vec2(current_cell.x - 1, current_cell.y + 1));
 		cells_to_draw_.push_back(glm::vec2(current_cell.x, current_cell.y + 1));
 		cells_to_draw_.push_back(glm::vec2(current_cell.x + 1, current_cell.y + 1));
-	} else if (current_cell.x == 0 && current_cell.y > 0 && current_cell.y < grid_row_) {// Left side
+	} else if (current_cell.x == 0 && current_cell.y > 0 && current_cell.y < GRID_ROW) {// Left side
 		cells_to_draw_.push_back(glm::vec2(current_cell.x, current_cell.y - 1));		// 0, 1, 1
 		cells_to_draw_.push_back(glm::vec2(current_cell.x + 1, current_cell.y - 1));	// 0, 1, 1
 		cells_to_draw_.push_back(glm::vec2(current_cell.x, current_cell.y));			// 0, 1, 1
 		cells_to_draw_.push_back(glm::vec2(current_cell.x + 1, current_cell.y));
 		cells_to_draw_.push_back(glm::vec2(current_cell.x, current_cell.y + 1));
 		cells_to_draw_.push_back(glm::vec2(current_cell.x + 1, current_cell.y + 1));
-	} else if (current_cell.x == (grid_column_ - 1) &&							// Right side
-		current_cell.y > 0 && current_cell.y < grid_row_) {								// 1, 1, 0
+	} else if (current_cell.x == (GRID_COLUMN - 1) &&							// Right side
+		current_cell.y > 0 && current_cell.y < GRID_ROW) {								// 1, 1, 0
 		cells_to_draw_.push_back(glm::vec2(current_cell.x - 1, current_cell.y - 1));	// 1, 1, 0
 		cells_to_draw_.push_back(glm::vec2(current_cell.x, current_cell.y - 1));		// 1, 1, 0
 		cells_to_draw_.push_back(glm::vec2(current_cell.x - 1, current_cell.y));
 		cells_to_draw_.push_back(glm::vec2(current_cell.x, current_cell.y));	
 		cells_to_draw_.push_back(glm::vec2(current_cell.x - 1, current_cell.y + 1));
 		cells_to_draw_.push_back(glm::vec2(current_cell.x, current_cell.y + 1));
-	} else if (current_cell.x > 0 && current_cell.x < grid_column_ &&			// Lower side
-		current_cell.y == (grid_row_ - 1)) {											// 1, 1, 1
+	} else if (current_cell.x > 0 && current_cell.x < GRID_COLUMN &&			// Lower side
+		current_cell.y == (GRID_ROW - 1)) {											// 1, 1, 1
 		cells_to_draw_.push_back(glm::vec2(current_cell.x - 1, current_cell.y - 1));	// 1, 1, 1
 		cells_to_draw_.push_back(glm::vec2(current_cell.x, current_cell.y - 1));		// 0, 0, 0
 		cells_to_draw_.push_back(glm::vec2(current_cell.x + 1, current_cell.y - 1));
@@ -140,7 +139,7 @@ std::vector<glm::vec2> MapHandler::GridCulling(glm::vec2 current_cell) {
 		cells_to_draw_.push_back(glm::vec2(current_cell.x, current_cell.y));
 		cells_to_draw_.push_back(glm::vec2(current_cell.x + 1, current_cell.y));
 	} else if (current_cell.x > 0 && current_cell.y > 0 &&						// Inner
-		current_cell.x < grid_column_ && current_cell.y < grid_row_) {					// 1, 1 ,1
+		current_cell.x < GRID_COLUMN && current_cell.y < GRID_ROW) {					// 1, 1 ,1
 		cells_to_draw_.push_back(glm::vec2(current_cell.x - 1, current_cell.y - 1));	// 1, 1, 1
 		cells_to_draw_.push_back(glm::vec2(current_cell.x, current_cell.y - 1));		// 1, 1, 1
 		cells_to_draw_.push_back(glm::vec2(current_cell.x + 1, current_cell.y - 1));

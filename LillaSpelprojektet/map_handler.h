@@ -1,6 +1,7 @@
 #ifndef MAP_HANDLER_H
 #define MAP_HANDLER_H
 #include "map.h"
+#include "Globals.h"
 #include <fstream>
 #include <string>
 #include <cmath>
@@ -22,10 +23,7 @@ private:
 
 	std::vector<std::vector<GridMap>> grid_map_;
 	std::vector<glm::vec2> cells_to_draw_;
-	
-	float grid_column_;
-	float grid_row_;
-	
+
 public:
 	MapHandler();
 	~MapHandler();

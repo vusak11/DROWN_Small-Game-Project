@@ -19,7 +19,9 @@
 										//If an velocity is lower than this it sets to 0
 #define OBJECT_DECCELERATION 0.1		//0.1 = 10%
 
-
+//Map------------------------------------------------------
+#define GRID_COLUMN 10
+#define GRID_ROW 10
 
 //NOTE:
 //Object ID:s are used to determine what type of object is created
@@ -30,7 +32,7 @@ enum ObjectID {
 	OBJECT_ID_NULL,				//0:
 	OBJECT_ID_PLAYER,			//1:
 	OBJECT_ID_JOHNNY_BRAVO,		//2:
-	OBJECT_ID_MAP			//3
+	OBJECT_ID_MAP				//3
 };
 
 //Package Structs------------------------------------------
