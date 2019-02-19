@@ -12,8 +12,11 @@ MapHandler::~MapHandler(){
 }
 
 void MapHandler::InitializeMaps(std::string map_path, std::string texture_path) {
-	float width, height = 0;
+	// ancillary_map loads in the whole .bmp picture and creates a 2D vector out of it
+	// Create a grid map out of ancillary_map and calculate UV coordinates, normals,
+	// triangles, indices and translation for each cell.
 
+	float width, height = 0;
 	Map ancillary_map;
 	ancillary_map.LoadMap(map_path.c_str());
 	ancillary_map.LoadTexture(texture_path.c_str());
@@ -21,8 +24,8 @@ void MapHandler::InitializeMaps(std::string map_path, std::string texture_path) 
 	GridMap grid_cell;
 	std::vector<GridMap> grid_cells;
 
-	for (int j = 0; j < grid_row_; j++) {
-		grid_cells.clear();
+	for (int j = 0; j < grid_row_; j++) {	
+		grid_cells.clear();		
 		width = 0;
 		for (int i = 0; i < grid_column_; i++) {
 			ancillary_map.CreateCells(grid_column_, grid_row_, j, i);
@@ -66,6 +69,7 @@ void MapHandler::Draw(GLuint shader, int i, int j) {
 
 
 glm::vec2 MapHandler::CurrentCell(glm::vec3 players_current_position) {
+	// Finds out what grid cell player stands on
 	float x, y = 0;
 	for (int j = 0; j < grid_map_.size(); j++) {
 		for (int i = 0; i < grid_map_[j].size(); i++) {
@@ -80,6 +84,9 @@ glm::vec2 MapHandler::CurrentCell(glm::vec3 players_current_position) {
 }
 
 std::vector<glm::vec2> MapHandler::GridCulling(glm::vec2 current_cell) {
+	// Check all neighbouring cells and see whether they exists or not.
+	// If they do exist, push the location into cells_to_draw vector.
+	// 'Center' will always be drawn because that's where the player stands
 	cells_to_draw_.clear();
 	if (current_cell.x == 0 && current_cell.y == 0) {							// Upper left corner
 		cells_to_draw_.push_back(glm::vec2(current_cell.x, current_cell.y));			// 0, 0, 0
@@ -110,9 +117,9 @@ std::vector<glm::vec2> MapHandler::GridCulling(glm::vec2 current_cell) {
 		cells_to_draw_.push_back(glm::vec2(current_cell.x, current_cell.y + 1));
 		cells_to_draw_.push_back(glm::vec2(current_cell.x + 1, current_cell.y + 1));
 	} else if (current_cell.x == 0 && current_cell.y > 0 && current_cell.y < grid_row_) {// Left side
-		cells_to_draw_.push_back(glm::vec2(current_cell.x, current_cell.y - 1));
-		cells_to_draw_.push_back(glm::vec2(current_cell.x + 1, current_cell.y - 1));
-		cells_to_draw_.push_back(glm::vec2(current_cell.x, current_cell.y));
+		cells_to_draw_.push_back(glm::vec2(current_cell.x, current_cell.y - 1));		// 0, 1, 1
+		cells_to_draw_.push_back(glm::vec2(current_cell.x + 1, current_cell.y - 1));	// 0, 1, 1
+		cells_to_draw_.push_back(glm::vec2(current_cell.x, current_cell.y));			// 0, 1, 1
 		cells_to_draw_.push_back(glm::vec2(current_cell.x + 1, current_cell.y));
 		cells_to_draw_.push_back(glm::vec2(current_cell.x, current_cell.y + 1));
 		cells_to_draw_.push_back(glm::vec2(current_cell.x + 1, current_cell.y + 1));

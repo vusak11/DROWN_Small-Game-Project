@@ -20,10 +20,6 @@ Render::Render() {
 	model_ = new Model*[nr_of_models_];
 	model_[0] = new Model((char*)"../Resources/Models/TestBox/testBOX.obj");
 
-	/*map_handler_.InitializeMaps(
-		"../Resources/Map/TestMap_Sliced/TestMap_",
-		"../Resources/Map/rock.png");*/
-
 	map_handler_.InitializeMaps(
 		"../Resources/Map/TestMap.bmp",
 		"../Resources/Map/rock.png");
@@ -64,7 +60,7 @@ void Render::UpdateRender(
 	ObjectPackage map_package;
 	map_package.id = OBJECT_ID_MAP;
 	map_package.model_matrix = map_matrix;
-	object_vector.push_back(map_package);
+	object_vector.insert(object_vector.begin(), map_package);
 
 	//  GEOMETRY
 	GeometryPass(camera_position, perspective_view_matrix);
@@ -78,12 +74,19 @@ void Render::UpdateRender(
 }
 
 void Render::GeometryDrawing(std::vector<ObjectPackage>& object_vector) {
+	// object_vector contains all objects which should be drawn
+	// we pop it til it runs out of objects.
+	glm::vec3 players_position;
 	while (!object_vector.empty()) {
 		if (OBJECT_ID_NULL == object_vector.back().id) {
 
 		}
 		else if (OBJECT_ID_PLAYER == object_vector.back().id) {
 			ModelTransformation(object_vector.back().model_matrix);
+			players_position = glm::vec3(
+				object_vector.back().model_matrix[3][0],
+				object_vector.back().model_matrix[3][1],
+				object_vector.back().model_matrix[3][2]);
 			model_[0]->Draw(geometry_pass_->GetProgram());
 		}
 		else if (OBJECT_ID_JOHNNY_BRAVO == object_vector.back().id) {
@@ -91,7 +94,7 @@ void Render::GeometryDrawing(std::vector<ObjectPackage>& object_vector) {
 		}
 		else if (OBJECT_ID_MAP == object_vector.back().id) {
 			std::vector<glm::vec2> cells = map_handler_.GridCulling(
-				map_handler_.CurrentCell(glm::vec3(10.0f, -143.0f, 30.0f))); //OBS Player's position should be here
+				map_handler_.CurrentCell(players_position)); //OBS Player's position should be here
 			while (!cells.empty()) {
 				ModelTransformation(map_handler_.Transformation((int)cells.back().x, (int)cells.back().y));
 				map_handler_.Draw(geometry_pass_->GetProgram(), (int)cells.back().x, (int)cells.back().y);
@@ -153,7 +156,6 @@ void Render::RenderQuad() {
 	{
 		GLfloat quad_vertices[] = {
 			// Positions        // Texture Coords
-			-1.0f,  1.0f, 0.0f, 0.0f, 1.0f, //MORE PASTA
 			-1.0f,  1.0f, 0.0f, 0.0f, 1.0f,
 			-1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
 			 1.0f,  1.0f, 0.0f, 1.0f, 1.0f,

@@ -104,6 +104,9 @@ void Map::UVCoordinates() {
 }
 
 void Map::CalculateNormals() {
+	// Map out points on each cell. Create two triangles out of the points
+	// Calculate normals when we have the triangles
+	// On certain points we sum up all neighbouring normals
 	glm::vec3 point_1, point_2, point_3, point_4;
 	glm::vec3 edge_1, edge_2;
 	std::vector<glm::vec3> ancillary_normal_0, ancillary_normal_1;
@@ -167,20 +170,20 @@ void Map::CalculateNormals() {
 }
 
 void Map::CreateTriangles() {
-	Triangle temp_triangle;
+	Triangle triangle;
 	vertices_.clear();
 	int index = 0;
 	for (int z = 0; z < cell_height_; z++) {
 		for (int x = 0; x < cell_width_; x++) {
-			temp_triangle.x = (float)x;
-			temp_triangle.y = (float)z * -1;
-			temp_triangle.z = cell_vertices_[z][x];
-			temp_triangle.u = tex_coordinates_[z][x].x;
-			temp_triangle.v = tex_coordinates_[z][x].y;
-			temp_triangle.x_normal = normals_[z][x].x;
-			temp_triangle.y_normal = normals_[z][x].z * -1;
-			temp_triangle.z_normal = normals_[z][x].y;
-			vertices_.push_back(temp_triangle);
+			triangle.x = (float)x;
+			triangle.y = (float)z * -1;
+			triangle.z = cell_vertices_[z][x];
+			triangle.u = tex_coordinates_[z][x].x;
+			triangle.v = tex_coordinates_[z][x].y;
+			triangle.x_normal = normals_[z][x].x;
+			triangle.y_normal = normals_[z][x].z * -1;
+			triangle.z_normal = normals_[z][x].y;
+			vertices_.push_back(triangle);
 		}
 	}
 }
