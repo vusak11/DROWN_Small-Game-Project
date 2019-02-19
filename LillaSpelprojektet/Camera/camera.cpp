@@ -36,8 +36,6 @@ Camera::Camera(glm::vec3 in_look_at, float in_distance) {
 	float nearplane = 0.1f;
 	float farplane = 1000.0f;
 	this->perspective_mat_ = glm::perspective(fov, aspect, nearplane, farplane);
-        int x = 2 + 2;
-        x = 3;
 }
 
 Camera::~Camera() {

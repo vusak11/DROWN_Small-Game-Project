@@ -36,53 +36,53 @@ bool Map::LoadMap(const char* path) {
 	}
 }
 
-void Map::CreateCells(int grid_column, int grid_row, int j, int i) {
+void Map::CreateCells(int grid_column, int grid_row, int grid_y, int grid_x) {
 	cell_vertices_.clear();
 	float cell_width = image_width_ / grid_column;
 	float cell_height = image_height_ / grid_row;
 
 	// Create cells and add extra vertices depending on what cell for filling gaps between cells
-	if (j == 0 && i == 0) // Upper left corner
-		CalculateBorders(0, 2, 0, 2, cell_width, cell_height, j, i);
+	if (grid_y == 0 && grid_x == 0) // Upper left corner
+		CalculateBorders(0, 2, 0, 2, cell_width, cell_height, grid_y, grid_x);
 
-	if (j == (grid_row - 1) && i == 0) // Lower left corner
-		CalculateBorders(2, 0, 0, 2, cell_width, cell_height, j, i);
+	if (grid_y == (grid_row - 1) && grid_x == 0) // Lower left corner
+		CalculateBorders(2, 0, 0, 2, cell_width, cell_height, grid_y, grid_x);
 	
-	if (j == 0 && i == (grid_column - 1)) // Upper right corner
-		CalculateBorders(0, 2, 2, 0, cell_width, cell_height, j, i);
+	if (grid_y == 0 && grid_x == (grid_column - 1)) // Upper right corner
+		CalculateBorders(0, 2, 2, 0, cell_width, cell_height, grid_y, grid_x);
 	
-	if (j == (grid_row - 1) && i == (grid_column - 1)) // Lower corner right
-		CalculateBorders(2, 0, 2, 0, cell_width, cell_height, j, i);
+	if (grid_y == (grid_row - 1) && grid_x == (grid_column - 1)) // Lower corner right
+		CalculateBorders(2, 0, 2, 0, cell_width, cell_height, grid_y, grid_x);
 	
-	if (j == 0 && i > 0 && i < grid_column - 1) // Upper side
-		CalculateBorders(0, 2, 1, 1, cell_width, cell_height, j, i);
+	if (grid_y == 0 && grid_x > 0 && grid_x < grid_column - 1) // Upper side
+		CalculateBorders(0, 2, 1, 1, cell_width, cell_height, grid_y, grid_x);
 	
-	if (j > 0 && j < grid_row - 1 && i == 0) // Left side
-		CalculateBorders(1, 1, 0, 2, cell_width, cell_height, j, i);
+	if (grid_y > 0 && grid_y < grid_row - 1 && grid_x == 0) // Left side
+		CalculateBorders(1, 1, 0, 2, cell_width, cell_height, grid_y, grid_x);
 	
-	if (j > 0 && j < grid_row - 1 && i == (grid_column - 1)) // Right side
-		CalculateBorders(1, 1, 2, 0, cell_width, cell_height, j, i);
+	if (grid_y > 0 && grid_y < grid_row - 1 && grid_x == (grid_column - 1)) // Right side
+		CalculateBorders(1, 1, 2, 0, cell_width, cell_height, grid_y, grid_x);
 	
-	if (j == (grid_row - 1) && i > 0 && i < grid_column - 1) // Lower side
-		CalculateBorders(2, 0, 1, 1, cell_width, cell_height, j, i);
+	if (grid_y == (grid_row - 1) && grid_x > 0 && grid_x < grid_column - 1) // Lower side
+		CalculateBorders(2, 0, 1, 1, cell_width, cell_height, grid_y, grid_x);
 	
-	if (j != 0 && i != 0 && j != grid_row - 1 && i != grid_column - 1) // Inner
-		CalculateBorders(1, 1, 1, 1, cell_width, cell_height, j, i);
+	if (grid_y != 0 && grid_x != 0 && grid_y != grid_row - 1 && grid_x != grid_column - 1) // Inner
+		CalculateBorders(1, 1, 1, 1, cell_width, cell_height, grid_y, grid_x);
 
-	cell_width_ = cell_vertices_[j].size();
+	cell_width_ = cell_vertices_[grid_y].size();
 	cell_height_ = cell_vertices_.size();
 }
 
 void Map::CalculateBorders(
 	int b_1, int b_2, int b_3, int b_4,
 	float cell_width, float cell_height,
-	int j, int i) {
+	int grid_y, int grid_x) {
 
 	std::vector<float> temp_cell_width;
 
-	for (int y = (cell_height * j) - b_1; y < (cell_height * (j + 1)) + b_2; y++) {
+	for (int y = (cell_height * grid_y) - b_1; y < (cell_height * (grid_y + 1)) + b_2; y++) {
 		temp_cell_width.clear();
-		for (int x = (cell_width * i) - b_3; x < (cell_width * (i + 1)) + b_4; x++) {
+		for (int x = (cell_width * grid_x) - b_3; x < (cell_width * (grid_x + 1)) + b_4; x++) {
 			temp_cell_width.push_back(height_map_[y][x]);
 		}
 		cell_vertices_.push_back(temp_cell_width);
@@ -104,7 +104,7 @@ void Map::UVCoordinates() {
 }
 
 void Map::CalculateNormals() {
-	// Map out points on each cell. Create two triangles out of the points
+	// Map out points on each cell. triangles out of the points
 	// Calculate normals when we have the triangles
 	// On certain points we sum up all neighbouring normals
 	glm::vec3 point_1, point_2, point_3, point_4;

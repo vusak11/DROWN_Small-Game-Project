@@ -16,9 +16,9 @@ class MapHandler {
 private:
 	//Map* maps_;	// A list of all the maps in the current game.
 	struct GridMap {
-		Map map_cell_;
-		glm::vec3 translate_;
-		glm::vec2 cell_position_;
+		Map map_cell;
+		glm::vec3 translate;
+		glm::vec2 cell_position;
 	};
 
 	std::vector<std::vector<GridMap>> grid_map_;
@@ -35,8 +35,8 @@ public:
 	void InitializeMaps(std::string map_path, std::string texture_path);
 	void InitializeBuffers(GLuint shader);
 
-	glm::mat4 Transformation(int i, int j);
-	void Draw(GLuint shader, int i, int j);
+	glm::mat4 Transformation(int column, int row);
+	void Draw(GLuint shader, int column, int row);
 	
 	glm::vec2 CurrentCell(glm::vec3 players_current_position);
 	std::vector<glm::vec2> GridCulling(glm::vec2 current_cell);

@@ -34,16 +34,16 @@ void MapHandler::InitializeMaps(std::string map_path, std::string texture_path) 
 			ancillary_map.CreateTriangles();
 			ancillary_map.CreateIndices();
 
-			grid_cell.map_cell_ = ancillary_map;
-			grid_cell.translate_.x = width;
-			grid_cell.translate_.y = height;
-			grid_cell.translate_.z = 0.0f;
-			grid_cell.cell_position_ = glm::vec2(i, j);
+			grid_cell.map_cell = ancillary_map;
+			grid_cell.translate.x = width;
+			grid_cell.translate.y = height;
+			grid_cell.translate.z = 0.0f;
+			grid_cell.cell_position = glm::vec2(i, j);
 			grid_cells.push_back(grid_cell);
 
-			width += grid_cell.map_cell_.GetCellWidth() - 2.0f; // -2.0f is for closing gap
+			width += grid_cell.map_cell.GetCellWidth() - 2.0f; // -2.0f is for closing gap
 		}
-		height -= grid_cell.map_cell_.GetCellHeight() - 2.0f; // --------- || ----------
+		height -= grid_cell.map_cell.GetCellHeight() - 2.0f; // --------- || ----------
 		grid_map_.push_back(grid_cells);
 	}
 }
@@ -51,20 +51,20 @@ void MapHandler::InitializeMaps(std::string map_path, std::string texture_path) 
 void MapHandler::InitializeBuffers(GLuint shader) {
 	for (int j = 0; j < grid_map_.size(); j++) {
 		for (int i = 0; i < grid_map_.size(); i++) {
-			grid_map_[j][i].map_cell_.Buffer(shader);
+			grid_map_[j][i].map_cell.Buffer(shader);
 		}
 	}
 }
 
-glm::mat4 MapHandler::Transformation(int i, int j) {
+glm::mat4 MapHandler::Transformation(int column, int row) {
 	glm::mat4 model_matrix(1.0f);
-	model_matrix = glm::translate(model_matrix, grid_map_[j][i].translate_);
+	model_matrix = glm::translate(model_matrix, grid_map_[row][column].translate);
 	model_matrix = glm::scale(model_matrix, glm::vec3(1.0f, 1.0f, 0.1f));
 	return model_matrix;
 }
 
-void MapHandler::Draw(GLuint shader, int i, int j) {
-	grid_map_[j][i].map_cell_.Draw(shader);
+void MapHandler::Draw(GLuint shader, int column, int row) {
+	grid_map_[row][column].map_cell.Draw(shader);
 }
 
 
@@ -73,9 +73,9 @@ glm::vec2 MapHandler::CurrentCell(glm::vec3 players_current_position) {
 	float x, y = 0;
 	for (int j = 0; j < grid_map_.size(); j++) {
 		for (int i = 0; i < grid_map_[j].size(); i++) {
-			if (players_current_position.x > grid_map_[j][i].translate_.x)
+			if (players_current_position.x > grid_map_[j][i].translate.x)
 				x = i;
-			if (players_current_position.y < grid_map_[j][i].translate_.y)
+			if (players_current_position.y < grid_map_[j][i].translate.y)
 				y = j;
 		}
 	}
