@@ -255,19 +255,31 @@ void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_
 
 		// Get map index from normalized value
 		int x_0_index = x_0 * (map_size - 1);
-		if (x_0 * (map_size - 1) - x_0_index > 0.5)
+		float stair_adjustment_value_X_0 = x_0 * (map_size - 1) - x_0_index; // This value is used for single point collision
+		if (stair_adjustment_value_X_0 > 0.5) {
 			x_0_index++;
+			stair_adjustment_value_X_0 = stair_adjustment_value_X_0 * (-1);
+		}
+			
+		
 
 		int x_1_index = x_1 * (map_size - 1);
-		if (x_1 * (map_size - 1) - x_1_index > 0.5)
+		float stair_adjustment_value_X_1 = x_1 * (map_size - 1) - x_1_index;
+		if (stair_adjustment_value_X_1 > 0.5) {
 			x_1_index++;
+			stair_adjustment_value_X_1 = stair_adjustment_value_X_1 * (-1);
+		}
+
+
 
 		int y_0_index = y_0 * (map_size - 1) * -1;
-		if (y_0 * (map_size - 1) * -1 - y_0_index > 0.5)
+		float stair_adjustment_value_Y_0 = y_0 * (map_size - 1) * -1 - y_0_index;
+		if (stair_adjustment_value_Y_0 > 0.5)
 			y_0_index++;
 
 		int y_1_index = y_1 * (map_size - 1) * -1;
-		if (y_1 * (map_size - 1) * -1 - y_1_index > 0.5)
+		float stair_adjustment_value_Y_1 = y_1 * (map_size - 1) * -1 - y_1_index;
+		if (stair_adjustment_value_Y_1 > 0.5)
 			y_1_index++;
 
 
@@ -289,6 +301,7 @@ void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_
 		{
 			for (int j = y_min; j < y_max; j++)
 			{
+				//						y  x
 				if ((*map_height_list_)[j][i] > 0.5)
 				{
 					if (x_0_index == i && y_0_index == j)
@@ -311,11 +324,12 @@ void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_
 			}
 		}
 
-		// | 5 | Finally do things in a switch case if colliding.
+		// | 6 | Finally do things in a switch case if colliding.
 		bool doublecollision = false;
 		if (collision_0 && collision_1)	// Bot collision
 		{
-			object_pos.y += 0.2f;
+			//object_pos.y += 0.2f;
+			object_pos.y = y_0_index * MAP_SCALE * (-1) + in_object_ptr->GetScale().y * 1.25;
 			std::cout << "Bot Collision" << std::endl;
 			doublecollision = true;
 			in_object_ptr->SetVelocityVec(glm::vec3(in_object_ptr->GetVelocityVec().x, 0.0f, in_object_ptr->GetVelocityVec().z));
@@ -323,7 +337,7 @@ void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_
 
 		if (collision_0 && collision_3)	// Left collision
 		{
-			object_pos.x += 0.2f;
+			object_pos.x = x_0_index * MAP_SCALE + in_object_ptr->GetScale().x * 1.25;
 			std::cout << "Left Collision" << std::endl;
 			doublecollision = true;
 			in_object_ptr->SetVelocityVec(glm::vec3(0.0f, in_object_ptr->GetVelocityVec().y, in_object_ptr->GetVelocityVec().z));
@@ -331,7 +345,7 @@ void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_
 
 		if (collision_1 && collision_2)	// Right collision
 		{
-			object_pos.x -= 0.2f;
+			object_pos.x = x_1_index * MAP_SCALE - in_object_ptr->GetScale().x * 1.25;
 			std::cout << "Right Collision" << std::endl;
 			doublecollision = true;
 			in_object_ptr->SetVelocityVec(glm::vec3(0.0f, in_object_ptr->GetVelocityVec().y, in_object_ptr->GetVelocityVec().z));
@@ -339,7 +353,7 @@ void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_
 
 		if (collision_3 && collision_2)	// Top collision
 		{
-			object_pos.y -= 0.2f;
+			object_pos.y = y_1_index * MAP_SCALE * (-1) - in_object_ptr->GetScale().y * 1.25;
 			std::cout << "Top Collision" << std::endl;
 			doublecollision = true;
 			in_object_ptr->SetVelocityVec(glm::vec3(in_object_ptr->GetVelocityVec().x, 0.0f, in_object_ptr->GetVelocityVec().z));
@@ -350,50 +364,47 @@ void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_
 			glm::vec3 obj_velocity = in_object_ptr->GetVelocityVec();
 			if (collision_0)
 			{
-				if (obj_velocity.x < 0)
-				{
-					if ((*map_height_list_)[x_0_index][y_0_index - 1] <= 0.5)
-					{
-						in_object_ptr->SetVelocityVec(glm::vec3(obj_velocity.x, 0.0f, obj_velocity.z));
-						object_pos.y += 0.5;
-					}
-					else
-					{
-						in_object_ptr->SetVelocityVec(glm::vec3(obj_velocity.x, 0.0f, obj_velocity.z));
-						object_pos.x += 0.5;
-						object_pos.y += 0.5;
-					}
-				}
-				if (obj_velocity.x >= 0)
-				{
-					object_pos.y += 0.5;
-				}
+				float delta_x = x_0_index * MAP_SCALE - object_pos.x - in_object_ptr->GetScale().x;
+				object_pos.y = y_0_index * MAP_SCALE * (-1) + in_object_ptr->GetScale().y - delta_x / 7.5f;
 
-				std::cout << "0 Collision" << std::endl;
+				//							  y			   x
+				if ((*map_height_list_)[y_0_index - 1][x_0_index] <= 0.5)
+				{
+					in_object_ptr->SetVelocityVec(glm::vec3(obj_velocity.x, 0.0f, obj_velocity.z));
+				}
+				else
+				{
+					in_object_ptr->SetVelocityVec(glm::vec3(0.0f, 0.0f, obj_velocity.z));
+				}
+				
+				if (obj_velocity.y <= 0)
+				{
+					in_object_ptr->SetVelocityVec(glm::vec3(obj_velocity.x, 0.0f, obj_velocity.z));
+				}
+				//std::cout << "0 Collision" << std::endl;
 			}
 			else if (collision_1)
 			{
+				float delta_x = x_1_index * MAP_SCALE - object_pos.x - in_object_ptr->GetScale().x;
+				object_pos.y = y_0_index * MAP_SCALE * (-1) + in_object_ptr->GetScale().y + delta_x / 7.5f;
 
-				if (obj_velocity.x > 0)
+				//							  y			   x
+				if ((*map_height_list_)[y_0_index - 1][x_0_index] <= 0.5)
 				{
-					if ((*map_height_list_)[x_0_index][y_0_index - 1] <= 0.5)
-					{
-						in_object_ptr->SetVelocityVec(glm::vec3(obj_velocity.x, 0.0f, obj_velocity.z));
-						object_pos.y += 0.5;
-					}
-					else
-					{
-						in_object_ptr->SetVelocityVec(glm::vec3(obj_velocity.x, 0.0f, obj_velocity.z));
-						object_pos.x += 0.5;
-						object_pos.y += 0.5;
-					}
+					in_object_ptr->SetVelocityVec(glm::vec3(obj_velocity.x, 0.0f, obj_velocity.z));
 				}
-				if (obj_velocity.x <= 0)
+				else
 				{
-					object_pos.y += 0.5;
+					in_object_ptr->SetVelocityVec(glm::vec3(0.0f, 0.0f, obj_velocity.z));
 				}
 
-				std::cout << "1 Collision" << std::endl;
+				if (obj_velocity.y <= 0)
+				{
+					in_object_ptr->SetVelocityVec(glm::vec3(obj_velocity.x, 0.0f, obj_velocity.z));
+				}
+				
+
+				//std::cout << "1 Collision" << std::endl;
 			}
 			else if (collision_2)
 			{

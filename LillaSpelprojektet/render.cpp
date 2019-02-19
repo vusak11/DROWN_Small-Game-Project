@@ -24,7 +24,7 @@ Render::Render() {
 	model_ = new Model*[nr_of_models_];
 	model_[0] = new Model((char*)"../Resources/Models/TestBox/testBOX.obj");
 
-	map_[0].LoadMap((char*)"../Resources/Map/TestMapMediumHard.bmp");
+	map_[0].LoadMap((char*)"../Resources/Map/TestMapMediumHard2.bmp");
 	map_[0].LoadTexture((char*)"../Resources/Map/rock.png");
 
 	
