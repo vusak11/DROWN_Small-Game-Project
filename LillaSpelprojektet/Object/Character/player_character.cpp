@@ -1,5 +1,4 @@
 #include "player_character.h"
-//#include "ability.h"	//Follow through on forward declaraction
 #include "../../globals.h"
 
 //Private--------------------------------------------------

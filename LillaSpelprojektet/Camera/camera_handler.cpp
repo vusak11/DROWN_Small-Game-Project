@@ -36,9 +36,9 @@ glm::mat4 CameraHandler::SetCameraPos(float in_x, float in_y, float in_z) {
 	return this->cams_[this->mode_].GetViewPerspectiveMatrix();
 }
 
-glm::mat4 CameraHandler::SetPrimaryCameraPos(glm::vec3 p)
+glm::mat4 CameraHandler::SetPrimaryCameraPos(glm::vec3 position)
 {
-	this->cams_[0].SetCameraPos(p.x, p.y, cams_[0].GetCameraPosition().z);
+	this->cams_[0].SetCameraPos(position.x, position.y, cams_[0].GetCameraPosition().z);
 
 	//Return the active camera's View*Perspective Matrix
 	return this->cams_[0].GetViewPerspectiveMatrix();

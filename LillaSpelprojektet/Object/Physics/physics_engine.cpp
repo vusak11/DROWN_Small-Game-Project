@@ -444,14 +444,6 @@ void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_
 	}
 	
 
-
-
-
-
-
-
-
-
 	//TEMP: DON'T LET AN OBJECT OUTSIDE THE MAP
 	//in_object_ptr->SetAirborne(true);
 

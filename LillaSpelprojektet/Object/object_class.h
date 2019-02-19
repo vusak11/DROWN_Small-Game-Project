@@ -30,19 +30,19 @@ struct HitBox // Struct used for checking collision
 		glm::vec2 hb_pos3_;
 
 		HitBox() {}
-		HitBox(glm::vec3 p, glm::vec3 s) {
+		HitBox(glm::vec3 position, glm::vec3 scale) {
 			// Initialize the hitbox to player position.
-			hb_pos0_ = glm::vec2(p.x + (-1 * s.x), p.y + (-1 * s.y));
-			hb_pos1_ = glm::vec2(p.x + ( 1 * s.x), p.y + (-1 * s.y));
-			hb_pos2_ = glm::vec2(p.x + ( 1 * s.x), p.y + ( 1 * s.y));
-			hb_pos3_ = glm::vec2(p.x + (-1 * s.x), p.y + ( 1 * s.y));
+			hb_pos0_ = glm::vec2(position.x + (-1 * scale.x), position.y + (-1 * scale.y));
+			hb_pos1_ = glm::vec2(position.x + ( 1 * scale.x), position.y + (-1 * scale.y));
+			hb_pos2_ = glm::vec2(position.x + ( 1 * scale.x), position.y + ( 1 * scale.y));
+			hb_pos3_ = glm::vec2(position.x + (-1 * scale.x), position.y + ( 1 * scale.y));
 		}
 		~HitBox(){}
-		void Update(glm::vec3 p, glm::vec3 s) {
-			hb_pos0_ = glm::vec2(p.x + (-1 * s.x), p.y + (-1 * s.y));
-			hb_pos1_ = glm::vec2(p.x + (1 * s.x), p.y + (-1 * s.y));
-			hb_pos2_ = glm::vec2(p.x + (1 * s.x), p.y + (1 * s.y));
-			hb_pos3_ = glm::vec2(p.x + (-1 * s.x), p.y + (1 * s.y));
+		void Update(glm::vec3 position, glm::vec3 scale) {
+			hb_pos0_ = glm::vec2(position.x + (-1 * scale.x), position.y + (-1 * scale.y));
+			hb_pos1_ = glm::vec2(position.x + (1 * scale.x), position.y + (-1 * scale.y));
+			hb_pos2_ = glm::vec2(position.x + (1 * scale.x), position.y + (1 * scale.y));
+			hb_pos3_ = glm::vec2(position.x + (-1 * scale.x), position.y + (1 * scale.y));
 		}
 	};
 
@@ -109,13 +109,13 @@ public:
 
 	//Get Functions----------------------------------------
 	ObjectID GetObjectID() const;
-	HitBox GetHitBox();					//Returns the hitbox points of the object
+	HitBox GetHitBox() const;					//Returns the hitbox points of the object
 	glm::vec3 GetPosition() const;				//Returns the object's x, y and z coordinates
 	glm::vec3 GetScale() const;					//Returns the object's x, y and z scale variables
 	float GetVelocity() const;					//Returns a float with the opject's velocity
 	glm::vec3 GetVelocityVec() const;			//Returns a vec3 with the object's velocity vector
 	glm::vec3 GetAccelerationVec() const;		//Returns a vec3 with the object's acceleration vector 
-	glm::mat4 GetModelMatrix();					//NTS: Should check if model matrix is up to date before returning, and update it if it isn't
+	glm::mat4 RetrieveModelMatrix();			//NTS: Should check if model matrix is up to date before returning, and update it if it isn't
 
 	//Other Functions--------------------------------------
 	void TurnLeft(const float& in_deltatime);

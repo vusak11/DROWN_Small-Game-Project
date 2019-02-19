@@ -119,7 +119,7 @@ ObjectID ObjectClass::GetObjectID() const {
 	return this->id_;
 }
 
-HitBox ObjectClass::GetHitBox()
+HitBox ObjectClass::GetHitBox() const
 {
 	return this->hit_box_;
 }
@@ -145,7 +145,7 @@ glm::vec3 ObjectClass::GetAccelerationVec() const {
 	return this->acceleration_vec_;
 }
 
-glm::mat4 ObjectClass::GetModelMatrix() {
+glm::mat4 ObjectClass::RetrieveModelMatrix() {
 	//If the model matrix is not up to date call the function calculating it
 	if (!this->model_matrix_up_to_date_) {
 		this->CalculateModelMatrix();

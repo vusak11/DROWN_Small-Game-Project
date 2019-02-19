@@ -115,7 +115,7 @@ void ObjectHandler::PackObjectIntoVector(ObjectClass* in_ptr, std::vector<Object
 
 	//Retrieve relevant data from object
 	package.id = in_ptr->GetObjectID();
-	package.model_matrix = in_ptr->GetModelMatrix();
+	package.model_matrix = in_ptr->RetrieveModelMatrix();
 
 	//Add package to the given vector reference
 	in_target_vector.push_back(package);
