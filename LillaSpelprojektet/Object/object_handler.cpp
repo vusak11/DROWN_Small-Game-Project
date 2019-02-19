@@ -68,45 +68,27 @@ float ObjectHandler::DistanceBetween(const ObjectClass* in_object_a, const Objec
 	return glm::distance(in_object_a->GetPosition(), in_object_b->GetPosition());
 }
 
-void ObjectHandler::DeterminePlayerAction() {
+void ObjectHandler::DeterminePlayerAction(const float& in_deltatime) {
 
+	//Update the player's status (such as cooldowns)
+	this->player_ptr_->UpdateStatus(in_deltatime);
 
 	//Determine player movement on the x-axis
 	if (this->player_input_.left) {
-		//Set player velocity towards negative x
-		glm::vec3 velocity_change;
-
-		if (this->player_ptr_->object_metadata_.airborne) {
-			velocity_change = glm::vec3((float)-PLAYER_X_AIR_SPEED, 0.0f, 0.0f);
-		}
-		else {
-			velocity_change = glm::vec3((float)-PLAYER_X_SPEED, 0.0f, 0.0f);
-		}
-
-		this->player_ptr_->AlterVelocityVec(velocity_change);
+		this->player_ptr_->MoveLeft();
+		this->player_ptr_->TurnLeft(in_deltatime);
 	}
 	if (this->player_input_.right) {
-		//Set player velocity towards positive x
-		glm::vec3 velocity_change;
-
-		if (this->player_ptr_->object_metadata_.airborne) {
-			velocity_change = glm::vec3((float)PLAYER_X_AIR_SPEED, 0.0f, 0.0f);
-		}
-		else {
-			velocity_change = glm::vec3((float)PLAYER_X_SPEED, 0.0f, 0.0f);
-		}
-
-		this->player_ptr_->AlterVelocityVec(velocity_change);
+		this->player_ptr_->MoveRight();
+		this->player_ptr_->TurnRight(in_deltatime);
 	}
-
-	//If input is jump and player is not in the air
-	if (this->player_input_.jump && !this->player_ptr_->object_metadata_.airborne) {
-		//Set player velocity towards positive y
-		glm::vec3 velocity_change = glm::vec3(0.0f, (float)PLAYER_Y_SPEED, 0.0f);
-		this->player_ptr_->AlterVelocityVec(velocity_change);
-		
-		//Then set the object to be airborne
-		//this->player_ptr_->object_metadata_.airborne = true;
+	//If input is jump
+	if (this->player_input_.jump) {
+		this->player_ptr_->Jump();
+	}
+	//If input is use ability
+	if (this->player_input_.use_ability) {
+		this->player_ptr_->UseAbility();
 	}
 
 	if (this->player_input_.attack) {
@@ -116,9 +98,7 @@ void ObjectHandler::DeterminePlayerAction() {
 		glm::vec3 p = player_ptr_->GetPosition();
 		//this->player_ptr_->SetPosition(200, 0, p.z);
 	}
-	if (this->player_input_.use_ability) {
-
-	}
+	
 }
 
 void ObjectHandler::ClearPlayerInput() {
@@ -166,17 +146,11 @@ ObjectHandler::~ObjectHandler() {
 
 void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map_height_list) {
 
-	// z = ~90-95
-	this->player_ptr_ = new ObjectClass(glm::vec3(300.0f, -200.0f, -95.0f), OBJECT_ID_PLAYER);
+	this->player_ptr_ = new PlayerCharacter(glm::vec3(300.0f, -200.0f, -95.0f));
+
 	this->player_ptr_->SetScale(10.0f);
 
-	this->physics_engine_ptr_ = new PhysicsEngine(
-		GRAVITATIONAL_ACCELERATION,
-		OBJECT_MAX_VELOCITY,
-		OBJECT_MIN_VELOCITY,
-		OBJECT_DECCELERATION,
-		map_height_list
-	);
+	this->physics_engine_ptr_ = new PhysicsEngine(map_height_list);
 
 	
 	//this->TestObjectHandler();		//NTS: Just for testing
@@ -231,7 +205,7 @@ std::vector<ObjectPackage> ObjectHandler::UpdateAndRetrieve(float in_deltatime) 
 	);
 
 	//Take input from player (i.e. set velocity, attack flags, etc)
-	DeterminePlayerAction();
+	this->DeterminePlayerAction(in_deltatime);
 	
 	//Apply physics such as moving or falling
 	this->physics_engine_ptr_->ApplyPhysics(in_deltatime, physical_objects_ptr_vector);

@@ -8,7 +8,7 @@
 //    class Player : Character
 //    class FireGuy : Character
 
-class Character : ObjectClass {
+class Character : public ObjectClass {
 private:
 	//Character Stats
 	int health_;

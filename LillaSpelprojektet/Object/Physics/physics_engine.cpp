@@ -19,14 +19,27 @@ void PhysicsEngine::UpdateVelocity(float& in_deltatime, ObjectClass*& in_object_
 	//Get the object's velocity
 	glm::vec3 velocity_vec = in_object_ptr->GetVelocityVec();
 
+	//Apply the object's acceleration to its velocity
+	//v = v0 + a*t
+	velocity_vec = velocity_vec + in_object_ptr->GetAccelerationVec() * in_deltatime;
+
 	//Apply gravity to the y velocity
 	//v = v0 + g*t
 	velocity_vec.y = velocity_vec.y + this->gravitational_acceleration_ * in_deltatime;
 
-	//Apply the x-axis decceleration
+	//Apply the x-axis decceleration (Different for ground/air)
+	//v = v0 + (-v0*lr)*t;
+	float loss_ratio = (in_object_ptr->IsAirborne()) ?
+		this->object_air_loss_ratio_ :
+		this->object_ground_loss_ratio_;
+	
+	//v = v(1-d);
+	//v = v + (-v)d*t
+	float decceleration = -velocity_vec.x*loss_ratio;
+
+	velocity_vec.x = velocity_vec.x + decceleration * in_deltatime;
+
 	//If the new velocity is too low set it to 0
-	//v = v*(1-d)
-	velocity_vec.x = velocity_vec.x * (1 - this->object_decceleration_);
 	if (std::abs(velocity_vec.x) < this->object_min_velocity_) { velocity_vec.x = 0.0f; }
 
 	//Check if the new velocity exceeds maximum and if so clamp it to max
@@ -435,26 +448,29 @@ void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_
 
 
 	//TEMP: DON'T LET AN OBJECT OUTSIDE THE MAP
+	in_object_ptr->SetAirborne(true);
 	if (object_pos.y < -1 * map_size * MAP_SCALE + MAP_SCALE) {
 		object_pos.y = -1 * map_size * MAP_SCALE + MAP_SCALE;
 		glm::vec3 grounded_velocity = in_object_ptr->GetVelocityVec();
 		grounded_velocity.y = 0.0f;
 		in_object_ptr->SetVelocityVec(grounded_velocity);
-		in_object_ptr->object_metadata_.airborne = false;
+		in_object_ptr->SetAirborne(false);
 	}
 	if (object_pos.x < 0) {
 		object_pos.x = 0;
 		glm::vec3 grounded_velocity = in_object_ptr->GetVelocityVec();
 		grounded_velocity.x = 0.0f;
 		in_object_ptr->SetVelocityVec(grounded_velocity);
-		in_object_ptr->object_metadata_.airborne = false;
+		//in_object_ptr->object_metadata_.airborne = false;
+		in_object_ptr->SetAirborne(false);
 	}
 	if (object_pos.x > map_size * MAP_SCALE + MAP_SCALE) {
 		object_pos.x = map_size * MAP_SCALE + MAP_SCALE;
 		glm::vec3 grounded_velocity = in_object_ptr->GetVelocityVec();
 		grounded_velocity.x = 0.0f;
 		in_object_ptr->SetVelocityVec(grounded_velocity);
-		in_object_ptr->object_metadata_.airborne = false;
+		//in_object_ptr->object_metadata_.airborne = false;
+		in_object_ptr->SetAirborne(false);
 	}
 
 
@@ -465,17 +481,12 @@ void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_
 }
 
 //Public---------------------------------------------------
-PhysicsEngine::PhysicsEngine(
-	float in_gravitational_acceleration,
-	float in_object_max_velocity,
-	float in_object_min_velocity,
-	float in_object_decceleration,
-	std::vector<std::vector<float>>* in_map_height_list
-) {
-	this->gravitational_acceleration_ = in_gravitational_acceleration;
-	this->object_max_velocity_ = in_object_max_velocity;
-	this->object_min_velocity_ = in_object_min_velocity;
-	this->object_decceleration_ = in_object_decceleration;
+PhysicsEngine::PhysicsEngine(std::vector<std::vector<float>>* in_map_height_list) {
+	this->gravitational_acceleration_	= GRAVITATIONAL_ACCELERATION;
+	this->object_max_velocity_			= OBJECT_MAX_VELOCITY;
+	this->object_min_velocity_			= OBJECT_MIN_VELOCITY;
+	this->object_ground_loss_ratio_		= (float)OBJECT_GROUND_LOSS_RATIO;
+	this->object_air_loss_ratio_		= OBJECT_AIR_LOSS_RATIO;
 	this->map_height_list_ = in_map_height_list;
 }
 

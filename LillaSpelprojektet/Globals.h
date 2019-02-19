@@ -19,21 +19,22 @@
 #define OBJECT_MAX_VELOCITY 500
 #define OBJECT_MIN_VELOCITY 0.1			//The lowest velocity an object can have that isn't 0
 										//If an velocity is lower than this it sets to 0
-#define OBJECT_DECCELERATION 0.1		//0.1 = 10%
+#define OBJECT_GROUND_LOSS_RATIO 1.95	//0.1 = 10%		//WHAT.
+#define OBJECT_AIR_LOSS_RATIO 1.00
 
 //Player object--------------------------------------------
 //These numbers are specific to the player. Consider using these as base input for the
 //constructor and then altering internal variables
-#define PLAYER_X_SPEED 10
-#define PLAYER_X_AIR_SPEED 10
-#define PLAYER_Y_SPEED 500
+#define PLAYER_TOP_SPEED 25
+#define PLAYER_JUMP_VELOCITY 150
 
+//Ability Numbers------------------------------------------
+#define DASH_COOLDOWN 5
+#define DASH_VELOCITY 75
 
 //Map------------------------------------------------------
 #define MAP_SCALE 5						//1 -> each vertex have 1 position unit in between
 #define MAP_DEPTH 0.2					//The depth of the heightmap
-
-
 
 //NOTE:
 //Object ID:s are used to determine what type of object is created

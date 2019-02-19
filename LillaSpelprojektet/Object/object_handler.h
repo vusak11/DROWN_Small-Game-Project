@@ -5,8 +5,13 @@
 #include <functional>		//Allows function pointers and lambdas
 							//Ref. for how it works: https://en.cppreference.com/w/cpp/utility/functional/function
 
-#include "object_class.h"
 #include "../globals.h"
+
+#include "object_class.h"
+#include "Character/character.h"
+#include "Character/player_character.h"
+
+
 #include "Physics/physics_engine.h"
 
 #include <iostream>			//Included for output in test function.
@@ -25,7 +30,7 @@ private:
 	};
 
 	//Variables-----------------------------------------------
-	ObjectClass* player_ptr_;						//Player
+	PlayerCharacter* player_ptr_;
 	std::vector<ObjectClass*> npc_ptr_vector_;		//All enemies
 	std::vector<ObjectClass*> drop_ptr_vector_;		//Things dropped on the ground (e.g. power-ups, health)
 
@@ -45,7 +50,7 @@ private:
 				
 	float DistanceBetween(const ObjectClass* in_object_a, const ObjectClass* in_object_b) const;			//Returns the distance between the two given objects
 
-	void DeterminePlayerAction();						//Read player_input_ and determine legal actions, such as changes to velocity or if we can attack this frame
+	void DeterminePlayerAction(const float& in_deltatime);						//Read player_input_ and determine legal actions, such as changes to velocity or if we can attack this frame
 	void DetermineNPCAction(ObjectClass* in_npc);		//Call the AI of the npc object to see what the npc does, then determine legal actions
 
 	void ResolvePlayerAction();							//Move player, apply hitboxes, etc.

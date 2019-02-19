@@ -1,5 +1,7 @@
 #include "object_class.h"
 
+#include <iostream>			//TEMP
+
 //Private--------------------------------------------------
 
 void ObjectClass::CalculateModelMatrix() {
@@ -15,11 +17,17 @@ void ObjectClass::CalculateModelMatrix() {
 
 ObjectClass::ObjectClass(glm::vec3 start_pos, ObjectID id) {
 
+	this->id_ = id;
+	this->airborne_ = false;
+
+	//this->position_ = start_pos;
 	this->position_ = { 100.0f, -200.0f, -95.0f };	// start_pos;
 	this->velocity_vec_ = { 0.0f,0.0f,0.0f };		// Not ilizializing this makes weiered start values.
 	this->scale_ = glm::vec3(1.0f, 1.0f, 1.0f);
 
-	this->id_ = id;
+	int rotation_around_x_ = 0;
+	int rotation_around_y_ = 0;
+	int rotation_around_z_ = 0;
 
 	this->scaling_matrix_ = glm::mat4(1.0f);
 	this->rotation_matrix_ = glm::mat4(1.0f);
@@ -29,6 +37,9 @@ ObjectClass::ObjectClass(glm::vec3 start_pos, ObjectID id) {
 	//TBA: Use the ID to determine the specs of a Object (Character/Drop/etc)
 
 	this->model_matrix_up_to_date_ = false;
+
+	this->velocity_vec_ = glm::vec3(0.0f);
+	this->acceleration_vec_ = glm::vec3(0.0f);
 }
 
 ObjectClass::~ObjectClass() {
@@ -99,6 +110,11 @@ void ObjectClass::SetVelocityVec(glm::vec3 in_velocity_vec) {
 	this->velocity_vec_ = in_velocity_vec;
 }
 
+void ObjectClass::SetAccelerationVec(glm::vec3 in_acceleration_vec) {
+	//Set the acceleration vector to be the new velocity
+	this->acceleration_vec_ = in_acceleration_vec;
+}
+
 ObjectID ObjectClass::GetObjectID() const {
 	return this->id_;
 }
@@ -125,6 +141,10 @@ glm::vec3 ObjectClass::GetVelocityVec() const {
 	return this->velocity_vec_;
 }
 
+glm::vec3 ObjectClass::GetAccelerationVec() const {
+	return this->acceleration_vec_;
+}
+
 glm::mat4 ObjectClass::GetModelMatrix() {
 	//If the model matrix is not up to date call the function calculating it
 	if (!this->model_matrix_up_to_date_) {
@@ -134,37 +154,42 @@ glm::mat4 ObjectClass::GetModelMatrix() {
 	return this->model_matrix_;
 }
 
-void ObjectClass::UpdatePosition(float in_deltatime) {
-	//Updates object position in accordance with how far its velocity would have taken it
-	this->position_ = this->position_ + (in_deltatime * this->velocity_vec_);
-
-	//NTS: This function has no stops. It does not stop by walls. Keep in mind that even with
-	//the function moving back if we end up in a wall enough velocity would just carry us through it
-}
-
-void ObjectClass::AlterVelocityVec(glm::vec3 in_vec) {
-	//Alter the current velocity vector with the new given one
-	this->velocity_vec_ = this->velocity_vec_ + in_vec;
-}
-
-void ObjectClass::TurnLeft() {
+void ObjectClass::TurnLeft(const float& in_deltatime) {
 	//Turn the model leftwards (positive direction)
 	int new_rotation = (this->rotation_around_y_ + OBJECT_TURN_RATE) % 360;
+
+	//Adjust for deltatime
+	//new_rotation = (int)((float)new_rotation*in_deltatime);
 
 	//If the new orientation lies somewhere in [90, 180] we have turned too far
 	//and we snap back to 90
 	if ((new_rotation > 90) && (new_rotation < 180)) { new_rotation = 90; }
 
+	//std::cout << "Rot L: " << new_rotation << std::endl;
+
 	this->SetRotation(this->rotation_around_x_, new_rotation, this->rotation_around_z_);
 }
 
-void ObjectClass::TurnRight() {
+void ObjectClass::TurnRight(const float& in_deltatime) {
 	//Turn the model rightwards (negative direction)
 	int new_rotation = (this->rotation_around_y_ - OBJECT_TURN_RATE) % 360;
 
-	//If the new orientation lies somewhere in [180, 270] we have turned too far
+	//Adjust for deltatime
+	//new_rotation = (int)((float)new_rotation*in_deltatime);
+
+	//If the new orientation lies somewhere in [-90, -180] = [180, 270] we have turned too far
 	//and we snap back to 270
-	if ((new_rotation > 180) && (new_rotation < 270)) { new_rotation = 270; }
+	if ((new_rotation < -90) && (new_rotation > -180)) { new_rotation = -90; }
+
+	//std::cout << "Rot R: " << new_rotation << std::endl;
 
 	this->SetRotation(this->rotation_around_x_, new_rotation, this->rotation_around_z_);
+}
+
+bool ObjectClass::IsAirborne() {
+	return this->airborne_;
+}
+
+void ObjectClass::SetAirborne(bool in_bool) {
+	this->airborne_ = in_bool;
 }

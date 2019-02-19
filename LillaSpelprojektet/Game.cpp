@@ -61,12 +61,9 @@ void Game::InputFromDevices(float in_deltatime) {
 		}
 		//Pick up
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::E)) {
-			this->obj_handler_ptr_->PlayerPickUp();
-			//float player_tile_pos_x = this->obj_handler_ptr_->GetPlayerPos().x / (100*MAP_SCALE - MAP_SCALE);
-			//float test = 44.63 % MAP_SCALE;
-			
-			//std::cout << "x pos: " << this->obj_handler_ptr_->GetPlayerPos().x << "Test Value: " << player_tile_pos_x << std::endl;
-
+			//OBS!
+			//CURRENTLY BOUND TO USE ABILITY
+			this->obj_handler_ptr_->PlayerUseAbility();
 		}
 		/*---------------End Keyboard inputs-----------------*/
 

@@ -142,7 +142,9 @@
     <ClCompile Include="light.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="menu.cpp" />
+    <ClCompile Include="Object\Character\ability.cpp" />
     <ClCompile Include="Object\Character\character.cpp" />
+    <ClCompile Include="Object\Character\cooldown_class.cpp" />
     <ClCompile Include="Object\Character\player_character.cpp" />
     <ClCompile Include="Object\object_class.cpp" />
     <ClCompile Include="Object\object_handler.cpp" />
@@ -159,7 +161,9 @@
     <ClInclude Include="forwardRendering.h" />
     <ClInclude Include="menu.h" />
     <ClInclude Include="globals.h" />
+    <ClInclude Include="Object\Character\ability.h" />
     <ClInclude Include="Object\Character\character.h" />
+    <ClInclude Include="Object\Character\cooldown_class.h" />
     <ClInclude Include="Object\Character\player_character.h" />
     <ClInclude Include="Object\object_class.h" />
     <ClInclude Include="Object\object_handler.h" />
