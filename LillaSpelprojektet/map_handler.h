@@ -14,7 +14,6 @@
 
 class MapHandler {
 private:
-	//Map* maps_;	// A list of all the maps in the current game.
 	struct GridMap {
 		Map map_cell;
 		glm::vec3 translate;
@@ -23,7 +22,6 @@ private:
 
 	std::vector<std::vector<GridMap>> grid_map_;
 	std::vector<glm::vec2> cells_to_draw_;
-	//int* cells_to_draw_;
 	
 	float grid_column_;
 	float grid_row_;
