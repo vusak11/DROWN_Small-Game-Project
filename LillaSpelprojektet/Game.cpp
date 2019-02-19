@@ -149,15 +149,15 @@ void Game::InputForMenu(float in_deltatime, sf::Event event) {
 			}
 			if (event.key.code == sf::Keyboard::Enter) {
 				switch (menu_.GetSelectedItemIndex()) {
-				case 0:						//START
+				case 0:						//Start
 					state_ = GAME;
 					break;
-				case 1:						//OPTIONS
+				case 1:						//Options
 					//state_ = OPTIONS; //REAL case
 					//menu_.StateManager(state_);
 					//Do something, change FOV and so on
 					break;
-				case 2:						//QUIT
+				case 2:						//Quit
 					exit(-1);
 				}
 			}
@@ -207,7 +207,7 @@ void Game::InputForMenu(float in_deltatime, sf::Event event) {
 					//state_ = OPTIONS;		//Options
 					//menu_.StateManager(state_);
 					break;
-				case 3:						//QUIT
+				case 3:						//Quit
 					exit(-1);
 				}
 			}
