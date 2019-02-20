@@ -54,7 +54,7 @@ void PhysicsEngine::UpdateVelocity(float& in_deltatime, ObjectClass*& in_object_
 
 void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_ptr) {
 
-	int map_size = 100;	// OBS this variable needs to be collected from the map
+	int map_size = 2048;	// OBS this variable needs to be collected from the map
 	int radius_constant = 5;
 
 	// | 1 | Get new position from acceleration and velocity.
@@ -260,10 +260,10 @@ void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_
 		float y_1 = __min((object_pos.y + in_object_ptr->GetScale().y), 495);
 
 		// | 3 | Normalize each pos to later match with map location.
-		x_0 = x_0 / (map_size * MAP_SCALE - MAP_SCALE);
-		x_1 = x_1 / (map_size * MAP_SCALE - MAP_SCALE);
-		y_0 = y_0 / (map_size * MAP_SCALE - MAP_SCALE);
-		y_1 = y_1 / (map_size * MAP_SCALE - MAP_SCALE);
+		x_0 = x_0 / (map_size - 1);
+		x_1 = x_1 / (map_size - 1);
+		y_0 = y_0 / (map_size - 1);
+		y_1 = y_1 / (map_size - 1);
 
 
 		// Get map index from normalized value
@@ -315,7 +315,7 @@ void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_
 			for (int j = y_min; j < y_max; j++)
 			{
 				//						y  x
-				/*if ((*map_height_list_)[j][i] > 0.5)
+				if ((*map_height_list_)[j][i] > 100.0f)
 				{
 					if (x_0_index == i && y_0_index == j)
 					{
@@ -333,7 +333,7 @@ void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_
 					{
 						collision_3 = true;
 					}
-				}*/
+				}
 			}
 		}
 
@@ -342,7 +342,7 @@ void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_
 		if (collision_0 && collision_1)	// Bot collision
 		{
 			//object_pos.y += 0.2f;
-			object_pos.y = y_0_index * MAP_SCALE * (-1) + in_object_ptr->GetScale().y * 1.25;
+			object_pos.y = y_0_index * (-1) + in_object_ptr->GetScale().y * 1.25;
 			std::cout << "Bot Collision" << std::endl;
 			doublecollision = true;
 			in_object_ptr->SetVelocityVec(glm::vec3(in_object_ptr->GetVelocityVec().x, 0.0f, in_object_ptr->GetVelocityVec().z));
@@ -351,7 +351,7 @@ void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_
 
 		if (collision_0 && collision_3)	// Left collision
 		{
-			object_pos.x = x_0_index * MAP_SCALE + in_object_ptr->GetScale().x * 1.25;
+			object_pos.x = x_0_index + in_object_ptr->GetScale().x * 1.25;
 			std::cout << "Left Collision" << std::endl;
 			doublecollision = true;
 			in_object_ptr->SetVelocityVec(glm::vec3(0.0f, in_object_ptr->GetVelocityVec().y, in_object_ptr->GetVelocityVec().z));
@@ -359,7 +359,7 @@ void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_
 
 		if (collision_1 && collision_2)	// Right collision
 		{
-			object_pos.x = x_1_index * MAP_SCALE - in_object_ptr->GetScale().x * 1.25;
+			object_pos.x = x_1_index - in_object_ptr->GetScale().x * 1.25;
 			std::cout << "Right Collision" << std::endl;
 			doublecollision = true;
 			in_object_ptr->SetVelocityVec(glm::vec3(0.0f, in_object_ptr->GetVelocityVec().y, in_object_ptr->GetVelocityVec().z));
@@ -367,7 +367,7 @@ void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_
 
 		if (collision_3 && collision_2)	// Top collision
 		{
-			object_pos.y = y_1_index * MAP_SCALE * (-1) - in_object_ptr->GetScale().y * 1.25;
+			object_pos.y = y_1_index * (-1) - in_object_ptr->GetScale().y * 1.25;
 			std::cout << "Top Collision" << std::endl;
 			doublecollision = true;
 			in_object_ptr->SetVelocityVec(glm::vec3(in_object_ptr->GetVelocityVec().x, 0.0f, in_object_ptr->GetVelocityVec().z));
@@ -378,18 +378,18 @@ void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_
 			glm::vec3 obj_velocity = in_object_ptr->GetVelocityVec();
 			if (collision_0)
 			{
-				float delta_x = x_0_index * MAP_SCALE - object_pos.x - in_object_ptr->GetScale().x;
-				object_pos.y = y_0_index * MAP_SCALE * (-1) + in_object_ptr->GetScale().y - delta_x / 7.5f;
+				float delta_x = x_0_index - object_pos.x - in_object_ptr->GetScale().x;
+				object_pos.y = y_0_index * (-1) + in_object_ptr->GetScale().y - delta_x / 7.5f;
 
 				//							  y			   x
-				/*if ((*map_height_list_)[y_0_index - 1][x_0_index] <= 0.5)
+				if ((*map_height_list_)[y_0_index - 1][x_0_index] <= 100.0f)
 				{
 					in_object_ptr->SetVelocityVec(glm::vec3(obj_velocity.x, 0.0f, obj_velocity.z));
 				}
 				else
 				{
 					in_object_ptr->SetVelocityVec(glm::vec3(0.0f, 0.0f, obj_velocity.z));
-				}*/
+				}
 				
 				if (obj_velocity.y <= 0)
 				{
@@ -402,18 +402,18 @@ void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_
 			}
 			else if (collision_1)
 			{
-				float delta_x = x_1_index * MAP_SCALE - object_pos.x - in_object_ptr->GetScale().x;
-				object_pos.y = y_0_index * MAP_SCALE * (-1) + in_object_ptr->GetScale().y + delta_x / 7.5f;
+				float delta_x = x_1_index - object_pos.x - in_object_ptr->GetScale().x;
+				object_pos.y = y_0_index * (-1) + in_object_ptr->GetScale().y + delta_x / 7.5f;
 
 				//							  y			   x
-				/*if ((*map_height_list_)[y_0_index - 1][x_0_index] <= 0.5)
+				if ((*map_height_list_)[y_0_index - 1][x_0_index] <= 100.0f)
 				{
 					in_object_ptr->SetVelocityVec(glm::vec3(obj_velocity.x, 0.0f, obj_velocity.z));
 				}
 				else
 				{
 					in_object_ptr->SetVelocityVec(glm::vec3(0.0f, 0.0f, obj_velocity.z));
-				}*/
+				}
 
 				if (obj_velocity.y <= 0)
 				{
@@ -447,8 +447,8 @@ void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_
 	//TEMP: DON'T LET AN OBJECT OUTSIDE THE MAP
 	//in_object_ptr->SetAirborne(true);
 
-	if (object_pos.y < -1 * map_size * MAP_SCALE + MAP_SCALE) {
-		object_pos.y = -1 * map_size * MAP_SCALE + MAP_SCALE;
+	if (object_pos.y < -1 * map_size + 1) {
+		object_pos.y = -1 * map_size + 1;
 		glm::vec3 grounded_velocity = in_object_ptr->GetVelocityVec();
 		grounded_velocity.y = 0.0f;
 		in_object_ptr->SetVelocityVec(grounded_velocity);
@@ -462,8 +462,8 @@ void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_
 		//in_object_ptr->object_metadata_.airborne = false;
 		in_object_ptr->SetAirborne(false);
 	}
-	if (object_pos.x > map_size * MAP_SCALE + MAP_SCALE) {
-		object_pos.x = map_size * MAP_SCALE + MAP_SCALE;
+	if (object_pos.x > map_size * map_size + 1) {
+		object_pos.x = map_size * map_size + 1;
 		glm::vec3 grounded_velocity = in_object_ptr->GetVelocityVec();
 		grounded_velocity.x = 0.0f;
 		in_object_ptr->SetVelocityVec(grounded_velocity);
@@ -486,6 +486,10 @@ PhysicsEngine::PhysicsEngine(std::vector<std::vector<float>>* in_map_height_list
 	this->object_ground_loss_ratio_		= (float)OBJECT_GROUND_LOSS_RATIO;
 	this->object_air_loss_ratio_		= OBJECT_AIR_LOSS_RATIO;
 	this->map_height_list_ = in_map_height_list;
+
+	/*for (int j = (*map_height_list_->begin()); j < (*map_height_list_->end()); j++) {
+		for (int i = (*map_height_list_->begin()); i < (*map_height_list_->end()); i++) {}
+	}*/
 }
 
 PhysicsEngine::~PhysicsEngine() {

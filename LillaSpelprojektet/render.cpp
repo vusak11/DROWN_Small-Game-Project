@@ -29,7 +29,7 @@ Render::Render() {
 	model_[0] = new Model((char*)"../Resources/Models/TestBox/testBOX.obj");
 
 	map_handler_.InitializeMaps(
-		"../Resources/Map/TestMapMediumHard2.bmp",
+		"../Resources/Map/MainMap.bmp",
 		"../Resources/Map/rock.png",
 		"../Resources/Map/v4.png");
 

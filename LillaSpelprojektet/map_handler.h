@@ -22,6 +22,7 @@ private:
 	};
 
 	std::vector<std::vector<float>>* map_data_;
+	std::vector<std::vector<float>> test_data_;
 	std::vector<std::vector<GridMap>> grid_map_;
 	std::vector<glm::vec2> cells_to_draw_;
 

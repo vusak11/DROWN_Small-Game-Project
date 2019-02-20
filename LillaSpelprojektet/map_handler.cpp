@@ -22,8 +22,8 @@ void MapHandler::InitializeMaps(
 	Map ancillary_map;
 	ancillary_map.LoadMap(map_path.c_str());
 	ancillary_map.LoadTexture(texture_path_0.c_str(), texture_path_1.c_str());
+	test_data_ = ancillary_map.GetTestList();
 	map_data_ = ancillary_map.GetTempHeightList();
-
 	GridMap grid_cell;
 	std::vector<GridMap> grid_cells;
 
@@ -62,7 +62,7 @@ void MapHandler::InitializeBuffers(GLuint shader) {
 glm::mat4 MapHandler::Transformation(int column, int row) {
 	glm::mat4 model_matrix(1.0f);
 	model_matrix = glm::translate(model_matrix, grid_map_[row][column].translate);
-	model_matrix = glm::scale(model_matrix, glm::vec3(1.0f, 1.0f, 0.1f));
+	model_matrix = glm::scale(model_matrix, glm::vec3(1.0f, 1.0f, 0.05f));
 	return model_matrix;
 }
 
@@ -159,5 +159,5 @@ std::vector<glm::vec2> MapHandler::GridCulling(glm::vec2 current_cell) {
 
 std::vector<std::vector<float>>* MapHandler::GetMapDataPointer()
 {
-	return map_data_;
+	return &test_data_;
 }

@@ -51,6 +51,7 @@ public:
 	void SetHeight(int height);
 	void SetWidth(int width);
 
+	std::vector<std::vector<float>> GetTestList();
 	std::vector<std::vector<float>>* GetTempHeightList();	// Used to pass the map height data to physics
 
 private:
