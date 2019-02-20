@@ -1,5 +1,5 @@
 #include <iostream>
-#include "game.h"
+#include "Core/Game.h"
 #include <SFML/OpenGL.hpp>
 
 #define _CRTDBG_MAP_ALLOC 

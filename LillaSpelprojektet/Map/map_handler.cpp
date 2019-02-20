@@ -1,7 +1,5 @@
 #include "map_handler.h"
 
-
-
 MapHandler::MapHandler(){
 
 }

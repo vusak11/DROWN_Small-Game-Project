@@ -137,44 +137,42 @@
   <ItemGroup>
     <ClCompile Include="Camera\camera.cpp" />
     <ClCompile Include="Camera\camera_handler.cpp" />
-    <ClCompile Include="game.cpp" />
-    <ClCompile Include="gui.cpp" />
-    <ClCompile Include="light.cpp" />
+    <ClCompile Include="Core\Game.cpp" />
+    <ClCompile Include="Core\light.cpp" />
+    <ClCompile Include="Core\render.cpp" />
+    <ClCompile Include="Core\shader_handler.cpp" />
+    <ClCompile Include="Core\sound_unit.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="menu.cpp" />
+    <ClCompile Include="Map\map.cpp" />
+    <ClCompile Include="Map\map_handler.cpp" />
     <ClCompile Include="Object\Character\character.cpp" />
+    <ClCompile Include="Object\Character\mesh.cpp" />
+    <ClCompile Include="Object\Character\model.cpp" />
     <ClCompile Include="Object\object_class.cpp" />
     <ClCompile Include="Object\object_handler.cpp" />
-    <ClCompile Include="mesh.cpp" />
-    <ClCompile Include="model.cpp" />
-    <ClCompile Include="map.cpp" />
-    <ClCompile Include="map_handler.cpp" />
     <ClCompile Include="Object\Physics\physics_engine.cpp" />
-    <ClCompile Include="render.cpp" />
-    <ClCompile Include="shader_handler.cpp" />
-    <ClCompile Include="sound_unit.cpp" />
+    <ClCompile Include="UI\gui.cpp" />
+    <ClCompile Include="UI\menu.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="gui.h" />
-    <ClInclude Include="menu.h" />
-    <ClInclude Include="globals.h" />
+    <ClInclude Include="Core\Game.h" />
+    <ClInclude Include="Core\light.h" />
+    <ClInclude Include="Core\render.h" />
+    <ClInclude Include="Core\shader_handler.h" />
+    <ClInclude Include="Core\sound_unit.h" />
+    <ClInclude Include="Globals.h" />
+    <ClInclude Include="Map\map.h" />
+    <ClInclude Include="Map\map_handler.h" />
     <ClInclude Include="Object\Character\character.h" />
+    <ClInclude Include="Object\Character\mesh.h" />
+    <ClInclude Include="Object\Character\model.h" />
     <ClInclude Include="Object\object_class.h" />
     <ClInclude Include="Object\object_handler.h" />
-    <ClInclude Include="mesh.h" />
-    <ClInclude Include="model.h" />
     <ClInclude Include="Object\Physics\physics_engine.h" />
-    <ClInclude Include="render.h" />
-    <ClInclude Include="sound_unit.h" />
     <ClInclude Include="Camera\camera.h" />
     <ClInclude Include="Camera\camera_handler.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="light.h" />
-    <ClInclude Include="shader_handler.h" />
-    <ClInclude Include="game.h" />
-    <ClInclude Include="map.h" />
-    <ClInclude Include="map_handler.h" />
+    <ClInclude Include="UI\gui.h" />
+    <ClInclude Include="UI\menu.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="glsl\forward_fs.glsl" />

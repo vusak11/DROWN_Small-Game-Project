@@ -6,7 +6,7 @@
 							//Ref. for how it works: https://en.cppreference.com/w/cpp/utility/functional/function
 
 #include "object_class.h"
-#include "../globals.h"
+#include "../Globals.h"
 #include "Physics/physics_engine.h"
 
 #include <iostream>			//Included for output in test function.

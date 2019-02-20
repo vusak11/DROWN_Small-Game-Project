@@ -2,7 +2,6 @@
 
 //GLEW
 #include <GL/glew.h>
-
 #include <Soil\SOIL.h>
 
 Map::Map() {
