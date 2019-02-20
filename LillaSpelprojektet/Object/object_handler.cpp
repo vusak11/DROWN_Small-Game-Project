@@ -59,13 +59,18 @@ std::vector<ObjectClass*> ObjectHandler::CullAndRetrieveObjectPtrs(const std::ve
 }
 
 float ObjectHandler::DistanceBetween(const ObjectClass* in_object_a, const ObjectClass* in_object_b) const {
-	//Returns distance between two objects
+	//Returns distance between two objects on the x-y-plane
 
-	//NTS:
-	//Alternate function to DistanceBetween(ObjectClass in_object_a, ObjectClass in_object_b)
-	//using constant references to keep things safe while avoiding copying
+	//Get the 2D position for object a
+	glm::vec3 temp_vec = in_object_a->GetPosition();
+	glm::vec2 pos2_a = glm::vec2(temp_vec.x, temp_vec.y);
+	
+	//Get the 2D position for object b
+	temp_vec = in_object_b->GetPosition();
+	glm::vec2 pos2_b = glm::vec2(temp_vec.x, temp_vec.y);
 
-	return glm::distance(in_object_a->GetPosition(), in_object_b->GetPosition());
+	//Return the distance between them
+	return glm::distance(pos2_a, pos2_b);
 }
 
 void ObjectHandler::DeterminePlayerAction(const float& in_deltatime) {
