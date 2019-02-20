@@ -23,13 +23,17 @@ private:
 	ShaderHandler* lighting_pass_;
 	Light* lights_;
 
-	int nr_of_models_ = 1;
+	Map map_[1];
+	//glm::mat4 map_matrix_;
+	ObjectPackage map_package_;
+
+	int nr_of_models_;
 	Model** model_;
 
 	ShaderHandler* text_shaders_;
 
-	Map map_[1];
-	glm::mat4 model_matrix_;
+	
+
 public:
 	Render();
 	~Render();

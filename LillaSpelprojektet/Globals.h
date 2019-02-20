@@ -42,10 +42,11 @@
 //Anytime a new object or model is added to the game, ensure it is
 //represented by an ObjectID
 enum ObjectID {
-	OBJECT_ID_NULL,				//0:
+	OBJECT_ID_NULL,				//0:	The Error Model
 	OBJECT_ID_PLAYER,			//1:
 	OBJECT_ID_DUMMY,			//2:
-	OBJECT_ID_MAP				//3:
+	OBJECT_ID_MAP,				//3:	(?) Maybe we should move this one
+	NUMBER_OF_OBJECT_IDS		//N:	The Last Enum
 };
 
 //Package Structs------------------------------------------

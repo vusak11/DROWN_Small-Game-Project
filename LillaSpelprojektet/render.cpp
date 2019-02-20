@@ -21,11 +21,39 @@ Render::Render() {
 		"glsl/lightingpass/lighting_fs.glsl");
 	lights_ = new Light[nr_of_lights_];
 
-	model_ = new Model*[nr_of_models_];
-	model_[0] = new Model((char*)"../Resources/Models/TestBox/testBOX.obj");
-
+	//--------------------------------------------------------
+	//-------------------Load Map Data------------------------
+	//--------------------------------------------------------
+	
+	//Load map and textures
 	map_[0].LoadMap((char*)"../Resources/Map/TestMapMediumHard2.bmp");
 	map_[0].LoadTexture((char*)"../Resources/Map/rock.png");
+
+	//Fill in ObjectPackage (set id, scale and rotate matrix)
+	this->map_package_.id = OBJECT_ID_MAP;
+	this->map_package_.model_matrix = glm::mat4(1.0f);
+	this->map_package_.model_matrix = glm::translate(
+		this->map_package_.model_matrix,
+		glm::vec3(0.0f, 0.0f, -100.0f)
+	);
+	this->map_package_.model_matrix = glm::rotate(
+		this->map_package_.model_matrix,
+		glm::radians(90.0f),
+		glm::vec3(1, 0, 0)
+	);
+
+	//--------------------------------------------------------
+	//---------------Load Models to Array---------------------
+	//--------------------------------------------------------
+
+	//Make space for 1 model per ObjectID
+	this->nr_of_models_ = NUMBER_OF_OBJECT_IDS;
+	model_ = new Model*[this->nr_of_models_];
+	
+	//Link models to a ObjectID
+	model_[OBJECT_ID_NULL] = new Model((char*)"../Resources/Models/DefaultDummyNPC/defaultDummyNPC.obj");
+	model_[OBJECT_ID_PLAYER] = new Model((char*)"../Resources/Models/TestBox/testBOX.obj");
+	model_[OBJECT_ID_DUMMY] = new Model((char*)"../Resources/Models/DummyNPC/dummyNPC.obj");
 
 	
 }
@@ -67,16 +95,8 @@ void Render::UpdateRender(
 	
 	glDisable(GL_BLEND);
 
-	// Pushing Map into object vector
-	glm::mat4 map_matrix = glm::mat4(1.0f);
-	map_matrix = glm::translate(map_matrix, glm::vec3(0.0f, 0.0f, -100.0f));
-	map_matrix = glm::rotate(map_matrix, glm::radians(90.0f), glm::vec3(1, 0, 0));
-	//map_matrix = glm::scale(map_matrix, glm::vec3(1.0f, 1.0f, 1.0f));
-	ObjectPackage map_package;
-	map_package.id = OBJECT_ID_MAP;
-	map_package.model_matrix = map_matrix;
-
-	object_vector.push_back(map_package);
+	// Insert map at the first position of the vector
+	object_vector.insert(object_vector.begin(), this->map_package_);
 
 	//  GEOMETRY
 	GeometryPass(camera_position, perspective_view_matrix);
@@ -91,26 +111,20 @@ void Render::UpdateRender(
 
 void Render::GeometryDrawing(std::vector<ObjectPackage>& object_vector) {
 	
-	/*Old
-	for (unsigned int i = 0; i < object_vector.size(); i++) {
-		if (OBJECT_ID_NULL == object_vector[i].id) {
-
-		}
-		else if (OBJECT_ID_PLAYER == object_vector[i].id) {
-			ModelTransformation(object_vector[i].model_matrix);
-			model_[0]->Draw(geometry_pass_->GetProgram());
-		}
-		else if (OBJECT_ID_DUMMY == object_vector[i].id) {
-			ModelTransformation(object_vector[i].model_matrix);
-		}
-		else if (OBJECT_ID_MAP == object_vector[i].id) {
-			ModelTransformation(object_vector[i].model_matrix);
-			map_[0].Draw(geometry_pass_->GetProgram());
-		}
-	}
-	*/
-
 	//We know the map is the first object in the vector
+	this->ModelTransformation(object_vector[0].model_matrix);
+	this->map_[0].Draw(geometry_pass_->GetProgram());
+
+	//Then loop through the remaining entries (start loop at 1)
+	ObjectID temp_id;
+	for (unsigned int i = 1; i < object_vector.size(); i++) {
+		//Upload the object's model-matrix
+		this->ModelTransformation(object_vector[i].model_matrix);
+
+		//Get the object's id and draw a model of that type
+		temp_id = object_vector[i].id;
+		this->model_[temp_id]->Draw(geometry_pass_->GetProgram());
+	}
 }
 
 void Render::ModelTransformation(glm::mat4 model_matrix) {

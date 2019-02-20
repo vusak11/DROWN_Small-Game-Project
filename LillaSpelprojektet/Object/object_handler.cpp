@@ -247,9 +247,9 @@ void ObjectHandler::TestObjectHandler() {
 	glm::vec3 best_pos = glm::vec3(0.0f, 0.0f, 0.0f);
 
 	std::cout << "A:	Creating three ObjectClass:es in npc_vector_" << std::endl;
-	this->npc_ptr_vector_.push_back(new ObjectClass(best_pos, OBJECT_ID_JOHNNY_BRAVO));
-	this->npc_ptr_vector_.push_back(new ObjectClass(best_pos, OBJECT_ID_JOHNNY_BRAVO));
-	this->npc_ptr_vector_.push_back(new ObjectClass(best_pos, OBJECT_ID_JOHNNY_BRAVO));
+	this->npc_ptr_vector_.push_back(new ObjectClass(best_pos, OBJECT_ID_DUMMY));
+	this->npc_ptr_vector_.push_back(new ObjectClass(best_pos, OBJECT_ID_DUMMY));
+	this->npc_ptr_vector_.push_back(new ObjectClass(best_pos, OBJECT_ID_DUMMY));
 
 	std::cout << "B:	Moving second entry (index 1) to position (3000, 3000)" << std::endl;
 	this->npc_ptr_vector_.at(1)->SetPosition(3000, 3000);
@@ -293,10 +293,10 @@ void ObjectHandler::TestObjectHandler() {
 
 	std::cout << "H:	Testing the UpdateAndRetrive() early function" << std::endl;
 	std::cout << "	Add 2 objects to npc vector and 2 to drop vector" << std::endl;
-	this->npc_ptr_vector_.push_back(new ObjectClass(best_pos, OBJECT_ID_JOHNNY_BRAVO));
-	this->npc_ptr_vector_.push_back(new ObjectClass(best_pos, OBJECT_ID_JOHNNY_BRAVO));
-	this->drop_ptr_vector_.push_back(new ObjectClass(best_pos, OBJECT_ID_JOHNNY_BRAVO));
-	this->drop_ptr_vector_.push_back(new ObjectClass(best_pos, OBJECT_ID_JOHNNY_BRAVO));
+	this->npc_ptr_vector_.push_back(new ObjectClass(best_pos, OBJECT_ID_DUMMY));
+	this->npc_ptr_vector_.push_back(new ObjectClass(best_pos, OBJECT_ID_DUMMY));
+	this->drop_ptr_vector_.push_back(new ObjectClass(best_pos, OBJECT_ID_DUMMY));
+	this->drop_ptr_vector_.push_back(new ObjectClass(best_pos, OBJECT_ID_DUMMY));
 	std::cout << "	npc_vector_ length: " << this->npc_ptr_vector_.size() << std::endl;
 	std::cout << "	drop_vector_ length: " << this->drop_ptr_vector_.size() << std::endl;
 	std::cout << "	Move one drop to (3000, 3000)" << std::endl;
