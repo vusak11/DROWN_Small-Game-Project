@@ -1,7 +1,5 @@
 #include "gui.h"
 
-
-
 GUI::GUI() {
 	health_bar_length_ = (300 / 100) * 100; //Max length of health bar divided by Max HP, multiplied by current HP
 }

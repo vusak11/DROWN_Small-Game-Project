@@ -5,6 +5,7 @@
 #include <ASSIMP/Importer.hpp>
 #include <ASSIMP/postprocess.h>
 #include "mesh.h"
+
 class Model {
 private:
 	Mesh ProcessMesh(aiMesh* mesh, const aiScene* scene);

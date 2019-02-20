@@ -1,7 +1,7 @@
 #ifndef GUI_H
 #define GUI_H
 
-#include "Globals.h"
+#include "../Globals.h"
 #include <iostream>
 #include <GL/glew.h>
 #include <GLM/glm.hpp>
@@ -9,7 +9,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <SOIL/SOIL.h>
 
-#include "shader_handler.h"
+#include "../Core/shader_handler.h"
 
 class GUI {
 private:

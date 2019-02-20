@@ -1,7 +1,7 @@
 #ifndef MENU_H
 #define MENU_H
 
-#include "Globals.h"
+#include "../Globals.h"
 #include <iostream>
 #include <GL/glew.h>
 #include <GLM/glm.hpp>
@@ -11,7 +11,7 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
-#include "shader_handler.h"
+#include "../Core/shader_handler.h"
 
 class Menu {
 private:

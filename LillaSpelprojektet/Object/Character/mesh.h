@@ -1,12 +1,13 @@
 #ifndef MESH_H
 #define MESH_H
+
 #include <GLM/glm.hpp>
 #include <GL/glew.h>
 #include <string>
 #include <ASSIMP/scene.h>
 #include <vector>
 
-#include "shader_handler.h"
+#include "../../Core/shader_handler.h"
 
 struct Vertex {
 	glm::vec3 position;

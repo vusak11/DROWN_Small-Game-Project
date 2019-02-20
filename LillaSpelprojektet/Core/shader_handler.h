@@ -1,6 +1,6 @@
 #ifndef SHADER_HANDLER_H
 #define SHADER_HANDLER_H
-#include "Globals.h"
+#include "../Globals.h"
 #include <GL/glew.h>
 #include <string>
 #include <iostream>
