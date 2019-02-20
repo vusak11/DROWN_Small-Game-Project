@@ -30,7 +30,8 @@ Render::Render() {
 
 	map_handler_.InitializeMaps(
 		"../Resources/Map/MainMap512.bmp",
-		"../Resources/Map/rock.png");
+		"../Resources/Map/rock.png",
+		"../Resources/Map/v4.png");
 
 	hud.LoadHealthBarTexture((char*)"../Resources/GUI/healthbar.png");
 	hud.LoadQuickSlotTexture((char*)"../Resources/GUI/quickslot.png");
@@ -133,7 +134,7 @@ void Render::GeometryDrawing(std::vector<ObjectPackage>& object_vector) {
 		}
 		else if (OBJECT_ID_MAP == object_vector.back().id) {
 			std::vector<glm::vec2> cells = map_handler_.GridCulling(
-				map_handler_.CurrentCell(players_position)); //OBS Player's position should be here
+				map_handler_.CurrentCell(players_position));
 			while (!cells.empty()) {
 				ModelTransformation(map_handler_.Transformation((int)cells.back().x, (int)cells.back().y));
 				map_handler_.Draw(geometry_pass_->GetProgram(), (int)cells.back().x, (int)cells.back().y);

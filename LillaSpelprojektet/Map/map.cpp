@@ -2,7 +2,6 @@
 
 //GLEW
 #include <GL/glew.h>
-
 #include <Soil\SOIL.h>
 
 Map::Map() {
@@ -95,8 +94,8 @@ void Map::UVCoordinates() {
 	for (int z = 0; z < cell_height_; z++) {
 		temp_coord.clear();
 		for (int x = 0; x < cell_width_; x++) {
-			float f_scale_c = (float(x) / float(cell_width_ - 1)) * 10;
-			float f_scale_r = (float(z) / float(cell_height_ - 1)) * 10;
+			float f_scale_c = (float(x) / float(cell_width_ - 1));
+			float f_scale_r = (float(z) / float(cell_height_ - 1));
 			temp_coord.push_back(glm::vec2(f_scale_c, f_scale_r));
 		}
 		tex_coordinates_.push_back(temp_coord);
@@ -215,14 +214,15 @@ void Map::CreateIndices() {
 	}
 }
 
-void Map::LoadTexture(const char * texture_name) {
+void Map::LoadTexture(const char * texture_name_0, const char* texture_name_1) {
+	//Texture 1
 	int texWidth, texHeight;
-	unsigned char* image = SOIL_load_image(texture_name, &texWidth, &texHeight, 0, SOIL_LOAD_RGB);
+	unsigned char* image = SOIL_load_image(texture_name_0, &texWidth, &texHeight, 0, SOIL_LOAD_RGB);
 
-	std::cout << texture_name << SOIL_last_result() << std::endl;
+	std::cout << texture_name_0 << SOIL_last_result() << std::endl;
 
-	glGenTextures(1, &texture_);
-	glBindTexture(GL_TEXTURE_2D, texture_);
+	glGenTextures(1, &texture0_);
+	glBindTexture(GL_TEXTURE_2D, texture0_);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -231,6 +231,25 @@ void Map::LoadTexture(const char * texture_name) {
 
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, texWidth, texHeight, 0, 
 				 GL_RGB, GL_UNSIGNED_BYTE, image);
+
+	glGenerateMipmap(GL_TEXTURE_2D);
+	SOIL_free_image_data(image);
+
+	// Texture 2
+	image = SOIL_load_image(texture_name_1, &texWidth, &texHeight, 0, SOIL_LOAD_RGB);
+
+	std::cout << texture_name_1 << SOIL_last_result() << std::endl;
+
+	glGenTextures(1, &texture1_);
+	glBindTexture(GL_TEXTURE_2D, texture1_);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, texWidth, texHeight, 0,
+		GL_RGB, GL_UNSIGNED_BYTE, image);
 
 	glGenerateMipmap(GL_TEXTURE_2D);
 	SOIL_free_image_data(image);
@@ -271,9 +290,13 @@ void Map::Buffer(GLuint shader) {
 
 void Map::Draw(GLuint shader) {
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, texture_);
+	glBindTexture(GL_TEXTURE_2D, texture0_);
+
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, texture1_);
 
 	glUniform1i(glGetUniformLocation(shader, "texture_diffuse"), 0);
+	glUniform1i(glGetUniformLocation(shader, "texture_diffuse1"), 1);
 
 	glBindVertexArray(vertex_array_object_);
 	glEnable(GL_PRIMITIVE_RESTART);

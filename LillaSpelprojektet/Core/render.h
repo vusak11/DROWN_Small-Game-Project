@@ -6,10 +6,10 @@
 #include <GLM\glm.hpp>
 #include <GLM\gtc\matrix_transform.hpp>
 #include <GLM\gtc\type_ptr.hpp>
-#include "model.h"
-#include "map_handler.h"
-#include "menu.h"
-#include "gui.h"
+#include "../UI/menu.h"
+#include "../UI/gui.h"
+#include "../Object/Character/model.h"
+#include "../Map/map_handler.h"
 
 
 class Render {

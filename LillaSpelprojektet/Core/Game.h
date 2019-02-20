@@ -7,9 +7,9 @@
 #include "render.h"
 #include <GL/glew.h>
 #include <SFML/Window.hpp>
-#include "Camera/camera_handler.h"
-#include "menu.h"
-#include "Object/object_handler.h"
+#include "../UI/menu.h"
+#include "../Camera/camera_handler.h"
+#include "../Object/object_handler.h"
 
 class Game {
 private:
