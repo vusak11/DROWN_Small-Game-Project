@@ -29,8 +29,8 @@
 #define PLAYER_JUMP_VELOCITY 300
 
 //Map------------------------------------------------------
-#define GRID_COLUMN 4
-#define GRID_ROW 4
+#define GRID_COLUMN 16
+#define GRID_ROW 16
 //#define MAP_SCALE 1						//1 -> each vertex have 1 position unit in between
 #define MAP_DEPTH 0.2					//The depth of the heightmap
 
