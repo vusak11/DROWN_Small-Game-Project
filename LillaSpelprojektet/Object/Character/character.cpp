@@ -52,7 +52,7 @@ int Character::TakeDamage(int in_dmg) {
 	//If the in parameter is negative, return false
 	if (in_dmg< 0) {
 		throw std::invalid_argument(
-			"ERROR::CHARACTER::HEALDAMAGE::Damage may not be negative"
+			"ERROR::CHARACTER::TAKEDAMAGE::Damage may not be negative"
 		);
 	}
 
