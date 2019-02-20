@@ -20,8 +20,10 @@
 #define OBJECT_DECCELERATION 0.1		//0.1 = 10%
 
 //Map------------------------------------------------------
-#define GRID_COLUMN 10
-#define GRID_ROW 10
+#define GRID_COLUMN 16
+#define GRID_ROW 16
+#define GRID_GAP 0.0					//-2.0 to close the gaps between the cells
+#define DEPTH_SCALE 0.05
 
 //NOTE:
 //Object ID:s are used to determine what type of object is created

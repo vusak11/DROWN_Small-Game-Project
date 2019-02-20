@@ -29,9 +29,8 @@ Render::Render() {
 	model_[0] = new Model((char*)"../Resources/Models/TestBox/testBOX.obj");
 
 	map_handler_.InitializeMaps(
-		"../Resources/Map/TestMap.bmp",
+		"../Resources/Map/MainMap512.bmp",
 		"../Resources/Map/rock.png");
-
 
 	hud.LoadHealthBarTexture((char*)"../Resources/GUI/healthbar.png");
 	hud.LoadQuickSlotTexture((char*)"../Resources/GUI/quickslot.png");

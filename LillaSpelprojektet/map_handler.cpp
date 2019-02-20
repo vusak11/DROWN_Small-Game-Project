@@ -40,16 +40,16 @@ void MapHandler::InitializeMaps(std::string map_path, std::string texture_path) 
 			grid_cell.cell_position = glm::vec2(i, j);
 			grid_cells.push_back(grid_cell);
 
-			width += grid_cell.map_cell.GetCellWidth() - 2.0f; // -2.0f is for closing gap
+			width += grid_cell.map_cell.GetCellWidth() - GRID_GAP;
 		}
-		height -= grid_cell.map_cell.GetCellHeight() - 2.0f; // --------- || ----------
+		height -= grid_cell.map_cell.GetCellHeight() - GRID_GAP;
 		grid_map_.push_back(grid_cells);
 	}
 }
 
 void MapHandler::InitializeBuffers(GLuint shader) {
 	for (int j = 0; j < grid_map_.size(); j++) {
-		for (int i = 0; i < grid_map_.size(); i++) {
+		for (int i = 0; i < grid_map_[j].size(); i++) {
 			grid_map_[j][i].map_cell.Buffer(shader);
 		}
 	}
@@ -58,7 +58,7 @@ void MapHandler::InitializeBuffers(GLuint shader) {
 glm::mat4 MapHandler::Transformation(int column, int row) {
 	glm::mat4 model_matrix(1.0f);
 	model_matrix = glm::translate(model_matrix, grid_map_[row][column].translate);
-	model_matrix = glm::scale(model_matrix, glm::vec3(1.0f, 1.0f, 0.1f));
+	model_matrix = glm::scale(model_matrix, glm::vec3(1.0f, 1.0f, DEPTH_SCALE));
 	return model_matrix;
 }
 
