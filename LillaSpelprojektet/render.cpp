@@ -90,6 +90,8 @@ void Render::UpdateRender(
 }
 
 void Render::GeometryDrawing(std::vector<ObjectPackage>& object_vector) {
+	
+	/*Old
 	for (unsigned int i = 0; i < object_vector.size(); i++) {
 		if (OBJECT_ID_NULL == object_vector[i].id) {
 
@@ -98,7 +100,7 @@ void Render::GeometryDrawing(std::vector<ObjectPackage>& object_vector) {
 			ModelTransformation(object_vector[i].model_matrix);
 			model_[0]->Draw(geometry_pass_->GetProgram());
 		}
-		else if (OBJECT_ID_JOHNNY_BRAVO == object_vector[i].id) {
+		else if (OBJECT_ID_DUMMY == object_vector[i].id) {
 			ModelTransformation(object_vector[i].model_matrix);
 		}
 		else if (OBJECT_ID_MAP == object_vector[i].id) {
@@ -106,6 +108,9 @@ void Render::GeometryDrawing(std::vector<ObjectPackage>& object_vector) {
 			map_[0].Draw(geometry_pass_->GetProgram());
 		}
 	}
+	*/
+
+	//We know the map is the first object in the vector
 }
 
 void Render::ModelTransformation(glm::mat4 model_matrix) {
