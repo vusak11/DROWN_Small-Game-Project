@@ -34,7 +34,7 @@ private:
 
 	glm::mat4 model_matrix_;
 
-	GUI hud;
+	GUI hud_;
 public:
 	Render();
 	~Render();
