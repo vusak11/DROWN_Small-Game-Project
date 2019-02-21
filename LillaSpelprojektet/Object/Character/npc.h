@@ -10,7 +10,7 @@ public:
 	NPC(glm::vec3 start_pos, ObjectID id = OBJECT_ID_DUMMY);
 	~NPC();
 
-	virtual void ExecuteAI(glm::vec3 in_player_pos);
+	virtual void ExecuteAI(float in_deltatime, glm::vec3 in_player_pos);
 };
 
 

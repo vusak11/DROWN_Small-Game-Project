@@ -11,6 +11,6 @@ NPC::~NPC() {
 
 }
 
-void NPC::ExecuteAI(glm::vec3 in_player_pos) {
+void NPC::ExecuteAI(float in_deltatime, glm::vec3 in_player_pos) {
 
 }

@@ -10,6 +10,7 @@
 #include "object_class.h"
 #include "Character/character.h"
 #include "Character/player_character.h"
+#include "Character/npc.h"
 
 
 #include "Physics/physics_engine.h"

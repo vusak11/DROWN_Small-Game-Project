@@ -151,10 +151,14 @@ ObjectHandler::~ObjectHandler() {
 
 void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map_height_list) {
 
+	//Create player
 	// THIS Y POS DOES NOT WORK AT ALL
 	this->player_ptr_ = new PlayerCharacter(glm::vec3(230.0f, 400.0f, -95.0f));
-
 	this->player_ptr_->SetScale(10.0f);
+
+	//TEMP: Create an NPC
+	this->npc_ptr_vector_.push_back(new NPC(glm::vec3(260.0f, 700.0f, -95.0f)));
+	this->npc_ptr_vector_.at(0)->SetScale(5.0f);
 
 	this->physics_engine_ptr_ = new PhysicsEngine(map_height_list);
 
