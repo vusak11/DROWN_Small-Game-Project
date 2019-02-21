@@ -24,8 +24,7 @@ private:
 	Light* lights_;
 
 	Map map_[1];
-	//glm::mat4 map_matrix_;
-	ObjectPackage map_package_;
+	glm::mat4 map_matrix_;
 
 	int nr_of_models_;
 	Model** model_;

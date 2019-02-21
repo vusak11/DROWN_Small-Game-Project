@@ -29,15 +29,14 @@ Render::Render() {
 	map_[0].LoadMap((char*)"../Resources/Map/TestMapMediumHard2.bmp");
 	map_[0].LoadTexture((char*)"../Resources/Map/rock.png");
 
-	//Fill in ObjectPackage (set id, scale and rotate matrix)
-	this->map_package_.id = OBJECT_ID_MAP;
-	this->map_package_.model_matrix = glm::mat4(1.0f);
-	this->map_package_.model_matrix = glm::translate(
-		this->map_package_.model_matrix,
+	//Create map_matrix (set scale and rotate matrix)
+	this->map_matrix_ = glm::mat4(1.0f);
+	this->map_matrix_ = glm::translate(
+		this->map_matrix_,
 		glm::vec3(0.0f, 0.0f, -100.0f)
 	);
-	this->map_package_.model_matrix = glm::rotate(
-		this->map_package_.model_matrix,
+	this->map_matrix_ = glm::rotate(
+		this->map_matrix_,
 		glm::radians(90.0f),
 		glm::vec3(1, 0, 0)
 	);
@@ -95,12 +94,12 @@ void Render::UpdateRender(
 	
 	glDisable(GL_BLEND);
 
-	// Insert map at the first position of the vector
-	object_vector.insert(object_vector.begin(), this->map_package_);
-
 	//  GEOMETRY
 	GeometryPass(camera_position, perspective_view_matrix);
 	GeometryDrawing(object_vector);
+	//Also draw the map
+	this->ModelTransformation(this->map_matrix_);
+	this->map_[0].Draw(geometry_pass_->GetProgram());
 	
 	//  LIGHTING
 	lights_[0].SetPos(camera_position);
@@ -111,13 +110,9 @@ void Render::UpdateRender(
 
 void Render::GeometryDrawing(std::vector<ObjectPackage>& object_vector) {
 	
-	//We know the map is the first object in the vector
-	this->ModelTransformation(object_vector[0].model_matrix);
-	this->map_[0].Draw(geometry_pass_->GetProgram());
-
-	//Then loop through the remaining entries (start loop at 1)
+	//Loop through all ObjectPackage:s and draw the corresponding models
 	ObjectID temp_id;
-	for (unsigned int i = 1; i < object_vector.size(); i++) {
+	for (unsigned int i = 0; i < object_vector.size(); i++) {
 		//Upload the object's model-matrix
 		this->ModelTransformation(object_vector[i].model_matrix);
 
