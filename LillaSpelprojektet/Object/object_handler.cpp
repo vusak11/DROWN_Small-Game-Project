@@ -7,7 +7,7 @@ bool ObjectHandler::ClearPtrVector(std::vector<ObjectClass*>& in_vec) {
 		//Delete the first object in vector
 		delete in_vec.at(0);
 		//then erase the first entry
-		in_vec.erase(this->npc_ptr_vector_.begin() + 0);
+		in_vec.erase(in_vec.begin() + 0);
 	}
 
 	return in_vec.empty();
@@ -106,6 +106,29 @@ void ObjectHandler::DeterminePlayerAction(const float& in_deltatime) {
 	
 }
 
+void ObjectHandler::ProcessNPCs(const float& in_deltatime, std::vector<ObjectClass*>& in_npcs_ptr_vector) {
+	//For every entry, turn it into a NPC pointer
+	//and then call the AI function
+	NPC* npc_ptr = NULL;
+	for (unsigned int i = 0; i < in_npcs_ptr_vector.size(); i++) {
+		//Do dynamic cast
+		npc_ptr = dynamic_cast<NPC*>(in_npcs_ptr_vector.at(i));
+
+		//If it succeded, call DetermineNPCAction
+		if (npc_ptr != NULL) {
+			this->DetermineNPCAction(in_deltatime, npc_ptr);
+		}
+	}
+}
+
+void ObjectHandler::DetermineNPCAction(const float& in_deltatime, NPC* in_npc) {
+
+	//TEMP
+	in_npc->ExecuteAI(in_deltatime);
+	//TEMP
+
+}
+
 void ObjectHandler::ClearPlayerInput() {
 	this->player_input_.left = false;
 	this->player_input_.right = false;
@@ -157,8 +180,9 @@ void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map
 	this->player_ptr_->SetScale(10.0f);
 
 	//TEMP: Create an NPC
-	this->npc_ptr_vector_.push_back(new NPC(glm::vec3(260.0f, 700.0f, -95.0f)));
+	this->npc_ptr_vector_.push_back(new NPC(glm::vec3(260.0f, 400.0f, -75.0f)));
 	this->npc_ptr_vector_.at(0)->SetScale(5.0f);
+	//TEMP
 
 	this->physics_engine_ptr_ = new PhysicsEngine(map_height_list);
 
@@ -217,10 +241,11 @@ std::vector<ObjectPackage> ObjectHandler::UpdateAndRetrieve(float in_deltatime) 
 	//Take input from player (i.e. set velocity, attack flags, etc)
 	this->DeterminePlayerAction(in_deltatime);
 	
+	//Go through all relevant NPCs and call their AI functions
+	this->ProcessNPCs(in_deltatime, relevant_npcs_ptr_vector);
+
 	//Apply physics such as moving or falling
 	this->physics_engine_ptr_->ApplyPhysics(in_deltatime, physical_objects_ptr_vector);
-
-	//DetermineNPCAction(/*vector.at(i)*/);
 
 	//ResolvePlayerAction();
 	
