@@ -333,4 +333,24 @@ void ObjectHandler::TestObjectHandler() {
 	std::cout << "	Call UpdateAndRetrieve and check returned vector length (should be 4: One Player, Two NPCs, One Drop)" << std::endl;
 	std::vector<ObjectPackage> pckg_vector = this->UpdateAndRetrieve(1.0f);
 	std::cout << "	pckg_vec length: " << pckg_vector.size() << std::endl;
+
+	std::cout << "I:	Test throw functions in Character" << std::endl;
+	try { this->player_ptr_->HealDamage(-3); }
+	catch (std::invalid_argument a){ std::cout << a.what() << std::endl; }
+	
+	try { this->player_ptr_->TakeDamage(-17); }
+	catch (std::invalid_argument a) { std::cout << a.what() << std::endl; }
+
+	try { this->player_ptr_->SetAttackPower(0); }
+	catch (std::invalid_argument a) { std::cout << a.what() << std::endl; }
+
+	try { this->player_ptr_->SetCurrentHealth(-98); }
+	catch (std::invalid_argument a) { std::cout << a.what() << std::endl; }
+
+	try { this->player_ptr_->SetCurrentHealth(1000); }
+	catch (std::invalid_argument a) { std::cout << a.what() << std::endl; }
+
+	try { this->player_ptr_->SetMaxHealth(-1); }
+	catch (std::invalid_argument a) { std::cout << a.what() << std::endl; }
+
 }
