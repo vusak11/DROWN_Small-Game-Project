@@ -54,7 +54,7 @@ void PhysicsEngine::UpdateVelocity(float& in_deltatime, ObjectClass*& in_object_
 
 void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_ptr) {
 
-	int map_size = 2048;	// OBS this variable needs to be collected from the map
+	int map_size = 512;	// OBS this variable needs to be collected from the map
 	int radius_constant = 5;
 
 	// | 1 | Get new position from acceleration and velocity.
@@ -246,7 +246,6 @@ void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_
 	for (int k = 0; k < 3; k++)
 	{
 
-		
 		// Reset collosion flags
 		bool collision_0 = false;
 		bool collision_1 = false;

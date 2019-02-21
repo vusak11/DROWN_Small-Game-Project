@@ -60,7 +60,7 @@ void MapHandler::InitializeBuffers(GLuint shader) {
 glm::mat4 MapHandler::Transformation(int column, int row) {
 	glm::mat4 model_matrix(1.0f);
 	model_matrix = glm::translate(model_matrix, grid_map_[row][column].translate);
-	model_matrix = glm::scale(model_matrix, glm::vec3(1.0f, 1.0f, DEPTH_SCALE));
+	model_matrix = glm::scale(model_matrix, glm::vec3(1.0f, 1.0f, MAP_DEPTH));
 	return model_matrix;
 }
 

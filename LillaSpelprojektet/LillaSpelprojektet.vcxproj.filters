@@ -117,9 +117,6 @@
     <ClCompile Include="UI\gui.cpp">
       <Filter>Source Files\UI</Filter>
     </ClCompile>
-    <ClCompile Include="UI\menu.cpp">
-      <Filter>Source Files\UI</Filter>
-    </ClCompile>
     <ClCompile Include="Object\Character\player_character.cpp">
       <Filter>Source Files\Object\Character</Filter>
     </ClCompile>
@@ -128,6 +125,12 @@
     </ClCompile>
     <ClCompile Include="Object\Character\cooldown_class.cpp">
       <Filter>Source Files\Object\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="menu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\menu.cpp">
+      <Filter>Source Files\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -193,6 +196,12 @@
     </ClInclude>
     <ClInclude Include="Object\Character\cooldown_class.h">
       <Filter>Header Files\Object\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="gui.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="menu.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
