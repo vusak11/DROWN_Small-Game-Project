@@ -228,7 +228,7 @@ void Menu::RenderPauseMenu(ShaderHandler * shader_handler) {
 	if (selected_item_index_ == 1) {
 		RenderText(
 			shader_handler,
-			"Save score",
+			"Save score (Death)",
 			((float)WINDOW_WIDTH) / 2.0f - 530.0f,
 			((float)WINDOW_HEIGHT) / 10.0f * 4.5f,
 			2.0f,
@@ -238,7 +238,7 @@ void Menu::RenderPauseMenu(ShaderHandler * shader_handler) {
 	else {
 		RenderText(
 			shader_handler,
-			"Save score",
+			"Save score (Death)",
 			((float)WINDOW_WIDTH) / 2.0f - 530.0f,
 			((float)WINDOW_HEIGHT) / 10.0f * 4.5f,
 			2.0f,

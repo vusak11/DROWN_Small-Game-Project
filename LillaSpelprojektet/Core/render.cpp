@@ -30,7 +30,7 @@ Render::Render() {
 
 	map_handler_.InitializeMaps(
 		"../Resources/Map/MainMap512.bmp",
-		"../Resources/Map/rock.png",
+		"../Resources/Map/cavewall.png",
 		"../Resources/Map/v4.png");
 
 	hud_.LoadHealthBarTexture((char*)"../Resources/GUI/healthbar.png");

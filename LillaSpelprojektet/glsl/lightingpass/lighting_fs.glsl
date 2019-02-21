@@ -39,6 +39,6 @@ void main() {
 	spec = pow(max(dot(viewDir, reflectDir), 0.0), 8.0);
 
 	vec3 speculars = vec3(0.3) * spec;
-	screen_texture = vec3(ambient + diffuse + speculars);
+	screen_texture = vec3(ambient + diffuse /*+ speculars*/);
 
 }
