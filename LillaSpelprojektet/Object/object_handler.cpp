@@ -68,30 +68,37 @@ float ObjectHandler::DistanceBetween(const ObjectClass* in_object_a, const Objec
 	return glm::distance(in_object_a->GetPosition(), in_object_b->GetPosition());
 }
 
-void ObjectHandler::DeterminePlayerAction() {
+void ObjectHandler::DeterminePlayerAction(const float& in_deltatime) {
 
-	// Collision detection will be implemented at a later stage.
+	//Update the player's status (such as cooldowns)
+	this->player_ptr_->UpdateStatus(in_deltatime);
 
-	if (player_input_.attack) {
+	//Determine player movement on the x-axis
+	if (this->player_input_.left) {
+		this->player_ptr_->MoveLeft();
+		this->player_ptr_->TurnLeft(in_deltatime);
+	}
+	if (this->player_input_.right) {
+		this->player_ptr_->MoveRight();
+		this->player_ptr_->TurnRight(in_deltatime);
+	}
+	//If input is jump
+	if (this->player_input_.jump) {
+		this->player_ptr_->Jump();
+	}
+	//If input is use ability
+	if (this->player_input_.use_ability) {
+		this->player_ptr_->UseAbility();
+	}
+
+	if (this->player_input_.attack) {
 		
 	}
-	if (player_input_.jump) {
-
+	if (this->player_input_.pick_up) {
+		glm::vec3 p = player_ptr_->GetPosition();
+		//this->player_ptr_->SetPosition(200, 0, p.z);
 	}
-	if (player_input_.left) {
-		glm::vec3 pos = player_ptr_->GetPosition();
-		player_ptr_->SetPosition(pos.x - 1, pos.y, pos.z);
-	}
-	if (player_input_.right) {
-		glm::vec3 pos = player_ptr_->GetPosition();
-		player_ptr_->SetPosition(pos.x + 1, pos.y, pos.z);
-	}
-	if (player_input_.pick_up) {
-
-	}
-	if (player_input_.use_ability) {
-
-	}
+	
 }
 
 void ObjectHandler::ClearPlayerInput() {
@@ -108,7 +115,7 @@ void ObjectHandler::PackObjectIntoVector(ObjectClass* in_ptr, std::vector<Object
 
 	//Retrieve relevant data from object
 	package.id = in_ptr->GetObjectID();
-	package.model_matrix = in_ptr->GetModelMatrix();
+	package.model_matrix = in_ptr->RetrieveModelMatrix();
 
 	//Add package to the given vector reference
 	in_target_vector.push_back(package);
@@ -137,17 +144,16 @@ ObjectHandler::~ObjectHandler() {
 
 }
 
-void ObjectHandler::InitializeObjectHandler() {
+void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map_height_list) {
 
-	this->player_ptr_ = new ObjectClass(glm::vec3(0.0f, 0.0f, 0.0f), OBJECT_ID_PLAYER);
+	// THIS Y POS DOES NOT WORK AT ALL
+	this->player_ptr_ = new PlayerCharacter(glm::vec3(230.0f, -400.0f, 0.0f));
 
-	this->physics_engine_ptr_ = new PhysicsEngine(
-		GRAVITATIONAL_ACCELERATION,
-		OBJECT_MAX_VELOCITY,
-		OBJECT_MIN_VELOCITY,
-		OBJECT_DECCELERATION
-	);
+	this->player_ptr_->SetScale(2.0f);
 
+	this->physics_engine_ptr_ = new PhysicsEngine(map_height_list);
+
+	
 	//this->TestObjectHandler();		//NTS: Just for testing
 
 
@@ -179,17 +185,32 @@ void ObjectHandler::PlayerPickUp() {
 
 std::vector<ObjectPackage> ObjectHandler::UpdateAndRetrieve(float in_deltatime) {
 
-	std::vector<ObjectClass*> relevant_npc_ptr_vector;
+	
+	std::vector<ObjectClass*> relevant_npcs_ptr_vector;		//Two vectors to hold the NPC:s and drops that are within the culling distance
 	std::vector<ObjectClass*> relevant_drops_ptr_vector;
+	std::vector<ObjectClass*> physical_objects_ptr_vector;	//A vector to hold everything that is affected by physics
+	
 
-	//Cull NPCs
-	relevant_npc_ptr_vector = this->CullAndRetrieveObjectPtrs(this->npc_ptr_vector_);
+	//Cull NPC:s
+	relevant_npcs_ptr_vector = this->CullAndRetrieveObjectPtrs(this->npc_ptr_vector_);
 
 	//Cull Drops
 	relevant_drops_ptr_vector = this->CullAndRetrieveObjectPtrs(this->drop_ptr_vector_);
 
-	DeterminePlayerAction();
+	//Fill physical vector with the player and all NPC:s
+	physical_objects_ptr_vector.push_back(this->player_ptr_);
+	physical_objects_ptr_vector.insert(
+		physical_objects_ptr_vector.end(),
+		relevant_npcs_ptr_vector.begin(),
+		relevant_npcs_ptr_vector.end()
+	);
+
+	//Take input from player (i.e. set velocity, attack flags, etc)
+	this->DeterminePlayerAction(in_deltatime);
 	
+	//Apply physics such as moving or falling
+	this->physics_engine_ptr_->ApplyPhysics(in_deltatime, physical_objects_ptr_vector);
+
 	//DetermineNPCAction(/*vector.at(i)*/);
 
 	//ResolvePlayerAction();
@@ -205,7 +226,7 @@ std::vector<ObjectPackage> ObjectHandler::UpdateAndRetrieve(float in_deltatime) 
 	std::vector<ObjectPackage> package_vector;
 	
 	this->PackObjectIntoVector(this->player_ptr_, package_vector);
-	this->PackObjectVectorIntoVector(relevant_npc_ptr_vector, package_vector);
+	this->PackObjectVectorIntoVector(relevant_npcs_ptr_vector, package_vector);
 	this->PackObjectVectorIntoVector(relevant_drops_ptr_vector, package_vector);
 
 	return package_vector;

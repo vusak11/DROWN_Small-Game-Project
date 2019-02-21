@@ -304,7 +304,6 @@ void Map::Draw(GLuint shader) {
 	
 	glDrawElements(GL_TRIANGLE_STRIP, indices_.size(), GL_UNSIGNED_INT, 0);
 
-	glDisable(GL_PRIMITIVE_RESTART);
 	glBindVertexArray(0);
 	glDisable(GL_PRIMITIVE_RESTART);
 }
@@ -312,6 +311,18 @@ void Map::Draw(GLuint shader) {
 int Map::GetCellHeight() const {
 	return cell_height_;
 }
+std::vector<std::vector<float>>* Map::GetTempHeightList() {
+	return &height_map_;
+}
+
+std::vector<std::vector<float>> Map::GetTestList() {
+	return height_map_;
+}
+
+
+//int Map::GetHeight() {
+//	return map_height_;
+//}
 
 int Map::GetCellWidth() const {
 	return cell_width_;

@@ -21,6 +21,8 @@ private:
 		glm::vec2 cell_position;
 	};
 
+	std::vector<std::vector<float>>* map_data_;
+	std::vector<std::vector<float>> test_data_;
 	std::vector<std::vector<GridMap>> grid_map_;
 	std::vector<glm::vec2> cells_to_draw_;
 
@@ -39,6 +41,8 @@ public:
 	
 	glm::vec2 CurrentCell(glm::vec3 players_current_position);
 	std::vector<glm::vec2> GridCulling(glm::vec2 current_cell);
+
+	std::vector<std::vector<float>>* GetMapDataPointer();
 };
 
 #endif

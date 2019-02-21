@@ -29,13 +29,12 @@ Render::Render() {
 	model_[0] = new Model((char*)"../Resources/Models/TestBox/testBOX.obj");
 
 	map_handler_.InitializeMaps(
-		"../Resources/Map/TestMap.bmp",
+		"../Resources/Map/MainMap512.bmp",
 		"../Resources/Map/rock.png",
 		"../Resources/Map/v4.png");
 
-
-	hud.LoadHealthBarTexture((char*)"../Resources/GUI/healthbar.png");
-	hud.LoadQuickSlotTexture((char*)"../Resources/GUI/quickslot.png");
+	hud_.LoadHealthBarTexture((char*)"../Resources/GUI/healthbar.png");
+	hud_.LoadQuickSlotTexture((char*)"../Resources/GUI/quickslot.png");
 }
 
 Render::~Render() {
@@ -56,7 +55,7 @@ void Render::InitializeRender() {
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	
-	hud.Initiliaze();
+	hud_.Initiliaze();
 
 	geometry_pass_->GeometryFrameBuffers();
 
@@ -108,7 +107,7 @@ void Render::UpdateRender(
 	glDisable(GL_DEPTH_TEST);
 	glLoadIdentity();
 
-	hud.RenderGUI(gui_shaders_, player_data);
+	hud_.RenderGUI(gui_shaders_, player_data);
 
 	glFlush();
 	//swap_buffers(?)
@@ -242,4 +241,9 @@ void Render::RenderQuad() {
 	glBindVertexArray(quad_vertex_array_object_);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	glBindVertexArray(0);
+}
+
+std::vector<std::vector<float>>* Render::GetMapPointer()
+{
+	return map_handler_.GetMapDataPointer();
 }

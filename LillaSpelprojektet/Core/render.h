@@ -28,7 +28,6 @@ private:
 	Model** model_;
 
 	MapHandler map_handler_;
-	//Map map_[1];
 	ShaderHandler* text_shaders_;
 	ShaderHandler* gui_shaders_;
 
@@ -65,5 +64,7 @@ public:
 	void GeometryDrawing(std::vector<ObjectPackage>& object_vector);
 	void ModelTransformation(glm::mat4 model_matrix);
 	void RenderQuad();
+
+	std::vector<std::vector<float>>* GetMapPointer();
 };
 #endif
