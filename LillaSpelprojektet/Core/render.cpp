@@ -242,3 +242,8 @@ void Render::RenderQuad() {
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	glBindVertexArray(0);
 }
+
+std::vector<std::vector<float>>* Render::GetMapPointer()
+{
+	return map_handler_.GetMapDataPointer();
+}

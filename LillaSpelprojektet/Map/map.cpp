@@ -311,6 +311,18 @@ void Map::Draw(GLuint shader) {
 int Map::GetCellHeight() const {
 	return cell_height_;
 }
+std::vector<std::vector<float>>* Map::GetTempHeightList() {
+	return &height_map_;
+}
+
+std::vector<std::vector<float>> Map::GetTestList() {
+	return height_map_;
+}
+
+
+//int Map::GetHeight() {
+//	return map_height_;
+//}
 
 int Map::GetCellWidth() const {
 	return cell_width_;

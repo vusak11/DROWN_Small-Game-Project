@@ -34,7 +34,7 @@ private:
 
 	glm::mat4 model_matrix_;
 
-	GUI hud;
+	GUI hud_;
 public:
 	Render();
 	~Render();
@@ -65,5 +65,7 @@ public:
 	void GeometryDrawing(std::vector<ObjectPackage>& object_vector);
 	void ModelTransformation(glm::mat4 model_matrix);
 	void RenderQuad();
+
+	std::vector<std::vector<float>>* GetMapPointer();
 };
 #endif

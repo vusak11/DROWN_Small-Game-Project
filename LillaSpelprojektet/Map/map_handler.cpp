@@ -20,7 +20,8 @@ void MapHandler::InitializeMaps(
 	Map ancillary_map;
 	ancillary_map.LoadMap(map_path.c_str());
 	ancillary_map.LoadTexture(texture_path_0.c_str(), texture_path_1.c_str());
-
+	test_data_ = ancillary_map.GetTestList();
+	map_data_ = ancillary_map.GetTempHeightList();
 	GridMap grid_cell;
 	std::vector<GridMap> grid_cells;
 
@@ -152,4 +153,9 @@ std::vector<glm::vec2> MapHandler::GridCulling(glm::vec2 current_cell) {
 		cells_to_draw_.push_back(glm::vec2(current_cell.x + 1, current_cell.y + 1));
 	}
 	return cells_to_draw_;
+}
+
+std::vector<std::vector<float>>* MapHandler::GetMapDataPointer()
+{
+	return &test_data_;
 }
