@@ -17,9 +17,9 @@ void NPC::ExecuteAI(float in_deltatime/*, glm::vec3 in_player_pos*/) {
 	this->TEMP_CD_ -= in_deltatime;
 	if (this->TEMP_CD_ <= 0.0f) {
 		//this->SetVelocityVec(glm::vec3(0.0f, 50.0f, 0.0f));
-		this->TEMP_ROT += 0.1;
+		this->TEMP_ROT += glm::radians(45.0f);
 		this->SetRotation(0.0f, this->TEMP_ROT, 0.0f);
-		this->TEMP_CD_ = 3.0;
+		this->TEMP_CD_ = 1.0;
 	}
 	//TEMP
 

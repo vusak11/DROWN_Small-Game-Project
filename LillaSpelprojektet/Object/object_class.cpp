@@ -155,11 +155,9 @@ glm::mat4 ObjectClass::RetrieveModelMatrix() {
 }
 
 void ObjectClass::TurnLeft(const float& in_deltatime) {
-	//Turn the model leftwards (negative direction)
-	float new_rotation = this->rotation_around_y_ - glm::radians((float)OBJECT_TURN_RATE);
-
-	//Adjust for deltatime
-	//new_rotation = (int)((float)new_rotation*in_deltatime);
+	//Turn the model leftwards (negative direction) with adjustment for deltatime
+	float turn_radians = glm::radians((float)OBJECT_TURN_RATE)*in_deltatime;
+	float new_rotation = this->rotation_around_y_ - turn_radians;
 
 	//If the new orientation is further than -PI/2 snap it to -PI/2
 	if (new_rotation < glm::radians(-90.0f)) { new_rotation = glm::radians(-90.0f); }
@@ -170,11 +168,9 @@ void ObjectClass::TurnLeft(const float& in_deltatime) {
 }
 
 void ObjectClass::TurnRight(const float& in_deltatime) {
-	//Turn the model rightwards (positive direction)
-	float new_rotation = this->rotation_around_y_ + glm::radians((float)OBJECT_TURN_RATE);
-
-	//Adjust for deltatime
-	//new_rotation = (int)((float)new_rotation*in_deltatime);
+	//Turn the model rightwards (positive direction) with adjustment for deltatime
+	float turn_radians = glm::radians((float)OBJECT_TURN_RATE)*in_deltatime;
+	float new_rotation = this->rotation_around_y_ + turn_radians;
 
 	//If the new orientation is further than PI/2 snap it to PI/2
 	if (new_rotation > glm::radians(90.0f)) { new_rotation = glm::radians(90.0f); }

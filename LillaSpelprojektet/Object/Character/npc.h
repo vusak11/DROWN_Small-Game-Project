@@ -6,7 +6,7 @@
 class NPC : public Character {
 private:
 
-	float TEMP_CD_ = 3.0f;
+	float TEMP_CD_ = 0.0f;
 	float TEMP_ROT = 0.0;
 
 public:
