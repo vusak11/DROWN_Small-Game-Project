@@ -60,11 +60,9 @@ private:
 	glm::vec3 position_;
 
 	//Math
-	int rotation_around_x_;			//The rotation of the object in degrees 
-	int rotation_around_y_;			//around the x, y and z-axises
-	int rotation_around_z_;			//NTS:	0 rotation around y is default (model look towards screen[positive z])
-									//		-90 (or 270) rotation around y is looking towards the right[positive x]
-									//		90 rotation around y is looking towards the left[negative x]
+	float rotation_around_x_;			//The rotation of the object in radians
+	float rotation_around_y_;			//around the x, y and z-axises
+	float rotation_around_z_;			
 
 	glm::vec3 scale_;			//Vector with	x scaling on x,
 								//				y scaling on y
@@ -100,7 +98,7 @@ public:
 	void SetPosition(float in_x, float in_y, float in_z = 0.0f);
 	void SetScale(float in_s);
 	void SetScale(float in_x, float in_y, float in_z);
-	void SetRotation(int in_x, int in_y, int in_z);
+	void SetRotation(float in_x, float in_y, float in_z);
 	
 	//Physics
 	void SetVelocity(float in_velocity);					//Set current velocity to in-parameter (does not change direction)

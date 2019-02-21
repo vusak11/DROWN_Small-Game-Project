@@ -13,7 +13,8 @@
 //Objects--------------------------------------------------
 #define OBJECT_CULLING_DISTANCE 1380	//Distance beyond which objects are not updated nor rendered
 
-#define OBJECT_TURN_RATE 45 //degrees	//Purely for the turn function in ObjectClass as of this writing
+#define PI 3.1415
+#define OBJECT_TURN_RATE 10 //degrees	//Purely for the turn function in ObjectClass as of this writing
 
 #define GRAVITATIONAL_ACCELERATION -500	//-g on y-axis	//Affects fall speed
 #define OBJECT_MAX_VELOCITY 500

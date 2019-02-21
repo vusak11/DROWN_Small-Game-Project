@@ -83,10 +83,10 @@ void ObjectClass::SetScale(float in_x, float in_y, float in_z) {
 	this->model_matrix_up_to_date_ = false;
 }
 
-void ObjectClass::SetRotation(int in_x, int in_y, int in_z) {
-	this->rotation_around_x_ = in_x % 360;
-	this->rotation_around_y_ = in_y % 360;
-	this->rotation_around_z_ = in_z % 360;
+void ObjectClass::SetRotation(float in_x, float in_y, float in_z) {
+	this->rotation_around_x_ = in_x;
+	this->rotation_around_y_ = in_y;
+	this->rotation_around_z_ = in_z;
 
 	//Create three matrices for rotating around x, y and z
 	glm::mat4 rotation_matrix_x = glm::rotate((float)this->rotation_around_x_, glm::vec3(1.0f, 0.0f, 0.0f));
@@ -155,33 +155,31 @@ glm::mat4 ObjectClass::RetrieveModelMatrix() {
 }
 
 void ObjectClass::TurnLeft(const float& in_deltatime) {
-	//Turn the model leftwards (positive direction)
-	int new_rotation = (this->rotation_around_y_ + OBJECT_TURN_RATE) % 360;
+	//Turn the model leftwards (negative direction)
+	float new_rotation = this->rotation_around_y_ - glm::radians((float)OBJECT_TURN_RATE);
 
 	//Adjust for deltatime
 	//new_rotation = (int)((float)new_rotation*in_deltatime);
 
-	//If the new orientation lies somewhere in [90, 180] we have turned too far
-	//and we snap back to 90
-	if ((new_rotation > 90) && (new_rotation < 180)) { new_rotation = 90; }
+	//If the new orientation is further than -PI/2 snap it to -PI/2
+	if (new_rotation < glm::radians(-90.0f)) { new_rotation = glm::radians(-90.0f); }
 
-	//std::cout << "Rot L: " << new_rotation << std::endl;
+	std::cout << "Rot L: " << glm::degrees(new_rotation) << std::endl;
 
 	this->SetRotation(this->rotation_around_x_, new_rotation, this->rotation_around_z_);
 }
 
 void ObjectClass::TurnRight(const float& in_deltatime) {
-	//Turn the model rightwards (negative direction)
-	int new_rotation = (this->rotation_around_y_ - OBJECT_TURN_RATE) % 360;
+	//Turn the model rightwards (positive direction)
+	float new_rotation = this->rotation_around_y_ + glm::radians((float)OBJECT_TURN_RATE);
 
 	//Adjust for deltatime
 	//new_rotation = (int)((float)new_rotation*in_deltatime);
 
-	//If the new orientation lies somewhere in [-90, -180] = [180, 270] we have turned too far
-	//and we snap back to 270
-	if ((new_rotation < -90) && (new_rotation > -180)) { new_rotation = -90; }
+	//If the new orientation is further than PI/2 snap it to PI/2
+	if (new_rotation > glm::radians(90.0f)) { new_rotation = glm::radians(90.0f); }
 
-	//std::cout << "Rot R: " << new_rotation << std::endl;
+	std::cout << "Rot R: " << glm::degrees(new_rotation) << std::endl;
 
 	this->SetRotation(this->rotation_around_x_, new_rotation, this->rotation_around_z_);
 }
