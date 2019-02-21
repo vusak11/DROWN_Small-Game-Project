@@ -79,7 +79,7 @@ void Game::InputForGame(float in_deltatime) {
 
 		if (secondary && sf::Keyboard::isKeyPressed(sf::Keyboard::P)) {
 			//Move active camera forwards ("zoom in")
-			cam_handler_ptr_->SetCameraPos(0.0f, 0.0f, 5.0);
+			cam_handler_ptr_->SetCameraPos(CAMERA_DEBUG_POSITION_X, CAMERA_DEBUG_POSITION_Y, CAMERA_DEBUG_POSITION_Z);
 		}
 
 		/*---------------End Secondary Camera Control-----------------*/
@@ -87,7 +87,7 @@ void Game::InputForGame(float in_deltatime) {
 }
 
 Game::Game() {
-	this->cam_handler_ptr_ = new CameraHandler(glm::vec3(100.0f, -200.0f, 0.0f), 40.0f);
+	this->cam_handler_ptr_ = new CameraHandler(glm::vec3(256.0, -256.0f, 0.0f), CAMERA_DEFAULT_ZOOM);
 	this->obj_handler_ptr_ = new ObjectHandler();
 	state_ = MENU;
 	menu_.Initiliaze();
@@ -205,6 +205,8 @@ void Game::InputForMenu(float in_deltatime, sf::Event event) {
 					menu_.StateManager(state_);
 					break;
 				case 1:						//Save score
+					state_ = DEATH;
+					menu_.StateManager(state_);
 					//Save highscore
 					break;
 				case 2:
