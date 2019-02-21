@@ -36,6 +36,7 @@ void MapHandler::InitializeMaps(
 			ancillary_map.CreateIndices();
 
 			grid_cell.map_cell = ancillary_map;
+			grid_cell.map_cell.ClearHeightMapInfo();
 			grid_cell.translate.x = width;
 			grid_cell.translate.y = height;
 			grid_cell.translate.z = 0.0f;

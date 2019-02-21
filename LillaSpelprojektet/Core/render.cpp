@@ -26,10 +26,10 @@ Render::Render() {
 	lights_ = new Light[nr_of_lights_];
 
 	model_ = new Model*[nr_of_models_];
-	model_[0] = new Model((char*)"../Resources/Models/TestBox/testBOX.obj");
+	model_[0] = new Model((char*)"../Resources/Models/walkingNPC.fbx");
 
 	map_handler_.InitializeMaps(
-		"../Resources/Map/MainMap512.bmp",
+		"../Resources/Map/MainMap.bmp",
 		"../Resources/Map/cavewall.png",
 		"../Resources/Map/v4.png");
 

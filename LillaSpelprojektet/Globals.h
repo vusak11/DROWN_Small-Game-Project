@@ -32,12 +32,12 @@
 //Player object--------------------------------------------
 //These numbers are specific to the player. Consider using these as base input for the
 //constructor and then altering internal variables
-#define PLAYER_TOP_SPEED 100
+#define PLAYER_TOP_SPEED 75
 #define PLAYER_JUMP_VELOCITY 75
 
 //Map------------------------------------------------------
-#define GRID_COLUMN 16
-#define GRID_ROW 16
+#define GRID_COLUMN 32
+#define GRID_ROW 32
 #define GRID_GAP 2.0					//2.0 to close the gaps between the cells
 #define MAP_DEPTH 0.05	
 
