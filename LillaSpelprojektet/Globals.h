@@ -11,7 +11,7 @@
 #define WINDOW_HEIGHT 720
 
 //Camera---------------------------------------------------
-#define CAMERA_DEFAULT_ZOOM 23.0
+#define CAMERA_DEFAULT_ZOOM 40.0
 #define CAMERA_DEBUG_ZOOM 100.0
 #define CAMERA_DEBUG_POSITION_X 256.0
 #define CAMERA_DEBUG_POSITION_Y -256.0
@@ -36,10 +36,11 @@
 #define PLAYER_JUMP_VELOCITY 75
 
 //Map------------------------------------------------------
-#define GRID_COLUMN 16
-#define GRID_ROW 16
+#define GRID_COLUMN 32
+#define GRID_ROW 32
 #define GRID_GAP 2.0					//2.0 to close the gaps between the cells
 #define MAP_DEPTH 0.05	
+#define MAP_SIZE 2048
 
 //#define MAP_SCALE 1						//1 -> each vertex have 1 position unit in between
 //Ability Numbers------------------------------------------
