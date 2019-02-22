@@ -11,7 +11,7 @@
 #define WINDOW_HEIGHT 720
 
 //Camera---------------------------------------------------
-#define CAMERA_DEFAULT_ZOOM 23.0
+#define CAMERA_DEFAULT_ZOOM 40.0
 #define CAMERA_DEBUG_ZOOM 100.0
 #define CAMERA_DEBUG_POSITION_X 256.0
 #define CAMERA_DEBUG_POSITION_Y -256.0
