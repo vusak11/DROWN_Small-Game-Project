@@ -34,7 +34,7 @@ Camera::Camera(glm::vec3 in_look_at, float in_distance) {
 	float fov = 3.141592653589f * 0.45f;
 	float aspect = ((float)WINDOW_WIDTH / (float)WINDOW_HEIGHT);
 	float nearplane = 0.1f;
-	float farplane = 10000.0f;
+	float farplane = 1000.0f;
 	this->perspective_mat_ = glm::perspective(fov, aspect, nearplane, farplane);
 }
 

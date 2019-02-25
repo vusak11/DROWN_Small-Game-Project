@@ -1,5 +1,5 @@
 #include <iostream>
-#include "game.h"
+#include "Core/Game.h"
 #include <SFML/OpenGL.hpp>
 
 #define _CRTDBG_MAP_ALLOC 
@@ -7,7 +7,7 @@
 int main() {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 
-	sf::Window window(sf::VideoMode(1280, 720), "My window", sf::Style::Default, sf::ContextSettings(32));
+	sf::Window window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Drown", sf::Style::Default, sf::ContextSettings(32));
 	window.setVerticalSyncEnabled(true);
 
 	window.setActive(true);
@@ -16,9 +16,6 @@ int main() {
 	if (glewInit() != GLEW_OK) {
 		std::cout << "GLEW not linking" << std::endl;
 	}
-
-	//glEnable(GL_DEPTH_TEST);
-	//glDepthFunc(GL_LESS);
 
 	/*----------Variables----------*/
 	sf::Clock gameTime;
@@ -37,13 +34,13 @@ int main() {
 			if (event.type == sf::Event::Closed) {
 				running = false;
 			}
-			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
-				running = false;
-			}
 			else if (event.type == sf::Event::Resized) {
 				glViewport(0, 0, event.size.width, event.size.height);
 			}
 			/*----------------Only exit window commands-----------*/
+			/*----------------Input from mouse / keyboard---------*/
+			game.InputForMenu(gameTime.restart().asSeconds(), event);
+			/*----------------Input from mouse / keyboard---------*/
 		}
 
 		//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
