@@ -143,6 +143,7 @@
     <ClCompile Include="Core\shader_handler.cpp" />
     <ClCompile Include="Core\sound_unit.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Map\zones.cpp" />
     <ClCompile Include="Object\Character\ability.cpp" />
     <ClCompile Include="Map\map.cpp" />
     <ClCompile Include="Map\map_handler.cpp" />
@@ -166,6 +167,7 @@
     <ClInclude Include="Globals.h" />
     <ClInclude Include="Map\map.h" />
     <ClInclude Include="Map\map_handler.h" />
+    <ClInclude Include="Map\zones.h" />
     <ClInclude Include="Object\Character\ability.h" />
     <ClInclude Include="Object\Character\character.h" />
     <ClInclude Include="Object\Character\mesh.h" />
