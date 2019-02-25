@@ -9,7 +9,7 @@ void ObjectClass::CalculateModelMatrix() {
 	//The order is important here.
 	//First we scale, then we rotate and finally we translate
 	this->model_matrix_ = this->translation_matrix_ * this->rotation_matrix_ * this->scaling_matrix_;
-	this->hit_box_.Update(position_, scale_);
+	this->hitbox_.UpdateHitbox(position_, scale_.x, scale_.y);
 }
 
 
@@ -33,7 +33,7 @@ ObjectClass::ObjectClass(glm::vec3 start_pos, ObjectID id) {
 	this->rotation_matrix_ = glm::mat4(1.0f);
 	this->translation_matrix_ = glm::mat4(1.0f);
 
-	hit_box_ = HitBox(position_, scale_);
+	hitbox_ = HitBox(position_, scale_.x, scale_.y);
 	//TBA: Use the ID to determine the specs of a Object (Character/Drop/etc)
 
 	this->model_matrix_up_to_date_ = false;
@@ -61,6 +61,9 @@ void ObjectClass::SetPosition(float in_x, float in_y, float in_z) {
 
 	//Model matrix is now out of date
 	this->model_matrix_up_to_date_ = false;
+
+	//Apply new position on the hitbox
+	this->hitbox_.UpdateHitbox(position_, scale_.x, scale_.y);
 }
 
 void ObjectClass::SetScale(float in_s) {
@@ -71,6 +74,9 @@ void ObjectClass::SetScale(float in_s) {
 
 	//Model matrix is now out of date
 	this->model_matrix_up_to_date_ = false;
+
+	//Apply new scale on the hitbox
+	this->hitbox_.UpdateHitbox(position_, scale_.x, scale_.y);
 }
 
 void ObjectClass::SetScale(float in_x, float in_y, float in_z) {
@@ -121,7 +127,7 @@ ObjectID ObjectClass::GetObjectID() const {
 
 HitBox ObjectClass::GetHitBox() const
 {
-	return this->hit_box_;
+	return this->hitbox_;
 }
 
 glm::vec3 ObjectClass::GetPosition() const {
