@@ -9,42 +9,38 @@
 #include <GLM/gtx/transform.hpp>
 
 #include "../Globals.h"
+#include "..\hitbox.h"
 
 // This class is used as a base for all the objects in the game. This goes for any
 // objects or characters.
 // Example:
 //    class Character : ObjectClass
 
-struct HitBox // Struct used for checking collision
-	{
-		//    3       2
-		//	  ________ 
-		//	  |		  | 
-		//	  |  Box  |
-		//	  |		  | 
-		//	  ---------
-		//    0       1
-		glm::vec2 hb_pos0_;
-		glm::vec2 hb_pos1_;
-		glm::vec2 hb_pos2_;
-		glm::vec2 hb_pos3_;
-
-		HitBox() {}
-		HitBox(glm::vec3 position, glm::vec3 scale) {
-			// Initialize the hitbox to player position.
-			hb_pos0_ = glm::vec2(position.x + (-1 * scale.x), position.y + (-1 * scale.y));
-			hb_pos1_ = glm::vec2(position.x + ( 1 * scale.x), position.y + (-1 * scale.y));
-			hb_pos2_ = glm::vec2(position.x + ( 1 * scale.x), position.y + ( 1 * scale.y));
-			hb_pos3_ = glm::vec2(position.x + (-1 * scale.x), position.y + ( 1 * scale.y));
-		}
-		~HitBox(){}
-		void Update(glm::vec3 position, glm::vec3 scale) {
-			hb_pos0_ = glm::vec2(position.x + (-1 * scale.x), position.y + (-1 * scale.y));
-			hb_pos1_ = glm::vec2(position.x + (1 * scale.x), position.y + (-1 * scale.y));
-			hb_pos2_ = glm::vec2(position.x + (1 * scale.x), position.y + (1 * scale.y));
-			hb_pos3_ = glm::vec2(position.x + (-1 * scale.x), position.y + (1 * scale.y));
-		}
-	};
+//struct HitBox // Struct used for checking collision
+//	{
+//		
+//		glm::vec2 hb_pos0_;
+//		glm::vec2 hb_pos1_;
+//		glm::vec2 hb_pos2_;
+//		glm::vec2 hb_pos3_;
+//
+//		HitBox() {}
+//		HitBox(glm::vec3 position, glm::vec3 scale) {
+//			 Initialize the hitbox to player position.
+//			hb_pos0_ = glm::vec2(position.x + (-1 * scale.x), position.y + (-1 * scale.y));
+//			hb_pos1_ = glm::vec2(position.x + ( 1 * scale.x), position.y + (-1 * scale.y));
+//			hb_pos2_ = glm::vec2(position.x + ( 1 * scale.x), position.y + ( 1 * scale.y));
+//			hb_pos3_ = glm::vec2(position.x + (-1 * scale.x), position.y + ( 1 * scale.y));
+//		}
+//		~HitBox(){}
+//		
+//		void Update(glm::vec3 position, glm::vec3 scale) {
+//			hb_pos0_ = glm::vec2(position.x + (-1 * scale.x), position.y + (-1 * scale.y));
+//			hb_pos1_ = glm::vec2(position.x + (1 * scale.x), position.y + (-1 * scale.y));
+//			hb_pos2_ = glm::vec2(position.x + (1 * scale.x), position.y + (1 * scale.y));
+//			hb_pos3_ = glm::vec2(position.x + (-1 * scale.x), position.y + (1 * scale.y));
+//		}
+//	};
 
 class ObjectClass {
 private:
@@ -52,8 +48,7 @@ private:
 	
 
 	//Variables-----------------------------------------------
-	//ObjectID id_;
-	HitBox hit_box_;
+	HitBox hitbox_;
 
 
 	//Metadata/Math
