@@ -5,8 +5,14 @@
 #include <functional>		//Allows function pointers and lambdas
 							//Ref. for how it works: https://en.cppreference.com/w/cpp/utility/functional/function
 
-#include "object_class.h"
 #include "../globals.h"
+
+#include "object_class.h"
+#include "Character/character.h"
+#include "Character/player_character.h"
+#include "Character/npc.h"
+
+
 #include "Physics/physics_engine.h"
 
 #include <iostream>			//Included for output in test function.
@@ -25,8 +31,8 @@ private:
 	};
 
 	//Variables-----------------------------------------------
-	ObjectClass* player_ptr_;						//Player
-	std::vector<ObjectClass*> npc_ptr_vector_;		//All enemies
+	PlayerCharacter* player_ptr_;
+	std::vector<ObjectClass*> npc_ptr_vector_;				//All enemies
 	std::vector<ObjectClass*> drop_ptr_vector_;		//Things dropped on the ground (e.g. power-ups, health)
 
 	PlayerInput player_input_;
@@ -43,10 +49,11 @@ private:
 	
 	std::vector<ObjectClass*> CullAndRetrieveObjectPtrs(const std::vector<ObjectClass*>& in_object_vector) const;	//Scans given vector and returns a vector of references to objects close enough to the player
 				
-	float DistanceBetween(const ObjectClass* in_object_a, const ObjectClass* in_object_b) const;			//Returns the distance between the two given objects
+	float DistanceBetween(const ObjectClass* in_object_a, const ObjectClass* in_object_b) const;					//Returns the distance between the two given objects
 
-	void DeterminePlayerAction();						//Read player_input_ and determine legal actions, such as changes to velocity or if we can attack this frame
-	void DetermineNPCAction(ObjectClass* in_npc);		//Call the AI of the npc object to see what the npc does, then determine legal actions
+	void DeterminePlayerAction(const float& in_deltatime);								//Read player_input_ and determine legal actions, such as changes to velocity or if we can attack this frame
+	void ProcessNPCs(const float& in_deltatime, std::vector<ObjectClass*>& in_npcs_ptr_vector);	//Call AI functions for NPCs in vector
+	void DetermineNPCAction(const float& in_deltatime, NPC* in_npc);					//Call the AI of the npc object to see what the npc does, then determine legal actions
 
 	void ResolvePlayerAction();							//Move player, apply hitboxes, etc.
 	void ResolveNPCAction(ObjectClass* in_npc);			//Move npc, apply hitboxes, etc.
@@ -62,7 +69,8 @@ public:
 	ObjectHandler();
 	~ObjectHandler();
 
-	void InitializeObjectHandler();		//Function creates player object, loads in enemies for the zones etc. Call from InitiateGame();
+	// Takes map data to send to physics engine.
+	void InitializeObjectHandler(std::vector<std::vector<float>>* map_height_list);		//Function creates player object, loads in enemies for the zones etc. Call from InitiateGame();
 
 	//Functions for controlling the player
 	//Call these functions when pressing buttons

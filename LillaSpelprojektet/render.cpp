@@ -21,11 +21,38 @@ Render::Render() {
 		"glsl/lightingpass/lighting_fs.glsl");
 	lights_ = new Light[nr_of_lights_];
 
-	model_ = new Model*[nr_of_models_];
-	model_[0] = new Model((char*)"../Resources/Models/TestBox/testBOX.obj");
-
-	map_[0].LoadMap((char*)"../Resources/Map/TestMapMediumHard.bmp");
+	//--------------------------------------------------------
+	//-------------------Load Map Data------------------------
+	//--------------------------------------------------------
+	
+	//Load map and textures
+	map_[0].LoadMap((char*)"../Resources/Map/TestMapMediumHard2.bmp");
 	map_[0].LoadTexture((char*)"../Resources/Map/rock.png");
+
+	//Create map_matrix (set scale and rotate matrix)
+	this->map_matrix_ = glm::mat4(1.0f);
+	this->map_matrix_ = glm::translate(
+		this->map_matrix_,
+		glm::vec3(0.0f, 0.0f, -100.0f)
+	);
+	this->map_matrix_ = glm::rotate(
+		this->map_matrix_,
+		glm::radians(90.0f),
+		glm::vec3(1, 0, 0)
+	);
+
+	//--------------------------------------------------------
+	//---------------Load Models to Array---------------------
+	//--------------------------------------------------------
+
+	//Make space for 1 model per ObjectID
+	this->nr_of_models_ = NUMBER_OF_OBJECT_IDS;
+	model_ = new Model*[this->nr_of_models_];
+	
+	//Link models to a ObjectID
+	model_[OBJECT_ID_NULL] = new Model((char*)"../Resources/Models/DefaultDummyNPC/defaultDummyNPC.obj");
+	model_[OBJECT_ID_PLAYER] = new Model((char*)"../Resources/Models/TestBox/testBOX.obj");
+	model_[OBJECT_ID_DUMMY] = new Model((char*)"../Resources/Models/DummyNPC/dummyNPC.obj");
 
 	
 }
@@ -68,20 +95,12 @@ void Render::UpdateRender(
 	glDisable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
 
-	// Pushing Map into object vector
-	glm::mat4 map_matrix = glm::mat4(1.0f);
-	map_matrix = glm::translate(map_matrix, glm::vec3(-100.0f, 100.0, -100.0f));
-	map_matrix = glm::rotate(map_matrix, glm::radians(90.0f), glm::vec3(1, 0, 0));
-	map_matrix = glm::scale(map_matrix, glm::vec3(0.3f, 0.8f, 0.8f));
-	ObjectPackage map_package;
-	map_package.id = OBJECT_ID_MAP;
-	map_package.model_matrix = map_matrix;
-
-	object_vector.push_back(map_package);
-
 	//  GEOMETRY
 	GeometryPass(camera_position, perspective_view_matrix);
 	GeometryDrawing(object_vector);
+	//Also draw the map
+	this->ModelTransformation(this->map_matrix_);
+	this->map_[0].Draw(geometry_pass_->GetProgram());
 	
 	//  LIGHTING
 	lights_[0].SetPos(camera_position);
@@ -91,21 +110,16 @@ void Render::UpdateRender(
 }
 
 void Render::GeometryDrawing(std::vector<ObjectPackage>& object_vector) {
+	
+	//Loop through all ObjectPackage:s and draw the corresponding models
+	ObjectID temp_id;
 	for (unsigned int i = 0; i < object_vector.size(); i++) {
-		if (OBJECT_ID_NULL == object_vector[i].id) {
+		//Upload the object's model-matrix
+		this->ModelTransformation(object_vector[i].model_matrix);
 
-		}
-		else if (OBJECT_ID_PLAYER == object_vector[i].id) {
-			ModelTransformation(object_vector[i].model_matrix);
-			model_[0]->Draw(geometry_pass_->GetProgram());
-		}
-		else if (OBJECT_ID_JOHNNY_BRAVO == object_vector[i].id) {
-			ModelTransformation(object_vector[i].model_matrix);
-		}
-		else if (OBJECT_ID_MAP == object_vector[i].id) {
-			ModelTransformation(object_vector[i].model_matrix);
-			map_[0].Draw(geometry_pass_->GetProgram());
-		}
+		//Get the object's id and draw a model of that type
+		temp_id = object_vector[i].id;
+		this->model_[temp_id]->Draw(geometry_pass_->GetProgram());
 	}
 }
 
@@ -189,4 +203,9 @@ void Render::RenderQuad() {
 	glBindVertexArray(quad_vertex_array_object_);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 5);
 	glBindVertexArray(0);
+}
+
+Map * Render::GetMapPointer(int index)
+{
+	return &map_[index];
 }

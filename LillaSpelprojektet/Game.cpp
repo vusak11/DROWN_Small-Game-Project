@@ -1,10 +1,10 @@
 #include "game.h"
 
 Game::Game() {
-	this->cam_handler_ptr_ = new CameraHandler(glm::vec3(0.0f), 10.0f);
+	this->cam_handler_ptr_ = new CameraHandler(glm::vec3(100.0f, -200.0f, -80.0f), 80.0f);
 	this->obj_handler_ptr_ = new ObjectHandler();
 	menu_.Initiliaze();
-    state_ = MENU;
+    state_ = GAME;
 }
 
 Game::~Game() {
@@ -14,7 +14,7 @@ Game::~Game() {
 
 void Game::InitializeGame() {
 	render_.InitializeRender();
-	this->obj_handler_ptr_->InitializeObjectHandler();
+	this->obj_handler_ptr_->InitializeObjectHandler(render_.GetMapPointer(0)->GetTempHeightList());
 }
 
 void Game::InputFromDevices(float in_deltatime) {
@@ -44,11 +44,12 @@ void Game::InputFromDevices(float in_deltatime) {
 		/*---------------Keyboard inputs-----------------*/
 		//Walk up
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-			this->obj_handler_ptr_->PlayerJump();
+			this->obj_handler_ptr_->PlayerJump();		// Used to temporary test in obj handler class
 		}
 		//Walk down
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-			//Do something
+			this->obj_handler_ptr_->PlayerUseAbility();	// Used to temporary test in obj handler class
+			std::cout << "X: " << obj_handler_ptr_->GetPlayerPos().x << "Y: " << obj_handler_ptr_->GetPlayerPos().y << " Z: " << obj_handler_ptr_->GetPlayerPos().z << std::endl;
 		}
 		//Walk right
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
@@ -60,7 +61,9 @@ void Game::InputFromDevices(float in_deltatime) {
 		}
 		//Pick up
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::E)) {
-			//Do something
+			//OBS!
+			//CURRENTLY BOUND TO USE ABILITY
+			this->obj_handler_ptr_->PlayerUseAbility();
 		}
 		/*---------------End Keyboard inputs-----------------*/
 
@@ -131,6 +134,7 @@ void Game::GameLoop(float in_deltatime) {
 		// This updates the player position.
 		std::vector<ObjectPackage> object_vector;
 		object_vector = this->obj_handler_ptr_->UpdateAndRetrieve(in_deltatime);
+		cam_handler_ptr_->SetPrimaryCameraPos(this->obj_handler_ptr_->GetPlayerPos());
 
 		render_.UpdateRender(
 			in_deltatime,
