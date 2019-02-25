@@ -23,11 +23,6 @@ void HitBox::UpdateHitbox(glm::vec3 position, float x_offset, float y_offset) {
 	y_offset_ = y_offset;
 }
 
-HitBox HitBox::GetHitbox() const {
-
-	return (*this);
-}
-
 glm::vec2 HitBox::GetPoint0() const
 {
 	glm::vec2 point;

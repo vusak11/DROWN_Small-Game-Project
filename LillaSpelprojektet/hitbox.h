@@ -32,7 +32,6 @@ public:
 	// Call this each time the object is translated in the world to translate the hitbox
 	void UpdateHitbox(glm::vec3 position, float x_offset, float y_offset);
 
-	HitBox GetHitbox() const;
 	glm::vec2 GetPoint0() const;
 	glm::vec2 GetPoint1() const;
 	glm::vec2 GetPoint2() const;
