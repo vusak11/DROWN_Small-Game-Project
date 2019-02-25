@@ -342,7 +342,7 @@ void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_
 		{
 			//object_pos.y += 0.2f;
 			object_pos.y = y_0_index * (-1) + in_object_ptr->GetScale().y * 1.25;
-			//std::cout << "Bot Collision" << std::endl;
+			std::cout << "Bot Collision" << std::endl;
 			doublecollision = true;
 			in_object_ptr->SetVelocityVec(glm::vec3(in_object_ptr->GetVelocityVec().x, 0.0f, in_object_ptr->GetVelocityVec().z));
 			//in_object_ptr->SetAirborne(false);
@@ -351,7 +351,7 @@ void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_
 		if (collision_0 && collision_3)	// Left collision
 		{
 			object_pos.x = x_0_index + in_object_ptr->GetScale().x * 1.25;
-			//std::cout << "Left Collision" << std::endl;
+			std::cout << "Left Collision" << std::endl;
 			doublecollision = true;
 			in_object_ptr->SetVelocityVec(glm::vec3(0.0f, in_object_ptr->GetVelocityVec().y, in_object_ptr->GetVelocityVec().z));
 		}
@@ -359,7 +359,7 @@ void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_
 		if (collision_1 && collision_2)	// Right collision
 		{
 			object_pos.x = x_1_index - in_object_ptr->GetScale().x * 1.25;
-			//std::cout << "Right Collision" << std::endl;
+			std::cout << "Right Collision" << std::endl;
 			doublecollision = true;
 			in_object_ptr->SetVelocityVec(glm::vec3(0.0f, in_object_ptr->GetVelocityVec().y, in_object_ptr->GetVelocityVec().z));
 		}
@@ -367,7 +367,7 @@ void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_
 		if (collision_3 && collision_2)	// Top collision
 		{
 			object_pos.y = y_1_index * (-1) - in_object_ptr->GetScale().y * 1.25;
-			//std::cout << "Top Collision" << std::endl;
+			std::cout << "Top Collision" << std::endl;
 			doublecollision = true;
 			in_object_ptr->SetVelocityVec(glm::vec3(in_object_ptr->GetVelocityVec().x, 0.0f, in_object_ptr->GetVelocityVec().z));
 		}
@@ -397,7 +397,7 @@ void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_
 
 				//in_object_ptr->SetAirborne(false);
 
-				//std::cout << "0 Collision" << std::endl;
+				std::cout << "0 Collision" << std::endl;
 			}
 			else if (collision_1)
 			{
@@ -421,13 +421,13 @@ void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_
 				
 				//in_object_ptr->SetAirborne(false);
 
-				//std::cout << "1 Collision" << std::endl;
+				std::cout << "1 Collision" << std::endl;
 			}
 			else if (collision_2)
 			{
 				object_pos.x -= 0.2;
 				object_pos.y -= 0.2;
-				//std::cout << "2 Collision" << std::endl;
+				std::cout << "2 Collision" << std::endl;
 				in_object_ptr->SetVelocityVec(glm::vec3(in_object_ptr->GetVelocityVec().x, 0.0f, in_object_ptr->GetVelocityVec().z));
 				in_object_ptr->SetVelocityVec(glm::vec3(0.0f, in_object_ptr->GetVelocityVec().y, in_object_ptr->GetVelocityVec().z));
 			}
@@ -435,11 +435,12 @@ void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_
 			{
 				object_pos.x += 0.2;
 				object_pos.y -= 0.2;
-				//std::cout << "3 Collision" << std::endl;
+				std::cout << "3 Collision" << std::endl;
 				in_object_ptr->SetVelocityVec(glm::vec3(in_object_ptr->GetVelocityVec().x, 0.0f, in_object_ptr->GetVelocityVec().z));
 				in_object_ptr->SetVelocityVec(glm::vec3(0.0f, in_object_ptr->GetVelocityVec().y, in_object_ptr->GetVelocityVec().z));
 			}
 		}
+		
 	}
 	
 
