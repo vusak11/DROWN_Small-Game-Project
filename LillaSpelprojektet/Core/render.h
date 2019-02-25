@@ -16,27 +16,24 @@ class Render {
 private:
 	GLuint quad_vertex_array_object_;
 	GLuint quad_vertex_buffer_object_;
-	int nr_of_lights_;
-	void DrawScene();
-
 	
 	ShaderHandler* geometry_pass_;
 	ShaderHandler* lighting_pass_;
-	Light* lights_;
-
-	Map map_[1];
-	glm::mat4 map_matrix_;
-
+	ShaderHandler* text_shaders_;
+	ShaderHandler* gui_shaders_;
+	
 	int nr_of_models_;
 	Model** model_;
 
-	MapHandler map_handler_;
-	ShaderHandler* text_shaders_;
-	ShaderHandler* gui_shaders_;
+	int nr_of_lights_;
+	Light* lights_;
 
-	glm::mat4 model_matrix_;
+	MapHandler map_handler_;
 
 	GUI hud_;
+
+	void DrawScene();
+
 public:
 	Render();
 	~Render();

@@ -8,6 +8,9 @@ Render::Render() {
 	quad_vertex_buffer_object_ = 0;
 	nr_of_lights_ = 1;
 
+	//--------------------------------------------------------
+	//-------------------Create Shaders-----------------------
+	//--------------------------------------------------------
 	text_shaders_ = new ShaderHandler(
 		"glsl/textshader_vs.glsl",
 		"glsl/textshader_fs.glsl"
@@ -28,12 +31,15 @@ Render::Render() {
 	//--------------------------------------------------------
 	//-------------------Load Map Data------------------------
 	//--------------------------------------------------------
-	
 	map_handler_.InitializeMaps(
 		"../Resources/Map/MainMap.bmp",
 		"../Resources/Map/cavewall.png",
 		"../Resources/Map/v4.png");
 
+
+	//--------------------------------------------------------
+	//---------------------Load HUD---------------------------
+	//--------------------------------------------------------
 	hud_.LoadHealthBarTexture((char*)"../Resources/GUI/healthbar.png");
 	hud_.LoadQuickSlotTexture((char*)"../Resources/GUI/quickslot.png");
 	
@@ -41,7 +47,6 @@ Render::Render() {
 	//--------------------------------------------------------
 	//---------------Load Models to Array---------------------
 	//--------------------------------------------------------
-
 	//Make space for 1 model per ObjectID
 	this->nr_of_models_ = NUMBER_OF_OBJECT_IDS;
 	model_ = new Model*[this->nr_of_models_];
@@ -101,7 +106,6 @@ void Render::UpdateRender(
 	glLoadIdentity();
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-
 	//  GEOMETRY
 	GeometryPass(camera_position, perspective_view_matrix);
 	GeometryDrawing(object_vector);
@@ -126,6 +130,8 @@ void Render::UpdateRender(
 
 void Render::GeometryDrawing(std::vector<ObjectPackage>& object_vector) {
 	
+	//--------------------DRAW OBJECTS------------------------
+
 	//Loop through all ObjectPackage:s and draw the corresponding models
 	ObjectID temp_id;
 	for (unsigned int i = 0; i < object_vector.size(); i++) {
@@ -136,6 +142,26 @@ void Render::GeometryDrawing(std::vector<ObjectPackage>& object_vector) {
 		temp_id = object_vector[i].id;
 		this->model_[temp_id]->Draw(geometry_pass_->GetProgram());
 	}
+	
+	//----------------DRAW THE MAP----------------------------
+
+	//We know the player object to be the first in the vector
+	glm::vec3 player_position = glm::vec3(
+		object_vector.at(0).model_matrix[3][0],
+		object_vector.at(0).model_matrix[3][1],
+		object_vector.at(0).model_matrix[3][2]);
+
+	//Then only retrieve cells nearby
+	std::vector<glm::vec2> cells = map_handler_.GridCulling(
+		map_handler_.CurrentCell(player_position));
+	
+	//Draw the map
+	while (!cells.empty()) {
+		ModelTransformation(map_handler_.Transformation((int)cells.back().x, (int)cells.back().y));
+		map_handler_.Draw(geometry_pass_->GetProgram(), (int)cells.back().x, (int)cells.back().y);
+		cells.pop_back();
+	}
+	
 	/*
 	else if (OBJECT_ID_MAP == object_vector.back().id) {
 			std::vector<glm::vec2> cells = map_handler_.GridCulling(
