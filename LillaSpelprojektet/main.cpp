@@ -1,5 +1,8 @@
 #include <iostream>
+
 #include "Core/Game.h"
+#include "GLDebug.h"
+
 #include <SFML/OpenGL.hpp>
 
 #define _CRTDBG_MAP_ALLOC 
@@ -16,6 +19,10 @@ int main() {
 	if (glewInit() != GLEW_OK) {
 		std::cout << "GLEW not linking" << std::endl;
 	}
+
+	/*----------Start GL Debugging----------*/
+	EnableGLDebug();
+	/*----------End of Start GL Debugging----------*/
 
 	/*----------Variables----------*/
 	sf::Clock gameTime;
