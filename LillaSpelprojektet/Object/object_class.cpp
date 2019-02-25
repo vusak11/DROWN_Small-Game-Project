@@ -168,7 +168,7 @@ void ObjectClass::TurnLeft(const float& in_deltatime) {
 	//If the new orientation is further than -PI/2 snap it to -PI/2
 	if (new_rotation < glm::radians(-90.0f)) { new_rotation = glm::radians(-90.0f); }
 
-	std::cout << "Rot L: " << glm::degrees(new_rotation) << std::endl;
+	//std::cout << "Rot L: " << glm::degrees(new_rotation) << std::endl;
 
 	this->SetRotation(this->rotation_around_x_, new_rotation, this->rotation_around_z_);
 }
@@ -181,7 +181,7 @@ void ObjectClass::TurnRight(const float& in_deltatime) {
 	//If the new orientation is further than PI/2 snap it to PI/2
 	if (new_rotation > glm::radians(90.0f)) { new_rotation = glm::radians(90.0f); }
 
-	std::cout << "Rot R: " << glm::degrees(new_rotation) << std::endl;
+	//std::cout << "Rot R: " << glm::degrees(new_rotation) << std::endl;
 
 	this->SetRotation(this->rotation_around_x_, new_rotation, this->rotation_around_z_);
 }

@@ -1,5 +1,5 @@
 #include "hitbox.h"
-
+#include "Globals.h"
 
 
 HitBox::HitBox() {
@@ -59,20 +59,23 @@ glm::vec2 HitBox::GetPoint3() const
 	return point;
 }
 
-glm::vec2* HitBox::GetPoints() const
+BoxPoints HitBox::GetPoints() const
 {
-	glm::vec2 points[4];
-	points[0].x = position_.x - x_offset_;
-	points[0].y = position_.y - y_offset_;
-	
-	points[1].x = position_.x + x_offset_;
-	points[1].y = position_.y - y_offset_;
+	BoxPoints points;
 
-	points[2].x = position_.x + x_offset_;
-	points[2].y = position_.y + y_offset_;
+	points.bottomLeft.x = position_.x - x_offset_;
+	points.bottomLeft.y = position_.y - y_offset_;
 
-	points[3].x = position_.x - x_offset_;
-	points[3].y = position_.y + y_offset_;
+	points.bottomRight.x = position_.x + x_offset_;
+	points.bottomRight.y = position_.y - y_offset_;
+
+	points.TopRight.x = position_.x + x_offset_;
+	points.TopRight.y = position_.y + y_offset_;
+
+	points.TopLeft.x = position_.x - x_offset_;
+	points.TopLeft.y = position_.y + y_offset_;
 
 	return points;
 }
+
+
