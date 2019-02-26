@@ -11,14 +11,10 @@
 #include "../Camera/camera_handler.h"
 #include "../Object/object_handler.h"
 
-#include "../Map/POI.h"
-
 class Game {
 private:
 	CameraHandler* cam_handler_ptr_;
 	ObjectHandler* obj_handler_ptr_;
-
-	POI POIs_;
 
 	Render render_;
 

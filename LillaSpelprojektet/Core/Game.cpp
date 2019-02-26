@@ -11,7 +11,6 @@ void Game::InputForGame(float in_deltatime) {
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
 			this->obj_handler_ptr_->PlayerUseAbility();	// Used to temporary test in obj handler class
 			std::cout << "X: " << obj_handler_ptr_->GetPlayerPos().x << "Y: " << obj_handler_ptr_->GetPlayerPos().y << " Z: " << obj_handler_ptr_->GetPlayerPos().z << std::endl;
-			std::cout << "Zone: " << POIs_.getZone(glm::vec2(obj_handler_ptr_->GetPlayerPos().x, obj_handler_ptr_->GetPlayerPos().y)) << std::endl;
 		}
 		//Walk right
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
@@ -93,16 +92,6 @@ Game::Game() {
 
 	state_ = MENU;
 	menu_.Initiliaze();
-	POIs_.Initialize();
-
-	//Print out coordinates
-	std::cout << "Zone 1 - X: " << POIs_.getZonePOIs()[0].x << "\t\t" << "Y: " << POIs_.getZonePOIs()[0].y << std::endl;
-	std::cout << "Zone 2 - X: " << POIs_.getZonePOIs()[1].x << "\t\t" << "Y: " << POIs_.getZonePOIs()[1].y << std::endl;
-	std::cout << "Zone 3 - X: " << POIs_.getZonePOIs()[2].x << "\t\t" << "Y: " << POIs_.getZonePOIs()[2].y << std::endl << std::endl;
-
-	std::cout << "Spawn point - X: " << POIs_.getSpawnPointCoords().x << "\t\t" << "Y: " << POIs_.getSpawnPointCoords().y << std::endl;
-	std::cout << "Boss door - X: " << POIs_.getBossDoorCoords().x << "\t\t" << "Y: " << POIs_.getBossDoorCoords().y << std::endl;
-	std::cout << "Door key - X: " << POIs_.getDoorKeyCoords().x << "\t\t" << "Y: " << POIs_.getDoorKeyCoords().y << std::endl;
 }
 
 Game::~Game() {

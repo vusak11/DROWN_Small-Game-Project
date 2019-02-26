@@ -1,14 +1,14 @@
-#include "POI.h"
+#include "metadata.h"
 
-POI::POI() {
-
-}
-
-POI::~POI() {
+MetaData::MetaData() {
 
 }
 
-void POI::Initialize() {
+MetaData::~MetaData() {
+
+}
+
+void MetaData::Initialize() {
 	points_of_interest_ = {
 		glm::vec2(160, -70),
 		glm::vec2(1995, -115),
@@ -31,16 +31,16 @@ void POI::Initialize() {
 		glm::vec2(1025, -515),
 		glm::vec2(460, -1650)
 	};
-	zone_origin_coords_ = fetchThreeRandomPOIs(800);
+	zone_origin_coords_ = FetchThreeRandomPOIs(800);
 	zone_radius_ = 400;
 
-	spawn_point_coords_ = fetchRandomPOI();
-	boss_door_coords_ = fetchRandomPOI();
-	door_key_coords_ = fetchRandomPOI();
+	spawn_point_coords_ = FetchRandomPOI();
+	boss_door_coords_ = FetchRandomPOI();
+	door_key_coords_ = FetchRandomPOI();
 	boss_room_coords_ = glm::vec2(60, -1250);
 }
 
-std::vector<glm::vec2> POI::fetchThreeRandomPOIs(int offset) {
+std::vector<glm::vec2> MetaData::FetchThreeRandomPOIs(int offset) {
 	srand((unsigned)time(0));
 	int rand_num = ((rand() % (points_of_interest_.size() + 1)));		//Random number 0 - nr_of_pois_
 	int rand_iterator = 1 + ((rand() % 5));								//Random number 1 - 5 used as an iterator
@@ -80,7 +80,7 @@ std::vector<glm::vec2> POI::fetchThreeRandomPOIs(int offset) {
 	return three_random_pois;
 }
 
-glm::vec2 POI::fetchRandomPOI() {
+glm::vec2 MetaData::FetchRandomPOI() {
 	srand((unsigned)time(0));
 	int rand_num = ((rand() % (points_of_interest_.size() + 1)));		//Random number 0 - nr_of_pois_
 
@@ -90,7 +90,7 @@ glm::vec2 POI::fetchRandomPOI() {
 	return return_POI;
 }
 
-std::string POI::getZone(glm::vec2 zone_central_points) {
+std::string MetaData::GetZone(glm::vec2 zone_central_points) {
 	std::string zone_code = "DEF";
 	//Check if point is within radius of the RED ZONE
 	if (pow(zone_central_points.x - zone_origin_coords_[0].x, 2) + pow(zone_central_points.y - zone_origin_coords_[0].y, 2) <= pow(zone_radius_, 2)) {
@@ -107,31 +107,31 @@ std::string POI::getZone(glm::vec2 zone_central_points) {
 	return zone_code;
 }
 
-std::vector<glm::vec2> POI::getRemainingPOIs() const {
+std::vector<glm::vec2> MetaData::GetRemainingPOIs() const {
 	return points_of_interest_;
 }
 
-std::vector<glm::vec2> POI::getZonePOIs() const
+std::vector<glm::vec2> MetaData::GetZonePOIs() const
 {
 	return zone_origin_coords_;
 }
 
-glm::vec2 POI::getSpawnPointCoords() const
+glm::vec2 MetaData::GetSpawnPointCoords() const
 {
 	return spawn_point_coords_;
 }
 
-glm::vec2 POI::getBossDoorCoords() const
+glm::vec2 MetaData::GetBossDoorCoords() const
 {
 	return boss_door_coords_;
 }
 
-glm::vec2 POI::getDoorKeyCoords() const
+glm::vec2 MetaData::GetDoorKeyCoords() const
 {
 	return door_key_coords_;
 }
 
-glm::vec2 POI::getBossRoomCoords() const {
+glm::vec2 MetaData::GetBossRoomCoords() const {
 	return boss_room_coords_;
 }
 
