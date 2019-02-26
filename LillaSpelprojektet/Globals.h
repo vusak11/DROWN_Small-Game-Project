@@ -28,7 +28,7 @@
 #define OBJECT_MAX_VELOCITY 1000
 #define OBJECT_MIN_VELOCITY 0.1			//The lowest velocity an object can have that isn't 0
 										//If an velocity is lower than this it sets to 0
-#define OBJECT_GROUND_LOSS_RATIO 20.0	//0.1 = 10%		//WHAT.
+#define OBJECT_GROUND_LOSS_RATIO 10.0	//0.1 = 10%		//WHAT.
 #define OBJECT_AIR_LOSS_RATIO 1.00
 
 //Player object--------------------------------------------
@@ -38,7 +38,7 @@
 #define PLAYER_JUMP_VELOCITY 75
 
 //Ability Numbers------------------------------------------
-#define DASH_COOLDOWN 5
+#define DASH_COOLDOWN 1
 #define DASH_VELOCITY 800
 
 //Map------------------------------------------------------

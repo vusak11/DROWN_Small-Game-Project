@@ -52,14 +52,9 @@ bool Dash::ExecuteAbility(PlayerCharacter& in_player) {
 	//Check if the dash is off cooldown, otherwise return false
 	if (!this->IsOffCooldown()) { return false; }
 
-	//Get only the x-axis velocity (will give us direction of movement)
-	glm::vec3 new_velocity = glm::vec3(in_player.GetVelocityVec().x, 0.0f, 0.0f);
-
-	if (new_velocity.x == 0.0f) { return false; }
-
-	//Scale it in accordance with the dash velocity
-	new_velocity = glm::normalize(new_velocity) * this->dash_velocity_;
-
+	//Create a vector of dash_velocity length in the player's facing direction
+	float x_speed = this->dash_velocity_ * in_player.looking_towards_x_;
+	glm::vec3 new_velocity = glm::vec3(x_speed, 0.0f, 0.0f);
 
 	//Set it as new player velocity
 	in_player.SetVelocityVec(new_velocity);
