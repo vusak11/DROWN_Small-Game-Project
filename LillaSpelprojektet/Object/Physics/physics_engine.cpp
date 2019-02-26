@@ -55,191 +55,21 @@ void PhysicsEngine::UpdateVelocity(float& in_deltatime, ObjectClass*& in_object_
 void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_ptr) {
 
 	int map_size = MAP_SIZE;	// OBS this variable needs to be collected from the map
-	int radius_constant = 5;
-	int collision_threshold = 100;
-
+	int radius_constant = 6;
+	bool print = true;
 	// | 1 | Get new position from acceleration and velocity.
 
 	//Get the object's position
 	glm::vec3 object_pos = in_object_ptr->GetPosition();
+
 	//Displace the object using its velocity during deltatime
 	object_pos += in_object_ptr->GetVelocityVec()*in_deltatime;
 
-	/*
-	//TBA(?): COLLISION DETECTION VS MAP
+	//std::cout << "pos x,y: " << (int)in_object_ptr->GetPosition().x << " " << (int)in_object_ptr->GetPosition().y
+	//	<< " ,,, newPos x,y: " << (int)object_pos.x << " " << (int)object_pos.y << std::endl;
 
-	///
-
-	// Do NOT change any of the map values
-	//map_height_list_[4][3]
-	int radius_constant = 10;
-	int map_size = 100;	// OBS this variable needs to be collected from the map
-
-
-
-	// Get intervals of points to check in the map data from the players position + a radius
-	// This could probably be replaced by something less computation heavy
-	int player_tile_pos_x = object_pos.x / MAP_SCALE;
-	if ((int)object_pos.x % MAP_SCALE > MAP_SCALE)
-	{
-		player_tile_pos_x++;
-	}
-	int x_min = __max(player_tile_pos_x - radius_constant, 0);
-	x_min = __min(x_min, MAP_SCALE * map_size - MAP_SCALE);
-	int x_max = __min(x_min + 2 * radius_constant, MAP_SCALE * map_size - MAP_SCALE);
-	x_max = __max(x_max, 0);
-
-	int player_tile_pos_y = object_pos.y / MAP_SCALE;
-	if ((int)object_pos.y % MAP_SCALE > MAP_SCALE)
-	{
-		player_tile_pos_y++;
-	}
-	int y_min = __max(player_tile_pos_y - radius_constant, 0);
-	y_min = __min(y_min, MAP_SCALE * map_size - MAP_SCALE);
-	int y_max = __min(y_min + 2 * radius_constant, MAP_SCALE * map_size - MAP_SCALE);
-	y_max = __max(y_max, 0);
-
-	bool collision_0 = false;
-	bool collision_1 = false;
-	bool collision_2 = false;
-	bool collision_3 = false;
-
-	// precalculate the hitbox position on the grid;
-
-	HitBox tmp_hitbox = HitBox(glm::vec3(player_tile_pos_x, player_tile_pos_y, 0.0f), in_object_ptr->GetScale());
-
-	//---------Point_0---------//
-	int pos_0_x = tmp_hitbox.hb_pos0_.x / MAP_SCALE;
-	if ((int)tmp_hitbox.hb_pos0_.x % MAP_SCALE > MAP_SCALE)
-		pos_0_x++;
-
-	int pos_0_y = tmp_hitbox.hb_pos0_.y / MAP_SCALE;
-	if ((int)tmp_hitbox.hb_pos0_.y % MAP_SCALE > MAP_SCALE)
-		pos_0_y++;
-
-	//---------Point_1---------//
-
-	int pos_1_x = tmp_hitbox.hb_pos1_.x / MAP_SCALE;
-	if ((int)tmp_hitbox.hb_pos1_.x % MAP_SCALE > MAP_SCALE)
-		pos_1_x++;
-
-	int pos_1_y = tmp_hitbox.hb_pos1_.y / MAP_SCALE;
-	if ((int)tmp_hitbox.hb_pos1_.y % MAP_SCALE > MAP_SCALE)
-		pos_1_y++;
-
-	//---------Point_2---------//
-
-	int pos_2_x = tmp_hitbox.hb_pos2_.x / MAP_SCALE;
-	if ((int)tmp_hitbox.hb_pos2_.x % MAP_SCALE > MAP_SCALE)
-		pos_2_x++;
-
-	int pos_2_y = tmp_hitbox.hb_pos2_.y / MAP_SCALE;
-	if ((int)tmp_hitbox.hb_pos2_.y % MAP_SCALE > MAP_SCALE)
-		pos_2_y++;
-
-	//---------Point_3---------//
-
-	int pos_3_x = tmp_hitbox.hb_pos3_.x / MAP_SCALE;
-	if ((int)tmp_hitbox.hb_pos3_.x % MAP_SCALE > MAP_SCALE)
-		pos_3_x++;
-
-	int pos_3_y = tmp_hitbox.hb_pos3_.y / MAP_SCALE;
-	if ((int)tmp_hitbox.hb_pos3_.y % MAP_SCALE > MAP_SCALE)
-		pos_3_y++;
-
-
-	//HitBox tmp_hitbox = HitBox(glm::vec3(player_tile_pos_x, player_tile_pos_y, 0.0f), in_object_ptr->GetScale());
-	if (x_min < 0)
-	{
-		int x = 0;
-	}
-
-	// Maybe loop this 3 times maximum in a foor loop?
-
-	// Get through the interval and check each point which is in not in the background
-	for (int i = x_min; i < x_max; i++)
-	{
-		for (int j = y_min; j < y_max; j++)
-		{
-			float height_index = (*map_height_list_)[map_size - i][j];
-			if (height_index > 15.0f)	// Height map is not normalized. currently height 20
-			{
-				// if point 0 in hitbox is on a tile with a vertex from the map, collision_0 = true;
-				//---------Point_0---------//
-				if (pos_0_x == i && pos_0_y == j)
-				{
-					collision_0 = true;
-				}
-				//---------Point_1---------//
-				if (pos_1_x == i && pos_1_y == j)
-				{
-					collision_1 = true;
-				}
-				//---------Point_2---------//
-				if (pos_2_x == i && pos_2_y == j)
-				{
-					collision_2 = true;
-				}
-				//---------Point_3---------//
-				if (pos_3_x == i && pos_3_y == j)
-				{
-					collision_3 = true;
-				}
-			}
-		}
-	}
-
-	// Finally do things in a switch case if colliding.
-
-	if (collision_0 && collision_1)	// Bot collision
-	{
-		object_pos.y++;
-		std::cout << "Bot Collision" << std::endl;
-	}
-	else if (collision_0 && collision_3)	// Left collision
-	{
-		object_pos.x++;
-		std::cout << "Left Collision" << std::endl;
-	}
-	else if (collision_1 && collision_2)	// Right collision
-	{
-		object_pos.x--;
-		std::cout << "Right Collision" << std::endl;
-	}
-	else if (collision_3 && collision_2)	// Top collision
-	{
-		object_pos.y--;
-		std::cout << "Top Collision" << std::endl;
-	}
-	else if (collision_0)
-	{
-
-		std::cout << "0 Collision" << std::endl;
-	}
-	else if (collision_1)
-	{
-
-		std::cout << "1 Collision" << std::endl;
-	}
-	else if (collision_2)
-	{
-
-		std::cout << "2 Collision" << std::endl;
-	}
-	else if (collision_3)
-	{
-
-		std::cout << "3 Collision" << std::endl;
-	}
-
-	// Reset the flags
-	collision_0 = false;
-	collision_1 = false;
-	collision_2 = false;
-	collision_3 = false;
-
-	///
-	*/
+	//float test = in_object_ptr->GetPosition().y - object_pos.y;
+	//std::cout << "test value: " << test << std::endl;
 
 
 	// Reset collosion flags
@@ -248,11 +78,13 @@ void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_
 	bool collision_2 = false;
 	bool collision_3 = false;
 
+
+
+
 	HitBox hitbox;
-	hitbox.UpdateHitbox(object_pos, in_object_ptr->GetScale().x,  in_object_ptr->GetScale().y);
+	hitbox.UpdateHitbox(object_pos, in_object_ptr->GetScale().x, in_object_ptr->GetScale().y);
 	BoxPoints points = hitbox.GetPoints();
 
-	
 	//int x_0_index = (int)points.bottomLeft.x;
 	//float margin_x_0 = points.bottomLeft.x - x_0_index;
 	//if (margin_x_0 >= 0.5f)
@@ -286,16 +118,13 @@ void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_
 
 
 
+
+
 	// | 2 | Make values to 4 points surrounding the object like a box.
 	float x_0 = object_pos.x - in_object_ptr->GetScale().x;
 	float x_1 = __min((object_pos.x + in_object_ptr->GetScale().x), 495);
 	float y_0 = object_pos.y - in_object_ptr->GetScale().y;
 	float y_1 = __min((object_pos.y + in_object_ptr->GetScale().y), 495);
-
-	//float x_0 = points.bottomLeft.x;
-	//float x_1 = points.bottomRight.x;
-	//float y_0 = points.bottomLeft.y;
-	//float y_1 = points.TopLeft.y;
 
 	// | 3 | Normalize each pos to later match with map location.
 	x_0 = x_0 / (map_size - 1);
@@ -304,21 +133,23 @@ void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_
 	y_1 = y_1 / (map_size - 1);
 
 
+
+
 	// Get map index from normalized value
 	int x_0_index = x_0 * (map_size - 1);
 	float stair_adjustment_value_X_0 = x_0 * (map_size - 1) - x_0_index; // This value is used for single point collision
 	if (stair_adjustment_value_X_0 > 0.5) {
 		x_0_index++;
-		stair_adjustment_value_X_0 = stair_adjustment_value_X_0 * (-1);
+		stair_adjustment_value_X_0 = (1-stair_adjustment_value_X_0) * (-1);
 	}
-	// this should probably be (1 - stair_adjustment_value_X_0) * -1
+
 
 
 	int x_1_index = x_1 * (map_size - 1);
 	float stair_adjustment_value_X_1 = x_1 * (map_size - 1) - x_1_index;
 	if (stair_adjustment_value_X_1 > 0.5) {
 		x_1_index++;
-		stair_adjustment_value_X_1 = stair_adjustment_value_X_1 * (-1);
+		stair_adjustment_value_X_1 = (1-stair_adjustment_value_X_1) * (-1);
 	}
 
 
@@ -335,20 +166,11 @@ void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_
 
 
 	// | 4 | Get an interval of map points to test against each object point.
-	/*int x_min = __max(x_0_index - radius_constant, 0);
-	x_min = __min(x_min, map_size - 1);
-	int x_max = __min(x_1_index + radius_constant, map_size - 1);
-	x_max = __max(x_max, 0);
-
-	int y_min = __max(y_0_index - radius_constant, 0);
-	y_min = __min(y_min, map_size - 1);
-	int y_max = __min(y_0_index + radius_constant, map_size - 1);
-	y_max = __max(y_max, 0);*/
-
 	int x_min = __max(x_0_index - radius_constant, 0);
 	x_min = __min(x_min, map_size - 1);
 	int x_max = __min(x_0_index + 2 * in_object_ptr->GetScale().x + radius_constant, map_size - 1);
 	x_max = __max(x_max, 0);
+
 	int y_min = __max(y_0_index - radius_constant, 0);
 	y_min = __min(y_min, map_size - 1);
 	int y_max = __min(y_0_index + 2 * in_object_ptr->GetScale().y + radius_constant, map_size - 1);
@@ -362,7 +184,7 @@ void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_
 		for (int j = y_min; j < y_max; j++)
 		{
 			//						y  x
-			if ((*map_height_list_)[j][i] > collision_threshold)
+			if ((*map_height_list_)[j][i] > 100.0f)
 			{
 				if (x_0_index == i && y_0_index == j)
 				{
@@ -386,118 +208,262 @@ void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_
 
 	// | 6 | Finally do things in a switch case if colliding.
 	bool doublecollision = false;
-	if (collision_0 && collision_1)	// Bot collision
+
+
+	//----------Bot collision----------Bot collision----------Bot collision----------//
+	if (collision_0 && collision_1)
 	{
+		doublecollision = true;
+
+		float side = 0.0f;
+		bool free = false;
+
 		int free_index = y_0_index;	// The index of the surface
-		for (int f = 1; f < 3; f++)
+		for (int f = 1; f < y_0_index - 1; f++)
 		{
-			if ((*map_height_list_)[y_0_index - f][x_0_index] < collision_threshold)
+			if ((*map_height_list_)[y_0_index - f][x_0_index] <= 100.0f)
 			{
 				free_index = y_0_index - f;
-				f = 3;
+				free = true;
+				side += 0.25f;
+			}
+			if ((*map_height_list_)[y_0_index - f][x_1_index] <= 100.0f)
+			{
+				free_index = y_0_index - f;
+				side += 0.25f;
+				free = true;
+			}
+			if (free)
+			{
+				f = y_0_index - 1;
 			}
 		}
 
+		object_pos.y = free_index * (-1) - side + in_object_ptr->GetScale().y;
 
-		//object_pos.y += 0.2f;
-		//object_pos.y = (free_index) * (-1) + in_object_ptr->GetScale().y;
-		object_pos.y = y_0_index * (-1) + in_object_ptr->GetScale().y * 1.25;
-		std::cout << "Bot Collision" << std::endl;
-		doublecollision = true;
-		in_object_ptr->SetVelocityVec(glm::vec3(in_object_ptr->GetVelocityVec().x, 0.0f, in_object_ptr->GetVelocityVec().z));
-		//in_object_ptr->SetAirborne(false);
+		if (in_object_ptr->GetVelocityVec().y < 0)
+		{
+			in_object_ptr->SetVelocityVec(glm::vec3(in_object_ptr->GetVelocityVec().x, 0.0f, in_object_ptr->GetVelocityVec().z));
+		}
+
+		if (print)
+		{
+			std::cout << "Bot Collision" << std::endl;
+		}
 	}
+
 
 	if (collision_0 && collision_3)	// Left collision
 	{
-		object_pos.x = x_0_index + in_object_ptr->GetScale().x * 1.25;
-		std::cout << "Left Collision" << std::endl;
 		doublecollision = true;
-		in_object_ptr->SetVelocityVec(glm::vec3(0.0f, in_object_ptr->GetVelocityVec().y, in_object_ptr->GetVelocityVec().z));
+
+		int free_index = x_0_index;	// The index of the surface
+		for (int f = 1; f < x_1_index - 1; f++)
+		{
+			if ((*map_height_list_)[y_0_index][x_0_index + f] <= 100.0f)
+			{
+				free_index = x_0_index + f;
+				//std::cout << "f: " << f << std::endl;
+				f = x_1_index - 1;
+				continue;
+			}
+			if ((*map_height_list_)[y_1_index][x_1_index + f] <= 100.0f)
+			{
+				free_index = x_0_index + f;
+				//std::cout << "f: " << f << std::endl;
+				f = x_1_index - 1;
+				continue;
+			}
+		}
+
+		object_pos.x = free_index + 0.5f + in_object_ptr->GetScale().x;
+
+		if (in_object_ptr->GetVelocityVec().x < 0)
+		{
+			in_object_ptr->SetVelocityVec(glm::vec3(0.0f, in_object_ptr->GetVelocityVec().y, in_object_ptr->GetVelocityVec().z));
+		}
+
+		if (print)
+		{
+			std::cout << "Left Collision" << std::endl;
+		}
 	}
+
 
 	if (collision_1 && collision_2)	// Right collision
 	{
-		object_pos.x = x_1_index - in_object_ptr->GetScale().x * 1.25;
-		std::cout << "Right Collision" << std::endl;
 		doublecollision = true;
-		in_object_ptr->SetVelocityVec(glm::vec3(0.0f, in_object_ptr->GetVelocityVec().y, in_object_ptr->GetVelocityVec().z));
+
+		int free_index = x_1_index;	// The index of the surface
+		for (int f = 1; f < x_0_index - 1; f++)
+		{
+			if ((*map_height_list_)[y_0_index][x_1_index - f] <= 100.0f)
+			{
+				free_index = x_1_index - f;
+				//std::cout << "f: " << f << std::endl;
+				f = x_1_index - 1;
+				continue;
+			}
+			if ((*map_height_list_)[y_1_index][x_1_index - f] <= 100.0f)
+			{
+				free_index = x_1_index - f;
+				//std::cout << "f: " << f << std::endl;
+				f = x_1_index - 1;
+				continue;
+			}
+		}
+
+		object_pos.x = free_index + 1.5f - in_object_ptr->GetScale().x;
+
+		if (in_object_ptr->GetVelocityVec().x > 0)
+		{
+			in_object_ptr->SetVelocityVec(glm::vec3(0.0f, in_object_ptr->GetVelocityVec().y, in_object_ptr->GetVelocityVec().z));
+		}
+
+		if (print)
+		{
+			std::cout << "Right Collision" << std::endl;
+		}
 	}
+
 
 	if (collision_3 && collision_2)	// Top collision
 	{
-		object_pos.y = y_1_index * (-1) - in_object_ptr->GetScale().y * 1.25;
-		std::cout << "Top Collision" << std::endl;
+		//object_pos.y = y_1_index * (-1) - in_object_ptr->GetScale().y * 1.25;
+		////std::cout << "Top Collision" << std::endl;
+		//doublecollision = true;
+		//in_object_ptr->SetVelocityVec(glm::vec3(in_object_ptr->GetVelocityVec().x, 0.0f, in_object_ptr->GetVelocityVec().z));
+
+
+
+
 		doublecollision = true;
-		in_object_ptr->SetVelocityVec(glm::vec3(in_object_ptr->GetVelocityVec().x, 0.0f, in_object_ptr->GetVelocityVec().z));
+
+
+		int free_index = y_1_index;	// The index of the surface
+		for (int f = 1; f < y_0_index - 1; f++)
+		{
+			if ((*map_height_list_)[y_0_index + f][x_0_index] <= 100.0f)
+			{
+				free_index = y_0_index + f;
+				//std::cout << "f: " << f << std::endl;
+				f = y_0_index - 1;
+				continue;
+			}
+			if ((*map_height_list_)[y_0_index + f][x_1_index] <= 100.0f)
+			{
+				free_index = y_0_index + f;
+				//std::cout << "f: " << f << std::endl;
+				f = y_0_index - 1;
+				continue;
+			}
+		}
+
+		object_pos.y = free_index * (-1) - 0.5f + in_object_ptr->GetScale().y;
+
+		if (in_object_ptr->GetVelocityVec().y > 0)
+		{
+			in_object_ptr->SetVelocityVec(glm::vec3(in_object_ptr->GetVelocityVec().x, 0.0f, in_object_ptr->GetVelocityVec().z));
+		}
+
+
+
+
+
+		if (print)
+		{
+			std::cout << "Top Collision" << std::endl;
+		}
 	}
+
+
 
 	if (!doublecollision)
 	{
 		glm::vec3 obj_velocity = in_object_ptr->GetVelocityVec();
 		if (collision_0)
 		{
-			float delta_x = x_0_index - object_pos.x - in_object_ptr->GetScale().x;
-			object_pos.y = y_0_index * (-1) + in_object_ptr->GetScale().y - delta_x;
 
-			//							  y			   x
-			if ((*map_height_list_)[y_0_index - 1][x_0_index] <= 100.0f)
+
+
+			int free_index = y_0_index;	// The index of the surface
+			for (int f = 1; f < y_0_index - 1; f++)
 			{
-				in_object_ptr->SetVelocityVec(glm::vec3(obj_velocity.x, 0.0f, obj_velocity.z));
+				if ((*map_height_list_)[y_0_index - f][x_0_index] <= 100.0f)
+				{
+					free_index = y_0_index - f;
+					//std::cout << "f: " << f << std::endl;
+					f = y_0_index - 1;
+					continue;
+				}
 			}
-			else
+			
+			object_pos.y = free_index * (-1) - stair_adjustment_value_X_0 + (in_object_ptr->GetScale().y / 2);
+
+			if (in_object_ptr->GetVelocityVec().y < 0)
 			{
-				in_object_ptr->SetVelocityVec(glm::vec3(0.0f, 0.0f, obj_velocity.z));
+				in_object_ptr->SetVelocityVec(glm::vec3(in_object_ptr->GetVelocityVec().x, 0.0f, in_object_ptr->GetVelocityVec().z));
 			}
 
-			if (obj_velocity.y <= 0)
+			if (print)
 			{
-				in_object_ptr->SetVelocityVec(glm::vec3(obj_velocity.x, 0.0f, obj_velocity.z));
+				std::cout << "0 Collision" << std::endl;
 			}
-
-			//in_object_ptr->SetAirborne(false);
-
-			std::cout << "0 Collision" << std::endl;
 		}
 		else if (collision_1)
 		{
-			float delta_x = x_1_index - object_pos.x - in_object_ptr->GetScale().x;
-			object_pos.y = y_0_index * (-1) + in_object_ptr->GetScale().y + delta_x / 7.5f;
 
-			//							  y			   x
-			if ((*map_height_list_)[y_0_index - 1][x_0_index] <= 100.0f)
-			{
-				in_object_ptr->SetVelocityVec(glm::vec3(obj_velocity.x, 0.0f, obj_velocity.z));
-			}
-			else
-			{
-				in_object_ptr->SetVelocityVec(glm::vec3(0.0f, 0.0f, obj_velocity.z));
-			}
 
-			if (obj_velocity.y <= 0)
+			int free_index = y_0_index;	// The index of the surface
+			for (int f = 1; f < y_0_index - 1; f++)
 			{
-				in_object_ptr->SetVelocityVec(glm::vec3(obj_velocity.x, 0.0f, obj_velocity.z));
+				if ((*map_height_list_)[y_0_index - f][x_1_index] <= 100.0f)
+				{
+					free_index = y_0_index - f;
+					//std::cout << "f: " << f << std::endl;
+					f = y_0_index - 1;
+					continue;
+				}
 			}
 
-			//in_object_ptr->SetAirborne(false);
+			object_pos.y = free_index * (-1) + stair_adjustment_value_X_1 + (in_object_ptr->GetScale().y / 2);
 
-			std::cout << "1 Collision" << std::endl;
+			if (in_object_ptr->GetVelocityVec().y < 0)
+			{
+				in_object_ptr->SetVelocityVec(glm::vec3(in_object_ptr->GetVelocityVec().x, 0.0f, in_object_ptr->GetVelocityVec().z));
+			}
+			
+			if (print)
+			{
+				std::cout << "1 Collision" << std::endl;
+			}
+			
 		}
 		else if (collision_2)
 		{
-			object_pos.x -= 0.2;
+			/*object_pos.x -= 0.2;
 			object_pos.y -= 0.2;
 			std::cout << "2 Collision" << std::endl;
 			in_object_ptr->SetVelocityVec(glm::vec3(in_object_ptr->GetVelocityVec().x, 0.0f, in_object_ptr->GetVelocityVec().z));
 			in_object_ptr->SetVelocityVec(glm::vec3(0.0f, in_object_ptr->GetVelocityVec().y, in_object_ptr->GetVelocityVec().z));
+*/
+			if (print)
+			{
+				std::cout << "2 Collision" << std::endl;
+			}
 		}
 		else if (collision_3)
 		{
-			object_pos.x += 0.2;
+			/*object_pos.x += 0.2;
 			object_pos.y -= 0.2;
 			std::cout << "3 Collision" << std::endl;
 			in_object_ptr->SetVelocityVec(glm::vec3(in_object_ptr->GetVelocityVec().x, 0.0f, in_object_ptr->GetVelocityVec().z));
 			in_object_ptr->SetVelocityVec(glm::vec3(0.0f, in_object_ptr->GetVelocityVec().y, in_object_ptr->GetVelocityVec().z));
+*/
+			if (print)
+			{
+				std::cout << "3 Collision" << std::endl;
+			}
 		}
 	}
 

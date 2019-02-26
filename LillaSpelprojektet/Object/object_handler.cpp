@@ -176,12 +176,12 @@ void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map
 
 	//Create player
 	// THIS Y POS DOES NOT WORK AT ALL
-	this->player_ptr_ = new PlayerCharacter(glm::vec3(230.0f, -800.0f, 0.0f));
+	this->player_ptr_ = new PlayerCharacter(glm::vec3(224.0f, -80.0f, 0.0f));
 	this->player_ptr_->SetScale(2.0f);
 
 	//TEMP: Create an NPC
-	this->npc_ptr_vector_.push_back(new NPC(glm::vec3(260.0f, -50.0f, 0.0f)));
-	this->npc_ptr_vector_.at(0)->SetScale(3.0f);
+	//this->npc_ptr_vector_.push_back(new NPC(glm::vec3(260.0f, -50.0f, 0.0f)));
+	//this->npc_ptr_vector_.at(0)->SetScale(3.0f);
 	//TEMP
 
 	this->physics_engine_ptr_ = new PhysicsEngine(map_height_list);

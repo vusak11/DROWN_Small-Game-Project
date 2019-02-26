@@ -9,7 +9,7 @@ void Game::InputForGame(float in_deltatime) {
 		}
 		//Walk down
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-			this->obj_handler_ptr_->PlayerUseAbility();	// Used to temporary test in obj handler class
+			//this->obj_handler_ptr_->PlayerUseAbility();	// Used to temporary test in obj handler class
 			std::cout << "X: " << obj_handler_ptr_->GetPlayerPos().x << "Y: " << obj_handler_ptr_->GetPlayerPos().y << " Z: " << obj_handler_ptr_->GetPlayerPos().z << std::endl;
 		}
 		//Walk right

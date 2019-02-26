@@ -1,5 +1,5 @@
 #include "hitbox.h"
-#include "Globals.h"
+#include "../globals.h"
 
 
 HitBox::HitBox() {
