@@ -89,6 +89,7 @@ void Game::InputForGame(float in_deltatime) {
 Game::Game() {
 	this->cam_handler_ptr_ = new CameraHandler(glm::vec3(256.0, -256.0f, 0.0f), CAMERA_DEFAULT_ZOOM);
 	this->obj_handler_ptr_ = new ObjectHandler();
+
 	state_ = MENU;
 	menu_.Initiliaze();
 }

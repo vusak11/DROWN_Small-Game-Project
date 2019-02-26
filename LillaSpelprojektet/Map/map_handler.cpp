@@ -22,6 +22,7 @@ void MapHandler::InitializeMaps(
 	ancillary_map.LoadTexture(texture_path_0.c_str(), texture_path_1.c_str());
 	test_data_ = ancillary_map.GetTestList();
 	map_data_ = ancillary_map.GetTempHeightList();
+	meta_data_.Initialize();
 	GridMap grid_cell;
 	std::vector<GridMap> grid_cells;
 
