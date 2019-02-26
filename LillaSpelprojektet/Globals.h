@@ -3,9 +3,6 @@
 
 #include "GLM/glm.hpp"
 
-//const int kWindow_Width = 1280;
-//const int kWindow_Height = 720;
-
 //Window---------------------------------------------------
 #define WINDOW_WIDTH 1280
 #define WINDOW_HEIGHT 720
