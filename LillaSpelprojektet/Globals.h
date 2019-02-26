@@ -3,15 +3,12 @@
 
 #include "GLM/glm.hpp"
 
-//const int kWindow_Width = 1280;
-//const int kWindow_Height = 720;
-
 //Window---------------------------------------------------
 #define WINDOW_WIDTH 1280
 #define WINDOW_HEIGHT 720
 
 //Camera---------------------------------------------------
-#define CAMERA_DEFAULT_ZOOM 23.0
+#define CAMERA_DEFAULT_ZOOM 40.0
 #define CAMERA_DEBUG_ZOOM 100.0
 #define CAMERA_DEBUG_POSITION_X 256.0
 #define CAMERA_DEBUG_POSITION_Y -256.0
@@ -20,7 +17,8 @@
 //Objects--------------------------------------------------
 #define OBJECT_CULLING_DISTANCE 1380	//Distance beyond which objects are not updated nor rendered
 
-#define OBJECT_TURN_RATE 45 //degrees	//Purely for the turn function in ObjectClass as of this writing
+#define PI 3.1415
+#define OBJECT_TURN_RATE 720 //degrees/sec	//Purely for the turn function in ObjectClass as of this writing
 
 #define GRAVITATIONAL_ACCELERATION -500	//-g on y-axis	//Affects fall speed
 #define OBJECT_MAX_VELOCITY 500
@@ -40,6 +38,7 @@
 #define GRID_ROW 32
 #define GRID_GAP 2.0					//2.0 to close the gaps between the cells
 #define MAP_DEPTH 0.05	
+#define MAP_SIZE 2048
 
 //#define MAP_SCALE 1						//1 -> each vertex have 1 position unit in between
 //Ability Numbers------------------------------------------
@@ -52,10 +51,10 @@
 //Anytime a new object or model is added to the game, ensure it is
 //represented by an ObjectID
 enum ObjectID {
-	OBJECT_ID_NULL,				//0:
+	OBJECT_ID_NULL,				//0:	The Error Model
 	OBJECT_ID_PLAYER,			//1:
-	OBJECT_ID_JOHNNY_BRAVO,		//2:
-	OBJECT_ID_MAP				//3
+	OBJECT_ID_DUMMY,			//2:
+	NUMBER_OF_OBJECT_IDS		//N:	The Last Enum
 };
 
 //Package Structs------------------------------------------

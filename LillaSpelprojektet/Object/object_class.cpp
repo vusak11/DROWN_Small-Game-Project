@@ -9,7 +9,7 @@ void ObjectClass::CalculateModelMatrix() {
 	//The order is important here.
 	//First we scale, then we rotate and finally we translate
 	this->model_matrix_ = this->translation_matrix_ * this->rotation_matrix_ * this->scaling_matrix_;
-	this->hit_box_.Update(position_, scale_);
+	this->hitbox_.UpdateHitbox(position_, scale_.x, scale_.y);
 }
 
 
@@ -33,7 +33,7 @@ ObjectClass::ObjectClass(glm::vec3 start_pos, ObjectID id) {
 	this->rotation_matrix_ = glm::mat4(1.0f);
 	this->translation_matrix_ = glm::mat4(1.0f);
 
-	hit_box_ = HitBox(position_, scale_);
+	hitbox_ = HitBox(position_, scale_.x, scale_.y);
 	//TBA: Use the ID to determine the specs of a Object (Character/Drop/etc)
 
 	this->model_matrix_up_to_date_ = false;
@@ -61,6 +61,9 @@ void ObjectClass::SetPosition(float in_x, float in_y, float in_z) {
 
 	//Model matrix is now out of date
 	this->model_matrix_up_to_date_ = false;
+
+	//Apply new position on the hitbox
+	this->hitbox_.UpdateHitbox(position_, scale_.x, scale_.y);
 }
 
 void ObjectClass::SetScale(float in_s) {
@@ -71,6 +74,9 @@ void ObjectClass::SetScale(float in_s) {
 
 	//Model matrix is now out of date
 	this->model_matrix_up_to_date_ = false;
+
+	//Apply new scale on the hitbox
+	this->hitbox_.UpdateHitbox(position_, scale_.x, scale_.y);
 }
 
 void ObjectClass::SetScale(float in_x, float in_y, float in_z) {
@@ -83,10 +89,10 @@ void ObjectClass::SetScale(float in_x, float in_y, float in_z) {
 	this->model_matrix_up_to_date_ = false;
 }
 
-void ObjectClass::SetRotation(int in_x, int in_y, int in_z) {
-	this->rotation_around_x_ = in_x % 360;
-	this->rotation_around_y_ = in_y % 360;
-	this->rotation_around_z_ = in_z % 360;
+void ObjectClass::SetRotation(float in_x, float in_y, float in_z) {
+	this->rotation_around_x_ = in_x;
+	this->rotation_around_y_ = in_y;
+	this->rotation_around_z_ = in_z;
 
 	//Create three matrices for rotating around x, y and z
 	glm::mat4 rotation_matrix_x = glm::rotate((float)this->rotation_around_x_, glm::vec3(1.0f, 0.0f, 0.0f));
@@ -121,7 +127,7 @@ ObjectID ObjectClass::GetObjectID() const {
 
 HitBox ObjectClass::GetHitBox() const
 {
-	return this->hit_box_;
+	return this->hitbox_;
 }
 
 glm::vec3 ObjectClass::GetPosition() const {
@@ -155,33 +161,27 @@ glm::mat4 ObjectClass::RetrieveModelMatrix() {
 }
 
 void ObjectClass::TurnLeft(const float& in_deltatime) {
-	//Turn the model leftwards (positive direction)
-	int new_rotation = (this->rotation_around_y_ + OBJECT_TURN_RATE) % 360;
+	//Turn the model leftwards (negative direction) with adjustment for deltatime
+	float turn_radians = glm::radians((float)OBJECT_TURN_RATE)*in_deltatime;
+	float new_rotation = this->rotation_around_y_ - turn_radians;
 
-	//Adjust for deltatime
-	//new_rotation = (int)((float)new_rotation*in_deltatime);
+	//If the new orientation is further than -PI/2 snap it to -PI/2
+	if (new_rotation < glm::radians(-90.0f)) { new_rotation = glm::radians(-90.0f); }
 
-	//If the new orientation lies somewhere in [90, 180] we have turned too far
-	//and we snap back to 90
-	if ((new_rotation > 90) && (new_rotation < 180)) { new_rotation = 90; }
-
-	//std::cout << "Rot L: " << new_rotation << std::endl;
+	std::cout << "Rot L: " << glm::degrees(new_rotation) << std::endl;
 
 	this->SetRotation(this->rotation_around_x_, new_rotation, this->rotation_around_z_);
 }
 
 void ObjectClass::TurnRight(const float& in_deltatime) {
-	//Turn the model rightwards (negative direction)
-	int new_rotation = (this->rotation_around_y_ - OBJECT_TURN_RATE) % 360;
+	//Turn the model rightwards (positive direction) with adjustment for deltatime
+	float turn_radians = glm::radians((float)OBJECT_TURN_RATE)*in_deltatime;
+	float new_rotation = this->rotation_around_y_ + turn_radians;
 
-	//Adjust for deltatime
-	//new_rotation = (int)((float)new_rotation*in_deltatime);
+	//If the new orientation is further than PI/2 snap it to PI/2
+	if (new_rotation > glm::radians(90.0f)) { new_rotation = glm::radians(90.0f); }
 
-	//If the new orientation lies somewhere in [-90, -180] = [180, 270] we have turned too far
-	//and we snap back to 270
-	if ((new_rotation < -90) && (new_rotation > -180)) { new_rotation = -90; }
-
-	//std::cout << "Rot R: " << new_rotation << std::endl;
+	std::cout << "Rot R: " << glm::degrees(new_rotation) << std::endl;
 
 	this->SetRotation(this->rotation_around_x_, new_rotation, this->rotation_around_z_);
 }

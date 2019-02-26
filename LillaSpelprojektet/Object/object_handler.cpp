@@ -7,7 +7,7 @@ bool ObjectHandler::ClearPtrVector(std::vector<ObjectClass*>& in_vec) {
 		//Delete the first object in vector
 		delete in_vec.at(0);
 		//then erase the first entry
-		in_vec.erase(this->npc_ptr_vector_.begin() + 0);
+		in_vec.erase(in_vec.begin() + 0);
 	}
 
 	return in_vec.empty();
@@ -59,13 +59,18 @@ std::vector<ObjectClass*> ObjectHandler::CullAndRetrieveObjectPtrs(const std::ve
 }
 
 float ObjectHandler::DistanceBetween(const ObjectClass* in_object_a, const ObjectClass* in_object_b) const {
-	//Returns distance between two objects
+	//Returns distance between two objects on the x-y-plane
 
-	//NTS:
-	//Alternate function to DistanceBetween(ObjectClass in_object_a, ObjectClass in_object_b)
-	//using constant references to keep things safe while avoiding copying
+	//Get the 2D position for object a
+	glm::vec3 temp_vec = in_object_a->GetPosition();
+	glm::vec2 pos2_a = glm::vec2(temp_vec.x, temp_vec.y);
+	
+	//Get the 2D position for object b
+	temp_vec = in_object_b->GetPosition();
+	glm::vec2 pos2_b = glm::vec2(temp_vec.x, temp_vec.y);
 
-	return glm::distance(in_object_a->GetPosition(), in_object_b->GetPosition());
+	//Return the distance between them
+	return glm::distance(pos2_a, pos2_b);
 }
 
 void ObjectHandler::DeterminePlayerAction(const float& in_deltatime) {
@@ -99,6 +104,29 @@ void ObjectHandler::DeterminePlayerAction(const float& in_deltatime) {
 		//this->player_ptr_->SetPosition(200, 0, p.z);
 	}
 	
+}
+
+void ObjectHandler::ProcessNPCs(const float& in_deltatime, std::vector<ObjectClass*>& in_npcs_ptr_vector) {
+	//For every entry, turn it into a NPC pointer
+	//and then call the AI function
+	NPC* npc_ptr = NULL;
+	for (unsigned int i = 0; i < in_npcs_ptr_vector.size(); i++) {
+		//Do dynamic cast
+		npc_ptr = dynamic_cast<NPC*>(in_npcs_ptr_vector.at(i));
+
+		//If it succeded, call DetermineNPCAction
+		if (npc_ptr != NULL) {
+			this->DetermineNPCAction(in_deltatime, npc_ptr);
+		}
+	}
+}
+
+void ObjectHandler::DetermineNPCAction(const float& in_deltatime, NPC* in_npc) {
+
+	//TEMP
+	in_npc->ExecuteAI(in_deltatime);
+	//TEMP
+
 }
 
 void ObjectHandler::ClearPlayerInput() {
@@ -146,10 +174,15 @@ ObjectHandler::~ObjectHandler() {
 
 void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map_height_list) {
 
+	//Create player
 	// THIS Y POS DOES NOT WORK AT ALL
-	this->player_ptr_ = new PlayerCharacter(glm::vec3(230.0f, -400.0f, 0.0f));
-
+	this->player_ptr_ = new PlayerCharacter(glm::vec3(230.0f, -800.0f, 0.0f));
 	this->player_ptr_->SetScale(2.0f);
+
+	//TEMP: Create an NPC
+	this->npc_ptr_vector_.push_back(new NPC(glm::vec3(260.0f, -50.0f, 0.0f)));
+	this->npc_ptr_vector_.at(0)->SetScale(3.0f);
+	//TEMP
 
 	this->physics_engine_ptr_ = new PhysicsEngine(map_height_list);
 
@@ -208,10 +241,11 @@ std::vector<ObjectPackage> ObjectHandler::UpdateAndRetrieve(float in_deltatime) 
 	//Take input from player (i.e. set velocity, attack flags, etc)
 	this->DeterminePlayerAction(in_deltatime);
 	
+	//Go through all relevant NPCs and call their AI functions
+	this->ProcessNPCs(in_deltatime, relevant_npcs_ptr_vector);
+
 	//Apply physics such as moving or falling
 	this->physics_engine_ptr_->ApplyPhysics(in_deltatime, physical_objects_ptr_vector);
-
-	//DetermineNPCAction(/*vector.at(i)*/);
 
 	//ResolvePlayerAction();
 	
@@ -242,9 +276,9 @@ void ObjectHandler::TestObjectHandler() {
 	glm::vec3 best_pos = glm::vec3(0.0f, 0.0f, 0.0f);
 
 	std::cout << "A:	Creating three ObjectClass:es in npc_vector_" << std::endl;
-	this->npc_ptr_vector_.push_back(new ObjectClass(best_pos, OBJECT_ID_JOHNNY_BRAVO));
-	this->npc_ptr_vector_.push_back(new ObjectClass(best_pos, OBJECT_ID_JOHNNY_BRAVO));
-	this->npc_ptr_vector_.push_back(new ObjectClass(best_pos, OBJECT_ID_JOHNNY_BRAVO));
+	this->npc_ptr_vector_.push_back(new ObjectClass(best_pos, OBJECT_ID_DUMMY));
+	this->npc_ptr_vector_.push_back(new ObjectClass(best_pos, OBJECT_ID_DUMMY));
+	this->npc_ptr_vector_.push_back(new ObjectClass(best_pos, OBJECT_ID_DUMMY));
 
 	std::cout << "B:	Moving second entry (index 1) to position (3000, 3000)" << std::endl;
 	this->npc_ptr_vector_.at(1)->SetPosition(3000, 3000);
@@ -288,10 +322,10 @@ void ObjectHandler::TestObjectHandler() {
 
 	std::cout << "H:	Testing the UpdateAndRetrive() early function" << std::endl;
 	std::cout << "	Add 2 objects to npc vector and 2 to drop vector" << std::endl;
-	this->npc_ptr_vector_.push_back(new ObjectClass(best_pos, OBJECT_ID_JOHNNY_BRAVO));
-	this->npc_ptr_vector_.push_back(new ObjectClass(best_pos, OBJECT_ID_JOHNNY_BRAVO));
-	this->drop_ptr_vector_.push_back(new ObjectClass(best_pos, OBJECT_ID_JOHNNY_BRAVO));
-	this->drop_ptr_vector_.push_back(new ObjectClass(best_pos, OBJECT_ID_JOHNNY_BRAVO));
+	this->npc_ptr_vector_.push_back(new ObjectClass(best_pos, OBJECT_ID_DUMMY));
+	this->npc_ptr_vector_.push_back(new ObjectClass(best_pos, OBJECT_ID_DUMMY));
+	this->drop_ptr_vector_.push_back(new ObjectClass(best_pos, OBJECT_ID_DUMMY));
+	this->drop_ptr_vector_.push_back(new ObjectClass(best_pos, OBJECT_ID_DUMMY));
 	std::cout << "	npc_vector_ length: " << this->npc_ptr_vector_.size() << std::endl;
 	std::cout << "	drop_vector_ length: " << this->drop_ptr_vector_.size() << std::endl;
 	std::cout << "	Move one drop to (3000, 3000)" << std::endl;
@@ -299,4 +333,24 @@ void ObjectHandler::TestObjectHandler() {
 	std::cout << "	Call UpdateAndRetrieve and check returned vector length (should be 4: One Player, Two NPCs, One Drop)" << std::endl;
 	std::vector<ObjectPackage> pckg_vector = this->UpdateAndRetrieve(1.0f);
 	std::cout << "	pckg_vec length: " << pckg_vector.size() << std::endl;
+
+	std::cout << "I:	Test throw functions in Character" << std::endl;
+	try { this->player_ptr_->HealDamage(-3); }
+	catch (std::invalid_argument a){ std::cout << a.what() << std::endl; }
+	
+	try { this->player_ptr_->TakeDamage(-17); }
+	catch (std::invalid_argument a) { std::cout << a.what() << std::endl; }
+
+	try { this->player_ptr_->SetAttackPower(0); }
+	catch (std::invalid_argument a) { std::cout << a.what() << std::endl; }
+
+	try { this->player_ptr_->SetCurrentHealth(-98); }
+	catch (std::invalid_argument a) { std::cout << a.what() << std::endl; }
+
+	try { this->player_ptr_->SetCurrentHealth(1000); }
+	catch (std::invalid_argument a) { std::cout << a.what() << std::endl; }
+
+	try { this->player_ptr_->SetMaxHealth(-1); }
+	catch (std::invalid_argument a) { std::cout << a.what() << std::endl; }
+
 }

@@ -142,6 +142,8 @@
     <ClCompile Include="Core\render.cpp" />
     <ClCompile Include="Core\shader_handler.cpp" />
     <ClCompile Include="Core\sound_unit.cpp" />
+    <ClCompile Include="hitbox.cpp" />
+    <ClCompile Include="GLDebug.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Object\Character\ability.cpp" />
     <ClCompile Include="Map\map.cpp" />
@@ -150,6 +152,7 @@
     <ClCompile Include="Object\Character\mesh.cpp" />
     <ClCompile Include="Object\Character\model.cpp" />
     <ClCompile Include="Object\Character\cooldown_class.cpp" />
+    <ClCompile Include="Object\Character\npc.cpp" />
     <ClCompile Include="Object\Character\player_character.cpp" />
     <ClCompile Include="Object\object_class.cpp" />
     <ClCompile Include="Object\object_handler.cpp" />
@@ -163,7 +166,9 @@
     <ClInclude Include="Core\render.h" />
     <ClInclude Include="Core\shader_handler.h" />
     <ClInclude Include="Core\sound_unit.h" />
+    <ClInclude Include="GLDebug.h" />
     <ClInclude Include="Globals.h" />
+    <ClInclude Include="hitbox.h" />
     <ClInclude Include="Map\map.h" />
     <ClInclude Include="Map\map_handler.h" />
     <ClInclude Include="Object\Character\ability.h" />
@@ -171,6 +176,7 @@
     <ClInclude Include="Object\Character\mesh.h" />
     <ClInclude Include="Object\Character\model.h" />
     <ClInclude Include="Object\Character\cooldown_class.h" />
+    <ClInclude Include="Object\Character\npc.h" />
     <ClInclude Include="Object\Character\player_character.h" />
     <ClInclude Include="Object\object_class.h" />
     <ClInclude Include="Object\object_handler.h" />

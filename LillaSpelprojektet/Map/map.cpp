@@ -315,6 +315,10 @@ std::vector<std::vector<float>>* Map::GetTempHeightList() {
 	return &height_map_;
 }
 
+void Map::CleanMapInfo() {
+	height_map_.clear();
+}
+
 std::vector<std::vector<float>> Map::GetTestList() {
 	return height_map_;
 }

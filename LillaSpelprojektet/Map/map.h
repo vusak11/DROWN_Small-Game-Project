@@ -55,6 +55,9 @@ public:
 	std::vector<std::vector<float>> GetTestList();
 	std::vector<std::vector<float>>* GetTempHeightList();	// Used to pass the map height data to physics
 
+	void CleanMapInfo();
+
+
 private:
 		int image_width_;			// Width of map image
 		int image_height_;		// Height of map image

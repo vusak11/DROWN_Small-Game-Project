@@ -9,42 +9,12 @@
 #include <GLM/gtx/transform.hpp>
 
 #include "../Globals.h"
+#include "..\hitbox.h"
 
 // This class is used as a base for all the objects in the game. This goes for any
 // objects or characters.
 // Example:
 //    class Character : ObjectClass
-
-struct HitBox // Struct used for checking collision
-	{
-		//    3       2
-		//	  ________ 
-		//	  |		  | 
-		//	  |  Box  |
-		//	  |		  | 
-		//	  ---------
-		//    0       1
-		glm::vec2 hb_pos0_;
-		glm::vec2 hb_pos1_;
-		glm::vec2 hb_pos2_;
-		glm::vec2 hb_pos3_;
-
-		HitBox() {}
-		HitBox(glm::vec3 position, glm::vec3 scale) {
-			// Initialize the hitbox to player position.
-			hb_pos0_ = glm::vec2(position.x + (-1 * scale.x), position.y + (-1 * scale.y));
-			hb_pos1_ = glm::vec2(position.x + ( 1 * scale.x), position.y + (-1 * scale.y));
-			hb_pos2_ = glm::vec2(position.x + ( 1 * scale.x), position.y + ( 1 * scale.y));
-			hb_pos3_ = glm::vec2(position.x + (-1 * scale.x), position.y + ( 1 * scale.y));
-		}
-		~HitBox(){}
-		void Update(glm::vec3 position, glm::vec3 scale) {
-			hb_pos0_ = glm::vec2(position.x + (-1 * scale.x), position.y + (-1 * scale.y));
-			hb_pos1_ = glm::vec2(position.x + (1 * scale.x), position.y + (-1 * scale.y));
-			hb_pos2_ = glm::vec2(position.x + (1 * scale.x), position.y + (1 * scale.y));
-			hb_pos3_ = glm::vec2(position.x + (-1 * scale.x), position.y + (1 * scale.y));
-		}
-	};
 
 class ObjectClass {
 private:
@@ -52,19 +22,16 @@ private:
 	
 
 	//Variables-----------------------------------------------
-	//ObjectID id_;
-	HitBox hit_box_;
+	HitBox hitbox_;
 
 
 	//Metadata/Math
 	glm::vec3 position_;
 
 	//Math
-	int rotation_around_x_;			//The rotation of the object in degrees 
-	int rotation_around_y_;			//around the x, y and z-axises
-	int rotation_around_z_;			//NTS:	0 rotation around y is default (model look towards screen[positive z])
-									//		-90 (or 270) rotation around y is looking towards the right[positive x]
-									//		90 rotation around y is looking towards the left[negative x]
+	float rotation_around_x_;			//The rotation of the object in radians
+	float rotation_around_y_;			//around the x, y and z-axises
+	float rotation_around_z_;			
 
 	glm::vec3 scale_;			//Vector with	x scaling on x,
 								//				y scaling on y
@@ -100,7 +67,7 @@ public:
 	void SetPosition(float in_x, float in_y, float in_z = 0.0f);
 	void SetScale(float in_s);
 	void SetScale(float in_x, float in_y, float in_z);
-	void SetRotation(int in_x, int in_y, int in_z);
+	void SetRotation(float in_x, float in_y, float in_z);
 	
 	//Physics
 	void SetVelocity(float in_velocity);					//Set current velocity to in-parameter (does not change direction)

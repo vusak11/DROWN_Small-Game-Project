@@ -8,6 +8,9 @@ Render::Render() {
 	quad_vertex_buffer_object_ = 0;
 	nr_of_lights_ = 1;
 
+	//--------------------------------------------------------
+	//-------------------Create Shaders-----------------------
+	//--------------------------------------------------------
 	text_shaders_ = new ShaderHandler(
 		"glsl/textshader_vs.glsl",
 		"glsl/textshader_fs.glsl"
@@ -25,16 +28,35 @@ Render::Render() {
 		"glsl/lightingpass/lighting_fs.glsl");
 	lights_ = new Light[nr_of_lights_];
 
-	model_ = new Model*[nr_of_models_];
-	model_[0] = new Model((char*)"../Resources/Models/walkingNPC.fbx");
-
+	//--------------------------------------------------------
+	//-------------------Load Map Data------------------------
+	//--------------------------------------------------------
 	map_handler_.InitializeMaps(
 		"../Resources/Map/MainMap.bmp",
 		"../Resources/Map/cavewall.png",
 		"../Resources/Map/v4.png");
 
+
+	//--------------------------------------------------------
+	//---------------------Load HUD---------------------------
+	//--------------------------------------------------------
 	hud_.LoadHealthBarTexture((char*)"../Resources/GUI/healthbar.png");
 	hud_.LoadQuickSlotTexture((char*)"../Resources/GUI/quickslot.png");
+	
+
+	//--------------------------------------------------------
+	//---------------Load Models to Array---------------------
+	//--------------------------------------------------------
+	//Make space for 1 model per ObjectID
+	this->nr_of_models_ = NUMBER_OF_OBJECT_IDS;
+	model_ = new Model*[this->nr_of_models_];
+	
+	//Link models to a ObjectID
+	model_[OBJECT_ID_NULL] = new Model((char*)"../Resources/Models/DefaultDummyNPC/defaultDummyNPC.obj");
+	model_[OBJECT_ID_PLAYER] = new Model((char*)"../Resources/Models/TestBox/testBOX.obj");
+	model_[OBJECT_ID_DUMMY] = new Model((char*)"../Resources/Models/DummyNPC/dummyNPC.obj");
+
+	
 }
 
 Render::~Render() {
@@ -78,18 +100,10 @@ void Render::UpdateRender(
 
 	glDisable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
-
 	//SET UP FOR 3D
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	// Pushing Map into object vector
-	glm::mat4 map_matrix = glm::mat4(1.0f);
-	ObjectPackage map_package;
-	map_package.id = OBJECT_ID_MAP;
-	map_package.model_matrix = map_matrix;
-	object_vector.insert(object_vector.begin(), map_package);
+	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	//  GEOMETRY
 	GeometryPass(camera_position, perspective_view_matrix);
@@ -114,25 +128,41 @@ void Render::UpdateRender(
 }
 
 void Render::GeometryDrawing(std::vector<ObjectPackage>& object_vector) {
-	// object_vector contains all objects which should be drawn
-	// we pop it til it runs out of objects.
-	glm::vec3 players_position;
-	while (!object_vector.empty()) {
-		if (OBJECT_ID_NULL == object_vector.back().id) {
+	
+	//--------------------DRAW OBJECTS------------------------
 
-		}
-		else if (OBJECT_ID_PLAYER == object_vector.back().id) {
-			ModelTransformation(object_vector.back().model_matrix);
-			players_position = glm::vec3(
-				object_vector.back().model_matrix[3][0],
-				object_vector.back().model_matrix[3][1],
-				object_vector.back().model_matrix[3][2]);
-			model_[0]->Draw(geometry_pass_->GetProgram());
-		}
-		else if (OBJECT_ID_JOHNNY_BRAVO == object_vector.back().id) {
-			ModelTransformation(object_vector.back().model_matrix);
-		}
-		else if (OBJECT_ID_MAP == object_vector.back().id) {
+	//Loop through all ObjectPackage:s and draw the corresponding models
+	ObjectID temp_id;
+	for (unsigned int i = 0; i < object_vector.size(); i++) {
+		//Upload the object's model-matrix
+		this->ModelTransformation(object_vector[i].model_matrix);
+
+		//Get the object's id and draw a model of that type
+		temp_id = object_vector[i].id;
+		this->model_[temp_id]->Draw(geometry_pass_->GetProgram());
+	}
+	
+	//----------------DRAW THE MAP----------------------------
+
+	//We know the player object to be the first in the vector
+	glm::vec3 player_position = glm::vec3(
+		object_vector.at(0).model_matrix[3][0],
+		object_vector.at(0).model_matrix[3][1],
+		object_vector.at(0).model_matrix[3][2]);
+
+	//Then only retrieve cells nearby
+	std::vector<glm::vec2> cells = map_handler_.GridCulling(
+		map_handler_.CurrentCell(player_position));
+	
+	//Draw the map
+	while (!cells.empty()) {
+		ModelTransformation(map_handler_.Transformation((int)cells.back().x, (int)cells.back().y));
+		map_handler_.Draw(geometry_pass_->GetProgram(), (int)cells.back().x, (int)cells.back().y);
+		cells.pop_back();
+	}
+	
+	/*
+	else if (OBJECT_ID_MAP == object_vector.back().id) {
 			std::vector<glm::vec2> cells = map_handler_.GridCulling(
 				map_handler_.CurrentCell(players_position));
 			while (!cells.empty()) {
@@ -141,8 +171,12 @@ void Render::GeometryDrawing(std::vector<ObjectPackage>& object_vector) {
 				cells.pop_back();
 			}
 		}
-		object_vector.pop_back();
-	}
+		---
+		players_position = glm::vec3(
+				object_vector.back().model_matrix[3][0],
+				object_vector.back().model_matrix[3][1],
+				object_vector.back().model_matrix[3][2]);
+	*/
 }
 
 void Render::ModelTransformation(glm::mat4 model_matrix) {
@@ -153,7 +187,6 @@ void Render::GeometryPass(
 	glm::vec3 camera_position,
 	glm::mat4 perspective_view_matrix) {
 	glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glBindFramebuffer(GL_FRAMEBUFFER, geometry_pass_->GetBuffer());
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
