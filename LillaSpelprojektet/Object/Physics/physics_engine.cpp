@@ -287,15 +287,15 @@ void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_
 
 
 	// | 2 | Make values to 4 points surrounding the object like a box.
-	//float x_0 = object_pos.x - in_object_ptr->GetScale().x;
-	//float x_1 = __min((object_pos.x + in_object_ptr->GetScale().x), 495);
-	//float y_0 = object_pos.y - in_object_ptr->GetScale().y;
-	//float y_1 = __min((object_pos.y + in_object_ptr->GetScale().y), 495);
+	float x_0 = object_pos.x - in_object_ptr->GetScale().x;
+	float x_1 = __min((object_pos.x + in_object_ptr->GetScale().x), 495);
+	float y_0 = object_pos.y - in_object_ptr->GetScale().y;
+	float y_1 = __min((object_pos.y + in_object_ptr->GetScale().y), 495);
 
-	float x_0 = points.bottomLeft.x;
-	float x_1 = points.bottomRight.x;
-	float y_0 = points.bottomLeft.y;
-	float y_1 = points.TopLeft.y;
+	//float x_0 = points.bottomLeft.x;
+	//float x_1 = points.bottomRight.x;
+	//float y_0 = points.bottomLeft.y;
+	//float y_1 = points.TopLeft.y;
 
 	// | 3 | Normalize each pos to later match with map location.
 	x_0 = x_0 / (map_size - 1);
@@ -307,7 +307,7 @@ void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_
 	// Get map index from normalized value
 	int x_0_index = x_0 * (map_size - 1);
 	float stair_adjustment_value_X_0 = x_0 * (map_size - 1) - x_0_index; // This value is used for single point collision
-	if (stair_adjustment_value_X_0 > 0.5f) {
+	if (stair_adjustment_value_X_0 > 0.5) {
 		x_0_index++;
 		stair_adjustment_value_X_0 = stair_adjustment_value_X_0 * (-1);
 	}
@@ -316,7 +316,7 @@ void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_
 
 	int x_1_index = x_1 * (map_size - 1);
 	float stair_adjustment_value_X_1 = x_1 * (map_size - 1) - x_1_index;
-	if (stair_adjustment_value_X_1 > 0.5f) {
+	if (stair_adjustment_value_X_1 > 0.5) {
 		x_1_index++;
 		stair_adjustment_value_X_1 = stair_adjustment_value_X_1 * (-1);
 	}
@@ -325,17 +325,17 @@ void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_
 
 	int y_0_index = y_0 * (map_size - 1) * -1;
 	float stair_adjustment_value_Y_0 = y_0 * (map_size - 1) * -1 - y_0_index;
-	if (stair_adjustment_value_Y_0 > 0.5f)
+	if (stair_adjustment_value_Y_0 > 0.5)
 		y_0_index++;
 
 	int y_1_index = y_1 * (map_size - 1) * -1;
 	float stair_adjustment_value_Y_1 = y_1 * (map_size - 1) * -1 - y_1_index;
-	if (stair_adjustment_value_Y_1 > 0.5f)
+	if (stair_adjustment_value_Y_1 > 0.5)
 		y_1_index++;
 
 
 	// | 4 | Get an interval of map points to test against each object point.
-	int x_min = __max(x_0_index - radius_constant, 0);
+	/*int x_min = __max(x_0_index - radius_constant, 0);
 	x_min = __min(x_min, map_size - 1);
 	int x_max = __min(x_1_index + radius_constant, map_size - 1);
 	x_max = __max(x_max, 0);
@@ -343,6 +343,15 @@ void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_
 	int y_min = __max(y_0_index - radius_constant, 0);
 	y_min = __min(y_min, map_size - 1);
 	int y_max = __min(y_0_index + radius_constant, map_size - 1);
+	y_max = __max(y_max, 0);*/
+
+	int x_min = __max(x_0_index - radius_constant, 0);
+	x_min = __min(x_min, map_size - 1);
+	int x_max = __min(x_0_index + 2 * in_object_ptr->GetScale().x + radius_constant, map_size - 1);
+	x_max = __max(x_max, 0);
+	int y_min = __max(y_0_index - radius_constant, 0);
+	y_min = __min(y_min, map_size - 1);
+	int y_max = __min(y_0_index + 2 * in_object_ptr->GetScale().y + radius_constant, map_size - 1);
 	y_max = __max(y_max, 0);
 
 	//std::cout << "xmin: " << x_min << ", xmax= " << x_max << ", ymin: " << y_min << ", ymax: " << y_max << std::endl;
@@ -379,8 +388,20 @@ void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_
 	bool doublecollision = false;
 	if (collision_0 && collision_1)	// Bot collision
 	{
+		int free_index = y_0_index;	// The index of the surface
+		for (int f = 1; f < 3; f++)
+		{
+			if ((*map_height_list_)[y_0_index - f][x_0_index] < collision_threshold)
+			{
+				free_index = y_0_index - f;
+				f = 3;
+			}
+		}
+
+
 		//object_pos.y += 0.2f;
-		object_pos.y = y_0_index * (-1) + in_object_ptr->GetScale().y;
+		//object_pos.y = (free_index) * (-1) + in_object_ptr->GetScale().y;
+		object_pos.y = y_0_index * (-1) + in_object_ptr->GetScale().y * 1.25;
 		std::cout << "Bot Collision" << std::endl;
 		doublecollision = true;
 		in_object_ptr->SetVelocityVec(glm::vec3(in_object_ptr->GetVelocityVec().x, 0.0f, in_object_ptr->GetVelocityVec().z));
