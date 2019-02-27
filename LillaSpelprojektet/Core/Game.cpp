@@ -1,7 +1,7 @@
 #include "game.h"
 
 void Game::InputForGame(float in_deltatime) {
-	if (state_ == GAME) {
+	if (state_ == GameState::GAME) {
 		/*---------------Keyboard inputs-----------------*/
 		//Walk up
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
@@ -79,7 +79,9 @@ void Game::InputForGame(float in_deltatime) {
 
 		if (secondary && sf::Keyboard::isKeyPressed(sf::Keyboard::P)) {
 			//Move active camera forwards ("zoom in")
-			cam_handler_ptr_->SetCameraPos(CAMERA_DEBUG_POSITION_X, CAMERA_DEBUG_POSITION_Y, CAMERA_DEBUG_POSITION_Z);
+			cam_handler_ptr_->SetCameraPos(GlobalSettings::Access()->ValueOf("CAMERA_DEBUG_POSITION_X"),
+				GlobalSettings::Access()->ValueOf("CAMERA_DEBUG_POSITION_Y"),
+				GlobalSettings::Access()->ValueOf("CAMERA_DEBUG_POSITION_Z"));
 		}
 
 		/*---------------End Secondary Camera Control-----------------*/
@@ -87,9 +89,10 @@ void Game::InputForGame(float in_deltatime) {
 }
 
 Game::Game() {
-	this->cam_handler_ptr_ = new CameraHandler(glm::vec3(256.0, -256.0f, 0.0f), CAMERA_DEFAULT_ZOOM);
+	this->cam_handler_ptr_ = new CameraHandler(glm::vec3(256.0, -256.0f, 0.0f),
+		GlobalSettings::Access()->ValueOf("CAMERA_DEFAULT_ZOOM"));
 	this->obj_handler_ptr_ = new ObjectHandler();
-	state_ = MENU;
+	state_ = GameState::MENU;
 	menu_.Initiliaze();
 }
 
@@ -108,7 +111,7 @@ void Game::GameLoop(float in_deltatime) {
 	if (state_ == MENU) {
 		render_.RenderMenuState(menu_);
 	}
-	else if (state_ == GAME) {
+	else if (state_ == GameState::GAME) {
 		// This updates the player position.
 		std::vector<ObjectPackage> object_vector;
 		object_vector = this->obj_handler_ptr_->UpdateAndRetrieve(in_deltatime);
@@ -128,14 +131,14 @@ void Game::GameLoop(float in_deltatime) {
 
 		/*--------------Restart Game when death occurs--------------*/
 		if (temp_player_data.current_hp == 0) { //Use this one
-			state_ = DEATH;
+			state_ = GameState::DEATH;
 		}
 		/*----------End Restart Game when death occurs--------------*/
 	}
-	else if (state_ == PAUSE) {
+	else if (state_ == GameState::PAUSE) {
 		render_.RenderPauseMenu(menu_);
 	}
-	else if (state_ == DEATH) {
+	else if (state_ == GameState::DEATH) {
 		render_.RenderDeathMenu(menu_);
 	}
 }
@@ -179,6 +182,9 @@ void Game::InputForMenu(float in_deltatime, sf::Event event) {
 			if (event.key.code == sf::Keyboard::Escape) {
 				state_ = PAUSE;
 				menu_.StateManager(state_);
+			}
+			if (event.key.code == sf::Keyboard::P) {
+				GlobalSettings::Access()->UpdateValuesFromFile();
 			}
 			break;
 		default:

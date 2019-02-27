@@ -6,8 +6,8 @@
 
 //Public---------------------------------------------------
 PlayerCharacter::PlayerCharacter(glm::vec3 start_pos) : Character(start_pos, OBJECT_ID_PLAYER) {
-	this->top_speed_ = PLAYER_TOP_SPEED;
-	this->jump_speed_ = PLAYER_JUMP_VELOCITY;
+	this->top_speed_ = GlobalSettings::Access()->ValueOf("PLAYER_TOP_SPEED");
+	this->jump_speed_ = GlobalSettings::Access()->ValueOf("PLAYER_JUMP_VELOCITY");
 
 	this->weapon_.id = SWORD;
 	//this->ability_ptr_ = new Ability();

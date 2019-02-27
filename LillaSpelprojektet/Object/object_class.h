@@ -8,7 +8,7 @@
 #define GLM_ENABLE_EXPERIMENTAL		//Needed to use transform.hpp
 #include <GLM/gtx/transform.hpp>
 
-#include "../Globals.h"
+#include "../global_settings.h"
 #include "hitbox.h"
 
 // This class is used as a base for all the objects in the game. This goes for any

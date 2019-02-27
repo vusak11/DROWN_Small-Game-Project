@@ -33,6 +33,8 @@ bool Map::LoadMap(const char* path) {
 		}
 		height_map_.push_back(temp_float);
 	}
+	// No error checks
+	return true;
 }
 
 void Map::CreateCells(int grid_column, int grid_row, int grid_y, int grid_x) {

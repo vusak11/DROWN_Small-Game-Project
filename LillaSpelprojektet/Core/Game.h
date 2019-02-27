@@ -10,6 +10,7 @@
 #include "../UI/menu.h"
 #include "../Camera/camera_handler.h"
 #include "../Object/object_handler.h"
+#include "../global_settings.h"
 
 class Game {
 private:

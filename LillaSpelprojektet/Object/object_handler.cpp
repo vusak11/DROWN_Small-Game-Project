@@ -48,7 +48,7 @@ std::vector<ObjectClass*> ObjectHandler::CullAndRetrieveObjectPtrs(const std::ve
 	//Go through all NPCs
 	for (unsigned int i = 0; i < in_object_vector.size(); i++) {
 		//See which Objects are within OBJECT_CULLING_DISTANCE of the player
-		if (this->DistanceBetween(this->player_ptr_, in_object_vector.at(i)) < OBJECT_CULLING_DISTANCE) {
+		if (this->DistanceBetween(this->player_ptr_, in_object_vector.at(i)) < GlobalSettings::Access()->ValueOf("OBJECT_CULLING_DISTANCE")) {
 			//Those that are close enough are added to the vector
 			nearby_objects_ptr_vector.push_back(in_object_vector.at(i));
 		}

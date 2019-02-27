@@ -162,7 +162,7 @@ glm::mat4 ObjectClass::RetrieveModelMatrix() {
 
 void ObjectClass::TurnLeft(const float& in_deltatime) {
 	//Turn the model leftwards (negative direction) with adjustment for deltatime
-	float turn_radians = glm::radians((float)OBJECT_TURN_RATE)*in_deltatime;
+	float turn_radians = glm::radians(GlobalSettings::Access()->ValueOf("OBJECT_TURN_RATE"))*in_deltatime;
 	float new_rotation = this->rotation_around_y_ - turn_radians;
 
 	//If the new orientation is further than -PI/2 snap it to -PI/2
@@ -175,7 +175,7 @@ void ObjectClass::TurnLeft(const float& in_deltatime) {
 
 void ObjectClass::TurnRight(const float& in_deltatime) {
 	//Turn the model rightwards (positive direction) with adjustment for deltatime
-	float turn_radians = glm::radians((float)OBJECT_TURN_RATE)*in_deltatime;
+	float turn_radians = glm::radians(GlobalSettings::Access()->ValueOf("OBJECT_TURN_RATE"))*in_deltatime;
 	float new_rotation = this->rotation_around_y_ + turn_radians;
 
 	//If the new orientation is further than PI/2 snap it to PI/2
