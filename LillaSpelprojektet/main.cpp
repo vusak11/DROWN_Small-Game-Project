@@ -13,7 +13,8 @@
 void GameLoop(
 	const bool& in_running,
 	Game& in_game, 
-	sf::Clock& in_clock,
+	//sf::Clock& in_clock,
+	//const float& in_deltatime,
 	sf::Window& in_window);
 
 int main() {
@@ -37,6 +38,7 @@ int main() {
 	sf::Clock gameTime;
 	Game game;
 	bool running = true;
+	float deltatime = 0.0f;
 	/*----------End of Variables----------*/
 	
 	/*-----------Initialize---------------*/
@@ -47,7 +49,8 @@ int main() {
 		&GameLoop,
 		std::ref(running),
 		std::ref(game),
-		std::ref(gameTime),
+		//std::ref(gameTime),
+		//std::ref(deltatime),
 		std::ref(window)
 	);
 
@@ -58,6 +61,9 @@ int main() {
 
 	while (running) {
 		sf::Event event;
+		
+		deltatime = gameTime.restart().asSeconds();
+		
 		while (window.pollEvent(event)) {
 			/*----------------Only exit window commands-----------*/
 			if (event.type == sf::Event::Closed) {
@@ -68,7 +74,7 @@ int main() {
 			}
 			/*----------------Only exit window commands-----------*/
 			/*----------------Input from mouse / keyboard---------*/
-			game.InputFunction(gameTime.restart().asSeconds(), event);
+			game.InputFunction(deltatime, event);
 			/*----------------Input from mouse / keyboard---------*/
 		}
 
@@ -77,6 +83,8 @@ int main() {
 		//game.GameLoop(gameTime.restart().asSeconds());
 
 		//window.display();
+
+		game.InputForGameLoop(deltatime);
 	}
 
 	game_thread.join();	//wait for thread to finish
@@ -87,12 +95,19 @@ int main() {
 void GameLoop(
 	const bool& in_running,
 	Game& in_game,
-	sf::Clock& in_clock,
+	//sf::Clock& in_clock,
+	//const float& in_deltatime,
 	sf::Window& in_window) {
 
+	sf::Clock gameTime;
+	float deltatime = 0.0f;
+
 	while (in_running) {
+
+		deltatime = gameTime.restart().asSeconds();
 		
-		in_game.GameIteration(in_clock.restart().asSeconds());
+		//in_game.GameIteration(in_clock.restart().asSeconds());
+		in_game.GameIteration(deltatime);
 
 		in_window.display();
 

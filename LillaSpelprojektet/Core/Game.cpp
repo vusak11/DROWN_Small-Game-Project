@@ -103,7 +103,7 @@ void Game::InputForSecondaryCamera(const float& in_deltatime, const sf::Event& i
 
 void Game::InputForGameB(const float& in_deltatime, const sf::Event& in_event) {
 
-	this->InputForGameLoop(in_deltatime);
+	//this->InputForGameLoop(in_deltatime);
 
 	switch (in_event.type) {
 	case sf::Event::KeyReleased:
@@ -125,48 +125,7 @@ void Game::InputForGameB(const float& in_deltatime, const sf::Event& in_event) {
 	}
 }
 
-void Game::InputForGameLoop(const float& in_deltatime) {
 
-	if (this->state_ != GAME) { return; }
-	
-	//-------------------------------------------------------
-	//--------------------Player Control---------------------
-	//-------------------------------------------------------
-	//Walk up
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-		this->obj_handler_ptr_->PlayerJump();
-	}
-	//Walk right
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-		this->obj_handler_ptr_->PlayerMoveRight();
-	}
-	//Walk left
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-		this->obj_handler_ptr_->PlayerMoveLeft();
-	}
-	//Pick up
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-		//OBS!
-		//Currently writes pos to terminal
-		std::cout << "X: " << obj_handler_ptr_->GetPlayerPos().x << "Y: " << obj_handler_ptr_->GetPlayerPos().y << " Z: " << obj_handler_ptr_->GetPlayerPos().z << std::endl;
-	}
-	//Use Ability
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::E)) {
-		this->obj_handler_ptr_->PlayerUseAbility();
-	}
-
-	//Attack
-	//goes here
-
-	//-------------------------------------------------------
-	//---------------Secondary Camera Control----------------
-	//-------------------------------------------------------
-	//Primary is 0 (boolean false), Secondary is 1 (boolean !false)
-	//bool secondary = cam_handler_ptr_->GetMode();
-	if (cam_handler_ptr_->GetMode()) {
-		this->InputForSecondaryCameraB(in_deltatime);
-	}
-}
 
 void Game::InputForSecondaryCameraB(const float& in_deltatime) {
 	float cam_speed = 150.0f * in_deltatime;
@@ -398,5 +357,48 @@ void Game::InputFunction(const float& in_deltatime, const sf::Event& in_event) {
 	}
 	else if (state_ == DEATH) {
 		this->InputForDeath(in_deltatime, in_event);
+	}
+}
+
+void Game::InputForGameLoop(const float& in_deltatime) {
+
+	if (this->state_ != GAME) { return; }
+
+	//-------------------------------------------------------
+	//--------------------Player Control---------------------
+	//-------------------------------------------------------
+	//Walk up
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
+		this->obj_handler_ptr_->PlayerJump();
+	}
+	//Walk right
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+		this->obj_handler_ptr_->PlayerMoveRight();
+	}
+	//Walk left
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
+		this->obj_handler_ptr_->PlayerMoveLeft();
+	}
+	//Pick up
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
+		//OBS!
+		//Currently writes pos to terminal
+		std::cout << "X: " << obj_handler_ptr_->GetPlayerPos().x << "Y: " << obj_handler_ptr_->GetPlayerPos().y << " Z: " << obj_handler_ptr_->GetPlayerPos().z << std::endl;
+	}
+	//Use Ability
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::E)) {
+		this->obj_handler_ptr_->PlayerUseAbility();
+	}
+
+	//Attack
+	//goes here
+
+	//-------------------------------------------------------
+	//---------------Secondary Camera Control----------------
+	//-------------------------------------------------------
+	//Primary is 0 (boolean false), Secondary is 1 (boolean !false)
+	//bool secondary = cam_handler_ptr_->GetMode();
+	if (cam_handler_ptr_->GetMode()) {
+		this->InputForSecondaryCameraB(in_deltatime);
 	}
 }

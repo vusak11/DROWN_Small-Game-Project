@@ -30,7 +30,7 @@ private:
 	void InputForSecondaryCamera(const float& in_deltatime, const sf::Event& in_event);
 	
 	void InputForGameB(const float& in_deltatime, const sf::Event& in_event);
-	void InputForGameLoop(const float& in_deltatime);
+	
 	void InputForSecondaryCameraB(const float& in_deltatime);
 
 	void InputForMenu(const float& in_deltatime, const sf::Event& in_event);
@@ -45,6 +45,8 @@ public:
 	void GameIteration(float in_deltatime);
 	
 	void InputFunction(const float& in_deltatime, const sf::Event& in_event);
+
+	void InputForGameLoop(const float& in_deltatime);
 };
 
 #endif // !GAME_H
