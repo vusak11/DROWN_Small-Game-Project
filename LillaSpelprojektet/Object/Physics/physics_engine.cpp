@@ -490,7 +490,7 @@ void PhysicsEngine::ApplyPhysics(float& in_deltatime, std::vector<ObjectClass*>&
 	
 	//Loop through all objects in vector
 	for (unsigned int i = 0; i < in_object_ptr_vector.size(); i++) {
-		//this->UpdateVelocity(in_deltatime, in_object_ptr_vector.at(i));
+		this->UpdateVelocity(in_deltatime, in_object_ptr_vector.at(i));
 		this->UpdatePosition(in_deltatime, in_object_ptr_vector.at(i));
 	}
 

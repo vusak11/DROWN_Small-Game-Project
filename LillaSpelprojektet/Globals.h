@@ -71,7 +71,8 @@ enum GameState {
 	MENU,
 	PAUSE,
 	OPTIONS,
-	DEATH
+	DEATH,
+	QUIT
 };
 
 //---------------------------------------------------------

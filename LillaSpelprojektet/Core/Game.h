@@ -1,7 +1,6 @@
 #ifndef GAME_H
 #define GAME_H
 
-
 #include <SFML/Window.hpp>
 #include <GLM/glm.hpp>
 #include "render.h"
@@ -13,6 +12,7 @@
 
 class Game {
 private:
+	//Variables
 	CameraHandler* cam_handler_ptr_;
 	ObjectHandler* obj_handler_ptr_;
 
@@ -21,8 +21,18 @@ private:
 	GameState state_;
 	Menu menu_;
 
+	//std::thread* input_thread_ptr_;		//If using this do gameloop thread instead
+	//float* input_thread_deltatime_ptr_;
+
+	//Functions
+
 	void InputForGame(const float& in_deltatime, const sf::Event& in_event);
 	void InputForSecondaryCamera(const float& in_deltatime, const sf::Event& in_event);
+	
+	void InputForGameB(const float& in_deltatime, const sf::Event& in_event);
+	void InputForGameLoop(const float& in_deltatime);
+	void InputForSecondaryCameraB(const float& in_deltatime);
+
 	void InputForMenu(const float& in_deltatime, const sf::Event& in_event);
 	void InputForPause(const float& in_deltatime, const sf::Event& in_event);
 	void InputForOptions(const float& in_deltatime, const sf::Event& in_event);
@@ -32,7 +42,7 @@ public:
 	~Game();
 
 	void InitializeGame();
-	void GameLoop(float in_deltatime);
+	void GameIteration(float in_deltatime);
 	
 	void InputFunction(const float& in_deltatime, const sf::Event& in_event);
 };
