@@ -2,12 +2,11 @@
 
 Light::Light() {
 	//Scrap values
-	position_ = glm::vec3(0.0f, 10.0f, 0.0f);
+	position_ = glm::vec3(169.0f, -60.0f, 20.0f);
 	brightness_ = glm::vec3(0.7f, 0.7f, 0.7f);
-	ambient_light_ = glm::vec3(0.2f, 0.2f, 0.2f);
+	ambient_light_ = glm::vec3(1.0f, 0.6f, 0.0f);
 	diffuse_constant_ = glm::vec3(1.0f, 1.0f, 1.0f);
-	specular_light_ = glm::vec3(1.0f, 1.0f, 1.0f);
-	
+	specular_light_ = glm::vec3(1.0f, 0.1f, 0.1f);
 }
 
 void Light::LightDefault(glm::vec3 pos, glm::vec3 brightness, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular) {

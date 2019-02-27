@@ -6,7 +6,7 @@ void Render::DrawScene() {
 Render::Render() {
 	quad_vertex_array_object_ = 0;
 	quad_vertex_buffer_object_ = 0;
-	nr_of_lights_ = 1;
+	nr_of_lights_ = 20;
 
 	//--------------------------------------------------------
 	//-------------------Create Shaders-----------------------
@@ -81,12 +81,41 @@ void Render::InitializeRender() {
 
 	geometry_pass_->GeometryFrameBuffers();
 
-	lights_[0].LightDefault(
-		glm::vec3(169.0f, -60.0f, 20.0f),
-		glm::vec3(0.7f, 0.7f, 0.7f),
-		glm::vec3(1.0f, 0.6f, 0.0f),
-		glm::vec3(1.0f, 1.0f, 1.0f),
-		glm::vec3(1.0f, 0.1f, 0.1f));
+	std::vector<glm::vec2> light_positions = {
+		glm::vec2(160, -70),
+		glm::vec2(1995, -115),
+		glm::vec2(80, -270),
+		glm::vec2(520, -360),
+		glm::vec2(1025, -515),
+		glm::vec2(1515, -530),
+		glm::vec2(60, -680),
+		glm::vec2(2005, -700),
+		glm::vec2(50, -810),
+		glm::vec2(1020, -875),
+		glm::vec2(1300, -875),
+		glm::vec2(2010, -935),
+		glm::vec2(50, -970),
+		glm::vec2(645, -1220),
+		glm::vec2(1130, -1225),
+		glm::vec2(2015, -1255),
+		glm::vec2(165, -1350),
+		glm::vec2(1190, -1455),
+		glm::vec2(1025, -515),
+		glm::vec2(460, -1650)
+	};
+
+	for (int i = 0; i < nr_of_lights_; i++) {
+		lights_[i].SetPos(glm::vec3(light_positions[i], 20.0f));
+		if (map_handler_.GetZone(light_positions[i]) == "RED") {
+			lights_[i].SetAmbientLight(glm::vec3(1.0f, 0.0f, 0.0f));
+		}
+		else if (map_handler_.GetZone(light_positions[i]) == "GRE") {
+			lights_[i].SetAmbientLight(glm::vec3(0.0f, 1.0f, 0.0f));
+		}
+		else if (map_handler_.GetZone(light_positions[i]) == "BLU") {
+			lights_[i].SetAmbientLight(glm::vec3(0.0f, 0.0f, 1.0f));
+		}
+	}
 
 	map_handler_.InitializeBuffers(geometry_pass_->GetProgram());
 }

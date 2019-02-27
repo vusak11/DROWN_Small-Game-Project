@@ -45,6 +45,7 @@ public:
 	std::vector<glm::vec2> GridCulling(glm::vec2 current_cell);
 
 	std::vector<std::vector<float>>* GetMapDataPointer();
+	std::string GetZone(glm::vec2 zone_central_points);
 };
 
 #endif

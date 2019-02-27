@@ -50,7 +50,7 @@ std::vector<glm::vec2> MetaData::FetchThreeRandomPOIs(int offset) {
 	for (int i = rand_num; three_random_pois.size() < 3; i += rand_iterator) {
 		//IF OUT OF BOUNDS
 		if (i >= points_of_interest_.size()) {
-			i = ((rand() % (points_of_interest_.size() + 1)));			//START OVER ON NEW RANDOM VALUE
+			i = 1 + ((rand() % 5));			//START OVER ON NEW RANDOM VALUE BETWEEN 1 - 5
 		}
 		//IF RETURN LIST IS EMPTY
 		else if (three_random_pois.size() == 0) {
@@ -98,11 +98,11 @@ std::string MetaData::GetZone(glm::vec2 zone_central_points) {
 	}
 	//Check if point is within radius of the BLU ZONE
 	else if (pow(zone_central_points.x - zone_origin_coords_[1].x, 2) + pow(zone_central_points.y - zone_origin_coords_[1].y, 2) <= pow(zone_radius_, 2)) {
-		zone_code = "BLU";
+		zone_code = "GRE";
 	}
 	//Check if point is within radius of the SOL ZONE
 	else if (pow(zone_central_points.x - zone_origin_coords_[2].x, 2) + pow(zone_central_points.y - zone_origin_coords_[2].y, 2) <= pow(zone_radius_, 2)) {
-		zone_code = "SOL";
+		zone_code = "BLU";
 	}
 	return zone_code;
 }
