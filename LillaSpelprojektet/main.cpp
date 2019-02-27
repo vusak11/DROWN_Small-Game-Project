@@ -13,7 +13,8 @@
 void GameLoop(
 	const bool& in_running,
 	Game& in_game, 
-	sf::Clock& in_clock);
+	sf::Clock& in_clock,
+	sf::Window& in_window);
 
 int main() {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
@@ -46,8 +47,11 @@ int main() {
 		&GameLoop,
 		std::ref(running),
 		std::ref(game),
-		std::ref(gameTime)
+		std::ref(gameTime),
+		std::ref(window)
 	);
+
+	window.setActive(false);
 	//
 
 	/*-----------End Initialize---------------*/
@@ -72,7 +76,7 @@ int main() {
 		
 		//game.GameLoop(gameTime.restart().asSeconds());
 
-		window.display();
+		//window.display();
 	}
 
 	game_thread.join();	//wait for thread to finish
@@ -83,11 +87,14 @@ int main() {
 void GameLoop(
 	const bool& in_running,
 	Game& in_game,
-	sf::Clock& in_clock) {
+	sf::Clock& in_clock,
+	sf::Window& in_window) {
 
 	while (in_running) {
 		
 		in_game.GameIteration(in_clock.restart().asSeconds());
+
+		in_window.display();
 
 	}
 
