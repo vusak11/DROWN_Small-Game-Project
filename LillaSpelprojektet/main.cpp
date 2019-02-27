@@ -21,7 +21,7 @@ int main() {
 	}
 
 	/*----------Start GL Debugging----------*/
-	EnableGLDebug(); //Comment this away to stop output
+	//EnableGLDebug(); //Comment this away to stop output
 	/*----------End of Start GL Debugging----------*/
 
 	/*----------Variables----------*/

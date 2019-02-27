@@ -14,7 +14,7 @@ bool ObjectHandler::ClearPtrVector(std::vector<ObjectClass*>& in_vec) {
 }
 
 bool ObjectHandler::RemoveObject(const ObjectClass* in_object_ptr, std::vector<ObjectClass*>& in_object_ptr_vector) {
-	
+
 	//WARNING: This function deletes the given object on a success
 	//If a pointer has been saved externally it will lead to a trash location
 	//Taking a reference to the pointer and setting it to NULL will not save
@@ -36,12 +36,12 @@ bool ObjectHandler::RemoveObject(const ObjectClass* in_object_ptr, std::vector<O
 }
 
 std::vector<ObjectClass*> ObjectHandler::CullAndRetrieveObjectPtrs(const std::vector<ObjectClass*>& in_object_vector) const {
-	
+
 	//NTS:	Function takes a REFERENCE to a std::vector with OBJECTCLASS POINTERS
 	//		It creates a std::vector holding OBJECTCLASS POINTERS
 	//		It fills the std::vector with OBJECTCLASS POINTERS that the REFERENCES refer to
 	//		It then returns a std::vector of POINTERS
-	
+
 	//Set up a vector to hold pointers to all relevant objects
 	std::vector<ObjectClass*> nearby_objects_ptr_vector;
 
@@ -64,7 +64,7 @@ float ObjectHandler::DistanceBetween(const ObjectClass* in_object_a, const Objec
 	//Get the 2D position for object a
 	glm::vec3 temp_vec = in_object_a->GetPosition();
 	glm::vec2 pos2_a = glm::vec2(temp_vec.x, temp_vec.y);
-	
+
 	//Get the 2D position for object b
 	temp_vec = in_object_b->GetPosition();
 	glm::vec2 pos2_b = glm::vec2(temp_vec.x, temp_vec.y);
@@ -97,13 +97,13 @@ void ObjectHandler::DeterminePlayerAction(const float& in_deltatime) {
 	}
 
 	if (this->player_input_.attack) {
-		
+
 	}
 	if (this->player_input_.pick_up) {
 		glm::vec3 p = player_ptr_->GetPosition();
 		//this->player_ptr_->SetPosition(200, 0, p.z);
 	}
-	
+
 }
 
 void ObjectHandler::ProcessNPCs(const float& in_deltatime, std::vector<ObjectClass*>& in_npcs_ptr_vector) {
@@ -176,7 +176,7 @@ void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map
 
 	//Create player
 	// THIS Y POS DOES NOT WORK AT ALL
-	this->player_ptr_ = new PlayerCharacter(glm::vec3(230.0f, -800.0f, 0.0f));
+	this->player_ptr_ = new PlayerCharacter(glm::vec3(160.0f, -70.0f, 0.0f));
 	this->player_ptr_->SetScale(2.0f);
 
 	//TEMP: Create an NPC
@@ -186,7 +186,7 @@ void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map
 
 	this->physics_engine_ptr_ = new PhysicsEngine(map_height_list);
 
-	
+
 	//this->TestObjectHandler();		//NTS: Just for testing
 
 
@@ -218,11 +218,11 @@ void ObjectHandler::PlayerPickUp() {
 
 std::vector<ObjectPackage> ObjectHandler::UpdateAndRetrieve(float in_deltatime) {
 
-	
+
 	std::vector<ObjectClass*> relevant_npcs_ptr_vector;		//Two vectors to hold the NPC:s and drops that are within the culling distance
 	std::vector<ObjectClass*> relevant_drops_ptr_vector;
 	std::vector<ObjectClass*> physical_objects_ptr_vector;	//A vector to hold everything that is affected by physics
-	
+
 
 	//Cull NPC:s
 	relevant_npcs_ptr_vector = this->CullAndRetrieveObjectPtrs(this->npc_ptr_vector_);
@@ -240,7 +240,7 @@ std::vector<ObjectPackage> ObjectHandler::UpdateAndRetrieve(float in_deltatime) 
 
 	//Take input from player (i.e. set velocity, attack flags, etc)
 	this->DeterminePlayerAction(in_deltatime);
-	
+
 	//Go through all relevant NPCs and call their AI functions
 	this->ProcessNPCs(in_deltatime, relevant_npcs_ptr_vector);
 
@@ -248,7 +248,7 @@ std::vector<ObjectPackage> ObjectHandler::UpdateAndRetrieve(float in_deltatime) 
 	this->physics_engine_ptr_->ApplyPhysics(in_deltatime, physical_objects_ptr_vector);
 
 	//ResolvePlayerAction();
-	
+
 	//ResolveNPCAction(/*vector.at(i)*/);
 
 	//ResolveDropBehaviour(in_drop);
@@ -258,7 +258,7 @@ std::vector<ObjectPackage> ObjectHandler::UpdateAndRetrieve(float in_deltatime) 
 
 	//Put the things that are to be drawn onto screen in a package struct and return it
 	std::vector<ObjectPackage> package_vector;
-	
+
 	this->PackObjectIntoVector(this->player_ptr_, package_vector);
 	this->PackObjectVectorIntoVector(relevant_npcs_ptr_vector, package_vector);
 	this->PackObjectVectorIntoVector(relevant_drops_ptr_vector, package_vector);
@@ -336,8 +336,8 @@ void ObjectHandler::TestObjectHandler() {
 
 	std::cout << "I:	Test throw functions in Character" << std::endl;
 	try { this->player_ptr_->HealDamage(-3); }
-	catch (std::invalid_argument a){ std::cout << a.what() << std::endl; }
-	
+	catch (std::invalid_argument a) { std::cout << a.what() << std::endl; }
+
 	try { this->player_ptr_->TakeDamage(-17); }
 	catch (std::invalid_argument a) { std::cout << a.what() << std::endl; }
 

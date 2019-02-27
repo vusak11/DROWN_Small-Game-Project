@@ -42,7 +42,7 @@ Render::Render() {
 	//--------------------------------------------------------
 	hud_.LoadHealthBarTexture((char*)"../Resources/GUI/healthbar.png");
 	hud_.LoadQuickSlotTexture((char*)"../Resources/GUI/quickslot.png");
-	
+
 
 	//--------------------------------------------------------
 	//---------------Load Models to Array---------------------
@@ -50,13 +50,13 @@ Render::Render() {
 	//Make space for 1 model per ObjectID
 	this->nr_of_models_ = NUMBER_OF_OBJECT_IDS;
 	model_ = new Model*[this->nr_of_models_];
-	
+
 	//Link models to a ObjectID
 	model_[OBJECT_ID_NULL] = new Model((char*)"../Resources/Models/DefaultDummyNPC/defaultDummyNPC.obj");
 	model_[OBJECT_ID_PLAYER] = new Model((char*)"../Resources/Models/TestBox/testBOX.obj");
 	model_[OBJECT_ID_DUMMY] = new Model((char*)"../Resources/Models/DummyNPC/dummyNPC.obj");
 
-	
+
 }
 
 Render::~Render() {
@@ -76,23 +76,23 @@ Render::~Render() {
 void Render::InitializeRender() {
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	
+
 	hud_.Initiliaze();
 
 	geometry_pass_->GeometryFrameBuffers();
 
 	lights_[0].LightDefault(
-		glm::vec3(0.0f, 10.0f, 0.0f),
+		glm::vec3(169.0f, -60.0f, 20.0f),
 		glm::vec3(0.7f, 0.7f, 0.7f),
-		glm::vec3(0.2f, 0.2f, 0.2f),
+		glm::vec3(1.0f, 0.6f, 0.0f),
 		glm::vec3(1.0f, 1.0f, 1.0f),
-		glm::vec3(1.0f, 1.0f, 1.0f));
+		glm::vec3(1.0f, 0.1f, 0.1f));
 
 	map_handler_.InitializeBuffers(geometry_pass_->GetProgram());
 }
 
 void Render::UpdateRender(
-	float dt, 
+	float dt,
 	glm::vec3 camera_position,
 	glm::mat4 perspective_view_matrix,
 	std::vector<ObjectPackage>& object_vector,
@@ -108,9 +108,9 @@ void Render::UpdateRender(
 	//  GEOMETRY
 	GeometryPass(camera_position, perspective_view_matrix);
 	GeometryDrawing(object_vector);
-	
+
 	//  LIGHTING
-	lights_[0].SetPos(camera_position);
+	//lights_[0].SetPos(camera_position);
 	LightingPass(camera_position);
 
 	RenderQuad();
@@ -128,7 +128,7 @@ void Render::UpdateRender(
 }
 
 void Render::GeometryDrawing(std::vector<ObjectPackage>& object_vector) {
-	
+
 	//--------------------DRAW OBJECTS------------------------
 
 	//Loop through all ObjectPackage:s and draw the corresponding models
@@ -141,7 +141,7 @@ void Render::GeometryDrawing(std::vector<ObjectPackage>& object_vector) {
 		temp_id = object_vector[i].id;
 		this->model_[temp_id]->Draw(geometry_pass_->GetProgram());
 	}
-	
+
 	//----------------DRAW THE MAP----------------------------
 
 	//We know the player object to be the first in the vector
@@ -153,14 +153,14 @@ void Render::GeometryDrawing(std::vector<ObjectPackage>& object_vector) {
 	//Then only retrieve cells nearby
 	std::vector<glm::vec2> cells = map_handler_.GridCulling(
 		map_handler_.CurrentCell(player_position));
-	
+
 	//Draw the map
 	while (!cells.empty()) {
 		ModelTransformation(map_handler_.Transformation((int)cells.back().x, (int)cells.back().y));
 		map_handler_.Draw(geometry_pass_->GetProgram(), (int)cells.back().x, (int)cells.back().y);
 		cells.pop_back();
 	}
-	
+
 	/*
 	else if (OBJECT_ID_MAP == object_vector.back().id) {
 			std::vector<glm::vec2> cells = map_handler_.GridCulling(
@@ -214,18 +214,33 @@ void Render::LightingPass(glm::vec3 camera_position) {
 	glActiveTexture(GL_TEXTURE2);
 	glBindTexture(GL_TEXTURE_2D, geometry_pass_->GetAlbedoSpecular());
 
-	glUniform3f(
-		glGetUniformLocation(lighting_pass_->GetProgram(), "light_position"),
-		camera_position.x, camera_position.y, camera_position.z
-	);
-	glUniform3fv(glGetUniformLocation(lighting_pass_->GetProgram(), "viewPos"), 1, glm::value_ptr(camera_position)); //Add camera positions
-
+	for (int i = 0; i < nr_of_lights_; i++) {
+		glUniform3f(
+			glGetUniformLocation(lighting_pass_->GetProgram(), ("lights[" + std::to_string(i) + "].position").c_str()),
+			lights_[i].GetPos().x, lights_[i].GetPos().y, lights_[i].GetPos().z
+		);
+		glUniform3f(
+			glGetUniformLocation(lighting_pass_->GetProgram(), ("lights[" + std::to_string(i) + "].color").c_str()),
+			lights_[i].GetAmbientLight().r, lights_[i].GetAmbientLight().g, lights_[i].GetAmbientLight().b
+		);
+		// Attenuation parameters, and calculate radius
+		const float constant = 1.0f; // note that we don't send this to the shader, we assume it is always 1.0 (in our case)
+		const float linear = 0.007f;
+		const float quadratic = 0.0002f;
+		glUniform1f(glGetUniformLocation(lighting_pass_->GetProgram(), ("lights[" + std::to_string(i) + "].a_linear").c_str()), linear);
+		glUniform1f(glGetUniformLocation(lighting_pass_->GetProgram(), ("lights[" + std::to_string(i) + "].a_quadratic").c_str()), quadratic);
+		// then calculate radius of light volume/sphere
+		const float max_brightness = std::fmaxf(std::fmaxf(lights_[i].GetAmbientLight().r, lights_[i].GetAmbientLight().g), lights_[i].GetAmbientLight().b);
+		float radius = (-linear + std::sqrt(linear * linear - 4 * quadratic * (constant - (256.0f / 5.0f) * max_brightness))) / (2.0f * quadratic);
+		glUniform1f(glGetUniformLocation(lighting_pass_->GetProgram(), ("lights[" + std::to_string(i) + "].radius").c_str()), radius);
+	}
+	glUniform3fv(glGetUniformLocation(lighting_pass_->GetProgram(), "view_pos"), 1, glm::value_ptr(camera_position)); //Add camera positions
 }
 
 void Render::RenderMenuState(Menu menu) {
 	glClearColor(0.22f, 0.22f, 0.22f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
-	
+
 	menu.RenderMenu(text_shaders_);
 }
 
