@@ -21,14 +21,20 @@ private:
 	GameState state_;
 	Menu menu_;
 
-	void InputForGame(float in_deltatime);
+	void InputForGame(const float& in_deltatime, const sf::Event& in_event);
+	void InputForSecondaryCamera(const float& in_deltatime, const sf::Event& in_event);
+	void InputForMenu(const float& in_deltatime, const sf::Event& in_event);
+	void InputForPause(const float& in_deltatime, const sf::Event& in_event);
+	void InputForOptions(const float& in_deltatime, const sf::Event& in_event);
+	void InputForDeath(const float& in_deltatime, const sf::Event& in_event);
 public:
 	Game();
 	~Game();
 
 	void InitializeGame();
 	void GameLoop(float in_deltatime);
-	void InputForMenu(float in_deltatime, sf::Event event);
+	
+	void InputFunction(const float& in_deltatime, const sf::Event& in_event);
 };
 
 #endif // !GAME_H
