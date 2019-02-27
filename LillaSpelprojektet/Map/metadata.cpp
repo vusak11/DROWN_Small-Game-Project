@@ -10,26 +10,26 @@ MetaData::~MetaData() {
 
 void MetaData::Initialize() {
 	points_of_interest_ = {
-		glm::vec2(160, -70),
-		glm::vec2(1995, -115),
-		glm::vec2(80, -270),
-		glm::vec2(520, -360),
-		glm::vec2(1025, -515),
-		glm::vec2(1515, -530),
-		glm::vec2(60, -680),
-		glm::vec2(2005, -700),
-		glm::vec2(50, -810),
-		glm::vec2(1020, -875),
-		glm::vec2(1300, -875),
-		glm::vec2(2010, -935),
-		glm::vec2(50, -970),
-		glm::vec2(645, -1220),
-		glm::vec2(1130, -1225),
-		glm::vec2(2015, -1255),
-		glm::vec2(165, -1350),
-		glm::vec2(1190, -1455),
-		glm::vec2(1025, -515),
-		glm::vec2(460, -1650)
+		glm::vec2(176, -86),
+		glm::vec2(1990, -126),
+		glm::vec2(75, -284),
+		glm::vec2(525, -377),
+		glm::vec2(1026, -525),
+		glm::vec2(1530, -545),
+		glm::vec2(46, -690),
+		glm::vec2(2005, -712),
+		glm::vec2(60, -823),
+		glm::vec2(1013, -889),
+		glm::vec2(1292, -891),
+		glm::vec2(2005, -954),
+		glm::vec2(60, -980),
+		glm::vec2(640, -1235),
+		glm::vec2(1177, -1239),
+		glm::vec2(2011, -1267),
+		glm::vec2(157, -1369),
+		glm::vec2(1186, -1468),
+		glm::vec2(1026, -525),
+		glm::vec2(446, -1664)
 	};
 	zone_origin_coords_ = FetchThreeRandomPOIs(800);
 	zone_radius_ = 400;
@@ -50,7 +50,7 @@ std::vector<glm::vec2> MetaData::FetchThreeRandomPOIs(int offset) {
 	for (int i = rand_num; three_random_pois.size() < 3; i += rand_iterator) {
 		//IF OUT OF BOUNDS
 		if (i >= points_of_interest_.size()) {
-			i = ((rand() % (points_of_interest_.size() + 1)));			//START OVER ON NEW RANDOM VALUE
+			i = 1 + ((rand() % 5));			//START OVER ON NEW RANDOM VALUE
 		}
 		//IF RETURN LIST IS EMPTY
 		else if (three_random_pois.size() == 0) {

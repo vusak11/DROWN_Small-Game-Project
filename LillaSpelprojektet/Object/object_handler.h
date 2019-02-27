@@ -11,7 +11,7 @@
 #include "Character/character.h"
 #include "Character/player_character.h"
 #include "Character/npc.h"
-
+#include "Boss/door.h"
 
 #include "Physics/physics_engine.h"
 
@@ -32,6 +32,7 @@ private:
 
 	//Variables-----------------------------------------------
 	PlayerCharacter* player_ptr_;
+	Door* door_ptr_;
 	std::vector<ObjectClass*> npc_ptr_vector_;				//All enemies
 	std::vector<ObjectClass*> drop_ptr_vector_;		//Things dropped on the ground (e.g. power-ups, health)
 
@@ -70,7 +71,9 @@ public:
 	~ObjectHandler();
 
 	// Takes map data to send to physics engine.
-	void InitializeObjectHandler(std::vector<std::vector<float>>* map_height_list);		//Function creates player object, loads in enemies for the zones etc. Call from InitiateGame();
+	void InitializeObjectHandler(
+		std::vector<std::vector<float>>* map_height_list, 
+		std::vector<glm::vec2> door_key_position);		//Function creates player object, loads in enemies for the zones etc. Call from InitiateGame();
 
 	//Functions for controlling the player
 	//Call these functions when pressing buttons

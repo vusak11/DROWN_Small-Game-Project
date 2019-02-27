@@ -64,6 +64,12 @@
     <Filter Include="Header Files\UI">
       <UniqueIdentifier>{89789ba0-9a16-4825-90fd-79b6ed350a5f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Object\Boss">
+      <UniqueIdentifier>{81d7e24d-d467-437c-a0db-f8ca0fd66c79}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object\Boss">
+      <UniqueIdentifier>{b0c9021d-1eb9-4cd9-b203-db9ce64a4f76}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -141,6 +147,9 @@
     <ClCompile Include="Map\metadata.cpp">
       <Filter>Source Files\Map</Filter>
     </ClCompile>
+    <ClCompile Include="Object\Boss\door.cpp">
+      <Filter>Source Files\Object\Boss</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera\camera.h">
@@ -217,6 +226,9 @@
     </ClInclude>
     <ClInclude Include="Map\metadata.h">
       <Filter>Header Files\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Boss\door.h">
+      <Filter>Header Files\Object\Boss</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

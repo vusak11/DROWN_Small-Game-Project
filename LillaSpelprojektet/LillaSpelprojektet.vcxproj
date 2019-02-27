@@ -146,6 +146,7 @@
     <ClCompile Include="GLDebug.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map\metadata.cpp" />
+    <ClCompile Include="Object\Boss\door.cpp" />
     <ClCompile Include="Object\Character\ability.cpp" />
     <ClCompile Include="Map\map.cpp" />
     <ClCompile Include="Map\map_handler.cpp" />
@@ -173,6 +174,7 @@
     <ClInclude Include="Map\map.h" />
     <ClInclude Include="Map\map_handler.h" />
     <ClInclude Include="Map\metadata.h" />
+    <ClInclude Include="Object\Boss\door.h" />
     <ClInclude Include="Object\Character\ability.h" />
     <ClInclude Include="Object\Character\character.h" />
     <ClInclude Include="Object\Character\mesh.h" />

@@ -160,6 +160,7 @@ void ObjectHandler::PackObjectVectorIntoVector(std::vector<ObjectClass*>& in_ptr
 
 ObjectHandler::ObjectHandler() {
 	this->player_ptr_ = NULL;
+	this->door_ptr_ = NULL;
 	this->physics_engine_ptr_ = NULL;
 }
 
@@ -170,9 +171,10 @@ ObjectHandler::~ObjectHandler() {
 
 	delete this->physics_engine_ptr_;
 
+	delete this->door_ptr_;
 }
 
-void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map_height_list) {
+void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map_height_list, std::vector<glm::vec2> door_key_position) {
 
 	//Create player
 	// THIS Y POS DOES NOT WORK AT ALL
@@ -186,7 +188,10 @@ void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map
 
 	this->physics_engine_ptr_ = new PhysicsEngine(map_height_list);
 
-	
+	//Retrieve the newly random generated position of door and key (0 = door, 1 = key)
+	this->door_ptr_ = new Door(door_key_position[0]);
+	this->door_ptr_->SetPosition(door_key_position[0].x, door_key_position[0].y, 3.0f);
+	this->door_ptr_->SetScale(0.075f);
 	//this->TestObjectHandler();		//NTS: Just for testing
 
 
@@ -262,6 +267,8 @@ std::vector<ObjectPackage> ObjectHandler::UpdateAndRetrieve(float in_deltatime) 
 	this->PackObjectIntoVector(this->player_ptr_, package_vector);
 	this->PackObjectVectorIntoVector(relevant_npcs_ptr_vector, package_vector);
 	this->PackObjectVectorIntoVector(relevant_drops_ptr_vector, package_vector);
+
+	this->PackObjectIntoVector(this->door_ptr_, package_vector);
 
 	return package_vector;
 }
