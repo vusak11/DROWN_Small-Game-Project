@@ -74,7 +74,7 @@ int main() {
 			}
 			/*----------------Only exit window commands-----------*/
 			/*----------------Input from mouse / keyboard---------*/
-			game.InputFunction(deltatime, event);
+			game.InputEvents(event);
 			/*----------------Input from mouse / keyboard---------*/
 		}
 
@@ -95,8 +95,6 @@ int main() {
 void GameLoop(
 	const bool& in_running,
 	Game& in_game,
-	//sf::Clock& in_clock,
-	//const float& in_deltatime,
 	sf::Window& in_window) {
 
 	sf::Clock gameTime;

@@ -25,18 +25,14 @@ private:
 	//float* input_thread_deltatime_ptr_;
 
 	//Functions
+	void InputForMenuState(const sf::Event& in_event);
+	void InputForPauseState(const sf::Event& in_event);
+	void InputForOptionsState(const sf::Event& in_event);
+	void InputForDeathState(const sf::Event& in_event);
 
-	void InputForGame(const float& in_deltatime, const sf::Event& in_event);
-	void InputForSecondaryCamera(const float& in_deltatime, const sf::Event& in_event);
-	
-	void InputForGameB(const float& in_deltatime, const sf::Event& in_event);
-	
-	void InputForSecondaryCameraB(const float& in_deltatime);
+	void InputForGameState(const sf::Event& in_event);
+	void InputForSecondaryCamera(const float& in_deltatime);
 
-	void InputForMenu(const float& in_deltatime, const sf::Event& in_event);
-	void InputForPause(const float& in_deltatime, const sf::Event& in_event);
-	void InputForOptions(const float& in_deltatime, const sf::Event& in_event);
-	void InputForDeath(const float& in_deltatime, const sf::Event& in_event);
 public:
 	Game();
 	~Game();
@@ -44,8 +40,7 @@ public:
 	void InitializeGame();
 	void GameIteration(float in_deltatime);
 	
-	void InputFunction(const float& in_deltatime, const sf::Event& in_event);
-
+	void InputEvents(const sf::Event& in_event);
 	void InputForGameLoop(const float& in_deltatime);
 };
 
