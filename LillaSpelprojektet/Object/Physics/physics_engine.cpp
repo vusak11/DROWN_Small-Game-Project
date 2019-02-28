@@ -6,22 +6,12 @@
 
 void PhysicsEngine::UpdateVelocity(float& in_deltatime, ObjectClass*& in_object_ptr) {
 
-	//WIP
-	//If the new velocity is greater than our allowed maximum
-	//clamp it down to it
-	//if (in_velocity > OBJECT_MAX_VELOCITY) {
-	//	in_velocity = OBJECT_MAX_VELOCITY;
-	//}
-	//else if (in_velocity < -OBJECT_MAX_VELOCITY) {
-	//	in_velocity = -OBJECT_MAX_VELOCITY;
-	//}
-
 	//Get the object's velocity
 	glm::vec3 velocity_vec = in_object_ptr->GetVelocityVec();
 
 	//Apply the object's acceleration to its velocity
 	//v = v0 + a*t
-	velocity_vec = velocity_vec + in_object_ptr->GetAccelerationVec() * in_deltatime;
+	//velocity_vec = velocity_vec + in_object_ptr->GetAccelerationVec() * in_deltatime;
 
 	//Apply gravity to the y velocity
 	//v = v0 + g*t
@@ -37,7 +27,7 @@ void PhysicsEngine::UpdateVelocity(float& in_deltatime, ObjectClass*& in_object_
 	//v = v + (-v)d*t
 	float decceleration = -velocity_vec.x*loss_ratio;
 
-	velocity_vec.x = velocity_vec.x + decceleration * in_deltatime;
+	velocity_vec.x = velocity_vec.x + decceleration *in_deltatime;
 
 	//If the new velocity is too low set it to 0
 	if (std::abs(velocity_vec.x) < this->object_min_velocity_) { velocity_vec.x = 0.0f; }
@@ -502,7 +492,6 @@ void PhysicsEngine::ApplyPhysics(float& in_deltatime, std::vector<ObjectClass*>&
 	for (unsigned int i = 0; i < in_object_ptr_vector.size(); i++) {
 		this->UpdateVelocity(in_deltatime, in_object_ptr_vector.at(i));
 		this->UpdatePosition(in_deltatime, in_object_ptr_vector.at(i));
-		//TBA(?): COLLISION DETECTION VS MAP
 	}
 
 

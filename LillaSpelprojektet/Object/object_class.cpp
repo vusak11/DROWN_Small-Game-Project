@@ -39,7 +39,7 @@ ObjectClass::ObjectClass(glm::vec3 start_pos, ObjectID id) {
 	this->model_matrix_up_to_date_ = false;
 
 	this->velocity_vec_ = glm::vec3(0.0f);
-	this->acceleration_vec_ = glm::vec3(0.0f);
+	//this->acceleration_vec_ = glm::vec3(0.0f);
 }
 
 ObjectClass::~ObjectClass() {
@@ -116,10 +116,12 @@ void ObjectClass::SetVelocityVec(glm::vec3 in_velocity_vec) {
 	this->velocity_vec_ = in_velocity_vec;
 }
 
+/*
 void ObjectClass::SetAccelerationVec(glm::vec3 in_acceleration_vec) {
 	//Set the acceleration vector to be the new velocity
 	this->acceleration_vec_ = in_acceleration_vec;
 }
+*/
 
 ObjectID ObjectClass::GetObjectID() const {
 	return this->id_;
@@ -147,9 +149,11 @@ glm::vec3 ObjectClass::GetVelocityVec() const {
 	return this->velocity_vec_;
 }
 
+/*
 glm::vec3 ObjectClass::GetAccelerationVec() const {
 	return this->acceleration_vec_;
 }
+*/
 
 glm::mat4 ObjectClass::RetrieveModelMatrix() {
 	//If the model matrix is not up to date call the function calculating it
@@ -168,7 +172,7 @@ void ObjectClass::TurnLeft(const float& in_deltatime) {
 	//If the new orientation is further than -PI/2 snap it to -PI/2
 	if (new_rotation < glm::radians(-90.0f)) { new_rotation = glm::radians(-90.0f); }
 
-	std::cout << "Rot L: " << glm::degrees(new_rotation) << std::endl;
+	//std::cout << "Rot L: " << glm::degrees(new_rotation) << std::endl;
 
 	this->SetRotation(this->rotation_around_x_, new_rotation, this->rotation_around_z_);
 }
@@ -181,7 +185,7 @@ void ObjectClass::TurnRight(const float& in_deltatime) {
 	//If the new orientation is further than PI/2 snap it to PI/2
 	if (new_rotation > glm::radians(90.0f)) { new_rotation = glm::radians(90.0f); }
 
-	std::cout << "Rot R: " << glm::degrees(new_rotation) << std::endl;
+	//std::cout << "Rot R: " << glm::degrees(new_rotation) << std::endl;
 
 	this->SetRotation(this->rotation_around_x_, new_rotation, this->rotation_around_z_);
 }
