@@ -6,7 +6,7 @@ void Render::DrawScene() {
 Render::Render() {
 	quad_vertex_array_object_ = 0;
 	quad_vertex_buffer_object_ = 0;
-	nr_of_lights_ = 21;
+	nr_of_lights_ = 61;
 
 	//--------------------------------------------------------
 	//-------------------Create Shaders-----------------------
@@ -81,45 +81,20 @@ void Render::InitializeRender() {
 
 	geometry_pass_->GeometryFrameBuffers();
 
-	// Hard coded light positions
-	std::vector<glm::vec2> light_positions = {
-		glm::vec2(0, 0),
-		glm::vec2(160, -70),
-		glm::vec2(1995, -115),
-		glm::vec2(80, -270),
-		glm::vec2(520, -360),
-		glm::vec2(1025, -515),
-		glm::vec2(1515, -530),
-		glm::vec2(60, -680),
-		glm::vec2(2005, -700),
-		glm::vec2(50, -810),
-		glm::vec2(1020, -875),
-		glm::vec2(1300, -875),
-		glm::vec2(2010, -935),
-		glm::vec2(50, -970),
-		glm::vec2(645, -1220),
-		glm::vec2(1130, -1225),
-		glm::vec2(2015, -1255),
-		glm::vec2(165, -1350),
-		glm::vec2(1190, -1455),
-		glm::vec2(1025, -515),
-		glm::vec2(460, -1650)
-	};
-
-	// Player light
+	// Fetch light positions and store locally
+	light_positions_ = map_handler_.GetLightPositions();
+	// Set player light
 	lights_[0].SetBrightness(glm::vec3(0.1f, 0.1f, 0.1f));
-
-
-	// Set colour of the light depending on where in the world it exists
+	// Set colour of the light depending on where in the world it's located
 	for (int i = 1; i < nr_of_lights_; i++) {
-		lights_[i].SetPos(glm::vec3(light_positions[i], 10.0f));
-		if (map_handler_.GetZone(light_positions[i]) == "RED") {
+		lights_[i].SetPos(glm::vec3(light_positions_[i], 10.0f));
+		if (map_handler_.GetZone(light_positions_[i]) == "RED") {
 			lights_[i].SetAmbientLight(glm::vec3(1.0f, 0.0f, 0.0f));
 		}
-		else if (map_handler_.GetZone(light_positions[i]) == "GRE") {
+		else if (map_handler_.GetZone(light_positions_[i]) == "GRE") {
 			lights_[i].SetAmbientLight(glm::vec3(0.01f, 0.84f, 0.01f));
 		}
-		else if (map_handler_.GetZone(light_positions[i]) == "BLU") {
+		else if (map_handler_.GetZone(light_positions_[i]) == "BLU") {
 			lights_[i].SetAmbientLight(glm::vec3(0.0f, 0.4f, 1.0f));
 		}
 	}
@@ -146,7 +121,20 @@ void Render::UpdateRender(
 	GeometryDrawing(object_vector);
 
 	//  LIGHTING
-	lights_[0].SetPos(glm::vec3(camera_position.x, (camera_position.y + 15.0), 0.0));		//Player light
+	lights_[0].SetPos(glm::vec3(camera_position.x, (camera_position.y + 15.0), 0.0));		//Place players light on our character
+	// Update color of players light depending on zone
+	if (map_handler_.GetZone(camera_position) == "DEF") {
+		lights_[0].SetAmbientLight(glm::vec3(1.0f, 0.58f, 0.20f));
+	}
+	else if (map_handler_.GetZone(camera_position) == "RED") {
+		lights_[0].SetAmbientLight(glm::vec3(1.0f, 0.0f, 0.0f));
+	}
+	else if (map_handler_.GetZone(camera_position) == "GRE") {
+		lights_[0].SetAmbientLight(glm::vec3(0.01f, 0.84f, 0.01f));
+	}
+	else if (map_handler_.GetZone(camera_position) == "BLU") {
+		lights_[0].SetAmbientLight(glm::vec3(0.0f, 0.4f, 1.0f));
+	}
 	LightingPass(camera_position);
 
 	RenderQuad();

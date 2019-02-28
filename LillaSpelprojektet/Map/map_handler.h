@@ -13,7 +13,6 @@
 //    handler->GetMap(0)->load_map();
 //   
 
-
 class MapHandler {
 private:
 	struct GridMap {
@@ -45,7 +44,10 @@ public:
 	std::vector<glm::vec2> GridCulling(glm::vec2 current_cell);
 
 	std::vector<std::vector<float>>* GetMapDataPointer();
+	
+	// Variables from meta_data_
 	std::string GetZone(glm::vec2 zone_central_points);
+	std::vector<glm::vec2> GetLightPositions() const;
 };
 
 #endif
