@@ -141,9 +141,6 @@
     <ClCompile Include="Map\metadata.cpp">
       <Filter>Source Files\Map</Filter>
     </ClCompile>
-    <ClCompile Include="Object\drop.cpp">
-      <Filter>Source Files\Object</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera\camera.h">
@@ -220,9 +217,6 @@
     </ClInclude>
     <ClInclude Include="Map\metadata.h">
       <Filter>Header Files\Map</Filter>
-    </ClInclude>
-    <ClInclude Include="Object\drop.h">
-      <Filter>Header Files\Object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

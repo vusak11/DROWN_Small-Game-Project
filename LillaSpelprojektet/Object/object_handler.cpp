@@ -185,9 +185,10 @@ void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map
 
 	this->physics_engine_ptr_ = new PhysicsEngine(map_height_list);
 
-	this->drop_ptr_vector_.push_back(new Drop(glm::vec3(door_key_position[0], 3.0f)));
-	this->drop_ptr_vector_.at(0)->SetPosition(door_key_position[0].x, door_key_position[0].y, 3.0f);
-	this->drop_ptr_vector_.at(0)->SetScale(5.0f);
+	//Door! 
+	//this->drop_ptr_vector_.push_back(new Drop(glm::vec3(door_key_position[0], 3.0f))); 
+	//this->drop_ptr_vector_.at(0)->SetPosition(door_key_position[0].x, door_key_position[0].y, 3.0f);
+	//this->drop_ptr_vector_.at(0)->SetScale(5.0f);
 
 	//Retrieve the newly random generated position of door and key (0 = door, 1 = key)
 	//this->TestObjectHandler();		//NTS: Just for testing

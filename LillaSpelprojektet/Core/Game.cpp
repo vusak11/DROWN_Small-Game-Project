@@ -124,7 +124,7 @@ void Game::GameLoop(float in_deltatime) {
 
 		cam_handler_ptr_->SetPrimaryCameraPos(this->obj_handler_ptr_->GetPlayerPos());
 
-		if (this->obj_handler_ptr_->PlayerInBossRoom())
+		if (this->obj_handler_ptr_->PlayerInBossRoom()) // Swap primary camera to 'boss' camera
 			cam_handler_ptr_->SwapCameraToBossCamera();
 
 		PlayerInfoPackage temp_player_data;

@@ -17,8 +17,8 @@ void CameraHandler::SwapCamera() {
 }
 
 void CameraHandler::SwapCameraToBossCamera() {
-	this->mode_ == BOSS;
-	SetCameraPos(220.0f, -1170.0f, 300.0f);
+	this->mode_ = BOSS;
+	SetCameraPos(220.0f, -1170.0f, 150.0f);
 }
 
 int CameraHandler::GetMode() {

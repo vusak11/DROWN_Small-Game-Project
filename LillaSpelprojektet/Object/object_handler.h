@@ -11,7 +11,6 @@
 #include "Character/character.h"
 #include "Character/player_character.h"
 #include "Character/npc.h"
-#include "drop.h"
 
 #include "Physics/physics_engine.h"
 
