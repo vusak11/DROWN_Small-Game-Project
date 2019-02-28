@@ -83,7 +83,7 @@ public:
 	void TurnRight(const float& in_deltatime);
 	bool IsAirborne();
 	virtual void SetAirborne(bool in_bool);
-	virtual bool CheckCollision(BoxPoints& other_box);
+	virtual bool CheckCollision(const BoxPoints& in_box);
 
 
 };

@@ -35,7 +35,7 @@ public:
 	~Hitbox();
 
 	// Compare this Hitbox with sent ont and return true if they intersect
-	virtual bool CheckCollision(BoxPoints& other_box) = 0;
+	virtual bool CheckCollision(const BoxPoints& other_box) = 0;
 
 	// Call this each time the object is translated in the world to translate the hitbox
 	void UpdateHitbox(glm::vec3 position, float x_offset, float y_offset);

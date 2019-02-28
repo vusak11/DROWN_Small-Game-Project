@@ -195,6 +195,6 @@ void ObjectClass::SetAirborne(bool in_bool) {
 	this->airborne_ = in_bool;
 }
 
-bool ObjectClass::CheckCollision(BoxPoints& other_box) {
+bool ObjectClass::CheckCollision(const BoxPoints& other_box) {
 	return false;
 }
