@@ -5,7 +5,7 @@
 void Game::InputForMenuState(const sf::Event& in_event) {
 	menu_.StateManager(state_);
 	switch (in_event.type) {
-	case sf::Event::KeyReleased:
+	case sf::Event::KeyPressed:
 		if (in_event.key.code == sf::Keyboard::W
 			|| in_event.key.code == sf::Keyboard::Up) {
 			menu_.NavigateUp();
@@ -36,7 +36,7 @@ void Game::InputForMenuState(const sf::Event& in_event) {
 
 void Game::InputForPauseState(const sf::Event& in_event) {
 	switch (in_event.type) {
-	case sf::Event::KeyReleased:
+	case sf::Event::KeyPressed:
 		if (in_event.key.code == sf::Keyboard::W
 			|| in_event.key.code == sf::Keyboard::Up) {
 			menu_.NavigateUp();
@@ -80,7 +80,7 @@ void Game::InputForOptionsState(const sf::Event& in_event) {
 
 void Game::InputForDeathState(const sf::Event& in_event) {
 	switch (in_event.type) {
-	case sf::Event::KeyReleased:
+	case sf::Event::KeyPressed:
 		if (in_event.key.code == sf::Keyboard::W
 			|| in_event.key.code == sf::Keyboard::Up) {
 			menu_.NavigateUp();
@@ -110,14 +110,34 @@ void Game::InputForDeathState(const sf::Event& in_event) {
 
 void Game::InputForGameState(const sf::Event& in_event) {
 
-	//this->InputForGameLoop(in_deltatime);
-
 	switch (in_event.type) {
-	case sf::Event::KeyReleased:
+	case sf::Event::KeyPressed:
+
+		//-------------------------------------------------------
+		//--------------------Player Control---------------------
+		//-------------------------------------------------------
+		//Jump
+		if (in_event.key.code == sf::Keyboard::W) {
+			this->obj_handler_ptr_->PlayerJump();
+		}
+		//Pick up
+		if (in_event.key.code == sf::Keyboard::S) {
+			//OBS!
+			//Currently writes pos to terminal
+			//std::cout << "X: " << obj_handler_ptr_->GetPlayerPos().x << "Y: " << obj_handler_ptr_->GetPlayerPos().y << " Z: " << obj_handler_ptr_->GetPlayerPos().z << std::endl;
+		}
+		//Use Ability
+		if (in_event.key.code == sf::Keyboard::E) {
+			this->obj_handler_ptr_->PlayerUseAbility();
+		}
+
+		//Attack
+		//goes here
+
+
 		//-------------------------------------------------------
 		//--------------------Game Control-----------------------
 		//-------------------------------------------------------
-
 		//Pause
 		if (in_event.key.code == sf::Keyboard::Escape) {
 			state_ = PAUSE;
@@ -177,20 +197,11 @@ Game::Game() {
 	this->obj_handler_ptr_ = new ObjectHandler();
 	
 	this->state_ = MENU;
-
-	//*(this->input_thread_deltatime_ptr_) = 0.0;
 }
 
 Game::~Game() {
 	delete this->cam_handler_ptr_;
 	delete this->obj_handler_ptr_;
-	
-	//End thread
-	//if (this->input_thread_ptr_->joinable()) {
-	//	this->input_thread_ptr_->join();
-	//}
-	//delete this->input_thread_ptr_;
-	//
 }
 
 void Game::InitializeGame() {
@@ -198,32 +209,36 @@ void Game::InitializeGame() {
 	this->render_.InitializeRender();
 	this->obj_handler_ptr_->InitializeObjectHandler(render_.GetMapPointer());
 
-	//Start thread
-	//this->input_thread_ptr_ = new std::thread(this->input_thread_deltatime_ptr_);
-	//
+	this->game_clock_.restart();	//Get the clock going correctly
 }
 
-void Game::GameIteration(float in_deltatime) {
+void Game::GameIteration() {
 	
-	//Update the in argument to the input thread
-	//*(this->input_thread_deltatime_ptr_) = in_deltatime;
-	//
+	//Update deltatime
+	this->game_deltatime_ = this->game_clock_.restart().asSeconds();
 
 	if (state_ == MENU) {
 		render_.RenderMenuState(menu_);
 	}
 	else if (state_ == GAME) {
-		// This updates the player position.
+		// Create a vector to hold interesting objects
 		std::vector<ObjectPackage> object_vector;
-		object_vector = this->obj_handler_ptr_->UpdateAndRetrieve(in_deltatime);
+
+		//Update the game logic and fill the vector
+		object_vector = this->obj_handler_ptr_->UpdateAndRetrieve(this->game_deltatime_);
+		
+		//Update the camera's position
 		cam_handler_ptr_->SetPrimaryCameraPos(this->obj_handler_ptr_->GetPlayerPos());
 
+		//TEMP
 		PlayerInfoPackage temp_player_data;
 		temp_player_data.max_hp = 100;
 		temp_player_data.current_hp = 100;
+		//TEMP
 
+		//Update the screen
 		render_.UpdateRender(
-			in_deltatime,
+			this->game_deltatime_,
 			cam_handler_ptr_->GetCameraPosition(),
 			cam_handler_ptr_->GetViewPerspectiveMatrix(),
 			object_vector,
@@ -245,6 +260,11 @@ void Game::GameIteration(float in_deltatime) {
 }
 
 void Game::InputEvents(const sf::Event& in_event) {
+	
+	//This function tracks event input
+	//for things that should only trigger once
+	//per button press
+	
 	if (state_ == GAME) {
 		this->InputForGameState(in_event);
 	}
@@ -259,17 +279,18 @@ void Game::InputEvents(const sf::Event& in_event) {
 	}
 }
 
-void Game::InputForGameLoop(const float& in_deltatime) {
+void Game::InputContinual() {
+
+	//This function tracks continual input
+	//for things such as player movement sideways
+
+	this->input_deltatime_ = this->input_clock_.restart().asSeconds();
 
 	if (this->state_ != GAME) { return; }
 
 	//-------------------------------------------------------
 	//--------------------Player Control---------------------
 	//-------------------------------------------------------
-	//Walk up
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-		this->obj_handler_ptr_->PlayerJump();
-	}
 	//Walk right
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
 		this->obj_handler_ptr_->PlayerMoveRight();
@@ -278,19 +299,6 @@ void Game::InputForGameLoop(const float& in_deltatime) {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
 		this->obj_handler_ptr_->PlayerMoveLeft();
 	}
-	//Pick up
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-		//OBS!
-		//Currently writes pos to terminal
-		std::cout << "X: " << obj_handler_ptr_->GetPlayerPos().x << "Y: " << obj_handler_ptr_->GetPlayerPos().y << " Z: " << obj_handler_ptr_->GetPlayerPos().z << std::endl;
-	}
-	//Use Ability
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::E)) {
-		this->obj_handler_ptr_->PlayerUseAbility();
-	}
-
-	//Attack
-	//goes here
 
 	//-------------------------------------------------------
 	//---------------Secondary Camera Control----------------
@@ -298,6 +306,6 @@ void Game::InputForGameLoop(const float& in_deltatime) {
 	//Primary is 0 (boolean false), Secondary is 1 (boolean !false)
 	//bool secondary = cam_handler_ptr_->GetMode();
 	if (cam_handler_ptr_->GetMode()) {
-		this->InputForSecondaryCamera(in_deltatime);
+		this->InputForSecondaryCamera(this->input_deltatime_);
 	}
 }

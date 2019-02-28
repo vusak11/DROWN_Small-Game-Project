@@ -1,7 +1,6 @@
 #include <iostream>
 
 #include <thread>
-#include <functional>
 
 #include "Core/Game.h"
 #include "GLDebug.h"
@@ -12,9 +11,7 @@
 
 void GameLoop(
 	const bool& in_running,
-	Game& in_game, 
-	//sf::Clock& in_clock,
-	//const float& in_deltatime,
+	Game& in_game,
 	sf::Window& in_window);
 
 int main() {
@@ -35,13 +32,13 @@ int main() {
 	/*----------End of Start GL Debugging----------*/
 
 	/*----------Variables----------*/
-	sf::Clock gameTime;
 	Game game;
 	bool running = true;
-	float deltatime = 0.0f;
 	/*----------End of Variables----------*/
 	
 	/*-----------Initialize---------------*/
+	
+	//Start the game
 	game.InitializeGame();
 
 	//Start thread iterating game
@@ -49,20 +46,19 @@ int main() {
 		&GameLoop,
 		std::ref(running),
 		std::ref(game),
-		//std::ref(gameTime),
-		//std::ref(deltatime),
 		std::ref(window)
 	);
 
+	//Tell this thread to not use the window actively
 	window.setActive(false);
-	//
+
+	//Turn of repeating key presses
+	window.setKeyRepeatEnabled(false);
 
 	/*-----------End Initialize---------------*/
 
 	while (running) {
 		sf::Event event;
-		
-		deltatime = gameTime.restart().asSeconds();
 		
 		while (window.pollEvent(event)) {
 			/*----------------Only exit window commands-----------*/
@@ -78,13 +74,7 @@ int main() {
 			/*----------------Input from mouse / keyboard---------*/
 		}
 
-		//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		
-		//game.GameLoop(gameTime.restart().asSeconds());
-
-		//window.display();
-
-		game.InputForGameLoop(deltatime);
+		game.InputContinual();
 	}
 
 	game_thread.join();	//wait for thread to finish
@@ -97,18 +87,8 @@ void GameLoop(
 	Game& in_game,
 	sf::Window& in_window) {
 
-	sf::Clock gameTime;
-	float deltatime = 0.0f;
-
 	while (in_running) {
-
-		deltatime = gameTime.restart().asSeconds();
-		
-		//in_game.GameIteration(in_clock.restart().asSeconds());
-		in_game.GameIteration(deltatime);
-
+		in_game.GameIteration();
 		in_window.display();
-
 	}
-
 }

@@ -20,9 +20,12 @@ private:
 
 	GameState state_;
 	Menu menu_;
+	
+	sf::Clock game_clock_;		//Clock for the game loop (other thread in main.cpp)
+	float game_deltatime_;
 
-	//std::thread* input_thread_ptr_;		//If using this do gameloop thread instead
-	//float* input_thread_deltatime_ptr_;
+	sf::Clock input_clock_;		//Clock for input loop (in main body of main.cpp)
+	float input_deltatime_;
 
 	//Functions
 	void InputForMenuState(const sf::Event& in_event);
@@ -38,10 +41,10 @@ public:
 	~Game();
 
 	void InitializeGame();
-	void GameIteration(float in_deltatime);
+	void GameIteration();
 	
 	void InputEvents(const sf::Event& in_event);
-	void InputForGameLoop(const float& in_deltatime);
+	void InputContinual();
 };
 
 #endif // !GAME_H
