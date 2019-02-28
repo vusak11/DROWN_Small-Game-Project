@@ -35,7 +35,7 @@
 #define PLAYER_START_POS glm::vec3(224.0f, -160.0f, 0.0f)
 #define PLAYER_MOVE_VELOCITY 100
 #define PLAYER_MOVE_ACCELERATION (PLAYER_MOVE_VELOCITY/5) //Player accelerates 1/X of its speed per timeunit
-#define PLAYER_JUMP_VELOCITY 75
+#define PLAYER_JUMP_VELOCITY 150
 
 //Ability Numbers------------------------------------------
 #define DASH_COOLDOWN 1

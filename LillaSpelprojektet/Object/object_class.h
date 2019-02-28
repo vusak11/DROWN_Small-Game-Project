@@ -70,7 +70,7 @@ public:
 
 	//Get Functions----------------------------------------
 	ObjectID GetObjectID() const;
-	HitBox GetHitBox() const;					//Returns the hitbox points of the object
+	//HitBox GetHitBox() const;					//Returns the hitbox points of the object
 	glm::vec3 GetPosition() const;				//Returns the object's x, y and z coordinates
 	glm::vec3 GetScale() const;					//Returns the object's x, y and z scale variables
 	float GetVelocity() const;					//Returns a float with the opject's velocity
@@ -83,6 +83,7 @@ public:
 	void TurnRight(const float& in_deltatime);
 	bool IsAirborne();
 	virtual void SetAirborne(bool in_bool);
+	virtual bool CheckCollision(BoxPoints& other_box);
 
 
 };

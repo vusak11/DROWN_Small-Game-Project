@@ -59,39 +59,21 @@ glm::vec2 Hitbox::GetPoint3() const
 	return point;
 }
 
-glm::vec2* Hitbox::GetPoints() const
-{
-	glm::vec2 points[4];
-	points[0].x = position_.x - x_offset_;
-	points[0].y = position_.y - y_offset_;
-	
-	points[1].x = position_.x + x_offset_;
-	points[1].y = position_.y - y_offset_;
-
-	points[2].x = position_.x + x_offset_;
-	points[2].y = position_.y + y_offset_;
-
-	points[3].x = position_.x - x_offset_;
-	points[3].y = position_.y + y_offset_;
-
-	return points;
-}
-
 BoxPoints Hitbox::GetPoints() const
 {
 	BoxPoints points;
 
-	points.bottomLeft.x = position_.x - xoffset;
-	points.bottomLeft.y = position_.y - yoffset;
+	points.bottomLeft.x = position_.x - x_offset_;
+	points.bottomLeft.y = position_.y - y_offset_;
 
-	points.bottomRight.x = position_.x + xoffset;
-	points.bottomRight.y = position_.y - yoffset;
+	points.bottomRight.x = position_.x + x_offset_;
+	points.bottomRight.y = position_.y - y_offset_;
 
-	points.TopRight.x = position_.x + xoffset;
-	points.TopRight.y = position_.y + yoffset;
+	points.TopRight.x = position_.x + x_offset_;
+	points.TopRight.y = position_.y + y_offset_;
 
-	points.TopLeft.x = position_.x - xoffset;
-	points.TopLeft.y = position_.y + yoffset;
+	points.TopLeft.x = position_.x - x_offset_;
+	points.TopLeft.y = position_.y + y_offset_;
 
 	return points;
 }
