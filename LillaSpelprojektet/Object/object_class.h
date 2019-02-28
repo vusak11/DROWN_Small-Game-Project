@@ -16,10 +16,8 @@
 // Example:
 //    class Character : ObjectClass
 
-class ObjectClass {
+class ObjectClass : public Hitbox {
 private:
-	//Variables-----------------------------------------------
-	HitBox hitbox_;
 
 	//Metadata/Math
 	glm::vec3 position_;

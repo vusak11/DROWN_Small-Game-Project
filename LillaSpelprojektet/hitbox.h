@@ -16,18 +16,26 @@
 //	  ---------
 //    0       1
 
+struct BoxPoints {
+	glm::vec2 bottomLeft;
+	glm::vec2 bottomRight;
+	glm::vec2 TopLeft;
+	glm::vec2 TopRight;
+};
 
+class Hitbox {
+private:
+	glm::vec3 position_;
+	float x_offset_;
+	float y_offset_;
 
-
-class HitBox
-{
 public:
-	HitBox();
-	HitBox(glm::vec3 position, float x_offset, float y_offset);
-	~HitBox();
+	Hitbox();
+	Hitbox(glm::vec3 position, float x_offset, float y_offset);
+	~Hitbox();
 
 	// Compare this Hitbox with sent ont and return true if they intersect
-	bool CheckCollision(HitBox other_box);
+	virtual bool CheckCollision(BoxPoints& other_box) = 0;
 
 	// Call this each time the object is translated in the world to translate the hitbox
 	void UpdateHitbox(glm::vec3 position, float x_offset, float y_offset);
@@ -38,11 +46,7 @@ public:
 	glm::vec2 GetPoint3() const;
 
 	// Returns a list of the 4 hitbox points
-	glm::vec2* GetPoints() const;
-private:
-	glm::vec3 position_;
-	float x_offset_;
-	float y_offset_;
+	BoxPoints GetPoints() const;
 };
 
 

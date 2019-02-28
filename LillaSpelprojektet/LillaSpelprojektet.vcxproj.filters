@@ -147,7 +147,7 @@
     <ClCompile Include="Map\metadata.cpp">
       <Filter>Source Files\Map</Filter>
     </ClCompile>
-    <ClCompile Include="Object\Drop\Drop.cpp">
+    <ClCompile Include="Object\Drop\drop.cpp">
       <Filter>Source Files\Object\Drop</Filter>
     </ClCompile>
   </ItemGroup>
@@ -227,7 +227,7 @@
     <ClInclude Include="Map\metadata.h">
       <Filter>Header Files\Map</Filter>
     </ClInclude>
-    <ClInclude Include="Object\Drop\Drop.h">
+    <ClInclude Include="Object\Drop\drop.h">
       <Filter>Header Files\Object\Drop</Filter>
     </ClInclude>
   </ItemGroup>
