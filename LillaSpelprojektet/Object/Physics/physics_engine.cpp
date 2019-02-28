@@ -252,31 +252,27 @@ void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_
 			std::cout << "Bot Collision" << std::endl;
 		}
 	}
-
-	if (collision_0 && collision_3)	// Left collision
+	else if (collision_0 && collision_3)	// Left collision
 	{
 		doublecollision = true;
 
-		int free_index = x_0_index;	// The index of the surface
+		int free_index = x_0_index + 1;	// The index of the surface
 		for (int f = 1; f < x_1_index - 1; f++)
 		{
 			if ((*map_height_list_)[y_0_index][x_0_index + f] <= 100.0f)
 			{
-				free_index = x_0_index + f;
-				//std::cout << "f: " << f << std::endl;
-				f = x_1_index - 1;
-				continue;
+				if ((*map_height_list_)[y_1_index][x_0_index + f] <= 100.0f)
+				{
+					free_index = x_0_index + f;
+					//std::cout << "f: " << f << std::endl;
+					f = x_1_index - 1;
+					continue;
+				}
 			}
-			if ((*map_height_list_)[y_1_index][x_0_index + f] <= 100.0f)
-			{
-				free_index = x_0_index + f;
-				//std::cout << "f: " << f << std::endl;
-				f = x_1_index - 1;
-				continue;
-			}
+			
 		}
 
-		object_pos.x = free_index - 0.5f + in_object_ptr->GetScale().x;
+		object_pos.x = free_index - 0.5f + in_object_ptr->GetScale().x * 2;
 
 		if (in_object_ptr->GetVelocityVec().x < 0)
 		{
@@ -387,8 +383,26 @@ void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_
 					continue;
 				}
 			}
+
+			bool stair_flag = true;
+			for (int f = 1; f < in_object_ptr->GetScale().x; f++)
+			{
+				if ((*map_height_list_)[free_index + 1][x_0_index + f] > 100.0f)
+				{
+					stair_flag = false;
+					continue;
+				}
+			}
+
+			if (stair_flag)
+			{
+				object_pos.y = free_index * (-1) - stair_adjustment_value_X_0 + (in_object_ptr->GetScale().y / 2);
+			}
+			else
+			{
+				object_pos.y = free_index * (-1) - 0.5f + (in_object_ptr->GetScale().y);
+			}
 			
-			object_pos.y = free_index * (-1) - stair_adjustment_value_X_0 + (in_object_ptr->GetScale().y / 2);
 
 			if (in_object_ptr->GetVelocityVec().y <= 0)
 			{
@@ -404,19 +418,62 @@ void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_
 		}
 		else if (collision_1)
 		{
+
+
+
+
+
+
 			int free_index = y_0_index;	// The index of the surface
 			for (int f = 1; f < y_0_index - 1; f++)
 			{
 				if ((*map_height_list_)[y_0_index - f][x_1_index] <= 100.0f)
 				{
 					free_index = y_0_index - f;
-					//std::cout << "f: " << f << std::endl;
 					f = y_0_index - 1;
 					continue;
 				}
 			}
 
-			object_pos.y = free_index * (-1) + stair_adjustment_value_X_1 + (in_object_ptr->GetScale().y / 2);
+			bool stair_flag = true;
+			for (int f = 1; f < in_object_ptr->GetScale().x; f++)
+			{
+				if ((*map_height_list_)[free_index + 1][x_1_index - f] > 100.0f)
+				{
+					stair_flag = false;
+					continue;
+				}
+			}
+
+			if (stair_flag)
+			{
+				object_pos.y = free_index * (-1) + stair_adjustment_value_X_1 + (in_object_ptr->GetScale().y / 2);
+			}
+			else
+			{
+				object_pos.y = free_index * (-1) + 0.5f + (in_object_ptr->GetScale().y/2);
+			}
+
+
+
+
+
+
+
+
+			//int free_index = y_0_index;	// The index of the surface
+			//for (int f = 1; f < y_0_index - 1; f++)
+			//{
+			//	if ((*map_height_list_)[y_0_index - f][x_1_index] <= 100.0f)
+			//	{
+			//		free_index = y_0_index - f;
+			//		//std::cout << "f: " << f << std::endl;
+			//		f = y_0_index - 1;
+			//		continue;
+			//	}
+			//}
+
+			//object_pos.y = free_index * (-1) + stair_adjustment_value_X_1 + (in_object_ptr->GetScale().y / 2);
 
 			if (in_object_ptr->GetVelocityVec().y <= 0)
 			{
