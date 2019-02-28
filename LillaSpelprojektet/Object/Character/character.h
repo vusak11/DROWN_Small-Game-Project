@@ -15,7 +15,7 @@ protected:
 	//Character Stats
 	int max_health_;
 	int current_health_;
-	int attack_power_ ;
+	int attack_power_;
 
 	//
 	int looking_towards_x_;

@@ -18,12 +18,8 @@
 
 class ObjectClass {
 private:
-
-	
-
 	//Variables-----------------------------------------------
 	HitBox hitbox_;
-
 
 	//Metadata/Math
 	glm::vec3 position_;

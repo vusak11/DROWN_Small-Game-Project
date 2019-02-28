@@ -24,10 +24,6 @@ struct Weapon {
 
 class PlayerCharacter : public Character {
 private:
-	//friend bool Ability::ExecuteAbility(PlayerCharacter&);
-	friend bool DoubleJump::ExecuteAbility(PlayerCharacter& in_player);
-	friend bool Dash::ExecuteAbility(PlayerCharacter& in_player);
-
 	//Player stats
 	float move_top_speed_;
 	float move_acceleration_;
@@ -35,6 +31,10 @@ private:
 
 	Weapon weapon_;
 	Ability* ability_ptr_;
+
+	//friend bool Ability::ExecuteAbility(PlayerCharacter&);
+	friend bool DoubleJump::ExecuteAbility(PlayerCharacter& in_player);
+	friend bool Dash::ExecuteAbility(PlayerCharacter& in_player);
 
 	void AlterVelocity();
 
