@@ -5,8 +5,6 @@
 #include <functional>		//Allows function pointers and lambdas
 							//Ref. for how it works: https://en.cppreference.com/w/cpp/utility/functional/function
 
-#include "../globals.h"
-
 #include "object_class.h"
 #include "Character/character.h"
 #include "Character/player_character.h"

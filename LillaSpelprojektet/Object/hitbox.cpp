@@ -1,6 +1,4 @@
 #include "hitbox.h"
-#include "../globals.h"
-
 
 HitBox::HitBox() {
 	position_ = glm::vec3(1.0f, 1.0f, 1.0f);

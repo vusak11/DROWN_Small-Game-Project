@@ -18,6 +18,7 @@ private:
 
 	void UpdateVelocity(float& in_deltatime, ObjectClass*& in_object_ptr);	//Changes an object's velocity by applying acceleration
 	void UpdatePosition(float& in_deltatime, ObjectClass*& in_object_ptr);	//Changes an object's position by applying velocity
+	glm::vec3 CheckCollision(ObjectClass*& in_object_ptr, glm::vec3 new_pos);
 
 public:
 	PhysicsEngine(std::vector<std::vector<float>>* in_map_height_list);
