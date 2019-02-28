@@ -45,6 +45,9 @@ public:
 	std::vector<glm::vec2> GridCulling(glm::vec2 current_cell);
 
 	std::vector<std::vector<float>>* GetMapDataPointer();
+
+	glm::vec2 GetDoorPosition() const;
+	glm::vec2 GetKeyPosition() const;
 };
 
 #endif

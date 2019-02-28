@@ -10,10 +10,11 @@ private:
 
 	enum CameraMode {
 		PRIMARY,			//0
-		SECONDARY			//1
+		SECONDARY,			//1
+		BOSS				//2
 	};
 
-	Camera cams_[2];		//Primary and secondary camera
+	Camera cams_[3];		//Primary and secondary camera
 	CameraMode mode_;
 
 public:
@@ -22,6 +23,7 @@ public:
 	~CameraHandler();
 
 	void SwapCamera();
+	void SwapCameraToBossCamera();
 	int GetMode();
 
 	glm::mat4 MoveCamera(float in_x, float in_y, float in_z = 0.0f);

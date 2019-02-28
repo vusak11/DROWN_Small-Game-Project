@@ -66,5 +66,6 @@ public:
 	void RenderQuad();
 
 	std::vector<std::vector<float>>* GetMapPointer();
+	std::vector<glm::vec2> GetDoorKeyPosition();
 };
 #endif
