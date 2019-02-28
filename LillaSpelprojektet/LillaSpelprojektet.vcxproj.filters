@@ -64,6 +64,12 @@
     <Filter Include="Header Files\UI">
       <UniqueIdentifier>{89789ba0-9a16-4825-90fd-79b6ed350a5f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Object\Drop">
+      <UniqueIdentifier>{e9cbf214-89e8-41ba-8542-497c9f49a9bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object\Drop">
+      <UniqueIdentifier>{66ca0b9b-0058-4791-9c44-ae276b476c48}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -141,6 +147,9 @@
     <ClCompile Include="Map\metadata.cpp">
       <Filter>Source Files\Map</Filter>
     </ClCompile>
+    <ClCompile Include="Object\Drop\Drop.cpp">
+      <Filter>Source Files\Object\Drop</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera\camera.h">
@@ -217,6 +226,9 @@
     </ClInclude>
     <ClInclude Include="Map\metadata.h">
       <Filter>Header Files\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Drop\Drop.h">
+      <Filter>Header Files\Object\Drop</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
