@@ -55,7 +55,7 @@ Render::Render() {
 	model_[OBJECT_ID_NULL] = new Model((char*)"../Resources/Models/DefaultDummyNPC/defaultDummyNPC.obj");
 	model_[OBJECT_ID_PLAYER] = new Model((char*)"../Resources/Models/TestBox/testBOX.obj");
 	model_[OBJECT_ID_DUMMY] = new Model((char*)"../Resources/Models/DummyNPC/dummyNPC.obj");
-	model_[OBJECT_ID_DOOR] = new Model((char*)"../Resources/Models/Door/door.obj");
+	model_[OBJECT_ID_DROP] = new Model((char*)"../Resources/Models/Gate/Gate.obj");
 }
 
 Render::~Render() {

@@ -26,6 +26,11 @@ void Game::InputForGame(float in_deltatime) {
 			//CURRENTLY BOUND TO USE ABILITY
 			this->obj_handler_ptr_->PlayerUseAbility();
 		}
+		//Temporary teleport to boss room (OBS! need to connect with interaction)
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::L)) {
+			this->obj_handler_ptr_->PlayerTeleport();
+
+		}
 		/*---------------End Keyboard inputs-----------------*/
 
 		/*---------------Mouse inputs-----------------*/
@@ -116,7 +121,11 @@ void Game::GameLoop(float in_deltatime) {
 		// This updates the player position.
 		std::vector<ObjectPackage> object_vector;
 		object_vector = this->obj_handler_ptr_->UpdateAndRetrieve(in_deltatime);
+
 		cam_handler_ptr_->SetPrimaryCameraPos(this->obj_handler_ptr_->GetPlayerPos());
+
+		if (this->obj_handler_ptr_->PlayerInBossRoom())
+			cam_handler_ptr_->SwapCameraToBossCamera();
 
 		PlayerInfoPackage temp_player_data;
 		temp_player_data.max_hp = 100;

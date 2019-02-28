@@ -146,7 +146,6 @@
     <ClCompile Include="GLDebug.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map\metadata.cpp" />
-    <ClCompile Include="Object\Boss\door.cpp" />
     <ClCompile Include="Object\Character\ability.cpp" />
     <ClCompile Include="Map\map.cpp" />
     <ClCompile Include="Map\map_handler.cpp" />
@@ -156,6 +155,7 @@
     <ClCompile Include="Object\Character\cooldown_class.cpp" />
     <ClCompile Include="Object\Character\npc.cpp" />
     <ClCompile Include="Object\Character\player_character.cpp" />
+    <ClCompile Include="Object\drop.cpp" />
     <ClCompile Include="Object\object_class.cpp" />
     <ClCompile Include="Object\object_handler.cpp" />
     <ClCompile Include="Object\Physics\physics_engine.cpp" />
@@ -174,7 +174,6 @@
     <ClInclude Include="Map\map.h" />
     <ClInclude Include="Map\map_handler.h" />
     <ClInclude Include="Map\metadata.h" />
-    <ClInclude Include="Object\Boss\door.h" />
     <ClInclude Include="Object\Character\ability.h" />
     <ClInclude Include="Object\Character\character.h" />
     <ClInclude Include="Object\Character\mesh.h" />
@@ -182,6 +181,7 @@
     <ClInclude Include="Object\Character\cooldown_class.h" />
     <ClInclude Include="Object\Character\npc.h" />
     <ClInclude Include="Object\Character\player_character.h" />
+    <ClInclude Include="Object\drop.h" />
     <ClInclude Include="Object\object_class.h" />
     <ClInclude Include="Object\object_handler.h" />
     <ClInclude Include="Object\Physics\physics_engine.h" />

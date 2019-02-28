@@ -11,7 +11,7 @@
 #include "Character/character.h"
 #include "Character/player_character.h"
 #include "Character/npc.h"
-#include "Boss/door.h"
+#include "drop.h"
 
 #include "Physics/physics_engine.h"
 
@@ -32,7 +32,6 @@ private:
 
 	//Variables-----------------------------------------------
 	PlayerCharacter* player_ptr_;
-	Door* door_ptr_;
 	std::vector<ObjectClass*> npc_ptr_vector_;				//All enemies
 	std::vector<ObjectClass*> drop_ptr_vector_;		//Things dropped on the ground (e.g. power-ups, health)
 
@@ -83,6 +82,7 @@ public:
 	void PlayerAttack();
 	void PlayerUseAbility();
 	void PlayerPickUp();
+	void PlayerTeleport();
 
 	//Called once per loop to update object positions
 	//	- Read player inputs and determine effects
@@ -92,7 +92,7 @@ public:
 	std::vector<ObjectPackage> UpdateAndRetrieve(float in_deltatime);
 
 	glm::vec3 GetPlayerPos();
-
+	bool PlayerInBossRoom();
 	//Test functions------------------------------------------
 	void TestObjectHandler();
 
