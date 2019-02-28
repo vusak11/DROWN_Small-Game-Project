@@ -6,7 +6,7 @@ void Render::DrawScene() {
 Render::Render() {
 	quad_vertex_array_object_ = 0;
 	quad_vertex_buffer_object_ = 0;
-	nr_of_lights_ = 20;
+	nr_of_lights_ = 21;
 
 	//--------------------------------------------------------
 	//-------------------Create Shaders-----------------------
@@ -81,7 +81,9 @@ void Render::InitializeRender() {
 
 	geometry_pass_->GeometryFrameBuffers();
 
+	// Hard coded light positions
 	std::vector<glm::vec2> light_positions = {
+		glm::vec2(0, 0),
 		glm::vec2(160, -70),
 		glm::vec2(1995, -115),
 		glm::vec2(80, -270),
@@ -104,16 +106,21 @@ void Render::InitializeRender() {
 		glm::vec2(460, -1650)
 	};
 
-	for (int i = 0; i < nr_of_lights_; i++) {
-		lights_[i].SetPos(glm::vec3(light_positions[i], 20.0f));
+	// Player light
+	lights_[0].SetBrightness(glm::vec3(0.1f, 0.1f, 0.1f));
+
+
+	// Set colour of the light depending on where in the world it exists
+	for (int i = 1; i < nr_of_lights_; i++) {
+		lights_[i].SetPos(glm::vec3(light_positions[i], 10.0f));
 		if (map_handler_.GetZone(light_positions[i]) == "RED") {
 			lights_[i].SetAmbientLight(glm::vec3(1.0f, 0.0f, 0.0f));
 		}
 		else if (map_handler_.GetZone(light_positions[i]) == "GRE") {
-			lights_[i].SetAmbientLight(glm::vec3(0.0f, 1.0f, 0.0f));
+			lights_[i].SetAmbientLight(glm::vec3(0.01f, 0.84f, 0.01f));
 		}
 		else if (map_handler_.GetZone(light_positions[i]) == "BLU") {
-			lights_[i].SetAmbientLight(glm::vec3(0.0f, 0.0f, 1.0f));
+			lights_[i].SetAmbientLight(glm::vec3(0.0f, 0.4f, 1.0f));
 		}
 	}
 
@@ -139,7 +146,7 @@ void Render::UpdateRender(
 	GeometryDrawing(object_vector);
 
 	//  LIGHTING
-	//lights_[0].SetPos(camera_position);
+	lights_[0].SetPos(glm::vec3(camera_position.x, (camera_position.y + 15.0), 0.0));		//Player light
 	LightingPass(camera_position);
 
 	RenderQuad();
@@ -259,7 +266,7 @@ void Render::LightingPass(glm::vec3 camera_position) {
 		glUniform1f(glGetUniformLocation(lighting_pass_->GetProgram(), ("lights[" + std::to_string(i) + "].a_linear").c_str()), linear);
 		glUniform1f(glGetUniformLocation(lighting_pass_->GetProgram(), ("lights[" + std::to_string(i) + "].a_quadratic").c_str()), quadratic);
 		// then calculate radius of light volume/sphere
-		const float max_brightness = std::fmaxf(std::fmaxf(lights_[i].GetAmbientLight().r, lights_[i].GetAmbientLight().g), lights_[i].GetAmbientLight().b);
+		const float max_brightness = std::fmaxf(std::fmaxf(lights_[i].GetBrightness().r, lights_[i].GetBrightness().g), lights_[i].GetBrightness().b);
 		float radius = (-linear + std::sqrt(linear * linear - 4 * quadratic * (constant - (256.0f / 5.0f) * max_brightness))) / (2.0f * quadratic);
 		glUniform1f(glGetUniformLocation(lighting_pass_->GetProgram(), ("lights[" + std::to_string(i) + "].radius").c_str()), radius);
 	}

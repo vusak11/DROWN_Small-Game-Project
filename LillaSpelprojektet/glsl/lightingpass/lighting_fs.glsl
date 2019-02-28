@@ -16,7 +16,7 @@ struct Light {
 	float a_quadratic;
 	float radius;
 };
-const int nr_of_lights = 20;
+const int nr_of_lights = 21;
 uniform Light lights[nr_of_lights];
 
 uniform vec3 view_pos;
