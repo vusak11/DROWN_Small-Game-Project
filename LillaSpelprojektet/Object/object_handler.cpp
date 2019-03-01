@@ -205,7 +205,7 @@ void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map
 	//this->npc_ptr_vector_.push_back(new NPC(glm::vec3(260.0f, -50.0f, 0.0f)));
 	//this->npc_ptr_vector_.at(0)->SetScale(3.0f);
 
-	//this->drop_ptr_vector_.push_back(new ObjectClass(150.0f, -80.0f, 5.0f), OBJECT_ID_DROP_HEALTH);
+	this->drop_ptr_vector_.push_back(new HPRestoreDrop(PLAYER_START_POS));
 	//TEMP
 
 	this->physics_engine_ptr_ = new PhysicsEngine(map_height_list);
