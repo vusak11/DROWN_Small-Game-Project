@@ -81,8 +81,12 @@ void Render::InitializeRender() {
 	light_positions_ = map_handler_.GetLightPositions();
 	// Set player light
 	lights_[0].SetBrightness(glm::vec3(0.1f, 0.1f, 0.1f));
-	// Set colour of the light depending on where in the world it's located
-	for (int i = 1; i < nr_of_lights_; i++) {
+	// Set danger light
+	lights_[1].SetPos(glm::vec3(light_positions_[1], 0.0));
+	lights_[1].SetAmbientLight(glm::vec3(0.7f, 0.0f, 0.0f));
+	lights_[1].SetBrightness(glm::vec3(1.0f, 1.0f, 1.0f));
+	// Set colour of the light depending on where in the world it's located, starting at 2 to not affect player light or the "danger light"
+	for (int i = 2; i < nr_of_lights_; i++) {
 		lights_[i].SetPos(glm::vec3(light_positions_[i], 10.0f));
 		if (map_handler_.GetZone(light_positions_[i]) == "RED") {
 			lights_[i].SetAmbientLight(glm::vec3(1.0f, 0.0f, 0.0f));

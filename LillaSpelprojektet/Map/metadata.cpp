@@ -35,8 +35,10 @@ void MetaData::Initialize() {
 	zone_radius_ = 400;
 
 	light_positions_ = {
+		//Special lights
+		glm::vec2(0, 0),		// Player
+		glm::vec2(1232, -550),	// Danger light at the throat of the dungeon
 		//POIs
-		glm::vec2(0, 0),
 		glm::vec2(160, -70),
 		glm::vec2(1995, -115),
 		glm::vec2(80, -270),
