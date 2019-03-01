@@ -73,7 +73,7 @@ float ObjectHandler::DistanceBetween(const ObjectClass* in_object_a, const Objec
 	return glm::distance(pos2_a, pos2_b);
 }
 
-void ObjectHandler::DeterminePlayerAction(const float& in_deltatime, std::vector<ObjectClass*>& relevant_drops_ptr_vector) {
+void ObjectHandler::DeterminePlayerAction(const float& in_deltatime, std::vector<ObjectClass*>& in_relevant_drops_ptr_vector) {
 
 	//Update the player's status (such as cooldowns)
 	this->player_ptr_->UpdateStatus(in_deltatime);
@@ -95,24 +95,38 @@ void ObjectHandler::DeterminePlayerAction(const float& in_deltatime, std::vector
 	if (this->player_input_.use_ability) {
 		this->player_ptr_->UseAbility();
 	}
-
+	//If input is attack
 	if (this->player_input_.attack) {
 		
 	}
+	//If input is to pick up
 	if (this->player_input_.pick_up) {
-		bool check = false;
-		int index = 0;
-		for (unsigned int i = 0; !check && (i < relevant_drops_ptr_vector.size()); i++) {
-			check = relevant_drops_ptr_vector.at(i)->CheckCollision(player_ptr_->GetPoints());
-			index = i;
-		}
-
-		relevant_drops_ptr_vector.erase(relevant_drops_ptr_vector.begin() + index);
-
-		//glm::vec3 p = player_ptr_->GetPosition();
-		//this->player_ptr_->SetPosition(200, 0, p.z);
+		this->ResolvePlayerPickUp(in_relevant_drops_ptr_vector);
 	}
 	
+}
+
+void ObjectHandler::ResolvePlayerPickUp(std::vector<ObjectClass*>& in_relevant_drops_ptr_vector) {
+	bool triggered = false;
+	int index = 0;
+	Drop* drop_ptr = NULL;
+
+	//Loop over all relevant drops
+	for (unsigned int i = 0; !triggered && (i < in_relevant_drops_ptr_vector.size()); i++) {
+		//Typecast a ptr in the vector to the drop type
+		drop_ptr = dynamic_cast<Drop*>(in_relevant_drops_ptr_vector.at(i));
+		if (drop_ptr != NULL) {
+			//Check if the player touches any of the drops (loop breaks if so)
+			triggered = drop_ptr->CheckCollision(*(this->player_ptr_));
+		}
+		//Save current index
+		index = i;
+	}
+
+	//If we have triggered an event, remove it from the onject handler's drop vector
+	if (triggered) {
+		this->RemoveObject(in_relevant_drops_ptr_vector.at(index), this->drop_ptr_vector_);
+	}
 }
 
 void ObjectHandler::ProcessNPCs(const float& in_deltatime, std::vector<ObjectClass*>& in_npcs_ptr_vector) {
