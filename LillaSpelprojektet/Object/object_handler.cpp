@@ -73,7 +73,7 @@ float ObjectHandler::DistanceBetween(const ObjectClass* in_object_a, const Objec
 	return glm::distance(pos2_a, pos2_b);
 }
 
-void ObjectHandler::DeterminePlayerAction(const float& in_deltatime) {
+void ObjectHandler::DeterminePlayerAction(const float& in_deltatime, std::vector<ObjectClass*>& relevant_drops_ptr_vector) {
 
 	//Update the player's status (such as cooldowns)
 	this->player_ptr_->UpdateStatus(in_deltatime);
@@ -100,7 +100,16 @@ void ObjectHandler::DeterminePlayerAction(const float& in_deltatime) {
 		
 	}
 	if (this->player_input_.pick_up) {
-		glm::vec3 p = player_ptr_->GetPosition();
+		bool check = false;
+		int index = 0;
+		for (unsigned int i = 0; !check && (i < relevant_drops_ptr_vector.size()); i++) {
+			check = relevant_drops_ptr_vector.at(i)->CheckCollision(player_ptr_->GetPoints());
+			index = i;
+		}
+
+		relevant_drops_ptr_vector.erase(relevant_drops_ptr_vector.begin() + index);
+
+		//glm::vec3 p = player_ptr_->GetPosition();
 		//this->player_ptr_->SetPosition(200, 0, p.z);
 	}
 	
@@ -183,6 +192,8 @@ void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map
 	//this->npc_ptr_vector_.at(0)->SetScale(3.0f);
 	//TEMP
 
+	this->drop_ptr_vector_.push_back(new ObjectClass(150.0f, -80.0f, 5.0f), OBJECT_ID_DROP_HEALTH);
+
 	this->physics_engine_ptr_ = new PhysicsEngine(map_height_list);
 
 	
@@ -238,7 +249,7 @@ std::vector<ObjectPackage> ObjectHandler::UpdateAndRetrieve(float in_deltatime) 
 	);
 
 	//Take input from player (i.e. set velocity, attack flags, etc)
-	this->DeterminePlayerAction(in_deltatime);
+	this->DeterminePlayerAction(in_deltatime, relevant_drops_ptr_vector);
 	
 	//Go through all relevant NPCs and call their AI functions
 	this->ProcessNPCs(in_deltatime, relevant_npcs_ptr_vector);

@@ -12,7 +12,7 @@ public:
 	~Drop();
 
 	virtual bool CheckCollision(const BoxPoints& in_box);
-	virtual bool TriggerEvent(PlayerCharacter& in_player);
+	//virtual bool TriggerEvent(PlayerCharacter& in_player);
 
 };
 
