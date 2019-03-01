@@ -3,8 +3,9 @@
 
 #include "GLM/glm.hpp"
 
-//const int kWindow_Width = 1280;
-//const int kWindow_Height = 720;
+//---------------------------------------------------------
+//------------------------MACROS---------------------------
+//---------------------------------------------------------
 
 //Window---------------------------------------------------
 #define WINDOW_WIDTH 1280
@@ -24,17 +25,21 @@
 #define OBJECT_TURN_RATE 720 //degrees/sec	//Purely for the turn function in ObjectClass as of this writing
 
 #define GRAVITATIONAL_ACCELERATION -500	//-g on y-axis	//Affects fall speed
-#define OBJECT_MAX_VELOCITY 500
+#define OBJECT_MAX_VELOCITY 1000
 #define OBJECT_MIN_VELOCITY 0.1			//The lowest velocity an object can have that isn't 0
 										//If an velocity is lower than this it sets to 0
-#define OBJECT_GROUND_LOSS_RATIO 20.0	//0.1 = 10%		//WHAT.
+#define OBJECT_GROUND_LOSS_RATIO 10.0	//0.1 = 10%		//WHAT.
 #define OBJECT_AIR_LOSS_RATIO 1.00
 
 //Player object--------------------------------------------
-//These numbers are specific to the player. Consider using these as base input for the
-//constructor and then altering internal variables
-#define PLAYER_TOP_SPEED 100
+#define PLAYER_START_POS glm::vec3(224.0f, -160.0f, 0.0f)
+#define PLAYER_MOVE_VELOCITY 100
+#define PLAYER_MOVE_ACCELERATION (PLAYER_MOVE_VELOCITY/5) //Player accelerates 1/X of its speed per timeunit
 #define PLAYER_JUMP_VELOCITY 75
+
+//Ability Numbers------------------------------------------
+#define DASH_COOLDOWN 1
+#define DASH_VELOCITY 800
 
 //Map------------------------------------------------------
 #define GRID_COLUMN 32
@@ -42,11 +47,11 @@
 #define GRID_GAP 2.0					//2.0 to close the gaps between the cells
 #define MAP_DEPTH 0.05	
 #define MAP_SIZE 2048
-
 //#define MAP_SCALE 1						//1 -> each vertex have 1 position unit in between
-//Ability Numbers------------------------------------------
-#define DASH_COOLDOWN 5
-#define DASH_VELOCITY 400
+
+//---------------------------------------------------------
+//------------------------ENUMS----------------------------
+//---------------------------------------------------------
 
 //NOTE:
 //Object ID:s are used to determine what type of object is created
@@ -59,6 +64,20 @@ enum ObjectID {
 	OBJECT_ID_DUMMY,			//2:
 	NUMBER_OF_OBJECT_IDS		//N:	The Last Enum
 };
+
+//States---------------------------------------------------
+enum GameState {
+	GAME,
+	MENU,
+	PAUSE,
+	OPTIONS,
+	DEATH,
+	QUIT
+};
+
+//---------------------------------------------------------
+//------------------------STRUCTS--------------------------
+//---------------------------------------------------------
 
 //Package Structs------------------------------------------
 struct ObjectPackage {
@@ -73,13 +92,6 @@ struct PlayerInfoPackage {
 	//ability2
 };
 
-//States---------------------------------------------------
-enum GameState {
-	GAME,
-	MENU,
-	PAUSE, 
-	OPTIONS,
-	DEATH
-};
+
 
 #endif // !GLOBALS_H

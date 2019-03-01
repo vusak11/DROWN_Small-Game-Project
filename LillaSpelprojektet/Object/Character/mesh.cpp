@@ -85,6 +85,6 @@ void Mesh::Draw(GLuint shader) {
 
 	//Draw mesh
 	glBindVertexArray(vertex_array_object_);
-	glDrawElements(GL_TRIANGLE_STRIP, indices_.size(), GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_TRIANGLES, indices_.size(), GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0); //Unbind VAO
 }

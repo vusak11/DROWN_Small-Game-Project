@@ -2,11 +2,28 @@
 #include "../../globals.h"
 
 //Private--------------------------------------------------
+void PlayerCharacter::AlterVelocity() {
+	//Get the player's current velocity
+	glm::vec3 velocity = this->GetVelocityVec();
+
+	//Then alter the velocity towards the direction the player is facing
+	velocity.x += this->move_acceleration_*this->looking_towards_x_;
+
+	//If velocity exceeds top_speed clamp it down
+	float positive_velocity = velocity.x * this->looking_towards_x_;
+	if (positive_velocity > this->move_top_speed_) { 
+		velocity.x = this->move_top_speed_ * this->looking_towards_x_;
+	}
+
+	//Finally set velocity
+	this->SetVelocityVec(velocity);
+}
 
 
 //Public---------------------------------------------------
 PlayerCharacter::PlayerCharacter(glm::vec3 start_pos) : Character(start_pos, OBJECT_ID_PLAYER) {
-	this->top_speed_ = PLAYER_TOP_SPEED;
+	this->move_top_speed_ = PLAYER_MOVE_VELOCITY;
+	this->move_acceleration_ = PLAYER_MOVE_ACCELERATION;
 	this->jump_speed_ = PLAYER_JUMP_VELOCITY;
 
 	this->weapon_.id = SWORD;
@@ -20,23 +37,27 @@ PlayerCharacter::~PlayerCharacter() {
 }
 
 void PlayerCharacter::MoveLeft() {
+	//Set player looking towards negative x
+	this->looking_towards_x_ = -1;
 
-	//Set player velocity towards negative x
-	glm::vec3 new_velocity = this->GetVelocityVec();
-	
-	new_velocity.x = -this->top_speed_;
+	//If the player already exceeds its top movement speed in that direction
+	//we do not do anything as we do not want to overwrite the speed
+	if (this->GetVelocityVec().x < -this->move_top_speed_) { return; }
 
-	this->SetVelocityVec(new_velocity);
+	//Change speed in accordance with facing direction
+	this->AlterVelocity();
 }
 
 void PlayerCharacter::MoveRight() {
+	//Set player as looking towards positive x
+	this->looking_towards_x_ = 1;
 
-	//Set player velocity towards positive x
-	glm::vec3 new_velocity = this->GetVelocityVec();
-	
-	new_velocity.x = this->top_speed_;
+	//If the player already exceeds its top movement speed in that direction
+	//we do not do anything as we do not want to overwrite the speed
+	if (this->GetVelocityVec().x > this->move_top_speed_) { return; }
 
-	this->SetVelocityVec(new_velocity);
+	//Change speed in accordance with facing direction
+	this->AlterVelocity();
 }
 
 void PlayerCharacter::Jump() {

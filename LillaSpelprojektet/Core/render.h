@@ -27,6 +27,7 @@ private:
 
 	int nr_of_lights_;
 	Light* lights_;
+	std::vector<glm::vec2> light_positions_;
 
 	MapHandler map_handler_;
 

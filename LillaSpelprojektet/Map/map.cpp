@@ -323,10 +323,9 @@ std::vector<std::vector<float>> Map::GetTestList() {
 	return height_map_;
 }
 
-
-//int Map::GetHeight() {
-//	return map_height_;
-//}
+void Map::ClearHeightMapInfo() {
+	height_map_.clear();
+}
 
 int Map::GetCellWidth() const {
 	return cell_width_;

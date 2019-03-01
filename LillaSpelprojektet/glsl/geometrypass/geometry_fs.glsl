@@ -22,9 +22,10 @@ void main() {
 	geometry_position = GS_IN.frag_pos;
 	geometry_normal = GS_IN.normal;
 
-	
+
 	if (f_scale <= f_range_1) {
 		geometry_albedo_specular.rgb = texture(texture_diffuse1, GS_IN.tex_coords).rgb;
+		geometry_albedo_specular.a = 0.0f;
 	}
 	else if (f_scale < f_range_3) {
 		f_scale -= f_range_1;
@@ -34,11 +35,13 @@ void main() {
 		f_scale = 1.0f - f_scale;
 
 		geometry_albedo_specular.rgb = texture(texture_diffuse1, GS_IN.tex_coords).rgb * f_scale + texture(texture_diffuse, GS_IN.tex_coords).rgb * f_scale_2;
+		geometry_albedo_specular.a = texture(texture_specular, GS_IN.tex_coords).a * 0.5;
 	}
 	else {
 		geometry_albedo_specular.rgb = texture(texture_diffuse, GS_IN.tex_coords).rgb;
+		geometry_albedo_specular.a = texture(texture_specular, GS_IN.tex_coords).a;
 	}
 
 	//geometry_albedo_specular.rgb = texture(texture_diffuse1, GS_IN.tex_coords).rgb;
-	geometry_albedo_specular.a = texture(texture_specular, GS_IN.tex_coords).a;
+	//geometry_albedo_specular.a = texture(texture_specular, GS_IN.tex_coords).a;
 }

@@ -143,7 +143,9 @@
     <ClCompile Include="Core\shader_handler.cpp" />
     <ClCompile Include="Core\sound_unit.cpp" />
     <ClCompile Include="hitbox.cpp" />
+    <ClCompile Include="GLDebug.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Map\metadata.cpp" />
     <ClCompile Include="Object\Character\ability.cpp" />
     <ClCompile Include="Map\map.cpp" />
     <ClCompile Include="Map\map_handler.cpp" />
@@ -165,10 +167,12 @@
     <ClInclude Include="Core\render.h" />
     <ClInclude Include="Core\shader_handler.h" />
     <ClInclude Include="Core\sound_unit.h" />
+    <ClInclude Include="GLDebug.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="hitbox.h" />
     <ClInclude Include="Map\map.h" />
     <ClInclude Include="Map\map_handler.h" />
+    <ClInclude Include="Map\metadata.h" />
     <ClInclude Include="Object\Character\ability.h" />
     <ClInclude Include="Object\Character\character.h" />
     <ClInclude Include="Object\Character\mesh.h" />

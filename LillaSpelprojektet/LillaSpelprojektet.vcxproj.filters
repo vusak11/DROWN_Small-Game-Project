@@ -132,8 +132,14 @@
     <ClCompile Include="UI\menu.cpp">
       <Filter>Source Files\UI</Filter>
     </ClCompile>
+    <ClCompile Include="GLDebug.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="hitbox.cpp">
       <Filter>Source Files\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Map\metadata.cpp">
+      <Filter>Source Files\Map</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -205,6 +211,12 @@
     </ClInclude>
     <ClInclude Include="Object\Character\npc.h">
       <Filter>Header Files\Object\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="GLDebug.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Map\metadata.h">
+      <Filter>Header Files\Map</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
