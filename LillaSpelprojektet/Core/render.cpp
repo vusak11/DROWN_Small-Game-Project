@@ -55,7 +55,7 @@ Render::Render() {
 	model_[OBJECT_ID_NULL] = new Model((char*)"../Resources/Models/DefaultDummyNPC/defaultDummyNPC.obj");
 	model_[OBJECT_ID_PLAYER] = new Model((char*)"../Resources/Models/TestBox/testBOX.obj");
 	model_[OBJECT_ID_DUMMY] = new Model((char*)"../Resources/Models/DummyNPC/dummyNPC.obj");
-
+	model_[OBJECT_ID_DROP_HEALTH] = new Model((char*)"../Resources/Models/HeartDrop/HeartDrop.obj");
 	
 }
 
