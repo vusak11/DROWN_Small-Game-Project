@@ -82,7 +82,7 @@ std::vector<glm::vec2> MetaData::FetchThreeRandomPOIs(int offset) {
 
 glm::vec2 MetaData::FetchRandomPOI() {
 	srand((unsigned)time(0));
-	int rand_num = ((rand() % (points_of_interest_.size() + 1)));		//Random number 0 - nr_of_pois_
+	int rand_num = ((rand() % (points_of_interest_.size() - 1)));		//Random number 0 - nr_of_pois_
 
 	glm::vec2 return_POI = points_of_interest_[rand_num];
 	points_of_interest_.erase(points_of_interest_.begin() + rand_num);		//Erase coords from list of available POIs
