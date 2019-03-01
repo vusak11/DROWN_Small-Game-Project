@@ -42,11 +42,11 @@
 #define DASH_VELOCITY 800
 
 //Map------------------------------------------------------
-#define GRID_COLUMN 8
-#define GRID_ROW 8
+#define GRID_COLUMN 32
+#define GRID_ROW 32
 #define GRID_GAP 2.0					//2.0 to close the gaps between the cells
 #define MAP_DEPTH 0.05	
-#define MAP_SIZE 512
+#define MAP_SIZE 2048
 //#define MAP_SCALE 1						//1 -> each vertex have 1 position unit in between
 
 //---------------------------------------------------------
