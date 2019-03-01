@@ -6,12 +6,6 @@ Light::Light() {
 	ambient_light_ = glm::vec3(1.0f, 0.58f, 0.20f);
 }
 
-void Light::LightDefault(glm::vec3 pos, glm::vec3 brightness, glm::vec3 ambient) {
-	position_ = pos;
-	brightness_ = brightness;
-	ambient_light_ = ambient;
-}
-
 Light::~Light() {
 
 }

@@ -6,7 +6,6 @@ void Render::DrawScene() {
 Render::Render() {
 	quad_vertex_array_object_ = 0;
 	quad_vertex_buffer_object_ = 0;
-	nr_of_lights_ = 61;
 
 	//--------------------------------------------------------
 	//-------------------Create Shaders-----------------------
@@ -26,7 +25,6 @@ Render::Render() {
 	lighting_pass_ = new ShaderHandler(
 		"glsl/lightingpass/lighting_vs.glsl",
 		"glsl/lightingpass/lighting_fs.glsl");
-	lights_ = new Light[nr_of_lights_];
 
 	//--------------------------------------------------------
 	//-------------------Load Map Data------------------------
@@ -35,14 +33,14 @@ Render::Render() {
 		"../Resources/Map/MainMap.bmp",
 		"../Resources/Map/cavewall.png",
 		"../Resources/Map/v4.png");
-
+	nr_of_lights_ = map_handler_.GetLightPositions().size();
+	lights_ = new Light[nr_of_lights_];
 
 	//--------------------------------------------------------
 	//---------------------Load HUD---------------------------
 	//--------------------------------------------------------
 	hud_.LoadHealthBarTexture((char*)"../Resources/GUI/healthbar.png");
 	hud_.LoadQuickSlotTexture((char*)"../Resources/GUI/quickslot.png");
-
 
 	//--------------------------------------------------------
 	//---------------Load Models to Array---------------------
@@ -55,8 +53,6 @@ Render::Render() {
 	model_[OBJECT_ID_NULL] = new Model((char*)"../Resources/Models/DefaultDummyNPC/defaultDummyNPC.obj");
 	model_[OBJECT_ID_PLAYER] = new Model((char*)"../Resources/Models/TestBox/testBOX.obj");
 	model_[OBJECT_ID_DUMMY] = new Model((char*)"../Resources/Models/DummyNPC/dummyNPC.obj");
-
-
 }
 
 Render::~Render() {
@@ -98,7 +94,6 @@ void Render::InitializeRender() {
 			lights_[i].SetAmbientLight(glm::vec3(0.0f, 0.4f, 1.0f));
 		}
 	}
-
 	map_handler_.InitializeBuffers(geometry_pass_->GetProgram());
 }
 

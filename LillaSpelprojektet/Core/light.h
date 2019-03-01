@@ -8,7 +8,6 @@ private:
 	glm::vec3 ambient_light_;
 public:
 	Light();
-	void LightDefault(glm::vec3 pos, glm::vec3 brightness, glm::vec3 ambient);
 	~Light();
 
 	void SetPos(glm::vec3 pos);
