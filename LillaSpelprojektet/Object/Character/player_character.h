@@ -8,11 +8,6 @@
 //class Ability;
 
 //WIP: Placeholder for proper weapons and abilities
-enum WeaponID {
-	SWORD
-};
-
-
 
 struct Weapon {
 	WeaponID id;

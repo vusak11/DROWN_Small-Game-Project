@@ -26,10 +26,16 @@ PlayerCharacter::PlayerCharacter(glm::vec3 start_pos) : Character(start_pos, OBJ
 	this->move_acceleration_ = PLAYER_MOVE_ACCELERATION;
 	this->jump_speed_ = PLAYER_JUMP_VELOCITY;
 
-	this->weapon_.id = SWORD;
+	this->max_health_ = PLAYER_START_HP;
+	this->current_health_ = this->max_health_;
+
+	this->attack_power_ = PLAYER_START_ATK;
+	
 	//this->ability_ptr_ = new Ability();
 	//this->ability_ptr_ = new DoubleJump();
 	this->ability_ptr_ = new Dash();
+
+	this->weapon_.id = WEAPON_SWORD;
 }
 
 PlayerCharacter::~PlayerCharacter() {

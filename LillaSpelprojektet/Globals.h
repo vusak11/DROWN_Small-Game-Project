@@ -36,6 +36,8 @@
 #define PLAYER_MOVE_VELOCITY 100
 #define PLAYER_MOVE_ACCELERATION (PLAYER_MOVE_VELOCITY/5) //Player accelerates 1/X of its speed per timeunit
 #define PLAYER_JUMP_VELOCITY 150
+#define PLAYER_START_HP 100
+#define PLAYER_START_ATK 100
 
 //Ability Numbers------------------------------------------
 #define DASH_COOLDOWN 1
@@ -68,6 +70,16 @@ enum ObjectID {
 	OBJECT_ID_PLAYER,			//1:
 	OBJECT_ID_DUMMY,			//2:
 	NUMBER_OF_OBJECT_IDS		//N:	The Last Enum
+};
+
+enum AbilityID {
+	ABILITY_NONE,
+	ABILITY_DOUBLE_JUMP,
+	ABILITY_DASH
+};
+
+enum WeaponID {
+	WEAPON_SWORD
 };
 
 //States---------------------------------------------------
