@@ -135,8 +135,11 @@
     <ClCompile Include="GLDebug.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="hitbox.cpp">
+    <ClCompile Include="Object\hitbox.cpp">
       <Filter>Source Files\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="global_settings.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Map\metadata.cpp">
       <Filter>Source Files\Map</Filter>
@@ -194,9 +197,6 @@
     <ClInclude Include="UI\menu.h">
       <Filter>Header Files\UI</Filter>
     </ClInclude>
-    <ClInclude Include="Globals.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Object\Character\player_character.h">
       <Filter>Header Files\Object\Character</Filter>
     </ClInclude>
@@ -206,11 +206,14 @@
     <ClInclude Include="Object\Character\cooldown_class.h">
       <Filter>Header Files\Object\Character</Filter>
     </ClInclude>
-    <ClInclude Include="hitbox.h">
-      <Filter>Header Files\Object</Filter>
-    </ClInclude>
     <ClInclude Include="Object\Character\npc.h">
       <Filter>Header Files\Object\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\hitbox.h">
+      <Filter>Header Files\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="global_settings.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GLDebug.h">
       <Filter>Header Files</Filter>

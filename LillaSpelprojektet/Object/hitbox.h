@@ -16,11 +16,14 @@
 //	  ---------
 //    0       1
 
+struct BoxPoints {
+	glm::vec2 bottomLeft;
+	glm::vec2 bottomRight;
+	glm::vec2 TopLeft;
+	glm::vec2 TopRight;
+};
 
-
-
-class HitBox
-{
+class HitBox {
 public:
 	HitBox();
 	HitBox(glm::vec3 position, float x_offset, float y_offset);
@@ -37,8 +40,9 @@ public:
 	glm::vec2 GetPoint2() const;
 	glm::vec2 GetPoint3() const;
 
-	// Returns a list of the 4 hitbox points
-	glm::vec2* GetPoints() const;
+	// Returns all 4 points of the hitbox as a BoxPoints struct
+	BoxPoints GetPoints() const;
+
 private:
 	glm::vec3 position_;
 	float x_offset_;

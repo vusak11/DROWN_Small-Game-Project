@@ -1,7 +1,7 @@
 #ifndef MAP_HANDLER_H
 #define MAP_HANDLER_H
 #include "map.h"
-#include "../Globals.h"
+#include "../global_settings.h"
 #include <fstream>
 #include <string>
 #include <cmath>

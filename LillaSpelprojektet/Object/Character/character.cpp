@@ -37,15 +37,15 @@ void Character::SetAttackPower(int in_atk) {
 }
 
 int Character::GetMaxHealth() const {
-	this->max_health_;
+	return this->max_health_;
 }
 
 int Character::GetCurrentHealth() const {
-	this->current_health_;
+	return this->current_health_;
 }
 
 int Character::GetAttackPower() const {
-	this->attack_power_;
+	return this->attack_power_;
 }
 
 int Character::TakeDamage(int in_dmg) {

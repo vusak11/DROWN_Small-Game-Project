@@ -40,9 +40,9 @@ bool DoubleJump::ExecuteAbility(PlayerCharacter& in_player) {
 	return true;
 }
 //---------------------------------------------------------
-Dash::Dash() : CooldownClass(DASH_COOLDOWN) {
+Dash::Dash() : CooldownClass(GlobalSettings::Access()->ValueOf("DASH_COOLDOWN")) {
 	this->id_ = ABILITY_DASH;
-	this->dash_velocity_ = DASH_VELOCITY;
+	this->dash_velocity_ = GlobalSettings::Access()->ValueOf("DASH_VELOCITY");
 }
 
 Dash::~Dash(){}

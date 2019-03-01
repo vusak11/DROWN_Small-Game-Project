@@ -114,12 +114,15 @@ void Menu::NavigateDown()
 }
 
 void Menu::RenderMenu(ShaderHandler * shader_handler) {
+	int window_width = GlobalSettings::Access()->ValueOf("WINDOW_WIDTH");
+	int window_height = GlobalSettings::Access()->ValueOf("WINDOW_HEIGHT");
+
 	/*----------------Title---------------*/
 	RenderText(
 		shader_handler,
 		"Main Menu",
-		((float)WINDOW_WIDTH) / 2.0f - 530.0f,
-		(((float)WINDOW_HEIGHT) / 10.0f) * 8.0f,
+		((float)window_width) / 2.0f - 530.0f,
+		(((float)window_height) / 10.0f) * 8.0f,
 		3.0f,
 		glm::vec3(1.0f, 1.0f, 1.0f)
 	);
@@ -129,8 +132,8 @@ void Menu::RenderMenu(ShaderHandler * shader_handler) {
 		RenderText(
 			shader_handler,
 			"Start",
-			((float)WINDOW_WIDTH) / 2.0f - 530.0f,
-			(((float)WINDOW_HEIGHT) / 10.0f) * 6.0f,
+			((float)window_width) / 2.0f - 530.0f,
+			(((float)window_height) / 10.0f) * 6.0f,
 			2.0f,
 			glm::vec3(1.0f, 1.0f, 1.0f)
 		);
@@ -139,8 +142,8 @@ void Menu::RenderMenu(ShaderHandler * shader_handler) {
 		RenderText(
 			shader_handler,
 			"Start",
-			((float)WINDOW_WIDTH) / 2.0f - 530.0f,
-			(((float)WINDOW_HEIGHT) / 10.0f) * 6.0f,
+			((float)window_width) / 2.0f - 530.0f,
+			(((float)window_height) / 10.0f) * 6.0f,
 			2.0f,
 			glm::vec3(0.26f, 0.54f, 0.59f)
 		);
@@ -151,8 +154,8 @@ void Menu::RenderMenu(ShaderHandler * shader_handler) {
 		RenderText(
 			shader_handler,
 			"Options",
-			((float)WINDOW_WIDTH) / 2.0f - 530.0f,
-			((float)WINDOW_HEIGHT) / 10.0f * 4.0f,
+			((float)window_width) / 2.0f - 530.0f,
+			((float)window_height) / 10.0f * 4.0f,
 			2.0f,
 			glm::vec3(1.0f, 1.0f, 1.0f)
 		);
@@ -161,8 +164,8 @@ void Menu::RenderMenu(ShaderHandler * shader_handler) {
 		RenderText(
 			shader_handler,
 			"Options",
-			((float)WINDOW_WIDTH) / 2.0f - 530.0f,
-			((float)WINDOW_HEIGHT) / 10.0f * 4.0f,
+			((float)window_width) / 2.0f - 530.0f,
+			((float)window_height) / 10.0f * 4.0f,
 			2.0f,
 			glm::vec3(0.26f, 0.54f, 0.59f)
 		);
@@ -173,8 +176,8 @@ void Menu::RenderMenu(ShaderHandler * shader_handler) {
 		RenderText(
 			shader_handler,
 			"Quit",
-			((float)WINDOW_WIDTH) / 2.0f - 530.0f,
-			((float)WINDOW_HEIGHT) / 10.0f * 2.0f,
+			((float)window_width) / 2.0f - 530.0f,
+			((float)window_height) / 10.0f * 2.0f,
 			2.0f,
 			glm::vec3(1.0f, 1.0f, 1.0f)
 		);
@@ -183,8 +186,8 @@ void Menu::RenderMenu(ShaderHandler * shader_handler) {
 		RenderText(
 			shader_handler,
 			"Quit",
-			((float)WINDOW_WIDTH) / 2.0f - 530.0f,
-			((float)WINDOW_HEIGHT) / 10.0f * 2.0f,
+			((float)window_width) / 2.0f - 530.0f,
+			((float)window_height) / 10.0f * 2.0f,
 			2.0f,
 			glm::vec3(0.26f, 0.54f, 0.59f)
 		);
@@ -192,12 +195,15 @@ void Menu::RenderMenu(ShaderHandler * shader_handler) {
 }
 
 void Menu::RenderPauseMenu(ShaderHandler * shader_handler) {
+	int window_width = GlobalSettings::Access()->ValueOf("WINDOW_WIDTH");
+	int window_height = GlobalSettings::Access()->ValueOf("WINDOW_HEIGHT");
+
 	/*----------------Title---------------------*/
 	RenderText(
 		shader_handler,
 		"Pause",
-		((float)WINDOW_WIDTH) / 2.0f - 530.0f,
-		(((float)WINDOW_HEIGHT) / 10.0f) * 8.0f,
+		((float)window_width) / 2.0f - 530.0f,
+		(((float)window_height) / 10.0f) * 8.0f,
 		3.0f,
 		glm::vec3(1.0f, 1.0f, 1.0f)
 	);
@@ -207,8 +213,8 @@ void Menu::RenderPauseMenu(ShaderHandler * shader_handler) {
 		RenderText(
 			shader_handler,
 			"Continue",
-			((float)WINDOW_WIDTH) / 2.0f - 530.0f,
-			((float)WINDOW_HEIGHT) / 10.0f * 6.0f,
+			((float)window_width) / 2.0f - 530.0f,
+			((float)window_height) / 10.0f * 6.0f,
 			2.0f,
 			glm::vec3(1.0f, 1.0f, 1.0f)
 		);
@@ -217,8 +223,8 @@ void Menu::RenderPauseMenu(ShaderHandler * shader_handler) {
 		RenderText(
 			shader_handler,
 			"Continue",
-			((float)WINDOW_WIDTH) / 2.0f - 530.0f,
-			((float)WINDOW_HEIGHT) / 10.0f * 6.0f,
+			((float)window_width) / 2.0f - 530.0f,
+			((float)window_height) / 10.0f * 6.0f,
 			2.0f,
 			glm::vec3(0.26f, 0.54f, 0.59f)
 		);
@@ -229,8 +235,8 @@ void Menu::RenderPauseMenu(ShaderHandler * shader_handler) {
 		RenderText(
 			shader_handler,
 			"Save score (Death)",
-			((float)WINDOW_WIDTH) / 2.0f - 530.0f,
-			((float)WINDOW_HEIGHT) / 10.0f * 4.5f,
+			((float)window_width) / 2.0f - 530.0f,
+			((float)window_height) / 10.0f * 4.5f,
 			2.0f,
 			glm::vec3(1.0f, 1.0f, 1.0f)
 		);
@@ -239,8 +245,8 @@ void Menu::RenderPauseMenu(ShaderHandler * shader_handler) {
 		RenderText(
 			shader_handler,
 			"Save score (Death)",
-			((float)WINDOW_WIDTH) / 2.0f - 530.0f,
-			((float)WINDOW_HEIGHT) / 10.0f * 4.5f,
+			((float)window_width) / 2.0f - 530.0f,
+			((float)window_height) / 10.0f * 4.5f,
 			2.0f,
 			glm::vec3(0.26f, 0.54f, 0.59f)
 		);
@@ -251,8 +257,8 @@ void Menu::RenderPauseMenu(ShaderHandler * shader_handler) {
 		RenderText(
 			shader_handler,
 			"Options",
-			((float)WINDOW_WIDTH) / 2.0f - 530.0f,
-			((float)WINDOW_HEIGHT) / 10.0f * 3.0f,
+			((float)window_width) / 2.0f - 530.0f,
+			((float)window_height) / 10.0f * 3.0f,
 			2.0f,
 			glm::vec3(1.0f, 1.0f, 1.0f)
 		);
@@ -261,8 +267,8 @@ void Menu::RenderPauseMenu(ShaderHandler * shader_handler) {
 		RenderText(
 			shader_handler,
 			"Options",
-			((float)WINDOW_WIDTH) / 2.0f - 530.0f,
-			((float)WINDOW_HEIGHT) / 10.0f * 3.0f,
+			((float)window_width) / 2.0f - 530.0f,
+			((float)window_height) / 10.0f * 3.0f,
 			2.0f,
 			glm::vec3(0.26f, 0.54f, 0.59f)
 		);
@@ -273,8 +279,8 @@ void Menu::RenderPauseMenu(ShaderHandler * shader_handler) {
 		RenderText(
 			shader_handler,
 			"Quit",
-			((float)WINDOW_WIDTH) / 2.0f - 530.0f,
-			((float)WINDOW_HEIGHT) / 10.0f * 1.5f,
+			((float)window_width) / 2.0f - 530.0f,
+			((float)window_height) / 10.0f * 1.5f,
 			2.0f,
 			glm::vec3(1.0f, 1.0f, 1.0f)
 		);
@@ -283,8 +289,8 @@ void Menu::RenderPauseMenu(ShaderHandler * shader_handler) {
 		RenderText(
 			shader_handler,
 			"Quit",
-			((float)WINDOW_WIDTH) / 2.0f - 530.0f,
-			((float)WINDOW_HEIGHT) / 10.0f * 1.5f,
+			((float)window_width) / 2.0f - 530.0f,
+			((float)window_height) / 10.0f * 1.5f,
 			2.0f,
 			glm::vec3(0.26f, 0.54f, 0.59f)
 		);
@@ -292,12 +298,15 @@ void Menu::RenderPauseMenu(ShaderHandler * shader_handler) {
 }
 
 void Menu::RenderDeathMenu(ShaderHandler * shader_handler) {
+	int window_width = GlobalSettings::Access()->ValueOf("WINDOW_WIDTH");
+	int window_height = GlobalSettings::Access()->ValueOf("WINDOW_HEIGHT");
+
 	/*----------------Title---------------------*/
 	RenderText(
 		shader_handler,
 		"You are dead, rekt",
-		((float)WINDOW_WIDTH) / 2.0f - 530.0f,
-		(((float)WINDOW_HEIGHT) / 10.0f) * 8.0f,
+		((float)window_width) / 2.0f - 530.0f,
+		(((float)window_height) / 10.0f) * 8.0f,
 		3.0f,
 		glm::vec3(1.0f, 1.0f, 1.0f)
 	);
@@ -307,8 +316,8 @@ void Menu::RenderDeathMenu(ShaderHandler * shader_handler) {
 		RenderText(
 			shader_handler,
 			"Restart",
-			((float)WINDOW_WIDTH) / 2.0f - 530.0f,
-			((float)WINDOW_HEIGHT) / 10.0f * 6.0f,
+			((float)window_width) / 2.0f - 530.0f,
+			((float)window_height) / 10.0f * 6.0f,
 			2.0f,
 			glm::vec3(1.0f, 1.0f, 1.0f)
 		);
@@ -317,8 +326,8 @@ void Menu::RenderDeathMenu(ShaderHandler * shader_handler) {
 		RenderText(
 			shader_handler,
 			"Restart",
-			((float)WINDOW_WIDTH) / 2.0f - 530.0f,
-			((float)WINDOW_HEIGHT) / 10.0f * 6.0f,
+			((float)window_width) / 2.0f - 530.0f,
+			((float)window_height) / 10.0f * 6.0f,
 			2.0f,
 			glm::vec3(0.26f, 0.54f, 0.59f)
 		);
@@ -329,8 +338,8 @@ void Menu::RenderDeathMenu(ShaderHandler * shader_handler) {
 		RenderText(
 			shader_handler,
 			"Save score",
-			((float)WINDOW_WIDTH) / 2.0f - 530.0f,
-			((float)WINDOW_HEIGHT) / 10.0f * 4.0f,
+			((float)window_width) / 2.0f - 530.0f,
+			((float)window_height) / 10.0f * 4.0f,
 			2.0f,
 			glm::vec3(1.0f, 1.0f, 1.0f)
 		);
@@ -339,8 +348,8 @@ void Menu::RenderDeathMenu(ShaderHandler * shader_handler) {
 		RenderText(
 			shader_handler,
 			"Save score",
-			((float)WINDOW_WIDTH) / 2.0f - 530.0f,
-			((float)WINDOW_HEIGHT) / 10.0f * 4.0f,
+			((float)window_width) / 2.0f - 530.0f,
+			((float)window_height) / 10.0f * 4.0f,
 			2.0f,
 			glm::vec3(0.26f, 0.54f, 0.59f)
 		);
@@ -351,8 +360,8 @@ void Menu::RenderDeathMenu(ShaderHandler * shader_handler) {
 		RenderText(
 			shader_handler,
 			"Quit",
-			((float)WINDOW_WIDTH) / 2.0f - 530.0f,
-			((float)WINDOW_HEIGHT) / 10.0f * 2.0f,
+			((float)window_width) / 2.0f - 530.0f,
+			((float)window_height) / 10.0f * 2.0f,
 			2.0f,
 			glm::vec3(1.0f, 1.0f, 1.0f)
 		);
@@ -361,8 +370,8 @@ void Menu::RenderDeathMenu(ShaderHandler * shader_handler) {
 		RenderText(
 			shader_handler,
 			"Quit",
-			((float)WINDOW_WIDTH) / 2.0f - 530.0f,
-			((float)WINDOW_HEIGHT) / 10.0f * 2.0f,
+			((float)window_width) / 2.0f - 530.0f,
+			((float)window_height) / 10.0f * 2.0f,
 			2.0f,
 			glm::vec3(0.26f, 0.54f, 0.59f)
 		);
@@ -394,7 +403,11 @@ void Menu::RenderText(
 	GLfloat scale,
 	glm::vec3 color) {
 
-	glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(WINDOW_WIDTH), 0.0f, static_cast<GLfloat>(WINDOW_HEIGHT));
+	int window_width = GlobalSettings::Access()->ValueOf("WINDOW_WIDTH");
+	int window_height = GlobalSettings::Access()->ValueOf("WINDOW_HEIGHT");
+
+	glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(window_width),
+		0.0f, static_cast<GLfloat>(window_height));
 
 	shader_handler->Use();
 	glUniformMatrix4fv(glGetUniformLocation(shader_handler->GetProgram(), "in_matrix"), 1, GL_FALSE, glm::value_ptr(projection));

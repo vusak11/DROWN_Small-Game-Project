@@ -1,5 +1,4 @@
 #include "player_character.h"
-#include "../../globals.h"
 
 //Private--------------------------------------------------
 void PlayerCharacter::AlterVelocity() {
@@ -22,6 +21,7 @@ void PlayerCharacter::AlterVelocity() {
 
 //Public---------------------------------------------------
 PlayerCharacter::PlayerCharacter(glm::vec3 start_pos) : Character(start_pos, OBJECT_ID_PLAYER) {
+	//GlobalSettings::Access()->ValueOf("PLAYER_TOP_SPEED");
 	this->move_top_speed_ = PLAYER_MOVE_VELOCITY;
 	this->move_acceleration_ = PLAYER_MOVE_ACCELERATION;
 	this->jump_speed_ = PLAYER_JUMP_VELOCITY;

@@ -209,7 +209,10 @@ void Render::ModelTransformation(glm::mat4 model_matrix) {
 void Render::GeometryPass(
 	glm::vec3 camera_position,
 	glm::mat4 perspective_view_matrix) {
-	glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+	glViewport(0, 0, 
+		GlobalSettings::Access()->ValueOf("WINDOW_WIDTH"), 
+		GlobalSettings::Access()->ValueOf("WINDOW_HEIGHT"));
+	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glBindFramebuffer(GL_FRAMEBUFFER, geometry_pass_->GetBuffer());
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
