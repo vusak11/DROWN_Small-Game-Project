@@ -209,9 +209,6 @@
     <ClInclude Include="global_settings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Globals.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="glsl\forward_vs.glsl">

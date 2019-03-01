@@ -32,7 +32,7 @@ Render::Render() {
 	//-------------------Load Map Data------------------------
 	//--------------------------------------------------------
 	map_handler_.InitializeMaps(
-		"../Resources/Map/MainMapTest.bmp",
+		"../Resources/Map/MainMap.bmp",
 		"../Resources/Map/cavewall.png",
 		"../Resources/Map/v4.png");
 

@@ -3,6 +3,8 @@
 
 #include <vector>
 #include <cstdlib>	//Has abs()
+#define GLM_ENABLE_EXPERIMENTAL
+#include <GLM/gtx/vector_angle.hpp>
 
 #include "../object_class.h"
 

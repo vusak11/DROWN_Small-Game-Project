@@ -166,7 +166,6 @@
     <ClInclude Include="Core\render.h" />
     <ClInclude Include="Core\shader_handler.h" />
     <ClInclude Include="Core\sound_unit.h" />
-    <ClInclude Include="Globals.h" />
     <ClInclude Include="global_settings.h" />
     <ClInclude Include="Map\map.h" />
     <ClInclude Include="Map\map_handler.h" />
