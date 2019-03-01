@@ -1,6 +1,7 @@
 #include "drop.h"
 
-Drop::Drop() {
+//Public
+Drop::Drop(glm::vec3 creation_pos, ObjectID id) : ObjectClass(creation_pos, id) {
 	//Class is abstract
 }
 
@@ -32,7 +33,8 @@ bool HPRestoreDrop::TriggerEvent(PlayerCharacter& in_player) {
 }
 
 //Public
-HPRestoreDrop::HPRestoreDrop() {
+HPRestoreDrop::HPRestoreDrop(glm::vec3 creation_pos)
+	: Drop(creation_pos, OBJECT_ID_DROP_HP_RESTORE) {
 	//this->health_ = GlobalSettings::Access()->ValueOf("DROP_HP_RESTORE");
 	this->health_ = DROP_HP_RESTORE;
 }
@@ -40,29 +42,33 @@ HPRestoreDrop::HPRestoreDrop() {
 HPRestoreDrop::~HPRestoreDrop() {}
 
 //---------------------------------------------------------
-//Private::
-HPUpDrop::HPUpDrop() {
+//Private
+bool HPUpDrop::TriggerEvent(PlayerCharacter& in_player) {
+	//Increase the player's max health, return true is successful
+	return in_player.IncreaseMaxHealth(this->health_);
+}
+
+//Public
+HPUpDrop::HPUpDrop(glm::vec3 creation_pos)
+	: Drop(creation_pos, OBJECT_ID_DROP_HP_UP) {
 	//this->health_ = GlobalSettings::Access()->ValueOf("DROP_HP_UP");
 	this->health_ = DROP_HP_UP;
 }
 
 HPUpDrop::~HPUpDrop() {}
 
-bool HPUpDrop::TriggerEvent(PlayerCharacter& in_player) {
-	//Increase the player's max health, return true is successful
-	return in_player.IncreaseMaxHealth(this->health_);
+//---------------------------------------------------------
+//Private
+bool AtkUpDrop::TriggerEvent(PlayerCharacter& in_player) {
+	//Increase the player's attack power, return true is successful
+	return in_player.IncreaseAttack(this->attack_);
 }
 
-//---------------------------------------------------------
-
-AtkUpDrop::AtkUpDrop() {
+//Public
+AtkUpDrop::AtkUpDrop(glm::vec3 creation_pos)
+	: Drop(creation_pos, OBJECT_ID_DROP_ATK_UP) {
 	//this->attack_ = GlobalSettings::Access()->ValueOf("DROP_ATK_UP");
 	this->attack_ = DROP_ATK_UP;
 }
 
 AtkUpDrop::~AtkUpDrop() {}
-
-bool AtkUpDrop::TriggerEvent(PlayerCharacter& in_player) {
-	//Increase the player's attack power, return true is successful
-	return in_player.IncreaseAttack(this->attack_);
-}

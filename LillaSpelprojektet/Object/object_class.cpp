@@ -161,32 +161,6 @@ glm::mat4 ObjectClass::RetrieveModelMatrix() {
 	return this->model_matrix_;
 }
 
-void ObjectClass::TurnLeft(const float& in_deltatime) {
-	//Turn the model leftwards (negative direction) with adjustment for deltatime
-	float turn_radians = glm::radians((float)OBJECT_TURN_RATE)*in_deltatime;
-	float new_rotation = this->rotation_around_y_ - turn_radians;
-
-	//If the new orientation is further than -PI/2 snap it to -PI/2
-	if (new_rotation < glm::radians(-90.0f)) { new_rotation = glm::radians(-90.0f); }
-
-	//std::cout << "Rot L: " << glm::degrees(new_rotation) << std::endl;
-
-	this->SetRotation(this->rotation_around_x_, new_rotation, this->rotation_around_z_);
-}
-
-void ObjectClass::TurnRight(const float& in_deltatime) {
-	//Turn the model rightwards (positive direction) with adjustment for deltatime
-	float turn_radians = glm::radians((float)OBJECT_TURN_RATE)*in_deltatime;
-	float new_rotation = this->rotation_around_y_ + turn_radians;
-
-	//If the new orientation is further than PI/2 snap it to PI/2
-	if (new_rotation > glm::radians(90.0f)) { new_rotation = glm::radians(90.0f); }
-
-	//std::cout << "Rot R: " << glm::degrees(new_rotation) << std::endl;
-
-	this->SetRotation(this->rotation_around_x_, new_rotation, this->rotation_around_z_);
-}
-
 bool ObjectClass::IsAirborne() {
 	return this->airborne_;
 }

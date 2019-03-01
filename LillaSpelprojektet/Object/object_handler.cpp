@@ -73,7 +73,7 @@ float ObjectHandler::DistanceBetween(const ObjectClass* in_object_a, const Objec
 	return glm::distance(pos2_a, pos2_b);
 }
 
-void ObjectHandler::DeterminePlayerAction(const float& in_deltatime, std::vector<ObjectClass*>& relevant_drops_ptr_vector) {
+void ObjectHandler::DeterminePlayerAction(const float& in_deltatime, std::vector<ObjectClass*>& in_relevant_drops_ptr_vector) {
 
 	//Update the player's status (such as cooldowns)
 	this->player_ptr_->UpdateStatus(in_deltatime);
@@ -95,24 +95,38 @@ void ObjectHandler::DeterminePlayerAction(const float& in_deltatime, std::vector
 	if (this->player_input_.use_ability) {
 		this->player_ptr_->UseAbility();
 	}
-
+	//If input is attack
 	if (this->player_input_.attack) {
 		
 	}
+	//If input is to pick up
 	if (this->player_input_.pick_up) {
-		bool check = false;
-		int index = 0;
-		for (unsigned int i = 0; !check && (i < relevant_drops_ptr_vector.size()); i++) {
-			check = relevant_drops_ptr_vector.at(i)->CheckCollision(player_ptr_->GetPoints());
-			index = i;
-		}
-
-		relevant_drops_ptr_vector.erase(relevant_drops_ptr_vector.begin() + index);
-
-		//glm::vec3 p = player_ptr_->GetPosition();
-		//this->player_ptr_->SetPosition(200, 0, p.z);
+		this->ResolvePlayerPickUp(in_relevant_drops_ptr_vector);
 	}
 	
+}
+
+void ObjectHandler::ResolvePlayerPickUp(std::vector<ObjectClass*>& in_relevant_drops_ptr_vector) {
+	bool triggered = false;
+	int index = 0;
+	Drop* drop_ptr = NULL;
+
+	//Loop over all relevant drops
+	for (unsigned int i = 0; !triggered && (i < in_relevant_drops_ptr_vector.size()); i++) {
+		//Typecast a ptr in the vector to the drop type
+		drop_ptr = dynamic_cast<Drop*>(in_relevant_drops_ptr_vector.at(i));
+		if (drop_ptr != NULL) {
+			//Check if the player touches any of the drops (loop breaks if so)
+			triggered = drop_ptr->CheckCollision(*(this->player_ptr_));
+		}
+		//Save current index
+		index = i;
+	}
+
+	//If we have triggered an event, remove it from the onject handler's drop vector
+	if (triggered) {
+		this->RemoveObject(in_relevant_drops_ptr_vector.at(index), this->drop_ptr_vector_);
+	}
 }
 
 void ObjectHandler::ProcessNPCs(const float& in_deltatime, std::vector<ObjectClass*>& in_npcs_ptr_vector) {
@@ -187,19 +201,19 @@ void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map
 	this->player_ptr_ = new PlayerCharacter(PLAYER_START_POS);
 	this->player_ptr_->SetScale(2.0f);
 
-	//TEMP: Create an NPC
+	//TEMP
 	//this->npc_ptr_vector_.push_back(new NPC(glm::vec3(260.0f, -50.0f, 0.0f)));
 	//this->npc_ptr_vector_.at(0)->SetScale(3.0f);
+
+	glm::vec3 drop_pos = PLAYER_START_POS;
+	drop_pos.x -= 50.0f;
+	this->drop_ptr_vector_.push_back(new HPRestoreDrop(drop_pos));
+	this->drop_ptr_vector_.back()->SetScale(3.0f);
 	//TEMP
 
-	this->drop_ptr_vector_.push_back(new HPRestoreDrop(glm::vec3(150.0f, -80.0f, 5.0f)), OBJECT_ID_DROP_HEALTH);
-
 	this->physics_engine_ptr_ = new PhysicsEngine(map_height_list);
-
 	
 	//this->TestObjectHandler();		//NTS: Just for testing
-
-
 }
 
 void ObjectHandler::PlayerMoveLeft() {
@@ -246,6 +260,11 @@ std::vector<ObjectPackage> ObjectHandler::UpdateAndRetrieve(float in_deltatime) 
 		physical_objects_ptr_vector.end(),
 		relevant_npcs_ptr_vector.begin(),
 		relevant_npcs_ptr_vector.end()
+	);
+	physical_objects_ptr_vector.insert(
+		physical_objects_ptr_vector.end(),
+		relevant_drops_ptr_vector.begin(),
+		relevant_drops_ptr_vector.end()
 	);
 
 	//Take input from player (i.e. set velocity, attack flags, etc)

@@ -8,9 +8,11 @@
 #include "../globals.h"
 
 #include "object_class.h"
+
 #include "Character/character.h"
 #include "Character/player_character.h"
 #include "Character/npc.h"
+
 #include "Drop/Drop.h"
 
 #include "Physics/physics_engine.h"
@@ -51,11 +53,13 @@ private:
 				
 	float DistanceBetween(const ObjectClass* in_object_a, const ObjectClass* in_object_b) const;					//Returns the distance between the two given objects
 
-	void DeterminePlayerAction(const float& in_deltatime, std::vector<ObjectClass*>& relevant_drops_ptr_vector);								//Read player_input_ and determine legal actions, such as changes to velocity or if we can attack this frame
+	void DeterminePlayerAction(const float& in_deltatime, std::vector<ObjectClass*>& in_relevant_drops_ptr_vector);								//Read player_input_ and determine legal actions, such as changes to velocity or if we can attack this frame
+	void ResolvePlayerPickUp(std::vector<ObjectClass*>& in_relevant_drops_ptr_vector);
+	
 	void ProcessNPCs(const float& in_deltatime, std::vector<ObjectClass*>& in_npcs_ptr_vector);	//Call AI functions for NPCs in vector
 	void DetermineNPCAction(const float& in_deltatime, NPC* in_npc);					//Call the AI of the npc object to see what the npc does, then determine legal actions
 
-	void ResolvePlayerAction();							//Move player, apply hitboxes, etc.
+	
 	void ResolveNPCAction(ObjectClass* in_npc);			//Move npc, apply hitboxes, etc.
 
 	void ResolveDropBehaviour(ObjectClass* in_drop);	//Rotates drop, counts towards its despawn, etc.

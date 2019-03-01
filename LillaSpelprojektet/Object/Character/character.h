@@ -31,7 +31,7 @@ public:
 	Character(glm::vec3 start_pos, ObjectID id);
 	~Character();
 
-
+	//Character Stat Stuff------------------------------------
 	void SetMaxHealth(int in_hp);		//Throws invalid argument
 	void SetCurrentHealth(int in_hp);	//Throws invalid argument
 	void SetAttackPower(int in_atk);	//Throws invalid argument
@@ -46,6 +46,10 @@ public:
 	
 	bool IncreaseMaxHealth(int in_hp);	//Returns	true if operation was allowed
 	bool IncreaseAttack(int in_atk);	//			false if operation failed
+
+	//Character Movement Stuff-----------------------------
+	void TurnLeft(const float& in_deltatime);
+	void TurnRight(const float& in_deltatime);
 };
 
 #endif // !CHARACTER_H

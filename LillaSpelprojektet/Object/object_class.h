@@ -22,11 +22,7 @@ private:
 	//Metadata/Math
 	glm::vec3 position_;
 
-	//Math
-	float rotation_around_x_;			//The rotation of the object in radians
-	float rotation_around_y_;			//around the x, y and z-axises
-	float rotation_around_z_;			
-
+	//Math			
 	glm::vec3 scale_;			//Vector with	x scaling on x,
 								//				y scaling on y
 								//				and z scaling on z
@@ -50,6 +46,11 @@ protected:
 	ObjectID id_;
 	bool airborne_;
 	//HitBot hitbox_;
+
+	//Math
+	float rotation_around_x_;			//The rotation of the object in radians
+	float rotation_around_y_;			//around the x, y and z-axises
+	float rotation_around_z_;
 
 public:
 	ObjectClass(glm::vec3 start_pos = glm::vec3(0.0f, 0.0f, 0.0f), ObjectID id = OBJECT_ID_NULL);
@@ -79,8 +80,6 @@ public:
 	glm::mat4 RetrieveModelMatrix();			//NTS: Should check if model matrix is up to date before returning, and update it if it isn't
 
 	//Other Functions--------------------------------------
-	void TurnLeft(const float& in_deltatime);
-	void TurnRight(const float& in_deltatime);
 	bool IsAirborne();
 	virtual void SetAirborne(bool in_bool);
 	virtual bool CheckCollision(const BoxPoints& in_box);
