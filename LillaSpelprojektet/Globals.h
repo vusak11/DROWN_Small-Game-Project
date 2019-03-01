@@ -36,10 +36,17 @@
 #define PLAYER_MOVE_VELOCITY 100
 #define PLAYER_MOVE_ACCELERATION (PLAYER_MOVE_VELOCITY/5) //Player accelerates 1/X of its speed per timeunit
 #define PLAYER_JUMP_VELOCITY 150
+#define PLAYER_START_HP 100
+#define PLAYER_START_ATK 100
 
 //Ability Numbers------------------------------------------
 #define DASH_COOLDOWN 1
 #define DASH_VELOCITY 800
+
+//Drop Numbers---------------------------------------------
+#define DROP_HP_RESTORE 10
+#define DROP_HP_UP 20
+#define DROP_ATK_UP 5
 
 //Map------------------------------------------------------
 #define GRID_COLUMN 8
@@ -66,6 +73,16 @@ enum ObjectID {
 	NUMBER_OF_OBJECT_IDS		//N:	The Last Enum
 };
 
+enum AbilityID {
+	ABILITY_NONE,
+	ABILITY_DOUBLE_JUMP,
+	ABILITY_DASH
+};
+
+enum WeaponID {
+	WEAPON_SWORD
+};
+
 //States---------------------------------------------------
 enum GameState {
 	GAME,
@@ -87,10 +104,11 @@ struct ObjectPackage {
 };
 
 struct PlayerInfoPackage {
+	glm::vec3 position;
 	int max_hp;
 	int current_hp;
-	//ability1
-	//ability2
+	AbilityID ability_id;
+	WeaponID weapon_id;
 };
 
 

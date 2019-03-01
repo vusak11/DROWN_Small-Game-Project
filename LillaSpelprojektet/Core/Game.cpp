@@ -228,14 +228,11 @@ void Game::GameIteration() {
 		//Update the game logic and fill the vector
 		object_vector = this->obj_handler_ptr_->UpdateAndRetrieve(this->game_deltatime_);
 		
-		//Update the camera's position
-		cam_handler_ptr_->SetPrimaryCameraPos(this->obj_handler_ptr_->GetPlayerPos());
+		//Get data about the player
+		PlayerInfoPackage player_info = this->obj_handler_ptr_->RetrievePlayerInfoPackage();
 
-		//TEMP
-		PlayerInfoPackage temp_player_data;
-		temp_player_data.max_hp = 100;
-		temp_player_data.current_hp = 100;
-		//TEMP
+		//Update the camera's position
+		cam_handler_ptr_->SetPrimaryCameraPos(player_info.position);
 
 		//Update the screen
 		render_.UpdateRender(
@@ -243,11 +240,11 @@ void Game::GameIteration() {
 			cam_handler_ptr_->GetCameraPosition(),
 			cam_handler_ptr_->GetViewPerspectiveMatrix(),
 			object_vector,
-			temp_player_data
+			player_info
 		);
 
 		/*--------------Restart Game when death occurs--------------*/
-		if (temp_player_data.current_hp == 0) { //Use this one
+		if (player_info.current_hp == 0) { //Use this one
 			state_ = DEATH;
 		}
 		/*----------End Restart Game when death occurs--------------*/

@@ -3,6 +3,7 @@
 
 //#include "player_character.h"
 #include "cooldown_class.h"
+#include "../../Globals.h"
 
 //Forward declaration
 class PlayerCharacter;
@@ -10,12 +11,6 @@ class PlayerCharacter;
 //---------------------------------------------------------
 //----------------------BASE-CLASS-------------------------
 //---------------------------------------------------------
-
-enum AbilityID {
-	ABILITY_NONE,
-	ABILITY_DOUBLE_JUMP,
-	ABILITY_DASH
-};
 
 class Ability {
 public:
