@@ -147,6 +147,10 @@ void Game::InputForGameState(const sf::Event& in_event) {
 		if (in_event.key.code == sf::Keyboard::O) {
 			cam_handler_ptr_->SwapCamera();
 		}
+		if (in_event.key.code == sf::Keyboard::L) {
+			GlobalSettings::Access()->UpdateValuesFromFile();
+		}
+
 	default:
 		break;
 	}
@@ -184,13 +188,15 @@ void Game::InputForSecondaryCamera(const float& in_deltatime) {
 		cam_handler_ptr_->MoveCamera(0.0, 0.0, cam_speed);
 	}
 
-		if (secondary && sf::Keyboard::isKeyPressed(sf::Keyboard::P)) {
-			//Move active camera forwards ("zoom in")
-			cam_handler_ptr_->SetCameraPos(GlobalSettings::Access()->ValueOf("CAMERA_DEBUG_POSITION_X"),
-				GlobalSettings::Access()->ValueOf("CAMERA_DEBUG_POSITION_Y"),
-				GlobalSettings::Access()->ValueOf("CAMERA_DEBUG_POSITION_Z"));
-		}
-
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::P)) {
+		//Move active camera forwards ("zoom in")
+		cam_handler_ptr_->SetCameraPos(
+			GlobalSettings::Access()->ValueOf("CAMERA_DEBUG_POSITION_X"),
+			GlobalSettings::Access()->ValueOf("CAMERA_DEBUG_POSITION_Y"),
+			GlobalSettings::Access()->ValueOf("CAMERA_DEBUG_POSITION_Z")
+		);
+	}
+}
 //Public---------------------------------------------------
 
 Game::Game() {

@@ -176,7 +176,13 @@ void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map
 
 	//Create player
 	//GlobalSettings::Access()->ValueOf("PLAYER_TOP_SPEED");
-	this->player_ptr_ = new PlayerCharacter(PLAYER_START_POS);
+	this->player_ptr_ = new PlayerCharacter(
+		glm::vec3(
+			GlobalSettings::Access()->ValueOf("PLAYER_START_POS_X"),
+			GlobalSettings::Access()->ValueOf("PLAYER_START_POS_Y"), 
+			GlobalSettings::Access()->ValueOf("PLAYER_START_POS_Z")
+		)
+	);
 	this->player_ptr_->SetScale(2.0f);
 
 	//TEMP: Create an NPC

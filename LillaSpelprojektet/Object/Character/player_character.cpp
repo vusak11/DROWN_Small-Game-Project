@@ -22,9 +22,9 @@ void PlayerCharacter::AlterVelocity() {
 //Public---------------------------------------------------
 PlayerCharacter::PlayerCharacter(glm::vec3 start_pos) : Character(start_pos, OBJECT_ID_PLAYER) {
 	//GlobalSettings::Access()->ValueOf("PLAYER_TOP_SPEED");
-	this->move_top_speed_ = PLAYER_MOVE_VELOCITY;
-	this->move_acceleration_ = PLAYER_MOVE_ACCELERATION;
-	this->jump_speed_ = PLAYER_JUMP_VELOCITY;
+	this->move_top_speed_ = GlobalSettings::Access()->ValueOf("PLAYER_MOVE_VELOCITY");
+	this->move_acceleration_ = this->move_top_speed_ / GlobalSettings::Access()->ValueOf("PLAYER_MOVE_ACCELERATION_RATE");
+	this->jump_speed_ = GlobalSettings::Access()->ValueOf("PLAYER_JUMP_VELOCITY");
 
 	this->weapon_.id = SWORD;
 	//this->ability_ptr_ = new Ability();
