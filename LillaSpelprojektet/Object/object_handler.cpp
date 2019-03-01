@@ -204,16 +204,13 @@ void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map
 	//TEMP: Create an NPC
 	//this->npc_ptr_vector_.push_back(new NPC(glm::vec3(260.0f, -50.0f, 0.0f)));
 	//this->npc_ptr_vector_.at(0)->SetScale(3.0f);
-	//TEMP
 
 	//this->drop_ptr_vector_.push_back(new ObjectClass(150.0f, -80.0f, 5.0f), OBJECT_ID_DROP_HEALTH);
+	//TEMP
 
 	this->physics_engine_ptr_ = new PhysicsEngine(map_height_list);
-
 	
 	//this->TestObjectHandler();		//NTS: Just for testing
-
-
 }
 
 void ObjectHandler::PlayerMoveLeft() {

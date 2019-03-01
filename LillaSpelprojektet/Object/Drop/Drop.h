@@ -15,7 +15,7 @@ private:
 	virtual bool TriggerEvent(PlayerCharacter& in_player) = 0;
 
 public:
-	Drop();
+	Drop(glm::vec3 creation_pos, ObjectID id);
 	~Drop();
 
 	bool CheckCollision(PlayerCharacter& in_player);
@@ -32,7 +32,7 @@ private:
 	bool TriggerEvent(PlayerCharacter& in_player);
 
 public:
-	HPRestoreDrop();
+	HPRestoreDrop(glm::vec3 creation_pos);
 	~HPRestoreDrop();
 };
 
@@ -45,7 +45,7 @@ private:
 	bool TriggerEvent(PlayerCharacter& in_player);
 
 public:
-	HPUpDrop();
+	HPUpDrop(glm::vec3 creation_pos);
 	~HPUpDrop();
 };
 
@@ -58,7 +58,7 @@ private:
 	bool TriggerEvent(PlayerCharacter& in_player);
 
 public:
-	AtkUpDrop();
+	AtkUpDrop(glm::vec3 creation_pos);
 	~AtkUpDrop();
 };
 
