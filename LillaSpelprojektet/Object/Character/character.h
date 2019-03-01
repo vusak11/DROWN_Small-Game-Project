@@ -32,17 +32,20 @@ public:
 	~Character();
 
 
-	void SetMaxHealth(int in_hp);
-	void SetCurrentHealth(int in_hp);
-	void SetAttackPower(int in_atk);
+	void SetMaxHealth(int in_hp);		//Throws invalid argument
+	void SetCurrentHealth(int in_hp);	//Throws invalid argument
+	void SetAttackPower(int in_atk);	//Throws invalid argument
 	
 	int GetMaxHealth() const;
 	int GetCurrentHealth() const;
 	int GetAttackPower() const;
 
-	int TakeDamage(int in_dmg);		//Throws	   if in-value is negative,
-	int HealDamage(int in_heal);	//Returns	 0 if operation was successful
+	int TakeDamage(int in_dmg);		//Returns	-1 if in-value is negative,
+	int HealDamage(int in_heal);	//			 0 if operation was successful
 									//			 1 if cap (max hp/0 hp) was hit
+	
+	bool IncreaseMaxHealth(int in_hp);	//Returns	true if operation was allowed
+	bool IncreaseAttack(int in_atk);	//			false if operation failed
 };
 
 #endif // !CHARACTER_H

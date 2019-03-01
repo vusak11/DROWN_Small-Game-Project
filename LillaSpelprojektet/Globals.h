@@ -41,6 +41,11 @@
 #define DASH_COOLDOWN 1
 #define DASH_VELOCITY 800
 
+//Drop Numbers---------------------------------------------
+#define DROP_HP_RESTORE 10
+#define DROP_HP_UP 20
+#define DROP_ATK_UP 5
+
 //Map------------------------------------------------------
 #define GRID_COLUMN 8
 #define GRID_ROW 8

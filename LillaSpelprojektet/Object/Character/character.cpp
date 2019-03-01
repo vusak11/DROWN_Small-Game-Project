@@ -49,11 +49,12 @@ int Character::GetAttackPower() const {
 }
 
 int Character::TakeDamage(int in_dmg) {
-	//If the in parameter is negative, return false
-	if (in_dmg< 0) {
-		throw std::invalid_argument(
-			"ERROR::CHARACTER::TAKEDAMAGE::Damage may not be negative"
-		);
+	//If the in parameter is negative, return -1
+	if (in_dmg < 0) {
+		//throw std::invalid_argument(
+		//	"ERROR::CHARACTER::TAKEDAMAGE::Damage may not be negative"
+		//);
+		return -1;
 	}
 
 	this->current_health_ -= in_dmg;
@@ -67,11 +68,12 @@ int Character::TakeDamage(int in_dmg) {
 }
 
 int Character::HealDamage(int in_heal) {
-	//If the in parameter is negative, return false
+	//If the in parameter is negative, return -1
 	if (in_heal < 0) {
-		throw std::invalid_argument(
-			"ERROR::CHARACTER::HEALDAMAGE::Heal may not be negative"
-		);
+		//throw std::invalid_argument(
+		//	"ERROR::CHARACTER::HEALDAMAGE::Heal may not be negative"
+		//);
+		return -1;
 	}
 
 	this->current_health_ += in_heal;
@@ -82,4 +84,29 @@ int Character::HealDamage(int in_heal) {
 	}
 
 	return 0;
+}
+
+bool Character::IncreaseMaxHealth(int in_hp) {
+	//If the in parameter is negative, return false
+	if (in_hp < 0) {
+		return false;
+	}
+
+	//Otherwise increase stat and return true
+	this->max_health_ += in_hp;
+	this->current_health_ += in_hp;
+
+	return true;
+}
+
+bool Character::IncreaseAttack(int in_atk) {
+	//If the in parameter is negative, return false
+	if (in_atk < 0) {
+		return false;
+	}
+
+	//Otherwise increase stat and return true
+	this->attack_power_ += in_atk;
+
+	return true;
 }
