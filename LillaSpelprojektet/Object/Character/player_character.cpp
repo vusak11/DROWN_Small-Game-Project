@@ -36,6 +36,15 @@ PlayerCharacter::~PlayerCharacter() {
 
 }
 
+AbilityID PlayerCharacter::GetAbilityID() const {
+	return this->ability_ptr_->id_;
+}
+
+WeaponID PlayerCharacter::GetWeaponID() const {
+	//WIP
+	return this->weapon_.id;
+}
+
 void PlayerCharacter::MoveLeft() {
 	//Set player looking towards negative x
 	this->looking_towards_x_ = -1;
@@ -101,18 +110,4 @@ void PlayerCharacter::UpdateStatus(const float& in_deltatime) {
 		//If it is, update its cooldown
 		cd_class_ptr->UpdateCooldown(in_deltatime);
 	}
-
-	/*
-	//Update ability cooldowns
-	switch (this->ability_ptr_->id_)
-	{
-	case ABILITY_DASH:
-		//WIP:
-		//Create more children an different types of ability types
-		break;
-	default:
-		break;
-	}
-	*/
-
 }

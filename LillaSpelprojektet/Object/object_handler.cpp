@@ -265,8 +265,16 @@ std::vector<ObjectPackage> ObjectHandler::UpdateAndRetrieve(float in_deltatime) 
 	return package_vector;
 }
 
-glm::vec3 ObjectHandler::GetPlayerPos() {
-	return this->player_ptr_->GetPosition();
+PlayerInfoPackage ObjectHandler::RetrievePlayerInfoPackage() {
+	PlayerInfoPackage ret_info;
+
+	ret_info.position = this->player_ptr_->GetPosition();
+	ret_info.max_hp = this->player_ptr_->GetMaxHealth();
+	ret_info.current_hp = this->player_ptr_->GetCurrentHealth();
+	ret_info.ability_id = this->player_ptr_->GetAbilityID();
+	ret_info.weapon_id = this->player_ptr_->GetWeaponID();
+
+	return ret_info;
 }
 
 void ObjectHandler::TestObjectHandler() {

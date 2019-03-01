@@ -91,10 +91,11 @@ struct ObjectPackage {
 };
 
 struct PlayerInfoPackage {
+	glm::vec3 position;
 	int max_hp;
 	int current_hp;
-	//ability1
-	//ability2
+	AbilityID ability_id;
+	WeaponID weapon_id;
 };
 
 

@@ -88,7 +88,7 @@ public:
 	//	- Call physics to determine new positions (<- Should be called at every step when a creature moves instead?)
 	std::vector<ObjectPackage> UpdateAndRetrieve(float in_deltatime);
 
-	glm::vec3 GetPlayerPos();
+	PlayerInfoPackage RetrievePlayerInfoPackage();
 
 	//Test functions------------------------------------------
 	void TestObjectHandler();
