@@ -201,11 +201,14 @@ void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map
 	this->player_ptr_ = new PlayerCharacter(PLAYER_START_POS);
 	this->player_ptr_->SetScale(2.0f);
 
-	//TEMP: Create an NPC
+	//TEMP
 	//this->npc_ptr_vector_.push_back(new NPC(glm::vec3(260.0f, -50.0f, 0.0f)));
 	//this->npc_ptr_vector_.at(0)->SetScale(3.0f);
 
-	this->drop_ptr_vector_.push_back(new HPRestoreDrop(PLAYER_START_POS));
+	glm::vec3 drop_pos = PLAYER_START_POS;
+	drop_pos.x -= 50.0f;
+	this->drop_ptr_vector_.push_back(new HPRestoreDrop(drop_pos));
+	this->drop_ptr_vector_.back()->SetScale(3.0f);
 	//TEMP
 
 	this->physics_engine_ptr_ = new PhysicsEngine(map_height_list);
@@ -257,6 +260,11 @@ std::vector<ObjectPackage> ObjectHandler::UpdateAndRetrieve(float in_deltatime) 
 		physical_objects_ptr_vector.end(),
 		relevant_npcs_ptr_vector.begin(),
 		relevant_npcs_ptr_vector.end()
+	);
+	physical_objects_ptr_vector.insert(
+		physical_objects_ptr_vector.end(),
+		relevant_drops_ptr_vector.begin(),
+		relevant_drops_ptr_vector.end()
 	);
 
 	//Take input from player (i.e. set velocity, attack flags, etc)
