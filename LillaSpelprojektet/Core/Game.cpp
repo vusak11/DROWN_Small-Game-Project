@@ -125,6 +125,7 @@ void Game::InputForGameState(const sf::Event& in_event) {
 			//OBS!
 			//Currently writes pos to terminal
 			//std::cout << "X: " << obj_handler_ptr_->GetPlayerPos().x << "Y: " << obj_handler_ptr_->GetPlayerPos().y << " Z: " << obj_handler_ptr_->GetPlayerPos().z << std::endl;
+			this->obj_handler_ptr_->PlayerPickUp();
 		}
 		//Use Ability
 		if (in_event.key.code == sf::Keyboard::E) {
