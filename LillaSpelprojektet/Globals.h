@@ -66,13 +66,17 @@
 //Anytime a new object or model is added to the game, ensure it is
 //represented by an ObjectID
 enum ObjectID {
-	OBJECT_ID_NULL,				//0:	The Error Model
-	OBJECT_ID_PLAYER,			//1:
-	OBJECT_ID_DUMMY,			//2:
-	OBJECT_ID_DROP_HP_RESTORE,	//3:
-	OBJECT_ID_DROP_HP_UP,		//4:
-	OBJECT_ID_DROP_ATK_UP,		//5:
-	NUMBER_OF_OBJECT_IDS		//N:	The Last Enum
+	OBJECT_ID_NULL,				//:The Error Model
+	OBJECT_ID_PLAYER,			//:Player
+	OBJECT_ID_DUMMY,			//:Start of NPCs
+	OBJECT_ID_DROP_HP_RESTORE,	//:Start of Drops
+	OBJECT_ID_DROP_HP_UP,
+	OBJECT_ID_DROP_ATK_UP,
+	OBJECT_ID_DROP_DASH,
+	OBJECT_ID_DROP_DOUBLE_JUMP,
+	OBJECT_ID_DROP_SWORD,		
+	OBJECT_ID_DROP_AXE,
+	NUMBER_OF_OBJECT_IDS		//:The Last Enum
 };
 
 enum AbilityID {

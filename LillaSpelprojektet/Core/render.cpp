@@ -55,9 +55,14 @@ Render::Render() {
 	model_[OBJECT_ID_NULL] = new Model((char*)"../Resources/Models/DefaultDummyNPC/defaultDummyNPC.obj");
 	model_[OBJECT_ID_PLAYER] = new Model((char*)"../Resources/Models/TestBox/testBOX.obj");
 	model_[OBJECT_ID_DUMMY] = new Model((char*)"../Resources/Models/DummyNPC/dummyNPC.obj");
-	model_[OBJECT_ID_DROP_HP_RESTORE] = new Model((char*)"../Resources/Models/heart_drop/heart_drop.obj");
-	model_[OBJECT_ID_DROP_HP_UP] = new Model((char*)"../Resources/Models/DummyNPC/dummyNPC.obj");
-	model_[OBJECT_ID_DROP_ATK_UP] = new Model((char*)"../Resources/Models/DummyNPC/dummyNPC.obj");
+	
+	model_[OBJECT_ID_DROP_HP_RESTORE] = new Model((char*)"../Resources/Models/Drops/heart_drop/heart_drop.obj");
+	model_[OBJECT_ID_DROP_HP_UP] = new Model((char*)"../Resources/Models/Drops/hp_buff/hp_buff.obj");
+	model_[OBJECT_ID_DROP_ATK_UP] = new Model((char*)"../Resources/Models/Drops/attack_buff/attack_buff.obj");
+	model_[OBJECT_ID_DROP_DASH] = new Model((char*)"../Resources/Models/Drops/dash/dash.obj");
+	model_[OBJECT_ID_DROP_DOUBLE_JUMP] = new Model((char*)"../Resources/Models/Drops/double_jump/double_jump.obj");
+	model_[OBJECT_ID_DROP_SWORD] = new Model((char*)"../Resources/Models/Drops/sword/sword.obj");
+	model_[OBJECT_ID_DROP_AXE] = new Model((char*)"../Resources/Models/Drops/axe/axe.obj");
 
 }
 

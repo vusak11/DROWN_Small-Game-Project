@@ -27,7 +27,7 @@ PlayerCharacter::PlayerCharacter(glm::vec3 start_pos) : Character(start_pos, OBJ
 	this->jump_speed_ = PLAYER_JUMP_VELOCITY;
 
 	this->max_health_ = PLAYER_START_HP;
-	this->current_health_ = this->max_health_;
+	this->current_health_ = this->max_health_/2;
 
 	this->attack_power_ = PLAYER_START_ATK;
 	
