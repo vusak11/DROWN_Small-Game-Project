@@ -202,11 +202,13 @@ void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map
 	this->player_ptr_->SetScale(2.0f);
 
 	//TEMP
-	//this->npc_ptr_vector_.push_back(new NPC(glm::vec3(260.0f, -50.0f, 0.0f)));
+	//glm::vec3 npc_pos = PLAYER_START_POS;
+	//npc_pos.x -= 70.0f;
+	//this->npc_ptr_vector_.push_back(new NPC(npc_pos));
 	//this->npc_ptr_vector_.at(0)->SetScale(3.0f);
 
 	glm::vec3 drop_pos = PLAYER_START_POS;
-	drop_pos.x -= 50.0f;
+	drop_pos.x -= 35.0f;
 	this->drop_ptr_vector_.push_back(new HPRestoreDrop(drop_pos));
 	this->drop_ptr_vector_.back()->SetScale(3.0f);
 	//TEMP

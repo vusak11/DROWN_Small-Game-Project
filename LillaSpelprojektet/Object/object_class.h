@@ -82,7 +82,7 @@ public:
 	//Other Functions--------------------------------------
 	bool IsAirborne();
 	virtual void SetAirborne(bool in_bool);
-	virtual bool CheckCollision(const BoxPoints& in_box);
+	//virtual bool CheckCollision(const BoxPoints& in_box);
 
 
 };

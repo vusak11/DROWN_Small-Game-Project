@@ -169,6 +169,7 @@ void ObjectClass::SetAirborne(bool in_bool) {
 	this->airborne_ = in_bool;
 }
 
+/*
 bool ObjectClass::CheckCollision(const BoxPoints& other_box) {
 	//Check if any of the points is inside other entity's bounding box
 	bool check = false;
@@ -188,3 +189,4 @@ bool ObjectClass::CheckCollision(const BoxPoints& other_box) {
 
 	return check;
 }
+*/
