@@ -13,7 +13,7 @@ bool Drop::CheckCollision(PlayerCharacter& in_player) {
 	BoxPoints player_box = in_player.GetPoints();
 
 	//If this object doesn't collide, return false
-	if (!this->ObjectClass::CheckCollision(player_box)) { false; }
+	if (!this->Hitbox::CheckCollision(player_box)) { return false; }
 	
 	//Otherwise trigger its event and return true/false
 	return this->TriggerEvent(in_player);

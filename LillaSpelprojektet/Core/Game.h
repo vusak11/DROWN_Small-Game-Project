@@ -45,6 +45,8 @@ public:
 	
 	void InputEvents(const sf::Event& in_event);
 	void InputContinual();
+
+	bool IsRunning();
 };
 
 #endif // !GAME_H

@@ -57,7 +57,7 @@ int main() {
 
 	/*-----------End Initialize---------------*/
 
-	while (running) {
+	while (game.IsRunning()) {
 		sf::Event event;
 		
 		while (window.pollEvent(event)) {
@@ -87,7 +87,7 @@ void GameLoop(
 	Game& in_game,
 	sf::Window& in_window) {
 
-	while (in_running) {
+	while (in_game.IsRunning()) {
 		in_game.GameIteration();
 		in_window.display();
 	}
