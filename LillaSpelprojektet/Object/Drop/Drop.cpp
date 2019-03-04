@@ -72,3 +72,19 @@ AtkUpDrop::AtkUpDrop(glm::vec3 creation_pos)
 }
 
 AtkUpDrop::~AtkUpDrop() {}
+
+//---------------------------------------------------------
+//Private
+bool KeyDrop::TriggerEvent(PlayerCharacter& in_player) {
+	//Increase the player's attack power, return true is successful
+	return in_player.SetKeyStatus(this->key_);
+}
+
+//Public
+KeyDrop::KeyDrop(glm::vec3 creation_pos)
+	: Drop(creation_pos, OBJECT_ID_DROP_KEY) {
+	//this->attack_ = GlobalSettings::Access()->ValueOf("DROP_ATK_UP");
+	this->key_ = true;
+}
+
+KeyDrop::~KeyDrop() {}

@@ -62,5 +62,18 @@ public:
 	~AtkUpDrop();
 };
 
+//---------------------------------------------------------
+
+class KeyDrop : public Drop {
+private:
+	bool key_;
+
+	bool TriggerEvent(PlayerCharacter& in_player);
+
+public:
+	KeyDrop(glm::vec3 creation_pos);
+	~KeyDrop();
+};
+
 
 #endif // !DROP_H
