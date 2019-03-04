@@ -123,9 +123,12 @@ void ObjectHandler::ResolvePlayerPickUp(std::vector<ObjectClass*>& in_relevant_d
 		index = i;
 	}
 
-	//If we have triggered an event, remove it from the object handler's drop vector
+	//If we have triggered an event
 	if (triggered) {
+		//Delete the object and remove the pointer from the object handler's drop vector
 		this->RemoveObject(in_relevant_drops_ptr_vector.at(index), this->drop_ptr_vector_);
+		//Then remove the entry from the list of relevant drops
+		in_relevant_drops_ptr_vector.erase(in_relevant_drops_ptr_vector.begin() + index);
 	}
 
 	std::cout << "All Drops Vector:	" << this->drop_ptr_vector_.size() << std::endl;
@@ -263,12 +266,37 @@ std::vector<ObjectPackage> ObjectHandler::UpdateAndRetrieve(float in_deltatime) 
 	std::vector<ObjectClass*> relevant_drops_ptr_vector;
 	std::vector<ObjectClass*> physical_objects_ptr_vector;	//A vector to hold everything that is affected by physics
 	
+	//--------------------------------------------------------
+	//-------------Calculate & Process Objects----------------
+	//--------------------------------------------------------
 
 	//Cull NPC:s
 	relevant_npcs_ptr_vector = this->CullAndRetrieveObjectPtrs(this->npc_ptr_vector_);
 
 	//Cull Drops
 	relevant_drops_ptr_vector = this->CullAndRetrieveObjectPtrs(this->drop_ptr_vector_);
+
+	//Take input from player (i.e. set velocity, attack flags, etc)
+	this->DeterminePlayerAction(in_deltatime, relevant_drops_ptr_vector);
+	
+	//Go through all relevant NPCs and call their AI functions
+	this->ProcessNPCs(in_deltatime, relevant_npcs_ptr_vector);
+
+
+	//WIP----
+
+	//ResolvePlayerAction();
+
+	//ResolveNPCAction(/*vector.at(i)*/);
+
+	//ResolveDropBehaviour(in_drop);
+
+	//WIP----
+
+
+	//--------------------------------------------------------
+	//------------------Apply Physics-------------------------
+	//--------------------------------------------------------
 
 	//Fill physical vector with the player and all NPC:s
 	physical_objects_ptr_vector.push_back(this->player_ptr_);
@@ -283,20 +311,12 @@ std::vector<ObjectPackage> ObjectHandler::UpdateAndRetrieve(float in_deltatime) 
 		relevant_drops_ptr_vector.end()
 	);
 
-	//Take input from player (i.e. set velocity, attack flags, etc)
-	this->DeterminePlayerAction(in_deltatime, relevant_drops_ptr_vector);
-	
-	//Go through all relevant NPCs and call their AI functions
-	this->ProcessNPCs(in_deltatime, relevant_npcs_ptr_vector);
-
 	//Apply physics such as moving or falling
 	this->physics_engine_ptr_->ApplyPhysics(in_deltatime, physical_objects_ptr_vector);
 
-	//ResolvePlayerAction();
-	
-	//ResolveNPCAction(/*vector.at(i)*/);
-
-	//ResolveDropBehaviour(in_drop);
+	//--------------------------------------------------------
+	//------------------Clean Up & Return---------------------
+	//--------------------------------------------------------
 
 	//Reset the inputs
 	this->ClearPlayerInput();
