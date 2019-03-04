@@ -55,7 +55,7 @@ Render::Render() {
 	model_[OBJECT_ID_NULL] = new Model((char*)"../Resources/Models/DefaultDummyNPC/defaultDummyNPC.obj");
 	model_[OBJECT_ID_PLAYER] = new Model((char*)"../Resources/Models/TestBox/testBOX.obj");
 	model_[OBJECT_ID_DUMMY] = new Model((char*)"../Resources/Models/DummyNPC/dummyNPC.obj");
-	model_[OBJECT_ID_DROP_HP_RESTORE] = new Model((char*)"../Resources/Models/DummyNPC/dummyNPC.obj");
+	model_[OBJECT_ID_DROP_HP_RESTORE] = new Model((char*)"../Resources/Models/heart_drop/heart_drop.obj");
 	model_[OBJECT_ID_DROP_HP_UP] = new Model((char*)"../Resources/Models/DummyNPC/dummyNPC.obj");
 	model_[OBJECT_ID_DROP_ATK_UP] = new Model((char*)"../Resources/Models/DummyNPC/dummyNPC.obj");
 
