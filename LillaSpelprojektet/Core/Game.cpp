@@ -25,7 +25,8 @@ void Game::InputForMenuState(const sf::Event& in_event) {
 				//Do something, change FOV and so on
 				break;
 			case 2:						//Quit
-				exit(-1);
+				//exit(-1);
+				state_ = QUIT;
 			}
 		}
 		break;
@@ -65,7 +66,8 @@ void Game::InputForPauseState(const sf::Event& in_event) {
 				//menu_.StateManager(state_);
 				break;
 			case 3:						//Quit
-				exit(-1);
+				//exit(-1);
+				state_ = QUIT;
 			}
 		}
 		break;
@@ -93,13 +95,15 @@ void Game::InputForDeathState(const sf::Event& in_event) {
 			switch (menu_.GetSelectedItemIndex()) {
 			case 0:						//Restart
 				system("restartGame.cmd"); // TEST case
-				exit(-1);
+				//exit(-1);
+				state_ = QUIT;
 				break;
 			case 1:						//Save score
 				//Save highscore
 				break;
 			case 2:						//QUIT
-				exit(-1);
+				//exit(-1);
+				state_ = QUIT;
 			}
 		}
 		break;
@@ -255,6 +259,9 @@ void Game::GameIteration() {
 	else if (state_ == DEATH) {
 		render_.RenderDeathMenu(menu_);
 	}
+	else if (state_ == QUIT) {
+		//This will break the outside loops
+	}
 }
 
 void Game::InputEvents(const sf::Event& in_event) {
@@ -306,4 +313,9 @@ void Game::InputContinual() {
 	if (cam_handler_ptr_->GetMode()) {
 		this->InputForSecondaryCamera(this->input_deltatime_);
 	}
+}
+
+bool Game::IsRunning() {
+	//If the game ain't quittin', it's runnin'
+	return (this->state_ != QUIT);
 }

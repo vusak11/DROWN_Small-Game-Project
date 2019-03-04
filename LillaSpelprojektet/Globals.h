@@ -19,7 +19,7 @@
 #define CAMERA_DEBUG_POSITION_Z 100.0
 
 //Objects--------------------------------------------------
-#define OBJECT_CULLING_DISTANCE 1380	//Distance beyond which objects are not updated nor rendered
+#define OBJECT_CULLING_DISTANCE 100	//Distance beyond which objects are not updated nor rendered
 
 #define PI 3.1415
 #define OBJECT_TURN_RATE 720 //degrees/sec	//Purely for the turn function in ObjectClass as of this writing

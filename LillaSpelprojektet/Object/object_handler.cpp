@@ -18,7 +18,7 @@ bool ObjectHandler::RemoveObject(const ObjectClass* in_object_ptr, std::vector<O
 	//WARNING: This function deletes the given object on a success
 	//If a pointer has been saved externally it will lead to a trash location
 	//Taking a reference to the pointer and setting it to NULL will not save
-	//us since the pointer might have been copied outside
+	//the situation since the pointer might have been copied outside
 
 	//Go through the array
 	for (unsigned int i = 0; i < in_object_ptr_vector.size(); i++) {
@@ -123,10 +123,14 @@ void ObjectHandler::ResolvePlayerPickUp(std::vector<ObjectClass*>& in_relevant_d
 		index = i;
 	}
 
-	//If we have triggered an event, remove it from the onject handler's drop vector
+	//If we have triggered an event, remove it from the object handler's drop vector
 	if (triggered) {
 		this->RemoveObject(in_relevant_drops_ptr_vector.at(index), this->drop_ptr_vector_);
 	}
+
+	std::cout << "All Drops Vector:	" << this->drop_ptr_vector_.size() << std::endl;
+	std::cout << "Relevant Drops Vector:	" << in_relevant_drops_ptr_vector.size() << std::endl;
+
 }
 
 void ObjectHandler::ProcessNPCs(const float& in_deltatime, std::vector<ObjectClass*>& in_npcs_ptr_vector) {
