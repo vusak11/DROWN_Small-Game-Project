@@ -195,10 +195,9 @@ ObjectHandler::~ObjectHandler() {
 	this->ClearPtrVector(this->drop_ptr_vector_);
 
 	delete this->physics_engine_ptr_;
-
 }
 
-void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map_height_list) {
+void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map_height_list, std::vector<glm::vec2> door_key_position) {
 
 	//Create player
 	this->player_ptr_ = new PlayerCharacter(PLAYER_START_POS);
@@ -230,7 +229,13 @@ void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map
 	//TEMP
 
 	this->physics_engine_ptr_ = new PhysicsEngine(map_height_list);
-	
+
+	//Door! 
+	//this->drop_ptr_vector_.push_back(new Drop(glm::vec3(door_key_position[0], 3.0f))); 
+	//this->drop_ptr_vector_.at(0)->SetPosition(door_key_position[0].x, door_key_position[0].y, 3.0f);
+	//this->drop_ptr_vector_.at(0)->SetScale(5.0f);
+
+	//Retrieve the newly random generated position of door and key (0 = door, 1 = key)
 	//this->TestObjectHandler();		//NTS: Just for testing
 }
 
@@ -256,6 +261,10 @@ void ObjectHandler::PlayerUseAbility() {
 
 void ObjectHandler::PlayerPickUp() {
 	this->player_input_.pick_up = true;
+}
+
+void ObjectHandler::PlayerTeleport() { // TEMPORARY !!!
+	this->player_ptr_->SetPosition(90.0f, -1250.0f, 0.0f);
 }
 
 std::vector<ObjectPackage> ObjectHandler::UpdateAndRetrieve(float in_deltatime) {
@@ -341,6 +350,14 @@ PlayerInfoPackage ObjectHandler::RetrievePlayerInfoPackage() {
 	ret_info.num_of_keys = this->player_ptr_->GetNumOfKeys();
 
 	return ret_info;
+}
+
+bool ObjectHandler::PlayerInBossRoom() {
+	bool check = false;
+	 if (this->player_ptr_->GetPosition().x > 44.0f && this->player_ptr_->GetPosition().x < 396.0f &&
+		this->player_ptr_->GetPosition().y > -1265.0f && this->player_ptr_->GetPosition().y < -1060.0f)
+		check = true;
+	 return check;
 }
 
 void ObjectHandler::TestObjectHandler() {

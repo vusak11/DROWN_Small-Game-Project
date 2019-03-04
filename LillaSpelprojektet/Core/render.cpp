@@ -168,23 +168,6 @@ void Render::GeometryDrawing(std::vector<ObjectPackage>& object_vector) {
 		map_handler_.Draw(geometry_pass_->GetProgram(), (int)cells.back().x, (int)cells.back().y);
 		cells.pop_back();
 	}
-	
-	/*
-	else if (OBJECT_ID_MAP == object_vector.back().id) {
-			std::vector<glm::vec2> cells = map_handler_.GridCulling(
-				map_handler_.CurrentCell(players_position));
-			while (!cells.empty()) {
-				ModelTransformation(map_handler_.Transformation((int)cells.back().x, (int)cells.back().y));
-				map_handler_.Draw(geometry_pass_->GetProgram(), (int)cells.back().x, (int)cells.back().y);
-				cells.pop_back();
-			}
-		}
-		---
-		players_position = glm::vec3(
-				object_vector.back().model_matrix[3][0],
-				object_vector.back().model_matrix[3][1],
-				object_vector.back().model_matrix[3][2]);
-	*/
 }
 
 void Render::ModelTransformation(glm::mat4 model_matrix) {
@@ -287,4 +270,11 @@ void Render::RenderQuad() {
 std::vector<std::vector<float>>* Render::GetMapPointer()
 {
 	return map_handler_.GetMapDataPointer();
+}
+
+std::vector<glm::vec2> Render::GetDoorKeyPosition() {
+	std::vector<glm::vec2> storage;
+	storage.push_back(map_handler_.GetDoorPosition());
+	storage.push_back(map_handler_.GetKeyPosition());
+	return storage;
 }

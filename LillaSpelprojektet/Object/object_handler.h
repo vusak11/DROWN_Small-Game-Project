@@ -74,7 +74,9 @@ public:
 	~ObjectHandler();
 
 	// Takes map data to send to physics engine.
-	void InitializeObjectHandler(std::vector<std::vector<float>>* map_height_list);		//Function creates player object, loads in enemies for the zones etc. Call from InitiateGame();
+	void InitializeObjectHandler(
+		std::vector<std::vector<float>>* map_height_list, 
+		std::vector<glm::vec2> door_key_position);		//Function creates player object, loads in enemies for the zones etc. Call from InitiateGame();
 
 	//Functions for controlling the player
 	//Call these functions when pressing buttons
@@ -84,6 +86,7 @@ public:
 	void PlayerAttack();
 	void PlayerUseAbility();
 	void PlayerPickUp();
+	void PlayerTeleport();
 
 	//Called once per loop to update object positions
 	//	- Read player inputs and determine effects
@@ -94,6 +97,8 @@ public:
 
 	PlayerInfoPackage RetrievePlayerInfoPackage();
 
+	glm::vec3 GetPlayerPos();
+	bool PlayerInBossRoom();
 	//Test functions------------------------------------------
 	void TestObjectHandler();
 

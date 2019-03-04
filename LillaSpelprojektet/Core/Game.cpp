@@ -135,6 +135,12 @@ void Game::InputForGameState(const sf::Event& in_event) {
 		if (in_event.key.code == sf::Keyboard::E) {
 			this->obj_handler_ptr_->PlayerUseAbility();
 		}
+		//Temporary teleport to boss room (OBS! need to connect with interaction)
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::L)) {
+			this->obj_handler_ptr_->PlayerTeleport();
+
+		}
+		/*---------------End Keyboard inputs-----------------*/
 
 		//Attack
 		//goes here
@@ -212,7 +218,9 @@ Game::~Game() {
 void Game::InitializeGame() {
 	this->menu_.Initiliaze();
 	this->render_.InitializeRender();
-	this->obj_handler_ptr_->InitializeObjectHandler(render_.GetMapPointer());
+	this->obj_handler_ptr_->InitializeObjectHandler(
+		render_.GetMapPointer(),
+		render_.GetDoorKeyPosition());
 
 	this->game_clock_.restart();	//Get the clock going correctly
 }
@@ -237,6 +245,12 @@ void Game::GameIteration() {
 
 		//Update the camera's position
 		cam_handler_ptr_->SetPrimaryCameraPos(player_info.position);
+
+		if (this->obj_handler_ptr_->PlayerInBossRoom()) { // Swap primary camera to 'boss' camera
+			cam_handler_ptr_->SwapCameraToBossCamera();
+		}
+
+		//TEMP
 
 		//Update the screen
 		render_.UpdateRender(

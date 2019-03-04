@@ -16,6 +16,11 @@ void CameraHandler::SwapCamera() {
 	else { this->mode_ = PRIMARY; }
 }
 
+void CameraHandler::SwapCameraToBossCamera() {
+	this->mode_ = BOSS;
+	SetCameraPos(220.0f, -1170.0f, 150.0f);
+}
+
 int CameraHandler::GetMode() {
 	return this->mode_;
 }
@@ -38,10 +43,10 @@ glm::mat4 CameraHandler::SetCameraPos(float in_x, float in_y, float in_z) {
 
 glm::mat4 CameraHandler::SetPrimaryCameraPos(glm::vec3 position)
 {
-	this->cams_[0].SetCameraPos(position.x, position.y, cams_[0].GetCameraPosition().z);
+	this->cams_[PRIMARY].SetCameraPos(position.x, position.y, cams_[0].GetCameraPosition().z);
 
 	//Return the active camera's View*Perspective Matrix
-	return this->cams_[0].GetViewPerspectiveMatrix();
+	return this->cams_[PRIMARY].GetViewPerspectiveMatrix();
 }
 
 glm::mat4 CameraHandler::GetPerspectiveMatrix() const
