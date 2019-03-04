@@ -124,7 +124,7 @@ void ObjectHandler::ProcessNPCs(const float& in_deltatime, std::vector<ObjectCla
 void ObjectHandler::DetermineNPCAction(const float& in_deltatime, NPC* in_npc) {
 
 	//TEMP
-	in_npc->ExecuteAI(in_deltatime);
+	in_npc->ExecuteAI(in_deltatime, player_ptr_->GetPosition());
 	//TEMP
 
 }
@@ -186,8 +186,27 @@ void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map
 	this->player_ptr_->SetScale(2.0f);
 
 	//TEMP: Create an NPC
-	//this->npc_ptr_vector_.push_back(new NPC(glm::vec3(260.0f, -50.0f, 0.0f)));
-	//this->npc_ptr_vector_.at(0)->SetScale(3.0f);
+	/*this->npc_ptr_vector_.push_back(new NPC(
+		glm::vec3(
+		GlobalSettings::Access()->ValueOf("PLAYER_START_POS_X") + 130,
+		GlobalSettings::Access()->ValueOf("PLAYER_START_POS_Y"),
+		GlobalSettings::Access()->ValueOf("PLAYER_START_POS_Z")
+	),
+	OBJECT_ID_PLACEHOLDER
+	));*/
+
+	for (int i = 0; i < 10; i++)
+	{
+		this->npc_ptr_vector_.push_back(new NPCRunner(
+			glm::vec3(
+				GlobalSettings::Access()->ValueOf("PLAYER_START_POS_X") + 10 * i,
+				GlobalSettings::Access()->ValueOf("PLAYER_START_POS_Y"),
+				GlobalSettings::Access()->ValueOf("PLAYER_START_POS_Z")
+			),
+			OBJECT_ID_PLACEHOLDER
+		));
+	}
+	this->npc_ptr_vector_.at(0)->SetScale(3.0f);
 	//TEMP
 
 	this->physics_engine_ptr_ = new PhysicsEngine(map_height_list);

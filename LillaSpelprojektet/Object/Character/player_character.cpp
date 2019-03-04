@@ -28,8 +28,8 @@ PlayerCharacter::PlayerCharacter(glm::vec3 start_pos) : Character(start_pos, OBJ
 
 	this->weapon_.id = SWORD;
 	//this->ability_ptr_ = new Ability();
-	//this->ability_ptr_ = new DoubleJump();
-	this->ability_ptr_ = new Dash();
+	this->ability_ptr_ = new DoubleJump();
+	//this->ability_ptr_ = new Dash();
 }
 
 PlayerCharacter::~PlayerCharacter() {

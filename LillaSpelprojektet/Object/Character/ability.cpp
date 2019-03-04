@@ -29,7 +29,7 @@ bool DoubleJump::ExecuteAbility(PlayerCharacter& in_player) {
 	//Otherwise, set player velocity towards positive y
 	//to half their normal jump speed
 	glm::vec3 new_velocity = in_player.GetVelocityVec();
-	new_velocity.y = in_player.jump_speed_ / 2;
+	new_velocity.y = in_player.jump_speed_;
 	in_player.SetVelocityVec(new_velocity);
 
 	//Then set double jump to unavailable
