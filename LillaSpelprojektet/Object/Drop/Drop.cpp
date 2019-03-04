@@ -76,8 +76,9 @@ AtkUpDrop::~AtkUpDrop() {}
 //---------------------------------------------------------
 //Private
 bool KeyDrop::TriggerEvent(PlayerCharacter& in_player) {
-	//Increase the player's attack power, return true is successful
-	return in_player.SetKeyStatus(this->key_);
+	//Giving the playr a key, then return true
+	in_player.IncreaseKeys();
+	return true;
 }
 
 //Public

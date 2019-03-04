@@ -3,7 +3,7 @@
 //Private--------------------------------------------------
 
 //Public---------------------------------------------------
-NPC::NPC(glm::vec3 start_pos, ObjectID id) : Character(start_pos, id) {
+NPC::NPC(glm::vec3 start_pos, ObjectID id) : Character(start_pos, id, NPC_START_HP, NPC_START_ATK) {
 	
 }
 

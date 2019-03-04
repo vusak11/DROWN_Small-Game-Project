@@ -130,10 +130,6 @@ void ObjectHandler::ResolvePlayerPickUp(std::vector<ObjectClass*>& in_relevant_d
 		//Then remove the entry from the list of relevant drops
 		in_relevant_drops_ptr_vector.erase(in_relevant_drops_ptr_vector.begin() + index);
 	}
-
-	std::cout << "All Drops Vector:	" << this->drop_ptr_vector_.size() << std::endl;
-	std::cout << "Relevant Drops Vector:	" << in_relevant_drops_ptr_vector.size() << std::endl;
-
 }
 
 void ObjectHandler::ProcessNPCs(const float& in_deltatime, std::vector<ObjectClass*>& in_npcs_ptr_vector) {
@@ -342,6 +338,7 @@ PlayerInfoPackage ObjectHandler::RetrievePlayerInfoPackage() {
 	ret_info.current_hp = this->player_ptr_->GetCurrentHealth();
 	ret_info.ability_id = this->player_ptr_->GetAbilityID();
 	ret_info.weapon_id = this->player_ptr_->GetWeaponID();
+	ret_info.num_of_keys = this->player_ptr_->GetNumOfKeys();
 
 	return ret_info;
 }

@@ -16,7 +16,6 @@ protected:
 	int max_health_;
 	int current_health_;
 	int attack_power_;
-	bool has_key_ = false;
 	//
 	int looking_towards_x_;
 
@@ -28,7 +27,7 @@ protected:
 	*/
 
 public:
-	Character(glm::vec3 start_pos, ObjectID id);
+	Character(glm::vec3 start_pos, ObjectID id, int start_hp, int start_atk);
 	~Character();
 
 	//Character Stat Stuff------------------------------------
@@ -46,7 +45,7 @@ public:
 	
 	bool IncreaseMaxHealth(int in_hp);	//Returns	true if operation was allowed
 	bool IncreaseAttack(int in_atk);	//			false if operation failed
-	bool SetKeyStatus(bool in_key);
+
 	//Character Movement Stuff-----------------------------
 	void TurnLeft(const float& in_deltatime);
 	void TurnRight(const float& in_deltatime);

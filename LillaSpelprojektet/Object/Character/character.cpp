@@ -1,8 +1,12 @@
 #include "character.h"
 
-Character::Character(glm::vec3 start_pos, ObjectID id) : ObjectClass(start_pos, id){
+Character::Character(glm::vec3 start_pos, ObjectID id, int start_hp, int start_atk)
+	: ObjectClass(start_pos, id){
 
-	//Set stats using ID
+	this->max_health_ = start_hp;
+	this->current_health_ = this->max_health_;
+
+	this->attack_power_ = start_atk;
 
 }
 
@@ -110,15 +114,6 @@ bool Character::IncreaseAttack(int in_atk) {
 
 	return true;
 }
-
-bool Character::SetKeyStatus(bool in_key) {
-	//If the in parameter is positive, set has_key variable to true
-	if (in_key) {
-		this->has_key_ = true;
-	}
-	return this->has_key_;
-}
-
 
 void Character::TurnLeft(const float& in_deltatime) {
 	//Turn the model leftwards (negative direction) with adjustment for deltatime

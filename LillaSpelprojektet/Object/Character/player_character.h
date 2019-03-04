@@ -27,6 +27,8 @@ private:
 	Ability* ability_ptr_;
 	Weapon weapon_;
 
+	int num_of_keys_;
+
 	//friend bool Ability::ExecuteAbility(PlayerCharacter&);
 	friend bool DoubleJump::ExecuteAbility(PlayerCharacter& in_player);
 	friend bool Dash::ExecuteAbility(PlayerCharacter& in_player);
@@ -39,6 +41,7 @@ public:
 
 	AbilityID GetAbilityID() const;
 	WeaponID GetWeaponID() const;
+	int GetNumOfKeys() const;
 
 	void MoveLeft();
 	void MoveRight();
@@ -49,6 +52,7 @@ public:
 	void UpdateStatus(const float& in_deltatime);		//Updates time related stuff
 														//e.g. cooldown on abilities
 														//or attack windows
+	void IncreaseKeys();
 
 };
 

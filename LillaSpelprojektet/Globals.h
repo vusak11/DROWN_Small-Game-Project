@@ -37,7 +37,7 @@
 #define PLAYER_MOVE_ACCELERATION (PLAYER_MOVE_VELOCITY/5) //Player accelerates 1/X of its speed per timeunit
 #define PLAYER_JUMP_VELOCITY 150
 #define PLAYER_START_HP 100
-#define PLAYER_START_ATK 100
+#define PLAYER_START_ATK 10
 
 //Ability Numbers------------------------------------------
 #define DASH_COOLDOWN 1
@@ -47,6 +47,10 @@
 #define DROP_HP_RESTORE 10
 #define DROP_HP_UP 20
 #define DROP_ATK_UP 5
+
+//NPC Numbers----------------------------------------------
+#define NPC_START_HP 20
+#define NPC_START_ATK 5
 
 //Map------------------------------------------------------
 #define GRID_COLUMN 8
@@ -116,6 +120,7 @@ struct PlayerInfoPackage {
 	int current_hp;
 	AbilityID ability_id;
 	WeaponID weapon_id;
+	int num_of_keys;
 };
 
 

@@ -21,15 +21,11 @@ void PlayerCharacter::AlterVelocity() {
 
 
 //Public---------------------------------------------------
-PlayerCharacter::PlayerCharacter(glm::vec3 start_pos) : Character(start_pos, OBJECT_ID_PLAYER) {
+PlayerCharacter::PlayerCharacter(glm::vec3 start_pos)
+	: Character(start_pos, OBJECT_ID_PLAYER, PLAYER_START_HP, PLAYER_START_HP) {
 	this->move_top_speed_ = PLAYER_MOVE_VELOCITY;
 	this->move_acceleration_ = PLAYER_MOVE_ACCELERATION;
 	this->jump_speed_ = PLAYER_JUMP_VELOCITY;
-
-	this->max_health_ = PLAYER_START_HP;
-	this->current_health_ = this->max_health_/2;
-
-	this->attack_power_ = PLAYER_START_ATK;
 	
 	//this->ability_ptr_ = new Ability();
 	//this->ability_ptr_ = new DoubleJump();
@@ -49,6 +45,10 @@ AbilityID PlayerCharacter::GetAbilityID() const {
 WeaponID PlayerCharacter::GetWeaponID() const {
 	//WIP
 	return this->weapon_.id;
+}
+
+int PlayerCharacter::GetNumOfKeys() const {
+	return this->num_of_keys_;
 }
 
 void PlayerCharacter::MoveLeft() {
@@ -116,4 +116,9 @@ void PlayerCharacter::UpdateStatus(const float& in_deltatime) {
 		//If it is, update its cooldown
 		cd_class_ptr->UpdateCooldown(in_deltatime);
 	}
+}
+
+void PlayerCharacter::IncreaseKeys() {
+	//Increase keys by one
+	this->num_of_keys_++;
 }
