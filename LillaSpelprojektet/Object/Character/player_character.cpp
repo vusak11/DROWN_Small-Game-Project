@@ -30,7 +30,7 @@ PlayerCharacter::PlayerCharacter(glm::vec3 start_pos)
 	//this->ability_ptr_ = new Ability();
 	//this->ability_ptr_ = new DoubleJump();
 	this->ability_ptr_ = new Dash();
-
+	
 	this->weapon_.id = WEAPON_SWORD;
 }
 

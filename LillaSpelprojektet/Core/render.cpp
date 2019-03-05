@@ -38,13 +38,6 @@ Render::Render() {
 
 
 	//--------------------------------------------------------
-	//---------------------Load HUD---------------------------
-	//--------------------------------------------------------
-	hud_.LoadHealthBarTexture((char*)"../Resources/GUI/healthbar.png");
-	hud_.LoadQuickSlotTexture((char*)"../Resources/GUI/quickslot.png");
-	
-
-	//--------------------------------------------------------
 	//---------------Load Models to Array---------------------
 	//--------------------------------------------------------
 	//Make space for 1 model per ObjectID
@@ -107,9 +100,9 @@ void Render::UpdateRender(
 	std::vector<ObjectPackage>& object_vector,
 	PlayerInfoPackage player_data) {
 
+	//SET UP FOR 3D
 	glDisable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
-	//SET UP FOR 3D
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -128,6 +121,8 @@ void Render::UpdateRender(
 	glLoadIdentity();
 	glMatrixMode(GL_PROJECTION);
 	glDisable(GL_DEPTH_TEST);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glLoadIdentity();
 
 	hud_.RenderGUI(gui_shaders_, player_data);
@@ -249,7 +244,7 @@ void Render::RenderQuad() {
 			-1.0f,  1.0f, 0.0f, 0.0f, 1.0f,
 			-1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
 			 1.0f,  1.0f, 0.0f, 1.0f, 1.0f,
-			 1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
+			 1.0f, -1.0f, 0.0f, 1.0f, 0.0f
 		};
 		// Setup plane VAO
 		glGenVertexArrays(1, &quad_vertex_array_object_);
