@@ -151,6 +151,11 @@ void ObjectHandler::DetermineNPCAction(const float& in_deltatime, NPC* in_npc) {
 
 	//TEMP
 	in_npc->ExecuteAI(in_deltatime, player_ptr_->GetPosition());
+	if (in_npc->CheckCollision(player_ptr_->GetPoints())) {
+		player_ptr_->SetCurrentHealth(player_ptr_->GetCurrentHealth() - 1);
+	}
+	
+	std::cout << player_ptr_->GetCurrentHealth() << std::endl;
 	//TEMP
 
 }
