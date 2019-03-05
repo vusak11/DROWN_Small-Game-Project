@@ -186,7 +186,8 @@ void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map
 	this->player_ptr_->SetScale(2.0f);
 
 	// Create an NPC
-	for (int i = 0; i < 10; i++)
+	float nr_of_runners = GlobalSettings::Access()->ValueOf("NR_OF_NPC_RUNNER");
+	for (int i = 0; i < nr_of_runners; i++)
 	{
 		this->npc_ptr_vector_.push_back(new NPCRunner(
 			glm::vec3(
