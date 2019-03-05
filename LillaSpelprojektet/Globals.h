@@ -91,7 +91,9 @@ enum AbilityID {
 };
 
 enum WeaponID {
-	WEAPON_SWORD
+	WEAPON_NONE,
+	WEAPON_SWORD,
+	WEAPON_AXE
 };
 
 //States---------------------------------------------------
