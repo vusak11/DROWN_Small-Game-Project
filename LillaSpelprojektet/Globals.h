@@ -48,7 +48,7 @@
 #define DROP_ATK_UP 5
 #define DROP_NUM_OF_KEYS 1
 #define DROP_BOSS_DOOR_DESTINATION_X 90.0
-#define DROP_BOSS_DOOR_DESTINATION_Y -1250.0
+#define DROP_BOSS_DOOR_DESTINATION_Y 90.0
 #define DROP_BOSS_DOOR_DESTINATION_Z 0.0
 
 //NPC Numbers----------------------------------------------
@@ -84,6 +84,7 @@ enum ObjectID {
 	OBJECT_ID_DROP_SWORD,		
 	OBJECT_ID_DROP_AXE,
 	OBJECT_ID_DROP_KEY,
+	OBJECT_ID_DROP_DOOR,
 	NUMBER_OF_OBJECT_IDS		//:The Last Enum
 };
 

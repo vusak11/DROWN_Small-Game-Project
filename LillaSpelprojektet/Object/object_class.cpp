@@ -148,12 +148,6 @@ glm::vec3 ObjectClass::GetVelocityVec() const {
 	return this->velocity_vec_;
 }
 
-/*
-glm::vec3 ObjectClass::GetAccelerationVec() const {
-	return this->acceleration_vec_;
-}
-*/
-
 glm::mat4 ObjectClass::RetrieveModelMatrix() {
 	//If the model matrix is not up to date call the function calculating it
 	if (!this->model_matrix_up_to_date_) {

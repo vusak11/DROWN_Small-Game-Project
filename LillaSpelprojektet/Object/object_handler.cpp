@@ -159,6 +159,7 @@ void ObjectHandler::ProcessDrops(const float& in_deltatime, std::vector<ObjectCl
 	//For every entry, turn it into a Drop pointer
 	//and then call the Rotate function
 	Drop* drop_ptr = NULL;
+
 	for (unsigned int i = 0; i < in_drops_ptr_vector.size(); i++) {
 		//Do dynamic cast
 		drop_ptr = dynamic_cast<Drop*>(in_drops_ptr_vector.at(i));
@@ -168,6 +169,8 @@ void ObjectHandler::ProcessDrops(const float& in_deltatime, std::vector<ObjectCl
 			drop_ptr->SpinDrop(in_deltatime);
 		}
 	}
+	
+
 }
 
 void ObjectHandler::ClearPlayerInput() {
@@ -241,6 +244,10 @@ void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map
 	drop_pos.x -= 10.0f;
 	this->drop_ptr_vector_.push_back(new KeyDrop(drop_pos));
 	this->drop_ptr_vector_.back()->SetScale(3.0f);
+
+	//drop_pos.x -= 10.0f;
+	//this->drop_ptr_vector_.push_back(new BossDoor(drop_pos));
+	//this->drop_ptr_vector_.back()->SetScale(5.0f);
 	//TEMP
 
 	this->physics_engine_ptr_ = new PhysicsEngine(map_height_list);
@@ -302,7 +309,7 @@ std::vector<ObjectPackage> ObjectHandler::UpdateAndRetrieve(float in_deltatime) 
 	this->ProcessNPCs(in_deltatime, relevant_npcs_ptr_vector);
 
 	//Go through all relevant drops and call their behaviour functions
-	this->ProcessDrops(in_deltatime, relevant_drops_ptr_vector);
+	//this->ProcessDrops(in_deltatime, relevant_drops_ptr_vector);
 
 	//WIP----
 

@@ -36,7 +36,6 @@ private:
 
 	//Physics
 	glm::vec3 velocity_vec_;
-	//glm::vec3 acceleration_vec_;
 
 	//Functions----------------------------------------------
 	void CalculateModelMatrix();	//Function calculates model matrix from scratch
@@ -67,22 +66,18 @@ public:
 	//Physics
 	void SetVelocity(float in_velocity);					//Set current velocity to in-parameter (does not change direction)
 	void SetVelocityVec(glm::vec3 in_velocity_vec);			//Set current velocity and movement direction to match in-parameter
-	//void SetAccelerationVec(glm::vec3 in_acceleration_vec);	//Set current acceleration to in-parameter
 
 	//Get Functions----------------------------------------
 	ObjectID GetObjectID() const;
-	//HitBox GetHitBox() const;					//Returns the hitbox points of the object
 	glm::vec3 GetPosition() const;				//Returns the object's x, y and z coordinates
 	glm::vec3 GetScale() const;					//Returns the object's x, y and z scale variables
 	float GetVelocity() const;					//Returns a float with the opject's velocity
 	glm::vec3 GetVelocityVec() const;			//Returns a vec3 with the object's velocity vector
-	//glm::vec3 GetAccelerationVec() const;		//Returns a vec3 with the object's acceleration vector 
 	glm::mat4 RetrieveModelMatrix();			//NTS: Should check if model matrix is up to date before returning, and update it if it isn't
 
 	//Other Functions--------------------------------------
 	bool IsAirborne();
 	virtual void SetAirborne(bool in_bool);
-	//virtual bool CheckCollision(const BoxPoints& in_box);
 
 
 };

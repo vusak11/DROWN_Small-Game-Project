@@ -25,6 +25,7 @@ void Drop::SpinDrop(const float& in_deltatime) {
 	float new_rotation = this->rotation_around_y_ + turn_radians;
 
 	this->SetRotation(this->rotation_around_x_, new_rotation, this->rotation_around_z_);
+	//this->SetRotation(new_rotation, new_rotation, new_rotation);
 }
 
 //---------------------------------------------------------
@@ -119,7 +120,7 @@ bool BossDoor::TriggerEvent(PlayerCharacter& in_player) {
 
 //Public
 BossDoor::BossDoor(glm::vec3 creation_pos)
-	: Drop(creation_pos, OBJECT_ID_DROP_KEY) {
+	: Drop(creation_pos, OBJECT_ID_DROP_DOOR) {
 
 	this->keys_required_ = DROP_NUM_OF_KEYS;
 
