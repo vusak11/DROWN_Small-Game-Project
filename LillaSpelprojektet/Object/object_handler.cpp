@@ -185,16 +185,7 @@ void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map
 	);
 	this->player_ptr_->SetScale(2.0f);
 
-	//TEMP: Create an NPC
-	/*this->npc_ptr_vector_.push_back(new NPC(
-		glm::vec3(
-		GlobalSettings::Access()->ValueOf("PLAYER_START_POS_X") + 130,
-		GlobalSettings::Access()->ValueOf("PLAYER_START_POS_Y"),
-		GlobalSettings::Access()->ValueOf("PLAYER_START_POS_Z")
-	),
-	OBJECT_ID_PLACEHOLDER
-	));*/
-
+	// Create an NPC
 	for (int i = 0; i < 10; i++)
 	{
 		this->npc_ptr_vector_.push_back(new NPCRunner(

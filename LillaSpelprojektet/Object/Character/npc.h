@@ -15,9 +15,6 @@ protected:
 	NPC_STATE state_;
 private:
 	
-	//float TEMP_CD_ = 0.0f;
-	//float TEMP_ROT = 0.0;
-
 public:
 	NPC(glm::vec3 start_pos, ObjectID id = OBJECT_ID_DUMMY);
 	~NPC();

@@ -8,16 +8,23 @@ NPCRunner::NPCRunner(glm::vec3 start_pos, ObjectID id) : NPC(start_pos, id) {
 	aggro_range_ = GlobalSettings::Access()->ValueOf("NPC_AGGRO_RANGE");
 }
 
+NPCRunner::~NPCRunner() {
+}
+
 void NPCRunner::ExecuteAI(float in_deltatime, glm::vec3 in_player_pos)
 {
-	glm::vec3 pos = GetPosition();
-	glm::vec3 v = GetVelocityVec();
+	glm::vec3 temp_position = GetPosition();
+	glm::vec3 temp_velocity = GetVelocityVec();
+
+	float idle_speed = GlobalSettings::Access()->ValueOf("NPC_RUNNER_IDLE_SPEED");
+	float aggro_speed = GlobalSettings::Access()->ValueOf("NPC_RUNNER_AGGRO_SPEED");
+	float jump_velocity = GlobalSettings::Access()->ValueOf("NPC_RUNNER_JUMP_VELOCITY");
 
 	static float private_time = 0.0f;
 
 
-	float length_to_player_x = (in_player_pos.x - pos.x);
-	float length_to_player_y = (in_player_pos.y - pos.y);
+	float length_to_player_x = (in_player_pos.x - temp_position.x);
+	float length_to_player_y = (in_player_pos.y - temp_position.y);
 	if (abs(length_to_player_x) < aggro_range_ && abs(length_to_player_y) < aggro_range_)
 	{
 		state_ = NPC_STATE_AGGRO;
@@ -46,10 +53,10 @@ void NPCRunner::ExecuteAI(float in_deltatime, glm::vec3 in_player_pos)
 		switch (next_move_index_)
 		{
 		case 1:
-			SetVelocityVec({ 1000.0f * in_deltatime ,v.y , v.z });
+			SetVelocityVec({ idle_speed * in_deltatime ,temp_velocity.y , temp_velocity.z });
 			break;
 		case 2:
-			SetVelocityVec({ -1000.0f * in_deltatime ,v.y , v.z });
+			SetVelocityVec({ -idle_speed * in_deltatime ,temp_velocity.y , temp_velocity.z });
 			break;
 		default:
 			break;
@@ -57,20 +64,20 @@ void NPCRunner::ExecuteAI(float in_deltatime, glm::vec3 in_player_pos)
 	} // if Idle
 	else if (state_ == NPC_STATE_AGGRO)
 	{
-		if (in_player_pos.x < pos.x)
+		if (in_player_pos.x < temp_position.x)
 		{
-			SetVelocityVec({ -2500.0f * in_deltatime ,v.y , v.z });
+			SetVelocityVec({ -aggro_speed * in_deltatime ,temp_velocity.y , temp_velocity.z });
 		}
-		else if (in_player_pos.x > pos.x)
+		else if (in_player_pos.x > temp_position.x)
 		{
-			SetVelocityVec({ 2500.0f * in_deltatime ,v.y , v.z });
+			SetVelocityVec({ aggro_speed * in_deltatime ,temp_velocity.y , temp_velocity.z });
 		}
 
-		v = GetVelocityVec();
+		temp_velocity = GetVelocityVec();
 
-		if (in_player_pos.y - pos.y > 10 && !IsAirborne())
+		if (in_player_pos.y - temp_position.y > 10 && !IsAirborne())
 		{
-			SetVelocityVec({ v.x , 100.0f , v.z });
+			SetVelocityVec({ temp_velocity.x , jump_velocity , temp_velocity.z });
 			SetAirborne(true);
 		}
 	}

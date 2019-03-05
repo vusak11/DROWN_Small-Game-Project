@@ -1,7 +1,6 @@
 #include "ability.h"
 #include "player_character.h"	//Follow through on forward declaraction
 
-//#include <iostream>			//TEMP
 
 Ability::Ability() {
 	this->id_ = ABILITY_NONE;
