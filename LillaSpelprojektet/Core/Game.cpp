@@ -135,11 +135,6 @@ void Game::InputForGameState(const sf::Event& in_event) {
 		if (in_event.key.code == sf::Keyboard::E) {
 			this->obj_handler_ptr_->PlayerUseAbility();
 		}
-		//Temporary teleport to boss room (OBS! need to connect with interaction)
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::L)) {
-			this->obj_handler_ptr_->PlayerTeleport();
-
-		}
 		/*---------------End Keyboard inputs-----------------*/
 
 		//Attack

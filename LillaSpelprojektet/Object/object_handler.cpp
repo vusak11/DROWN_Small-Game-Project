@@ -155,6 +155,21 @@ void ObjectHandler::DetermineNPCAction(const float& in_deltatime, NPC* in_npc) {
 
 }
 
+void ObjectHandler::ProcessDrops(const float& in_deltatime, std::vector<ObjectClass*>& in_drops_ptr_vector) {
+	//For every entry, turn it into a Drop pointer
+	//and then call the Rotate function
+	Drop* drop_ptr = NULL;
+	for (unsigned int i = 0; i < in_drops_ptr_vector.size(); i++) {
+		//Do dynamic cast
+		drop_ptr = dynamic_cast<Drop*>(in_drops_ptr_vector.at(i));
+
+		//If it succeded, call the rotate function
+		if (drop_ptr != NULL) {
+			drop_ptr->SpinDrop(in_deltatime);
+		}
+	}
+}
+
 void ObjectHandler::ClearPlayerInput() {
 	this->player_input_.left = false;
 	this->player_input_.right = false;
@@ -263,10 +278,6 @@ void ObjectHandler::PlayerPickUp() {
 	this->player_input_.pick_up = true;
 }
 
-void ObjectHandler::PlayerTeleport() { // TEMPORARY !!!
-	this->player_ptr_->SetPosition(90.0f, -1250.0f, 0.0f);
-}
-
 std::vector<ObjectPackage> ObjectHandler::UpdateAndRetrieve(float in_deltatime) {
 
 	
@@ -290,6 +301,8 @@ std::vector<ObjectPackage> ObjectHandler::UpdateAndRetrieve(float in_deltatime) 
 	//Go through all relevant NPCs and call their AI functions
 	this->ProcessNPCs(in_deltatime, relevant_npcs_ptr_vector);
 
+	//Go through all relevant drops and call their behaviour functions
+	this->ProcessDrops(in_deltatime, relevant_drops_ptr_vector);
 
 	//WIP----
 

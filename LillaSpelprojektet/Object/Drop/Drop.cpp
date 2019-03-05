@@ -19,6 +19,14 @@ bool Drop::CheckCollision(PlayerCharacter& in_player) {
 	return this->TriggerEvent(in_player);
 }
 
+void Drop::SpinDrop(const float& in_deltatime) {
+	//Turn the model rightwards (positive direction) with adjustment for deltatime
+	float turn_radians = this->turn_rate_radians_*in_deltatime*0.2f;
+	float new_rotation = this->rotation_around_y_ + turn_radians;
+
+	this->SetRotation(this->rotation_around_x_, new_rotation, this->rotation_around_z_);
+}
+
 //---------------------------------------------------------
 //Private
 bool HPRestoreDrop::TriggerEvent(PlayerCharacter& in_player) {
@@ -85,7 +93,40 @@ bool KeyDrop::TriggerEvent(PlayerCharacter& in_player) {
 KeyDrop::KeyDrop(glm::vec3 creation_pos)
 	: Drop(creation_pos, OBJECT_ID_DROP_KEY) {
 	//this->attack_ = GlobalSettings::Access()->ValueOf("DROP_ATK_UP");
-	this->key_ = true;
 }
 
 KeyDrop::~KeyDrop() {}
+
+//---------------------------------------------------------
+//Private
+bool BossDoor::TriggerEvent(PlayerCharacter& in_player) {
+	//Check if player has enough keys
+	if (in_player.GetNumOfKeys() >= this->keys_required_) {
+		//If so, move player to boss-room
+		in_player.SetPosition(
+			DROP_BOSS_DOOR_DESTINATION_X,
+			DROP_BOSS_DOOR_DESTINATION_Y,
+			DROP_BOSS_DOOR_DESTINATION_Z
+		);
+
+		//Then return true
+		return true;
+	}
+
+	//If not, return false
+	return false;
+}
+
+//Public
+BossDoor::BossDoor(glm::vec3 creation_pos)
+	: Drop(creation_pos, OBJECT_ID_DROP_KEY) {
+
+	this->keys_required_ = DROP_NUM_OF_KEYS;
+
+}
+
+BossDoor::~BossDoor() {}
+
+void BossDoor::SpinDrop(const float& in_deltatime) {
+	//Empty as the boss-door shouldn't rotate
+}

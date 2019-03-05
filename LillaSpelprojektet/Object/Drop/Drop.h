@@ -19,6 +19,8 @@ public:
 	~Drop();
 
 	bool CheckCollision(PlayerCharacter& in_player);
+
+	virtual void SpinDrop(const float& in_deltatime);
 };
 
 //---------------------------------------------------------
@@ -66,13 +68,26 @@ public:
 
 class KeyDrop : public Drop {
 private:
-	bool key_;
-
 	bool TriggerEvent(PlayerCharacter& in_player);
 
 public:
 	KeyDrop(glm::vec3 creation_pos);
 	~KeyDrop();
+};
+
+//---------------------------------------------------------
+
+class BossDoor : public Drop {
+private:
+	int keys_required_;
+
+	bool TriggerEvent(PlayerCharacter& in_player);
+
+public:
+	BossDoor(glm::vec3 creation_pos);
+	~BossDoor();
+
+	void SpinDrop(const float& in_deltatime);
 };
 
 

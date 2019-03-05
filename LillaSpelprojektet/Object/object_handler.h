@@ -57,12 +57,14 @@ private:
 	void ResolvePlayerPickUp(std::vector<ObjectClass*>& in_relevant_drops_ptr_vector);
 	
 	void ProcessNPCs(const float& in_deltatime, std::vector<ObjectClass*>& in_npcs_ptr_vector);	//Call AI functions for NPCs in vector
-	void DetermineNPCAction(const float& in_deltatime, NPC* in_npc);					//Call the AI of the npc object to see what the npc does, then determine legal actions
+	void DetermineNPCAction(const float& in_deltatime, NPC* in_npc);							//Call the AI of the npc object to see what the npc does, then determine legal actions
 
-	
+	void ProcessDrops(const float& in_deltatime, std::vector<ObjectClass*>& in_drops_ptr_vector);	//Rotate drops
+
+	/*
 	void ResolveNPCAction(ObjectClass* in_npc);			//Move npc, apply hitboxes, etc.
-
 	void ResolveDropBehaviour(ObjectClass* in_drop);	//Rotates drop, counts towards its despawn, etc.
+	*/
 
 	void ClearPlayerInput();							//Sets all values in player_input_ to false. Should be called at the end of each Update()
 
@@ -86,7 +88,6 @@ public:
 	void PlayerAttack();
 	void PlayerUseAbility();
 	void PlayerPickUp();
-	void PlayerTeleport();
 
 	//Called once per loop to update object positions
 	//	- Read player inputs and determine effects
@@ -97,7 +98,6 @@ public:
 
 	PlayerInfoPackage RetrievePlayerInfoPackage();
 
-	glm::vec3 GetPlayerPos();
 	bool PlayerInBossRoom();
 	//Test functions------------------------------------------
 	void TestObjectHandler();

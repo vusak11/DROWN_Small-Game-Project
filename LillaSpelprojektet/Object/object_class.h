@@ -45,7 +45,7 @@ protected:
 	//Metadata
 	ObjectID id_;
 	bool airborne_;
-	//HitBot hitbox_;
+	float turn_rate_radians_;
 
 	//Math
 	float rotation_around_x_;			//The rotation of the object in radians

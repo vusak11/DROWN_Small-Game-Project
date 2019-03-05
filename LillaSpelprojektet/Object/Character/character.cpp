@@ -98,7 +98,6 @@ bool Character::IncreaseMaxHealth(int in_hp) {
 
 	//Otherwise increase stat and return true
 	this->max_health_ += in_hp;
-	this->current_health_ += in_hp;
 
 	return true;
 }
@@ -117,7 +116,7 @@ bool Character::IncreaseAttack(int in_atk) {
 
 void Character::TurnLeft(const float& in_deltatime) {
 	//Turn the model leftwards (negative direction) with adjustment for deltatime
-	float turn_radians = glm::radians((float)OBJECT_TURN_RATE)*in_deltatime;
+	float turn_radians = this->turn_rate_radians_*in_deltatime;
 	float new_rotation = this->rotation_around_y_ - turn_radians;
 
 	//If the new orientation is further than -PI/2 snap it to -PI/2
@@ -130,7 +129,7 @@ void Character::TurnLeft(const float& in_deltatime) {
 
 void Character::TurnRight(const float& in_deltatime) {
 	//Turn the model rightwards (positive direction) with adjustment for deltatime
-	float turn_radians = glm::radians((float)OBJECT_TURN_RATE)*in_deltatime;
+	float turn_radians = this->turn_rate_radians_*in_deltatime;
 	float new_rotation = this->rotation_around_y_ + turn_radians;
 
 	//If the new orientation is further than PI/2 snap it to PI/2
