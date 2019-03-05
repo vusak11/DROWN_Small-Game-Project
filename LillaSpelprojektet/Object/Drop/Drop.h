@@ -3,8 +3,7 @@
 
 #include "../object_class.h"
 #include "../Character/player_character.h"
-#include "../../Globals.h"
-//#include "../../global_settings.h"
+#include "../../global_settings.h"
 
 //---------------------------------------------------------
 //-----------------ABSTRACT-BASE-CLASS---------------------

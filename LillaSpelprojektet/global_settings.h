@@ -10,31 +10,45 @@
 //		GlobalSettings::Access()->ValueOf("CAMERA_DEBUG_POSITION_X");
 //   
 
-//NOTE:
+//---------------------------------------------------------
+//------------------------ENUMS----------------------------
+//---------------------------------------------------------
+
+
+//ObjectIDs------------------------------------------------
 //Object ID:s are used to determine what type of object is created
 //and what model is loaded for an object.
 //Anytime a new object or model is added to the game, ensure it is
 //represented by an ObjectID
 enum ObjectID {
-	OBJECT_ID_NULL,				//0:	The Error Model
-	OBJECT_ID_PLACEHOLDER,		//1:
-	OBJECT_ID_DUMMY,			//2:
-	OBJECT_ID_PLAYER,
-	NUMBER_OF_OBJECT_IDS		//N:	The Last Enum
+	OBJECT_ID_NULL,				//:The Error Model
+	OBJECT_ID_PLAYER,			//:Player
+	OBJECT_ID_DUMMY,			//:Start of NPCs
+	OBJECT_ID_DROP_HP_RESTORE,	//:Start of Drops
+	OBJECT_ID_DROP_HP_UP,
+	OBJECT_ID_DROP_ATK_UP,
+	OBJECT_ID_DROP_DASH,
+	OBJECT_ID_DROP_DOUBLE_JUMP,
+	OBJECT_ID_DROP_SWORD,
+	OBJECT_ID_DROP_AXE,
+	OBJECT_ID_DROP_KEY,
+	OBJECT_ID_DROP_DOOR,
+	NUMBER_OF_OBJECT_IDS		//:The Last Enum
 };
 
-//Package Structs------------------------------------------
-struct ObjectPackage {
-	ObjectID id;
-	glm::mat4 model_matrix;
+//Ability & Weapon IDs-------------------------------------
+enum AbilityID {
+	ABILITY_NONE,
+	ABILITY_DOUBLE_JUMP,
+	ABILITY_DASH
 };
 
-struct PlayerInfoPackage {
-	int max_hp;
-	int current_hp;
-	//ability1
-	//ability2
+enum WeaponID {
+	WEAPON_NONE,
+	WEAPON_SWORD,
+	WEAPON_AXE
 };
+
 
 //States---------------------------------------------------
 enum GameState {
@@ -42,7 +56,26 @@ enum GameState {
 	MENU,
 	PAUSE,
 	OPTIONS,
-	DEATH
+	DEATH,
+	QUIT
+};
+
+//---------------------------------------------------------
+//------------------------STRUCTS--------------------------
+//---------------------------------------------------------
+//Package Structs------------------------------------------
+struct ObjectPackage {
+	ObjectID id;
+	glm::mat4 model_matrix;
+};
+
+struct PlayerInfoPackage {
+	glm::vec3 position;
+	int max_hp;
+	int current_hp;
+	AbilityID ability_id;
+	WeaponID weapon_id;
+	int num_of_keys;
 };
 
 

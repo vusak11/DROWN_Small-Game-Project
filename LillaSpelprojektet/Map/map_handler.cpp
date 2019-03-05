@@ -169,7 +169,7 @@ std::vector<std::vector<float>>* MapHandler::GetMapDataPointer()
 	return &test_data_;
 }
 
-std::string MapHandler::GetZone(glm::vec2 zone_central_points) const {
+std::string MapHandler::GetZone(glm::vec2 zone_central_points) {
 	return meta_data_.GetZone(zone_central_points);
 }
 

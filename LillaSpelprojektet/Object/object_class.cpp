@@ -22,7 +22,7 @@ ObjectClass::ObjectClass(glm::vec3 start_pos, ObjectID id) {
 
 	this->position_ = start_pos;	// start_pos;
 
-	this->turn_rate_radians_ = glm::radians((float)OBJECT_TURN_RATE);
+	this->turn_rate_radians_ = glm::radians(GlobalSettings::Access()->ValueOf("OBJECT_TURN_RATE"));
 
 	this->velocity_vec_ = { 0.0f,0.0f,0.0f };		// Not ilizializing this makes weiered start values.
 	this->scale_ = glm::vec3(1.0f, 1.0f, 1.0f);
@@ -163,5 +163,4 @@ bool ObjectClass::IsAirborne() {
 
 void ObjectClass::SetAirborne(bool in_bool) {
 	this->airborne_ = in_bool;
-}
 }

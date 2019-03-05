@@ -218,15 +218,16 @@ ObjectHandler::~ObjectHandler() {
 void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map_height_list, std::vector<glm::vec2> door_key_position) {
 
 	//Create player
-	//GlobalSettings::Access()->ValueOf("PLAYER_TOP_SPEED");
-	this->player_ptr_ = new PlayerCharacter(
-		glm::vec3(
-			GlobalSettings::Access()->ValueOf("PLAYER_START_POS_X"),
-			GlobalSettings::Access()->ValueOf("PLAYER_START_POS_Y"), 
-			GlobalSettings::Access()->ValueOf("PLAYER_START_POS_Z")
-		)
+	glm::vec3 player_pos = glm::vec3(
+		GlobalSettings::Access()->ValueOf("PLAYER_START_POS_X"),
+		GlobalSettings::Access()->ValueOf("PLAYER_START_POS_Y"),
+		GlobalSettings::Access()->ValueOf("PLAYER_START_POS_Z")
 	);
+	this->player_ptr_ = new PlayerCharacter(player_pos);
+
 	this->player_ptr_->SetScale(2.0f);
+
+	//TEMP---
 
 	// Create an NPC
 	float nr_of_runners = GlobalSettings::Access()->ValueOf("NR_OF_NPC_RUNNER");
@@ -237,25 +238,35 @@ void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map
 				GlobalSettings::Access()->ValueOf("PLAYER_START_POS_X") + 10 * i,
 				GlobalSettings::Access()->ValueOf("PLAYER_START_POS_Y"),
 				GlobalSettings::Access()->ValueOf("PLAYER_START_POS_Z")
-			),
-			OBJECT_ID_PLACEHOLDER
+			)
 		));
 	}
-	this->npc_ptr_vector_.at(0)->SetScale(3.0f);
-	//TEMP
+	//this->npc_ptr_vector_.at(0)->SetScale(3.0f);
+	
 	//glm::vec3 npc_pos = PLAYER_START_POS;
 	//npc_pos.x -= 70.0f;
 	//this->npc_ptr_vector_.push_back(new NPC(npc_pos));
 	//this->npc_ptr_vector_.at(0)->SetScale(3.0f);
 
-	//glm::vec3 drop_pos = PLAYER_START_POS;
-	//
-	//drop_pos.x -= 10.0f;
-	//this->drop_ptr_vector_.push_back(new HPRestoreDrop(drop_pos));
-	//this->drop_ptr_vector_.back()->SetScale(3.0f);
+	glm::vec3 drop_pos = player_pos;
 	
+	drop_pos.x += 10.0f;
+	this->drop_ptr_vector_.push_back(new KeyDrop(drop_pos));
+	this->drop_ptr_vector_.back()->SetScale(3.0f);
+
+	drop_pos.x += 10.0f;
+	this->drop_ptr_vector_.push_back(new KeyDrop(drop_pos));
+	this->drop_ptr_vector_.back()->SetScale(3.0f);
+
+	drop_pos.x += 10.0f;
+	this->drop_ptr_vector_.push_back(new KeyDrop(drop_pos));
+	this->drop_ptr_vector_.back()->SetScale(3.0f);
+
+	drop_pos.x += 10.0f;
+	this->drop_ptr_vector_.push_back(new BossDoor(drop_pos));
+	this->drop_ptr_vector_.back()->SetScale(3.0f);
 	
-	//TEMP
+	//TEMP---
 
 	this->physics_engine_ptr_ = new PhysicsEngine(map_height_list);
 

@@ -3,7 +3,7 @@
 
 //#include "player_character.h"
 #include "cooldown_class.h"
-#include "../../Globals.h"
+#include "../../global_settings.h"
 
 
 //Forward declaration

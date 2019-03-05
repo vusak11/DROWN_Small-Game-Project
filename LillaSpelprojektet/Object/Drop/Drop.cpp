@@ -21,7 +21,7 @@ bool Drop::CheckCollision(PlayerCharacter& in_player) {
 
 void Drop::SpinDrop(const float& in_deltatime) {
 	//Turn the model rightwards (positive direction) with adjustment for deltatime
-	float turn_radians = this->turn_rate_radians_*in_deltatime*0.2f;
+	float turn_radians = this->turn_rate_radians_*in_deltatime*0.1f;
 	float new_rotation = this->rotation_around_y_ + turn_radians;
 
 	this->SetRotation(this->rotation_around_x_, new_rotation, this->rotation_around_z_);
@@ -44,8 +44,7 @@ bool HPRestoreDrop::TriggerEvent(PlayerCharacter& in_player) {
 //Public
 HPRestoreDrop::HPRestoreDrop(glm::vec3 creation_pos)
 	: Drop(creation_pos, OBJECT_ID_DROP_HP_RESTORE) {
-	//this->health_ = GlobalSettings::Access()->ValueOf("DROP_HP_RESTORE");
-	this->health_ = DROP_HP_RESTORE;
+	this->health_ = GlobalSettings::Access()->ValueOf("DROP_HP_RESTORE");
 }
 
 HPRestoreDrop::~HPRestoreDrop() {}
@@ -60,8 +59,7 @@ bool HPUpDrop::TriggerEvent(PlayerCharacter& in_player) {
 //Public
 HPUpDrop::HPUpDrop(glm::vec3 creation_pos)
 	: Drop(creation_pos, OBJECT_ID_DROP_HP_UP) {
-	//this->health_ = GlobalSettings::Access()->ValueOf("DROP_HP_UP");
-	this->health_ = DROP_HP_UP;
+	this->health_ = GlobalSettings::Access()->ValueOf("DROP_HP_UP");
 }
 
 HPUpDrop::~HPUpDrop() {}
@@ -76,8 +74,7 @@ bool AtkUpDrop::TriggerEvent(PlayerCharacter& in_player) {
 //Public
 AtkUpDrop::AtkUpDrop(glm::vec3 creation_pos)
 	: Drop(creation_pos, OBJECT_ID_DROP_ATK_UP) {
-	//this->attack_ = GlobalSettings::Access()->ValueOf("DROP_ATK_UP");
-	this->attack_ = DROP_ATK_UP;
+	this->attack_ = GlobalSettings::Access()->ValueOf("DROP_ATK_UP");
 }
 
 AtkUpDrop::~AtkUpDrop() {}
@@ -93,7 +90,6 @@ bool KeyDrop::TriggerEvent(PlayerCharacter& in_player) {
 //Public
 KeyDrop::KeyDrop(glm::vec3 creation_pos)
 	: Drop(creation_pos, OBJECT_ID_DROP_KEY) {
-	//this->attack_ = GlobalSettings::Access()->ValueOf("DROP_ATK_UP");
 }
 
 KeyDrop::~KeyDrop() {}
@@ -105,9 +101,9 @@ bool BossDoor::TriggerEvent(PlayerCharacter& in_player) {
 	if (in_player.GetNumOfKeys() >= this->keys_required_) {
 		//If so, move player to boss-room
 		in_player.SetPosition(
-			DROP_BOSS_DOOR_DESTINATION_X,
-			DROP_BOSS_DOOR_DESTINATION_Y,
-			DROP_BOSS_DOOR_DESTINATION_Z
+			GlobalSettings::Access()->ValueOf("DROP_BOSS_DOOR_DESTINATION_X"),
+			GlobalSettings::Access()->ValueOf("DROP_BOSS_DOOR_DESTINATION_Y"),
+			GlobalSettings::Access()->ValueOf("DROP_BOSS_DOOR_DESTINATION_Z")
 		);
 
 		//Then return true
@@ -122,7 +118,7 @@ bool BossDoor::TriggerEvent(PlayerCharacter& in_player) {
 BossDoor::BossDoor(glm::vec3 creation_pos)
 	: Drop(creation_pos, OBJECT_ID_DROP_DOOR) {
 
-	this->keys_required_ = DROP_NUM_OF_KEYS;
+	this->keys_required_ = GlobalSettings::Access()->ValueOf("DROP_NUM_OF_KEYS");
 
 }
 
