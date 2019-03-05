@@ -177,3 +177,14 @@ std::vector<glm::vec2> MapHandler::GetLightPositions() const
 {
 	return meta_data_.GetLightPositions();
 }
+
+glm::vec2 MapHandler::GetDoorPosition() const {
+	std::cout << "X: " << meta_data_.GetBossDoorCoords().x
+		<< " Y: " << meta_data_.GetBossDoorCoords().y
+		<< std::endl;
+	return meta_data_.GetBossDoorCoords();
+}
+
+glm::vec2 MapHandler::GetKeyPosition() const {
+	return meta_data_.GetDoorKeyCoords();
+}

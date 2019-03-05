@@ -1,8 +1,12 @@
 #include "character.h"
 
-Character::Character(glm::vec3 start_pos, ObjectID id) : ObjectClass(start_pos, id){
+Character::Character(glm::vec3 start_pos, ObjectID id, int start_hp, int start_atk)
+	: ObjectClass(start_pos, id){
 
-	//Set stats using ID
+	this->max_health_ = start_hp;
+	this->current_health_ = this->max_health_;
+
+	this->attack_power_ = start_atk;
 
 }
 
@@ -49,11 +53,12 @@ int Character::GetAttackPower() const {
 }
 
 int Character::TakeDamage(int in_dmg) {
-	//If the in parameter is negative, return false
-	if (in_dmg< 0) {
-		throw std::invalid_argument(
-			"ERROR::CHARACTER::TAKEDAMAGE::Damage may not be negative"
-		);
+	//If the in parameter is negative, return -1
+	if (in_dmg < 0) {
+		//throw std::invalid_argument(
+		//	"ERROR::CHARACTER::TAKEDAMAGE::Damage may not be negative"
+		//);
+		return -1;
 	}
 
 	this->current_health_ -= in_dmg;
@@ -67,11 +72,12 @@ int Character::TakeDamage(int in_dmg) {
 }
 
 int Character::HealDamage(int in_heal) {
-	//If the in parameter is negative, return false
+	//If the in parameter is negative, return -1
 	if (in_heal < 0) {
-		throw std::invalid_argument(
-			"ERROR::CHARACTER::HEALDAMAGE::Heal may not be negative"
-		);
+		//throw std::invalid_argument(
+		//	"ERROR::CHARACTER::HEALDAMAGE::Heal may not be negative"
+		//);
+		return -1;
 	}
 
 	this->current_health_ += in_heal;
@@ -82,4 +88,54 @@ int Character::HealDamage(int in_heal) {
 	}
 
 	return 0;
+}
+
+bool Character::IncreaseMaxHealth(int in_hp) {
+	//If the in parameter is negative, return false
+	if (in_hp < 0) {
+		return false;
+	}
+
+	//Otherwise increase stat and return true
+	this->max_health_ += in_hp;
+
+	return true;
+}
+
+bool Character::IncreaseAttack(int in_atk) {
+	//If the in parameter is negative, return false
+	if (in_atk < 0) {
+		return false;
+	}
+
+	//Otherwise increase stat and return true
+	this->attack_power_ += in_atk;
+
+	return true;
+}
+
+void Character::TurnLeft(const float& in_deltatime) {
+	//Turn the model leftwards (negative direction) with adjustment for deltatime
+	float turn_radians = this->turn_rate_radians_*in_deltatime;
+	float new_rotation = this->rotation_around_y_ - turn_radians;
+
+	//If the new orientation is further than -PI/2 snap it to -PI/2
+	if (new_rotation < glm::radians(-90.0f)) { new_rotation = glm::radians(-90.0f); }
+
+	//std::cout << "Rot L: " << glm::degrees(new_rotation) << std::endl;
+
+	this->SetRotation(this->rotation_around_x_, new_rotation, this->rotation_around_z_);
+}
+
+void Character::TurnRight(const float& in_deltatime) {
+	//Turn the model rightwards (positive direction) with adjustment for deltatime
+	float turn_radians = this->turn_rate_radians_*in_deltatime;
+	float new_rotation = this->rotation_around_y_ + turn_radians;
+
+	//If the new orientation is further than PI/2 snap it to PI/2
+	if (new_rotation > glm::radians(90.0f)) { new_rotation = glm::radians(90.0f); }
+
+	//std::cout << "Rot R: " << glm::degrees(new_rotation) << std::endl;
+
+	this->SetRotation(this->rotation_around_x_, new_rotation, this->rotation_around_z_);
 }

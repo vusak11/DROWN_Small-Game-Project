@@ -6,11 +6,13 @@
 							//Ref. for how it works: https://en.cppreference.com/w/cpp/utility/functional/function
 
 #include "object_class.h"
+
 #include "Character/character.h"
 #include "Character/player_character.h"
 #include "Character/npc.h"
 #include "Character/NPCs/NPC_runner.h"
 
+#include "Drop/Drop.h"
 
 #include "Physics/physics_engine.h"
 
@@ -50,14 +52,18 @@ private:
 				
 	float DistanceBetween(const ObjectClass* in_object_a, const ObjectClass* in_object_b) const;					//Returns the distance between the two given objects
 
-	void DeterminePlayerAction(const float& in_deltatime);								//Read player_input_ and determine legal actions, such as changes to velocity or if we can attack this frame
+	void DeterminePlayerAction(const float& in_deltatime, std::vector<ObjectClass*>& in_relevant_drops_ptr_vector);								//Read player_input_ and determine legal actions, such as changes to velocity or if we can attack this frame
+	void ResolvePlayerPickUp(std::vector<ObjectClass*>& in_relevant_drops_ptr_vector);
+	
 	void ProcessNPCs(const float& in_deltatime, std::vector<ObjectClass*>& in_npcs_ptr_vector);	//Call AI functions for NPCs in vector
-	void DetermineNPCAction(const float& in_deltatime, NPC* in_npc);					//Call the AI of the npc object to see what the npc does, then determine legal actions
+	void DetermineNPCAction(const float& in_deltatime, NPC* in_npc);							//Call the AI of the npc object to see what the npc does, then determine legal actions
 
-	void ResolvePlayerAction();							//Move player, apply hitboxes, etc.
+	void ProcessDrops(const float& in_deltatime, std::vector<ObjectClass*>& in_drops_ptr_vector);	//Rotate drops
+
+	/*
 	void ResolveNPCAction(ObjectClass* in_npc);			//Move npc, apply hitboxes, etc.
-
 	void ResolveDropBehaviour(ObjectClass* in_drop);	//Rotates drop, counts towards its despawn, etc.
+	*/
 
 	void ClearPlayerInput();							//Sets all values in player_input_ to false. Should be called at the end of each Update()
 
@@ -69,7 +75,9 @@ public:
 	~ObjectHandler();
 
 	// Takes map data to send to physics engine.
-	void InitializeObjectHandler(std::vector<std::vector<float>>* map_height_list);		//Function creates player object, loads in enemies for the zones etc. Call from InitiateGame();
+	void InitializeObjectHandler(
+		std::vector<std::vector<float>>* map_height_list, 
+		std::vector<glm::vec2> door_key_position);		//Function creates player object, loads in enemies for the zones etc. Call from InitiateGame();
 
 	//Functions for controlling the player
 	//Call these functions when pressing buttons
@@ -87,8 +95,9 @@ public:
 	//	- Call physics to determine new positions (<- Should be called at every step when a creature moves instead?)
 	std::vector<ObjectPackage> UpdateAndRetrieve(float in_deltatime);
 
-	glm::vec3 GetPlayerPos();
+	PlayerInfoPackage RetrievePlayerInfoPackage();
 
+	bool PlayerInBossRoom();
 	//Test functions------------------------------------------
 	void TestObjectHandler();
 

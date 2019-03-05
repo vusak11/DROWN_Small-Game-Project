@@ -98,32 +98,32 @@ glm::vec3 PhysicsEngine::CheckCollision(ObjectClass *& in_object_ptr, glm::vec3 
 
 	in_object_ptr->SetAirborne(true);
 
-	HitBox hitbox;
+	Hitbox hitbox;
 	hitbox.UpdateHitbox(object_pos, in_object_ptr->GetScale().x, in_object_ptr->GetScale().y);
 	BoxPoints points = hitbox.GetPoints();
 
 	// Map each hitbox point to a map tile index
-	int x_0_index = points.bottomLeft.x;
-	float stair_adjustment_value_X_0 = points.bottomLeft.x - x_0_index; // This value is used for single point collision
+	int x_0_index = points.bottom_left.x;
+	float stair_adjustment_value_X_0 = points.bottom_left.x - x_0_index; // This value is used for single point collision
 	if (stair_adjustment_value_X_0 > 0.5) {
 		x_0_index++;
 		stair_adjustment_value_X_0 = (1 - stair_adjustment_value_X_0) * (-1);
 	}
 
-	int x_1_index = points.bottomRight.x;
-	float stair_adjustment_value_X_1 = points.bottomRight.x - x_1_index;
+	int x_1_index = points.bottom_right.x;
+	float stair_adjustment_value_X_1 = points.bottom_right.x - x_1_index;
 	if (stair_adjustment_value_X_1 > 0.5) {
 		x_1_index++;
 		stair_adjustment_value_X_1 = (1 - stair_adjustment_value_X_1) * (-1);
 	}
 
-	int y_0_index = points.bottomLeft.y * -1;
-	float stair_adjustment_value_Y_0 = points.bottomLeft.y * -1 - y_0_index;
+	int y_0_index = points.bottom_left.y * -1;
+	float stair_adjustment_value_Y_0 = points.bottom_left.y * -1 - y_0_index;
 	if (stair_adjustment_value_Y_0 > 0.5)
 		y_0_index++;
 
-	int y_1_index = points.TopLeft.y * -1;
-	float stair_adjustment_value_Y_1 = points.TopLeft.y * -1 - y_1_index;
+	int y_1_index = points.top_left.y * -1;
+	float stair_adjustment_value_Y_1 = points.top_left.y * -1 - y_1_index;
 	if (stair_adjustment_value_Y_1 > 0.5)
 		y_1_index++;
 

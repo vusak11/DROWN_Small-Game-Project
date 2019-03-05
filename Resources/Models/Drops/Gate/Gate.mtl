@@ -1,0 +1,13 @@
+# Blender MTL File: 'test.blend'
+# Material Count: 1
+
+newmtl Material
+Ns 47.058824
+Ka 1.000000 1.000000 1.000000
+Kd 0.533333 0.533333 0.533333
+Ks 0.050000 0.050000 0.050000
+Ke 0.120000 0.120000 0.120000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd tex.jpg

@@ -20,20 +20,38 @@ void PlayerCharacter::AlterVelocity() {
 
 
 //Public---------------------------------------------------
-PlayerCharacter::PlayerCharacter(glm::vec3 start_pos) : Character(start_pos, OBJECT_ID_PLAYER) {
-	//GlobalSettings::Access()->ValueOf("PLAYER_TOP_SPEED");
+PlayerCharacter::PlayerCharacter(glm::vec3 start_pos)
+	: Character(start_pos,
+		OBJECT_ID_PLAYER,
+		GlobalSettings::Access()->ValueOf("PLAYER_START_HP"),
+		GlobalSettings::Access()->ValueOf("PLAYER_START_ATK")
+	) {
 	this->move_top_speed_ = GlobalSettings::Access()->ValueOf("PLAYER_MOVE_VELOCITY");
 	this->move_acceleration_ = this->move_top_speed_ / GlobalSettings::Access()->ValueOf("PLAYER_MOVE_ACCELERATION_RATE");
 	this->jump_speed_ = GlobalSettings::Access()->ValueOf("PLAYER_JUMP_VELOCITY");
-
-	this->weapon_.id = SWORD;
+	
 	//this->ability_ptr_ = new Ability();
 	this->ability_ptr_ = new DoubleJump();
 	//this->ability_ptr_ = new Dash();
+	
+	this->weapon_.id = WEAPON_AXE;
 }
 
 PlayerCharacter::~PlayerCharacter() {
 
+}
+
+AbilityID PlayerCharacter::GetAbilityID() const {
+	return this->ability_ptr_->id_;
+}
+
+WeaponID PlayerCharacter::GetWeaponID() const {
+	//WIP
+	return this->weapon_.id;
+}
+
+int PlayerCharacter::GetNumOfKeys() const {
+	return this->num_of_keys_;
 }
 
 void PlayerCharacter::MoveLeft() {
@@ -101,18 +119,9 @@ void PlayerCharacter::UpdateStatus(const float& in_deltatime) {
 		//If it is, update its cooldown
 		cd_class_ptr->UpdateCooldown(in_deltatime);
 	}
+}
 
-	/*
-	//Update ability cooldowns
-	switch (this->ability_ptr_->id_)
-	{
-	case ABILITY_DASH:
-		//WIP:
-		//Create more children an different types of ability types
-		break;
-	default:
-		break;
-	}
-	*/
-
+void PlayerCharacter::IncreaseKeys() {
+	//Increase keys by one
+	this->num_of_keys_++;
 }

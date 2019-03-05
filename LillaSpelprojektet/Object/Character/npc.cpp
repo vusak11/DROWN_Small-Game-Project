@@ -3,7 +3,8 @@
 //Private--------------------------------------------------
 
 //Public---------------------------------------------------
-NPC::NPC(glm::vec3 start_pos, ObjectID id) : Character(start_pos, id) {
+NPC::NPC(glm::vec3 start_pos, ObjectID id, int start_hp, int start_atk)
+	: Character(start_pos, id, start_hp, start_atk) {
 	state_ = NPC_STATE_IDLE;
 }
 

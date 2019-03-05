@@ -14,7 +14,15 @@
 class GUI {
 private:
 	GLuint health_bar_texture_;
+	GLuint key_texture_;
 	GLuint quick_slot_texture_;
+	GLuint quick_slot_sword_texture_;
+	GLuint quick_slot_axe_texture_;
+	GLuint quick_slot_dash_texture_;
+	GLuint quick_slot_dbljump_texture_;
+
+	GLuint current_slot_1_;
+	GLuint current_slot_2_;
 
 	int health_bar_length_;
 
@@ -27,12 +35,11 @@ public:
 	void Initiliaze();
 
 	void RenderHealthBar();
-	void RenderSkillSlots(float xpos, float ypos, float offset);
+	void RenderGUIObject(float xpos, float ypos, float offset, GLuint slot_texture);
 
 	void RenderGUI(ShaderHandler* shader_program, PlayerInfoPackage player_data);
 
-	void LoadHealthBarTexture(char* texture_name);
-	void LoadQuickSlotTexture(char* texture_name);
+	void LoadTexture(char* texture_name, GLuint &texture_variable);
 	void updateHUD(PlayerInfoPackage player_data);
 };
 

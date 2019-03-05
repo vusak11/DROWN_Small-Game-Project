@@ -2,7 +2,13 @@
 #include <stdlib.h>  	//Has abs()
 #include <iostream> // just for debug
 
-NPCRunner::NPCRunner(glm::vec3 start_pos, ObjectID id) : NPC(start_pos, id) {
+NPCRunner::NPCRunner(glm::vec3 start_pos)
+	: NPC(
+		start_pos, 
+		OBJECT_ID_DUMMY,
+		GlobalSettings::Access()->ValueOf("NPC_RUNNER_START_HP"),
+		GlobalSettings::Access()->ValueOf("NPC_RUNNER_START_ATK")
+	) {
 	time_to_next_move_ = 0.0f;
 	next_move_index_ = 0;
 	aggro_range_ = GlobalSettings::Access()->ValueOf("NPC_AGGRO_RANGE");

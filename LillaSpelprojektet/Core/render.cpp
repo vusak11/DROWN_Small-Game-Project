@@ -37,12 +37,6 @@ Render::Render() {
 	lights_ = new Light[nr_of_lights_];
 
 	//--------------------------------------------------------
-	//---------------------Load HUD---------------------------
-	//--------------------------------------------------------
-	hud_.LoadHealthBarTexture((char*)"../Resources/GUI/healthbar.png");
-	hud_.LoadQuickSlotTexture((char*)"../Resources/GUI/quickslot.png");
-
-	//--------------------------------------------------------
 	//---------------Load Models to Array---------------------
 	//--------------------------------------------------------
 	//Make space for 1 model per ObjectID
@@ -54,8 +48,17 @@ Render::Render() {
 	//model_[OBJECT_ID_PLAYER] = new Model((char*)"../Resources/Models/war_s.fbx");
 	model_[OBJECT_ID_PLAYER] = new Model((char*)"../Resources/Models/Character/DefaultStance.obj");
 	model_[OBJECT_ID_DUMMY] = new Model((char*)"../Resources/Models/DummyNPC/dummyNPC.obj");
-	model_[OBJECT_ID_PLACEHOLDER] = new Model((char*)"../Resources/Models/TestBox/testBOX.obj");
 	
+	model_[OBJECT_ID_DROP_HP_RESTORE] = new Model((char*)"../Resources/Models/Drops/heart_drop/heart_drop.obj");
+	model_[OBJECT_ID_DROP_HP_UP] = new Model((char*)"../Resources/Models/Drops/hp_buff/hp_buff.obj");
+	model_[OBJECT_ID_DROP_ATK_UP] = new Model((char*)"../Resources/Models/Drops/attack_buff/attack_buff.obj");
+	model_[OBJECT_ID_DROP_DASH] = new Model((char*)"../Resources/Models/Drops/dash/dash.obj");
+	model_[OBJECT_ID_DROP_DOUBLE_JUMP] = new Model((char*)"../Resources/Models/Drops/double_jump/double_jump.obj");
+	model_[OBJECT_ID_DROP_SWORD] = new Model((char*)"../Resources/Models/Drops/sword/sword.obj");
+	model_[OBJECT_ID_DROP_AXE] = new Model((char*)"../Resources/Models/Drops/axe/axe.obj");
+	model_[OBJECT_ID_DROP_KEY] = new Model((char*)"../Resources/Models/Drops/key/key.obj");
+	model_[OBJECT_ID_DROP_DOOR] = new Model((char*)"../Resources/Models/Drops/Gate/Gate.obj");
+
 }
 
 Render::~Render() {
@@ -111,9 +114,9 @@ void Render::UpdateRender(
 	std::vector<ObjectPackage>& object_vector,
 	PlayerInfoPackage player_data) {
 
+	//SET UP FOR 3D
 	glDisable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
-	//SET UP FOR 3D
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -145,6 +148,8 @@ void Render::UpdateRender(
 	glLoadIdentity();
 	glMatrixMode(GL_PROJECTION);
 	glDisable(GL_DEPTH_TEST);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glLoadIdentity();
 
 	hud_.RenderGUI(gui_shaders_, player_data);
@@ -284,7 +289,7 @@ void Render::RenderQuad() {
 			-1.0f,  1.0f, 0.0f, 0.0f, 1.0f,
 			-1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
 			 1.0f,  1.0f, 0.0f, 1.0f, 1.0f,
-			 1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
+			 1.0f, -1.0f, 0.0f, 1.0f, 0.0f
 		};
 		// Setup plane VAO
 		glGenVertexArrays(1, &quad_vertex_array_object_);
@@ -306,4 +311,11 @@ void Render::RenderQuad() {
 std::vector<std::vector<float>>* Render::GetMapPointer()
 {
 	return map_handler_.GetMapDataPointer();
+}
+
+std::vector<glm::vec2> Render::GetDoorKeyPosition() {
+	std::vector<glm::vec2> storage;
+	storage.push_back(map_handler_.GetDoorPosition());
+	storage.push_back(map_handler_.GetKeyPosition());
+	return storage;
 }

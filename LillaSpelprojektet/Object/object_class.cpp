@@ -9,7 +9,7 @@ void ObjectClass::CalculateModelMatrix() {
 	//The order is important here.
 	//First we scale, then we rotate and finally we translate
 	this->model_matrix_ = this->translation_matrix_ * this->rotation_matrix_ * this->scaling_matrix_;
-	this->hitbox_.UpdateHitbox(position_, scale_.x, scale_.y);
+	this->UpdateHitbox(position_, scale_.x, scale_.y);
 }
 
 
@@ -20,8 +20,10 @@ ObjectClass::ObjectClass(glm::vec3 start_pos, ObjectID id) {
 	this->id_ = id;
 	this->airborne_ = false;
 
-	//this->position_ = start_pos;
 	this->position_ = start_pos;	// start_pos;
+
+	this->turn_rate_radians_ = glm::radians(GlobalSettings::Access()->ValueOf("OBJECT_TURN_RATE"));
+
 	this->velocity_vec_ = { 0.0f,0.0f,0.0f };		// Not ilizializing this makes weiered start values.
 	this->scale_ = glm::vec3(1.0f, 1.0f, 1.0f);
 
@@ -33,7 +35,9 @@ ObjectClass::ObjectClass(glm::vec3 start_pos, ObjectID id) {
 	this->rotation_matrix_ = glm::mat4(1.0f);
 	this->translation_matrix_ = glm::mat4(1.0f);
 
-	hitbox_ = HitBox(position_, scale_.x, scale_.y);
+	//hitbox_ = HitBox(position_, scale_.x, scale_.y);
+	this->UpdateHitbox(position_, scale_.x, scale_.y);
+
 	//TBA: Use the ID to determine the specs of a Object (Character/Drop/etc)
 
 	this->model_matrix_up_to_date_ = false;
@@ -63,7 +67,7 @@ void ObjectClass::SetPosition(float in_x, float in_y, float in_z) {
 	this->model_matrix_up_to_date_ = false;
 
 	//Apply new position on the hitbox
-	this->hitbox_.UpdateHitbox(position_, scale_.x, scale_.y);
+	this->UpdateHitbox(position_, scale_.x, scale_.y);
 }
 
 void ObjectClass::SetScale(float in_s) {
@@ -76,7 +80,7 @@ void ObjectClass::SetScale(float in_s) {
 	this->model_matrix_up_to_date_ = false;
 
 	//Apply new scale on the hitbox
-	this->hitbox_.UpdateHitbox(position_, scale_.x, scale_.y);
+	this->UpdateHitbox(position_, scale_.x, scale_.y);
 }
 
 void ObjectClass::SetScale(float in_x, float in_y, float in_z) {
@@ -127,11 +131,6 @@ ObjectID ObjectClass::GetObjectID() const {
 	return this->id_;
 }
 
-HitBox ObjectClass::GetHitBox() const
-{
-	return this->hitbox_;
-}
-
 glm::vec3 ObjectClass::GetPosition() const {
 	return this->position_;
 }
@@ -149,12 +148,6 @@ glm::vec3 ObjectClass::GetVelocityVec() const {
 	return this->velocity_vec_;
 }
 
-/*
-glm::vec3 ObjectClass::GetAccelerationVec() const {
-	return this->acceleration_vec_;
-}
-*/
-
 glm::mat4 ObjectClass::RetrieveModelMatrix() {
 	//If the model matrix is not up to date call the function calculating it
 	if (!this->model_matrix_up_to_date_) {
@@ -162,32 +155,6 @@ glm::mat4 ObjectClass::RetrieveModelMatrix() {
 	}
 	
 	return this->model_matrix_;
-}
-
-void ObjectClass::TurnLeft(const float& in_deltatime) {
-	//Turn the model leftwards (negative direction) with adjustment for deltatime
-	float turn_radians = glm::radians(GlobalSettings::Access()->ValueOf("OBJECT_TURN_RATE"))*in_deltatime;
-	float new_rotation = this->rotation_around_y_ - turn_radians;
-
-	//If the new orientation is further than -PI/2 snap it to -PI/2
-	if (new_rotation < glm::radians(-90.0f)) { new_rotation = glm::radians(-90.0f); }
-
-	//std::cout << "Rot L: " << glm::degrees(new_rotation) << std::endl;
-
-	this->SetRotation(this->rotation_around_x_, new_rotation, this->rotation_around_z_);
-}
-
-void ObjectClass::TurnRight(const float& in_deltatime) {
-	//Turn the model rightwards (positive direction) with adjustment for deltatime
-	float turn_radians = glm::radians(GlobalSettings::Access()->ValueOf("OBJECT_TURN_RATE"))*in_deltatime;
-	float new_rotation = this->rotation_around_y_ + turn_radians;
-
-	//If the new orientation is further than PI/2 snap it to PI/2
-	if (new_rotation > glm::radians(90.0f)) { new_rotation = glm::radians(90.0f); }
-
-	//std::cout << "Rot R: " << glm::degrees(new_rotation) << std::endl;
-
-	this->SetRotation(this->rotation_around_x_, new_rotation, this->rotation_around_z_);
 }
 
 bool ObjectClass::IsAirborne() {

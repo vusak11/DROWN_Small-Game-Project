@@ -48,6 +48,9 @@ public:
 	// Variables from meta_data_
 	std::string GetZone(glm::vec2 zone_central_points);
 	std::vector<glm::vec2> GetLightPositions() const;
+
+	glm::vec2 GetDoorPosition() const;
+	glm::vec2 GetKeyPosition() const;
 };
 
 #endif

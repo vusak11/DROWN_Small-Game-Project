@@ -16,7 +16,7 @@ protected:
 private:
 	
 public:
-	NPC(glm::vec3 start_pos, ObjectID id = OBJECT_ID_DUMMY);
+	NPC(glm::vec3 start_pos, ObjectID id, int start_hp, int start_atk);
 	~NPC();
 
 	virtual void ExecuteAI(float in_deltatime, glm::vec3 in_player_pos);
