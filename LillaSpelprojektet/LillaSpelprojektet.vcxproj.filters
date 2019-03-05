@@ -64,6 +64,12 @@
     <Filter Include="Header Files\UI">
       <UniqueIdentifier>{89789ba0-9a16-4825-90fd-79b6ed350a5f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Object\Character\NPCs">
+      <UniqueIdentifier>{b7373c07-0fbf-4fbe-9e30-9c5f55bec386}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object\Character\NPCs">
+      <UniqueIdentifier>{79cbcebb-5c3b-42b2-9afd-0bdbf71c5fe9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -144,6 +150,9 @@
     <ClCompile Include="Map\metadata.cpp">
       <Filter>Source Files\Map</Filter>
     </ClCompile>
+    <ClCompile Include="Object\Character\NPCs\NPC_runner.cpp">
+      <Filter>Source Files\Object\Character\NPCs</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera\camera.h">
@@ -220,6 +229,9 @@
     </ClInclude>
     <ClInclude Include="Map\metadata.h">
       <Filter>Header Files\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Character\NPCs\NPC_runner.h">
+      <Filter>Header Files\Object\Character\NPCs</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

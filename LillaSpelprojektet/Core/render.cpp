@@ -51,8 +51,11 @@ Render::Render() {
 
 	//Link models to a ObjectID
 	model_[OBJECT_ID_NULL] = new Model((char*)"../Resources/Models/DefaultDummyNPC/defaultDummyNPC.obj");
+	//model_[OBJECT_ID_PLAYER] = new Model((char*)"../Resources/Models/war_s.fbx");
 	model_[OBJECT_ID_PLAYER] = new Model((char*)"../Resources/Models/TestBox/testBOX.obj");
 	model_[OBJECT_ID_DUMMY] = new Model((char*)"../Resources/Models/DummyNPC/dummyNPC.obj");
+	model_[OBJECT_ID_PLACEHOLDER] = new Model((char*)"../Resources/Models/TestBox/testBOX.obj");
+	
 }
 
 Render::~Render() {
