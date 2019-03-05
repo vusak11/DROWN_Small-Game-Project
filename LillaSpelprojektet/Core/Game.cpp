@@ -25,7 +25,6 @@ void Game::InputForMenuState(const sf::Event& in_event) {
 				//Do something, change FOV and so on
 				break;
 			case 2:						//Quit
-				//exit(-1);
 				state_ = QUIT;
 			}
 		}
@@ -66,7 +65,6 @@ void Game::InputForPauseState(const sf::Event& in_event) {
 				//menu_.StateManager(state_);
 				break;
 			case 3:						//Quit
-				//exit(-1);
 				state_ = QUIT;
 			}
 		}
@@ -95,14 +93,12 @@ void Game::InputForDeathState(const sf::Event& in_event) {
 			switch (menu_.GetSelectedItemIndex()) {
 			case 0:						//Restart
 				system("restartGame.cmd"); // TEST case
-				//exit(-1);
 				state_ = QUIT;
 				break;
 			case 1:						//Save score
 				//Save highscore
 				break;
 			case 2:						//QUIT
-				//exit(-1);
 				state_ = QUIT;
 			}
 		}
@@ -126,9 +122,6 @@ void Game::InputForGameState(const sf::Event& in_event) {
 		}
 		//Pick up
 		if (in_event.key.code == sf::Keyboard::S) {
-			//OBS!
-			//Currently writes pos to terminal
-			//std::cout << "X: " << obj_handler_ptr_->GetPlayerPos().x << "Y: " << obj_handler_ptr_->GetPlayerPos().y << " Z: " << obj_handler_ptr_->GetPlayerPos().z << std::endl;
 			this->obj_handler_ptr_->PlayerPickUp();
 		}
 		//Use Ability

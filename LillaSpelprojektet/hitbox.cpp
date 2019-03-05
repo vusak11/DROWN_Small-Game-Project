@@ -63,17 +63,17 @@ BoxPoints Hitbox::GetPoints() const
 {
 	BoxPoints points;
 
-	points.bottomLeft.x = position_.x - x_offset_;
-	points.bottomLeft.y = position_.y - y_offset_;
+	points.bottom_left.x = position_.x - x_offset_;
+	points.bottom_left.y = position_.y - y_offset_;
 
-	points.bottomRight.x = position_.x + x_offset_;
-	points.bottomRight.y = position_.y - y_offset_;
+	points.bottom_right.x = position_.x + x_offset_;
+	points.bottom_right.y = position_.y - y_offset_;
 
-	points.topRight.x = position_.x + x_offset_;
-	points.topRight.y = position_.y + y_offset_;
+	points.top_right.x = position_.x + x_offset_;
+	points.top_right.y = position_.y + y_offset_;
 
-	points.topLeft.x = position_.x - x_offset_;
-	points.topLeft.y = position_.y + y_offset_;
+	points.top_left.x = position_.x - x_offset_;
+	points.top_left.y = position_.y + y_offset_;
 
 	return points;
 }
@@ -86,7 +86,7 @@ bool Hitbox::CheckCollision(const BoxPoints& other_box) {
 	//Check if left side of the other box lies between the vertical
 	//sides of this one
 	bool left_side = false;
-	x_side = other_box.bottomLeft.x;
+	x_side = other_box.bottom_left.x;
 
 	if (this->GetPoint0().x < x_side	&&	x_side < this->GetPoint1().x) {
 		left_side = true;
@@ -94,7 +94,7 @@ bool Hitbox::CheckCollision(const BoxPoints& other_box) {
 
 	//Then do the same check for the right side
 	bool right_side = false;
-	x_side = other_box.bottomRight.x;
+	x_side = other_box.bottom_right.x;
 
 	if (this->GetPoint0().x < x_side	&&	x_side < this->GetPoint1().x) {
 		right_side = true;
@@ -103,7 +103,7 @@ bool Hitbox::CheckCollision(const BoxPoints& other_box) {
 	//Now check if bottom side of the other box lies between the horizontal
 	//sides of this one
 	bool bot_side = false;
-	y_side = other_box.bottomLeft.y;
+	y_side = other_box.bottom_left.y;
 
 	if (this->GetPoint0().y < y_side	&&	y_side < this->GetPoint3().y) {
 		bot_side = true;
@@ -111,7 +111,7 @@ bool Hitbox::CheckCollision(const BoxPoints& other_box) {
 
 	//Finally check the top side
 	bool top_side = false;
-	y_side = other_box.topLeft.y;
+	y_side = other_box.top_left.y;
 
 	if (this->GetPoint0().y < y_side	&&	y_side < this->GetPoint3().y) {
 		top_side = true;

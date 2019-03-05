@@ -17,10 +17,10 @@
 //    0       1
 
 struct BoxPoints {
-	glm::vec2 bottomLeft;
-	glm::vec2 bottomRight;
-	glm::vec2 topLeft;
-	glm::vec2 topRight;
+	glm::vec2 bottom_left;
+	glm::vec2 bottom_right;
+	glm::vec2 top_left;
+	glm::vec2 top_right;
 };
 
 class Hitbox {
