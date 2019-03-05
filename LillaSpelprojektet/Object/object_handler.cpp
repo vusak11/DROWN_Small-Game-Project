@@ -14,7 +14,7 @@ bool ObjectHandler::ClearPtrVector(std::vector<ObjectClass*>& in_vec) {
 }
 
 bool ObjectHandler::RemoveObject(const ObjectClass* in_object_ptr, std::vector<ObjectClass*>& in_object_ptr_vector) {
-	
+
 	//WARNING: This function deletes the given object on a success
 	//If a pointer has been saved externally it will lead to a trash location
 	//Taking a reference to the pointer and setting it to NULL will not save
@@ -36,19 +36,19 @@ bool ObjectHandler::RemoveObject(const ObjectClass* in_object_ptr, std::vector<O
 }
 
 std::vector<ObjectClass*> ObjectHandler::CullAndRetrieveObjectPtrs(const std::vector<ObjectClass*>& in_object_vector) const {
-	
+
 	//NTS:	Function takes a REFERENCE to a std::vector with OBJECTCLASS POINTERS
 	//		It creates a std::vector holding OBJECTCLASS POINTERS
 	//		It fills the std::vector with OBJECTCLASS POINTERS that the REFERENCES refer to
 	//		It then returns a std::vector of POINTERS
-	
+
 	//Set up a vector to hold pointers to all relevant objects
 	std::vector<ObjectClass*> nearby_objects_ptr_vector;
 
 	//Go through all NPCs
 	for (unsigned int i = 0; i < in_object_vector.size(); i++) {
 		//See which Objects are within OBJECT_CULLING_DISTANCE of the player
-		if (this->DistanceBetween(this->player_ptr_, in_object_vector.at(i)) < OBJECT_CULLING_DISTANCE) {
+		if (this->DistanceBetween(this->player_ptr_, in_object_vector.at(i)) < GlobalSettings::Access()->ValueOf("OBJECT_CULLING_DISTANCE")) {
 			//Those that are close enough are added to the vector
 			nearby_objects_ptr_vector.push_back(in_object_vector.at(i));
 		}
@@ -64,7 +64,7 @@ float ObjectHandler::DistanceBetween(const ObjectClass* in_object_a, const Objec
 	//Get the 2D position for object a
 	glm::vec3 temp_vec = in_object_a->GetPosition();
 	glm::vec2 pos2_a = glm::vec2(temp_vec.x, temp_vec.y);
-	
+
 	//Get the 2D position for object b
 	temp_vec = in_object_b->GetPosition();
 	glm::vec2 pos2_b = glm::vec2(temp_vec.x, temp_vec.y);
@@ -97,13 +97,13 @@ void ObjectHandler::DeterminePlayerAction(const float& in_deltatime, std::vector
 	}
 	//If input is attack
 	if (this->player_input_.attack) {
-		
+
 	}
 	//If input is to pick up
 	if (this->player_input_.pick_up) {
 		this->ResolvePlayerPickUp(in_relevant_drops_ptr_vector);
 	}
-	
+
 }
 
 void ObjectHandler::ResolvePlayerPickUp(std::vector<ObjectClass*>& in_relevant_drops_ptr_vector) {
@@ -150,7 +150,7 @@ void ObjectHandler::ProcessNPCs(const float& in_deltatime, std::vector<ObjectCla
 void ObjectHandler::DetermineNPCAction(const float& in_deltatime, NPC* in_npc) {
 
 	//TEMP
-	in_npc->ExecuteAI(in_deltatime);
+	in_npc->ExecuteAI(in_deltatime, player_ptr_->GetPosition());
 	//TEMP
 
 }
@@ -218,46 +218,48 @@ ObjectHandler::~ObjectHandler() {
 void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map_height_list, std::vector<glm::vec2> door_key_position) {
 
 	//Create player
-	this->player_ptr_ = new PlayerCharacter(PLAYER_START_POS);
+	//GlobalSettings::Access()->ValueOf("PLAYER_TOP_SPEED");
+	this->player_ptr_ = new PlayerCharacter(
+		glm::vec3(
+			GlobalSettings::Access()->ValueOf("PLAYER_START_POS_X"),
+			GlobalSettings::Access()->ValueOf("PLAYER_START_POS_Y"), 
+			GlobalSettings::Access()->ValueOf("PLAYER_START_POS_Z")
+		)
+	);
 	this->player_ptr_->SetScale(2.0f);
 
+	// Create an NPC
+	float nr_of_runners = GlobalSettings::Access()->ValueOf("NR_OF_NPC_RUNNER");
+	for (int i = 0; i < nr_of_runners; i++)
+	{
+		this->npc_ptr_vector_.push_back(new NPCRunner(
+			glm::vec3(
+				GlobalSettings::Access()->ValueOf("PLAYER_START_POS_X") + 10 * i,
+				GlobalSettings::Access()->ValueOf("PLAYER_START_POS_Y"),
+				GlobalSettings::Access()->ValueOf("PLAYER_START_POS_Z")
+			),
+			OBJECT_ID_PLACEHOLDER
+		));
+	}
+	this->npc_ptr_vector_.at(0)->SetScale(3.0f);
 	//TEMP
 	//glm::vec3 npc_pos = PLAYER_START_POS;
 	//npc_pos.x -= 70.0f;
 	//this->npc_ptr_vector_.push_back(new NPC(npc_pos));
 	//this->npc_ptr_vector_.at(0)->SetScale(3.0f);
 
-	glm::vec3 drop_pos = PLAYER_START_POS;
-
-	drop_pos.x -= 10.0f;
-	this->drop_ptr_vector_.push_back(new HPRestoreDrop(drop_pos));
-	this->drop_ptr_vector_.back()->SetScale(3.0f);
+	//glm::vec3 drop_pos = PLAYER_START_POS;
+	//
+	//drop_pos.x -= 10.0f;
+	//this->drop_ptr_vector_.push_back(new HPRestoreDrop(drop_pos));
+	//this->drop_ptr_vector_.back()->SetScale(3.0f);
 	
-	drop_pos.x -= 10.0f;
-	this->drop_ptr_vector_.push_back(new HPUpDrop(drop_pos));
-	this->drop_ptr_vector_.back()->SetScale(3.0f);
-
-	drop_pos.x -= 10.0f;
-	this->drop_ptr_vector_.push_back(new AtkUpDrop(drop_pos));
-	this->drop_ptr_vector_.back()->SetScale(3.0f);
 	
-	drop_pos.x -= 10.0f;
-	this->drop_ptr_vector_.push_back(new KeyDrop(drop_pos));
-	this->drop_ptr_vector_.back()->SetScale(3.0f);
-
-	drop_pos.x -= 10.0f;
-	this->drop_ptr_vector_.push_back(new BossDoor(drop_pos));
-	this->drop_ptr_vector_.back()->SetScale(3.0f);
 	//TEMP
 
 	this->physics_engine_ptr_ = new PhysicsEngine(map_height_list);
 
-	//Door! 
-	//this->drop_ptr_vector_.push_back(new Drop(glm::vec3(door_key_position[0], 3.0f))); 
-	//this->drop_ptr_vector_.at(0)->SetPosition(door_key_position[0].x, door_key_position[0].y, 3.0f);
-	//this->drop_ptr_vector_.at(0)->SetScale(5.0f);
 
-	//Retrieve the newly random generated position of door and key (0 = door, 1 = key)
 	//this->TestObjectHandler();		//NTS: Just for testing
 }
 
@@ -287,7 +289,7 @@ void ObjectHandler::PlayerPickUp() {
 
 std::vector<ObjectPackage> ObjectHandler::UpdateAndRetrieve(float in_deltatime) {
 
-	
+
 	std::vector<ObjectClass*> relevant_npcs_ptr_vector;		//Two vectors to hold the NPC:s and drops that are within the culling distance
 	std::vector<ObjectClass*> relevant_drops_ptr_vector;
 	std::vector<ObjectClass*> physical_objects_ptr_vector;	//A vector to hold everything that is affected by physics
@@ -351,7 +353,7 @@ std::vector<ObjectPackage> ObjectHandler::UpdateAndRetrieve(float in_deltatime) 
 
 	//Put the things that are to be drawn onto screen in a package struct and return it
 	std::vector<ObjectPackage> package_vector;
-	
+
 	this->PackObjectIntoVector(this->player_ptr_, package_vector);
 	this->PackObjectVectorIntoVector(relevant_npcs_ptr_vector, package_vector);
 	this->PackObjectVectorIntoVector(relevant_drops_ptr_vector, package_vector);
@@ -446,8 +448,8 @@ void ObjectHandler::TestObjectHandler() {
 
 	std::cout << "I:	Test throw functions in Character" << std::endl;
 	try { this->player_ptr_->HealDamage(-3); }
-	catch (std::invalid_argument a){ std::cout << a.what() << std::endl; }
-	
+	catch (std::invalid_argument a) { std::cout << a.what() << std::endl; }
+
 	try { this->player_ptr_->TakeDamage(-17); }
 	catch (std::invalid_argument a) { std::cout << a.what() << std::endl; }
 

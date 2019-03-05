@@ -26,11 +26,15 @@ void MapHandler::InitializeMaps(
 	GridMap grid_cell;
 	std::vector<GridMap> grid_cells;
 
-	for (int j = 0; j < GRID_ROW; j++) {	
+	int grid_row = GlobalSettings::Access()->ValueOf("GRID_ROW");
+	int grid_column = GlobalSettings::Access()->ValueOf("GRID_COLUMN");
+	float grid_gap = GlobalSettings::Access()->ValueOf("GRID_GAP");
+
+	for (int j = 0; j < grid_row; j++) {
 		grid_cells.clear();		
 		width = 0;
-		for (int i = 0; i < GRID_COLUMN; i++) {
-			ancillary_map.CreateCells(GRID_COLUMN, GRID_ROW, j, i);
+		for (int i = 0; i < grid_column; i++) {
+			ancillary_map.CreateCells(grid_column, grid_row, j, i);
 			ancillary_map.UVCoordinates();
 			ancillary_map.CalculateNormals();
 			ancillary_map.CreateTriangles();
@@ -44,9 +48,9 @@ void MapHandler::InitializeMaps(
 			grid_cell.cell_position = glm::vec2(i, j);
 			grid_cells.push_back(grid_cell);
 
-			width += grid_cell.map_cell.GetCellWidth() - GRID_GAP;
+			width += grid_cell.map_cell.GetCellWidth() - grid_gap;
 		}
-		height -= grid_cell.map_cell.GetCellHeight() - GRID_GAP;
+		height -= grid_cell.map_cell.GetCellHeight() - grid_gap;
 		grid_map_.push_back(grid_cells);
 	}
 }
@@ -62,7 +66,7 @@ void MapHandler::InitializeBuffers(GLuint shader) {
 glm::mat4 MapHandler::Transformation(int column, int row) {
 	glm::mat4 model_matrix(1.0f);
 	model_matrix = glm::translate(model_matrix, grid_map_[row][column].translate);
-	model_matrix = glm::scale(model_matrix, glm::vec3(1.0f, 1.0f, MAP_DEPTH));
+	model_matrix = glm::scale(model_matrix, glm::vec3(1.0f, 1.0f, GlobalSettings::Access()->ValueOf("MAP_DEPTH")));
 	return model_matrix;
 }
 
@@ -90,28 +94,31 @@ std::vector<glm::vec2> MapHandler::GridCulling(glm::vec2 current_cell) {
 	// Check all neighbouring cells and see whether they exists or not.
 	// If they do exist, push the location into cells_to_draw vector.
 	// 'Center' will always be drawn because that's where the player stands
+	int grid_column = GlobalSettings::Access()->ValueOf("GRID_COLUMN");
+	int grid_row = GlobalSettings::Access()->ValueOf("GRID_ROW");
+
 	cells_to_draw_.clear();
 	if (current_cell.x == 0 && current_cell.y == 0) {							// Upper left corner
 		cells_to_draw_.push_back(glm::vec2(current_cell.x, current_cell.y));			// 0, 0, 0
 		cells_to_draw_.push_back(glm::vec2(current_cell.x + 1, current_cell.y));		// 0, 1, 1
 		cells_to_draw_.push_back(glm::vec2(current_cell.x, current_cell.y + 1));		// 0, 1, 1
 		cells_to_draw_.push_back(glm::vec2(current_cell.x + 1, current_cell.y + 1));
-	} else if (current_cell.x == (GRID_COLUMN - 1) && current_cell.y == 0) {	// Upper right corner
+	} else if (current_cell.x == (grid_column - 1) && current_cell.y == 0) {	// Upper right corner
 		cells_to_draw_.push_back(glm::vec2(current_cell.x - 1, current_cell.y));		// 0, 0, 0
 		cells_to_draw_.push_back(glm::vec2(current_cell.x, current_cell.y));			// 1, 1, 0
 		cells_to_draw_.push_back(glm::vec2(current_cell.x - 1, current_cell.y + 1));	// 1, 1, 0
 		cells_to_draw_.push_back(glm::vec2(current_cell.x, current_cell.y + 1));
-	} else if (current_cell.x == 0 && current_cell.y == (GRID_ROW - 1)) {		// Lower left corner
+	} else if (current_cell.x == 0 && current_cell.y == (grid_row - 1)) {		// Lower left corner
 		cells_to_draw_.push_back(glm::vec2(current_cell.x, current_cell.y - 1));		// 0, 1, 1
 		cells_to_draw_.push_back(glm::vec2(current_cell.x + 1, current_cell.y - 1));	// 0, 1, 1
 		cells_to_draw_.push_back(glm::vec2(current_cell.x, current_cell.y));			// 0, 0, 0
 		cells_to_draw_.push_back(glm::vec2(current_cell.x + 1, current_cell.y));
-	} else if (current_cell.x == (GRID_COLUMN - 1) && current_cell.y == (GRID_ROW - 1)) {// Lower right corner
+	} else if (current_cell.x == (grid_column - 1) && current_cell.y == (grid_row - 1)) {// Lower right corner
 		cells_to_draw_.push_back(glm::vec2(current_cell.x - 1, current_cell.y - 1));	// 1, 1, 0
 		cells_to_draw_.push_back(glm::vec2(current_cell.x, current_cell.y - 1));		// 1, 1, 0
 		cells_to_draw_.push_back(glm::vec2(current_cell.x - 1, current_cell.y));		// 0, 0, 0
 		cells_to_draw_.push_back(glm::vec2(current_cell.x, current_cell.y));		
-	} else if (current_cell.x > 0 && current_cell.x < GRID_COLUMN &&			// Upper side
+	} else if (current_cell.x > 0 && current_cell.x < grid_column &&			// Upper side
 		current_cell.y == 0) {															// 0, 0, 0
 		cells_to_draw_.push_back(glm::vec2(current_cell.x - 1, current_cell.y));		// 1, 1, 1
 		cells_to_draw_.push_back(glm::vec2(current_cell.x, current_cell.y));			// 1, 1, 1
@@ -119,23 +126,23 @@ std::vector<glm::vec2> MapHandler::GridCulling(glm::vec2 current_cell) {
 		cells_to_draw_.push_back(glm::vec2(current_cell.x - 1, current_cell.y + 1));
 		cells_to_draw_.push_back(glm::vec2(current_cell.x, current_cell.y + 1));
 		cells_to_draw_.push_back(glm::vec2(current_cell.x + 1, current_cell.y + 1));
-	} else if (current_cell.x == 0 && current_cell.y > 0 && current_cell.y < GRID_ROW) {// Left side
+	} else if (current_cell.x == 0 && current_cell.y > 0 && current_cell.y < grid_row) {// Left side
 		cells_to_draw_.push_back(glm::vec2(current_cell.x, current_cell.y - 1));		// 0, 1, 1
 		cells_to_draw_.push_back(glm::vec2(current_cell.x + 1, current_cell.y - 1));	// 0, 1, 1
 		cells_to_draw_.push_back(glm::vec2(current_cell.x, current_cell.y));			// 0, 1, 1
 		cells_to_draw_.push_back(glm::vec2(current_cell.x + 1, current_cell.y));
 		cells_to_draw_.push_back(glm::vec2(current_cell.x, current_cell.y + 1));
 		cells_to_draw_.push_back(glm::vec2(current_cell.x + 1, current_cell.y + 1));
-	} else if (current_cell.x == (GRID_COLUMN - 1) &&							// Right side
-		current_cell.y > 0 && current_cell.y < GRID_ROW) {								// 1, 1, 0
+	} else if (current_cell.x == (grid_column - 1) &&							// Right side
+		current_cell.y > 0 && current_cell.y < grid_row) {								// 1, 1, 0
 		cells_to_draw_.push_back(glm::vec2(current_cell.x - 1, current_cell.y - 1));	// 1, 1, 0
 		cells_to_draw_.push_back(glm::vec2(current_cell.x, current_cell.y - 1));		// 1, 1, 0
 		cells_to_draw_.push_back(glm::vec2(current_cell.x - 1, current_cell.y));
 		cells_to_draw_.push_back(glm::vec2(current_cell.x, current_cell.y));	
 		cells_to_draw_.push_back(glm::vec2(current_cell.x - 1, current_cell.y + 1));
 		cells_to_draw_.push_back(glm::vec2(current_cell.x, current_cell.y + 1));
-	} else if (current_cell.x > 0 && current_cell.x < GRID_COLUMN &&			// Lower side
-		current_cell.y == (GRID_ROW - 1)) {											// 1, 1, 1
+	} else if (current_cell.x > 0 && current_cell.x < grid_column &&			// Lower side
+		current_cell.y == (grid_row - 1)) {											// 1, 1, 1
 		cells_to_draw_.push_back(glm::vec2(current_cell.x - 1, current_cell.y - 1));	// 1, 1, 1
 		cells_to_draw_.push_back(glm::vec2(current_cell.x, current_cell.y - 1));		// 0, 0, 0
 		cells_to_draw_.push_back(glm::vec2(current_cell.x + 1, current_cell.y - 1));
@@ -143,7 +150,7 @@ std::vector<glm::vec2> MapHandler::GridCulling(glm::vec2 current_cell) {
 		cells_to_draw_.push_back(glm::vec2(current_cell.x, current_cell.y));
 		cells_to_draw_.push_back(glm::vec2(current_cell.x + 1, current_cell.y));
 	} else if (current_cell.x > 0 && current_cell.y > 0 &&						// Inner
-		current_cell.x < GRID_COLUMN && current_cell.y < GRID_ROW) {					// 1, 1 ,1
+		current_cell.x < grid_column && current_cell.y < grid_row) {					// 1, 1 ,1
 		cells_to_draw_.push_back(glm::vec2(current_cell.x - 1, current_cell.y - 1));	// 1, 1, 1
 		cells_to_draw_.push_back(glm::vec2(current_cell.x, current_cell.y - 1));		// 1, 1, 1
 		cells_to_draw_.push_back(glm::vec2(current_cell.x + 1, current_cell.y - 1));
@@ -160,6 +167,15 @@ std::vector<glm::vec2> MapHandler::GridCulling(glm::vec2 current_cell) {
 std::vector<std::vector<float>>* MapHandler::GetMapDataPointer()
 {
 	return &test_data_;
+}
+
+std::string MapHandler::GetZone(glm::vec2 zone_central_points) const {
+	return meta_data_.GetZone(zone_central_points);
+}
+
+std::vector<glm::vec2> MapHandler::GetLightPositions() const
+{
+	return meta_data_.GetLightPositions();
 }
 
 glm::vec2 MapHandler::GetDoorPosition() const {

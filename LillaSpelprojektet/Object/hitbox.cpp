@@ -59,8 +59,7 @@ glm::vec2 Hitbox::GetPoint3() const
 	return point;
 }
 
-BoxPoints Hitbox::GetPoints() const
-{
+BoxPoints Hitbox::GetPoints() const {
 	BoxPoints points;
 
 	points.bottom_left.x = position_.x - x_offset_;

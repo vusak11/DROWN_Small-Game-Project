@@ -164,25 +164,4 @@ bool ObjectClass::IsAirborne() {
 void ObjectClass::SetAirborne(bool in_bool) {
 	this->airborne_ = in_bool;
 }
-
-/*
-bool ObjectClass::CheckCollision(const BoxPoints& other_box) {
-	//Check if any of the points is inside other entity's bounding box
-	bool check = false;
-
-	if (GetPoints().bottomLeft.x > other_box.bottomLeft.x && GetPoints().bottomLeft.x < other_box.bottomRight.x &&
-		GetPoints().bottomLeft.y < other_box.TopLeft.y && GetPoints().bottomLeft.y > other_box.bottomLeft.y)
-		check = true;
-	else if (GetPoints().bottomRight.x > other_box.bottomLeft.x && GetPoints().bottomRight.x < other_box.bottomRight.x &&
-		GetPoints().bottomRight.y < other_box.TopLeft.y && GetPoints().bottomRight.y > other_box.bottomLeft.y)
-		check = true;
-	else if (GetPoints().TopLeft.x > other_box.bottomLeft.x && GetPoints().TopLeft.x < other_box.bottomRight.x &&
-		GetPoints().TopLeft.y < other_box.TopLeft.y && GetPoints().TopLeft.y > other_box.bottomLeft.y)
-		check = true;
-	else if (GetPoints().TopRight.x > other_box.bottomLeft.x && GetPoints().TopRight.x < other_box.bottomRight.x &&
-		GetPoints().TopRight.y < other_box.TopLeft.y && GetPoints().TopRight.y > other_box.bottomLeft.y)
-		check = true;
-
-	return check;
 }
-*/

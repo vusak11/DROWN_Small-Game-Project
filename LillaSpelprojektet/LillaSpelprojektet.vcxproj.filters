@@ -64,6 +64,12 @@
     <Filter Include="Header Files\UI">
       <UniqueIdentifier>{89789ba0-9a16-4825-90fd-79b6ed350a5f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Object\Character\NPCs">
+      <UniqueIdentifier>{b7373c07-0fbf-4fbe-9e30-9c5f55bec386}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object\Character\NPCs">
+      <UniqueIdentifier>{79cbcebb-5c3b-42b2-9afd-0bdbf71c5fe9}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Header Files\Object\Drop">
       <UniqueIdentifier>{e9cbf214-89e8-41ba-8542-497c9f49a9bb}</UniqueIdentifier>
     </Filter>
@@ -141,14 +147,20 @@
     <ClCompile Include="GLDebug.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="hitbox.cpp">
+    <ClCompile Include="Object\hitbox.cpp">
       <Filter>Source Files\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="global_settings.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Map\metadata.cpp">
       <Filter>Source Files\Map</Filter>
     </ClCompile>
     <ClCompile Include="Object\Drop\drop.cpp">
       <Filter>Source Files\Object\Drop</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Character\NPCs\NPC_runner.cpp">
+      <Filter>Source Files\Object\Character\NPCs</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -203,9 +215,6 @@
     <ClInclude Include="UI\menu.h">
       <Filter>Header Files\UI</Filter>
     </ClInclude>
-    <ClInclude Include="Globals.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Object\Character\player_character.h">
       <Filter>Header Files\Object\Character</Filter>
     </ClInclude>
@@ -215,17 +224,23 @@
     <ClInclude Include="Object\Character\cooldown_class.h">
       <Filter>Header Files\Object\Character</Filter>
     </ClInclude>
-    <ClInclude Include="hitbox.h">
-      <Filter>Header Files\Object</Filter>
-    </ClInclude>
     <ClInclude Include="Object\Character\npc.h">
       <Filter>Header Files\Object\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\hitbox.h">
+      <Filter>Header Files\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="global_settings.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GLDebug.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Map\metadata.h">
       <Filter>Header Files\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Character\NPCs\NPC_runner.h">
+      <Filter>Header Files\Object\Character\NPCs</Filter>
     </ClInclude>
     <ClInclude Include="Object\Drop\drop.h">
       <Filter>Header Files\Object\Drop</Filter>

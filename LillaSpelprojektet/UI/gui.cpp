@@ -91,7 +91,9 @@ void GUI::RenderGUIObject(float xpos, float ypos, float offset, GLuint slot_text
 void GUI::RenderGUI(ShaderHandler * shader_program, PlayerInfoPackage player_data) {
 	//Calculate length of health bar based on current health points
 	updateHUD(player_data);
-	glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(WINDOW_WIDTH), 0.0f, static_cast<GLfloat>(WINDOW_HEIGHT));
+	glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(
+		GlobalSettings::Access()->ValueOf("WINDOW_WIDTH")), 
+		0.0f, static_cast<GLfloat>(GlobalSettings::Access()->ValueOf("WINDOW_HEIGHT")));
 
 	shader_program->Use();
 

@@ -1,7 +1,6 @@
 #include "ability.h"
 #include "player_character.h"	//Follow through on forward declaraction
 
-//#include <iostream>			//TEMP
 
 Ability::Ability() {
 	this->id_ = ABILITY_NONE;
@@ -29,7 +28,7 @@ bool DoubleJump::ExecuteAbility(PlayerCharacter& in_player) {
 	//Otherwise, set player velocity towards positive y
 	//to half their normal jump speed
 	glm::vec3 new_velocity = in_player.GetVelocityVec();
-	new_velocity.y = in_player.jump_speed_ / 2;
+	new_velocity.y = in_player.jump_speed_;
 	in_player.SetVelocityVec(new_velocity);
 
 	//Then set double jump to unavailable
@@ -40,9 +39,9 @@ bool DoubleJump::ExecuteAbility(PlayerCharacter& in_player) {
 	return true;
 }
 //---------------------------------------------------------
-Dash::Dash() : CooldownClass(DASH_COOLDOWN) {
+Dash::Dash() : CooldownClass(GlobalSettings::Access()->ValueOf("DASH_COOLDOWN")) {
 	this->id_ = ABILITY_DASH;
-	this->dash_velocity_ = DASH_VELOCITY;
+	this->dash_velocity_ = GlobalSettings::Access()->ValueOf("DASH_VELOCITY");
 }
 
 Dash::~Dash(){}

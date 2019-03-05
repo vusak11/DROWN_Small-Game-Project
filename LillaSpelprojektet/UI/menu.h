@@ -1,7 +1,7 @@
 #ifndef MENU_H
 #define MENU_H
 
-#include "../Globals.h"
+#include "../global_settings.h"
 #include <iostream>
 #include <GL/glew.h>
 #include <GLM/glm.hpp>

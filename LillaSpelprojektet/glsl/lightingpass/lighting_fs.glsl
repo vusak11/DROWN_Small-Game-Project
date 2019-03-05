@@ -11,13 +11,15 @@ uniform sampler2D g_albedo_spec;
 struct Light {
 	vec3 position;
 	vec3 color;
+
+	float a_linear;
+	float a_quadratic;
+	float radius;
 };
-const int nr_of_lights = 1;
+const int nr_of_lights = 62;
 uniform Light lights[nr_of_lights];
 
-uniform vec3 light_position;
-
-uniform vec3 viewPos;
+uniform vec3 view_pos;
 
 
 void main() {
@@ -28,17 +30,25 @@ void main() {
 	float specular = texture(g_albedo_spec, tex_coords).a;
 
 	// calculate lighting
-	vec3 ambient = 0.15 * albedo;
-	vec3 lightDir = normalize(light_position - fragment_position);
-	float diff = max(dot(lightDir, normal), 0.0);
-	vec3 diffuse = diff * albedo;
-	vec3 viewDir = normalize(viewPos - fragment_position);
-	float spec = 0.0;
+	vec3 lighting = 0.15 * albedo;
+	vec3 view_dir = normalize(view_pos - fragment_position);
 
-	vec3 reflectDir = reflect(-lightDir, normal);
-	spec = pow(max(dot(viewDir, reflectDir), 0.0), 8.0);
-
-	vec3 speculars = vec3(0.3) * spec;
-	screen_texture = vec3(ambient + diffuse /*+ speculars*/);
-
+	for (int i = 0; i < nr_of_lights; ++i) {
+		float distance = length(lights[i].position - fragment_position);
+		if (distance < lights[i].radius) {
+			// diffuse
+			vec3 light_dir = normalize(lights[i].position - fragment_position);
+			vec3 diffuse = max(dot(normal, light_dir), 0.0) * albedo * lights[i].color;
+			//specular
+			vec3 halfway_dir = normalize(light_dir + view_dir);
+			float spec = pow(max(dot(normal, halfway_dir), 0.0), 8.0);;
+			vec3 speculars = lights[i].color * spec * specular;
+			//Attenuation
+			float attenuation = 1.0 / (1.0 + lights[i].a_linear * distance + lights[i].a_quadratic * distance * distance);
+			diffuse *= attenuation;
+			speculars *= attenuation;
+			lighting += diffuse + speculars;
+		}
+	}
+	screen_texture = lighting;
 }

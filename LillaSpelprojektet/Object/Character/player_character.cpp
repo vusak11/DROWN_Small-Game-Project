@@ -1,5 +1,4 @@
 #include "player_character.h"
-#include "../../globals.h"
 
 //Private--------------------------------------------------
 void PlayerCharacter::AlterVelocity() {

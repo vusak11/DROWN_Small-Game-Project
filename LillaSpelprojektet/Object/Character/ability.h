@@ -5,6 +5,7 @@
 #include "cooldown_class.h"
 #include "../../Globals.h"
 
+
 //Forward declaration
 class PlayerCharacter;
 

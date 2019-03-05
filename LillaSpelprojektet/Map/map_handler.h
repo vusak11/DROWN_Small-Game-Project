@@ -1,7 +1,7 @@
 #ifndef MAP_HANDLER_H
 #define MAP_HANDLER_H
 #include "map.h"
-#include "../Globals.h"
+#include "../global_settings.h"
 #include <fstream>
 #include <string>
 #include <cmath>
@@ -12,7 +12,6 @@
 // Example:
 //    handler->GetMap(0)->load_map();
 //   
-
 
 class MapHandler {
 private:
@@ -45,6 +44,10 @@ public:
 	std::vector<glm::vec2> GridCulling(glm::vec2 current_cell);
 
 	std::vector<std::vector<float>>* GetMapDataPointer();
+	
+	// Variables from meta_data_
+	std::string GetZone(glm::vec2 zone_central_points);
+	std::vector<glm::vec2> GetLightPositions() const;
 
 	glm::vec2 GetDoorPosition() const;
 	glm::vec2 GetKeyPosition() const;

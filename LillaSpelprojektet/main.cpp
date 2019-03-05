@@ -6,6 +6,7 @@
 #include "GLDebug.h"
 
 #include <SFML/OpenGL.hpp>
+#include "global_settings.h"
 
 #define _CRTDBG_MAP_ALLOC 
 
@@ -17,7 +18,15 @@ void GameLoop(
 int main() {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 
-	sf::Window window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Drown", sf::Style::Default, sf::ContextSettings(32));
+	GlobalSettings::Access()->UpdateValuesFromFile();
+
+	sf::Window window(sf::VideoMode(
+		GlobalSettings::Access()->ValueOf("WINDOW_WIDTH"),
+		GlobalSettings::Access()->ValueOf("WINDOW_HEIGHT")),
+		"Drown", 
+		sf::Style::Default, 
+		sf::ContextSettings(32));
+	float test = GlobalSettings::Access()->ValueOf("WINDOW_WIDTH");
 	window.setVerticalSyncEnabled(true);
 
 	window.setActive(true);

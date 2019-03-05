@@ -6,7 +6,6 @@ void Render::DrawScene() {
 Render::Render() {
 	quad_vertex_array_object_ = 0;
 	quad_vertex_buffer_object_ = 0;
-	nr_of_lights_ = 1;
 
 	//--------------------------------------------------------
 	//-------------------Create Shaders-----------------------
@@ -26,16 +25,16 @@ Render::Render() {
 	lighting_pass_ = new ShaderHandler(
 		"glsl/lightingpass/lighting_vs.glsl",
 		"glsl/lightingpass/lighting_fs.glsl");
-	lights_ = new Light[nr_of_lights_];
 
 	//--------------------------------------------------------
 	//-------------------Load Map Data------------------------
 	//--------------------------------------------------------
 	map_handler_.InitializeMaps(
-		"../Resources/Map/MainMapTest_Vel.bmp",
+		"../Resources/Map/MainMap.bmp",
 		"../Resources/Map/cavewall.png",
 		"../Resources/Map/v4.png");
-
+	nr_of_lights_ = map_handler_.GetLightPositions().size();
+	lights_ = new Light[nr_of_lights_];
 
 	//--------------------------------------------------------
 	//---------------Load Models to Array---------------------
@@ -43,9 +42,10 @@ Render::Render() {
 	//Make space for 1 model per ObjectID
 	this->nr_of_models_ = NUMBER_OF_OBJECT_IDS;
 	model_ = new Model*[this->nr_of_models_];
-	
+
 	//Link models to a ObjectID
 	model_[OBJECT_ID_NULL] = new Model((char*)"../Resources/Models/DefaultDummyNPC/defaultDummyNPC.obj");
+	//model_[OBJECT_ID_PLAYER] = new Model((char*)"../Resources/Models/war_s.fbx");
 	model_[OBJECT_ID_PLAYER] = new Model((char*)"../Resources/Models/TestBox/testBOX.obj");
 	model_[OBJECT_ID_DUMMY] = new Model((char*)"../Resources/Models/DummyNPC/dummyNPC.obj");
 	
@@ -78,23 +78,37 @@ Render::~Render() {
 void Render::InitializeRender() {
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	
+
 	hud_.Initiliaze();
 
 	geometry_pass_->GeometryFrameBuffers();
 
-	lights_[0].LightDefault(
-		glm::vec3(0.0f, 10.0f, 0.0f),
-		glm::vec3(0.7f, 0.7f, 0.7f),
-		glm::vec3(0.2f, 0.2f, 0.2f),
-		glm::vec3(1.0f, 1.0f, 1.0f),
-		glm::vec3(1.0f, 1.0f, 1.0f));
-
+	// Fetch light positions and store locally
+	light_positions_ = map_handler_.GetLightPositions();
+	// Set player light
+	lights_[0].SetBrightness(glm::vec3(0.1f, 0.1f, 0.1f));
+	// Set danger light
+	lights_[1].SetPos(glm::vec3(light_positions_[1], 0.0));
+	lights_[1].SetAmbientLight(glm::vec3(0.7f, 0.0f, 0.0f));
+	lights_[1].SetBrightness(glm::vec3(1.0f, 1.0f, 1.0f));
+	// Set colour of the light depending on where in the world it's located, starting at 2 to not affect player light or the "danger light"
+	for (int i = 2; i < nr_of_lights_; i++) {
+		lights_[i].SetPos(glm::vec3(light_positions_[i], 10.0f));
+		if (map_handler_.GetZone(light_positions_[i]) == "RED") {
+			lights_[i].SetAmbientLight(glm::vec3(1.0f, 0.0f, 0.0f));
+		}
+		else if (map_handler_.GetZone(light_positions_[i]) == "GRE") {
+			lights_[i].SetAmbientLight(glm::vec3(0.01f, 0.84f, 0.01f));
+		}
+		else if (map_handler_.GetZone(light_positions_[i]) == "BLU") {
+			lights_[i].SetAmbientLight(glm::vec3(0.0f, 0.4f, 1.0f));
+		}
+	}
 	map_handler_.InitializeBuffers(geometry_pass_->GetProgram());
 }
 
 void Render::UpdateRender(
-	float dt, 
+	float dt,
 	glm::vec3 camera_position,
 	glm::mat4 perspective_view_matrix,
 	std::vector<ObjectPackage>& object_vector,
@@ -110,9 +124,22 @@ void Render::UpdateRender(
 	//  GEOMETRY
 	GeometryPass(camera_position, perspective_view_matrix);
 	GeometryDrawing(object_vector);
-	
+
 	//  LIGHTING
-	lights_[0].SetPos(camera_position);
+	lights_[0].SetPos(glm::vec3(camera_position.x, (camera_position.y + 15.0), 0.0));		//Place players light on our character
+	// Update color of players light depending on zone
+	if (map_handler_.GetZone(camera_position) == "DEF") {
+		lights_[0].SetAmbientLight(glm::vec3(1.0f, 0.58f, 0.20f));
+	}
+	else if (map_handler_.GetZone(camera_position) == "RED") {
+		lights_[0].SetAmbientLight(glm::vec3(1.0f, 0.0f, 0.0f));
+	}
+	else if (map_handler_.GetZone(camera_position) == "GRE") {
+		lights_[0].SetAmbientLight(glm::vec3(0.01f, 0.84f, 0.01f));
+	}
+	else if (map_handler_.GetZone(camera_position) == "BLU") {
+		lights_[0].SetAmbientLight(glm::vec3(0.0f, 0.4f, 1.0f));
+	}
 	LightingPass(camera_position);
 
 	RenderQuad();
@@ -132,7 +159,7 @@ void Render::UpdateRender(
 }
 
 void Render::GeometryDrawing(std::vector<ObjectPackage>& object_vector) {
-	
+
 	//--------------------DRAW OBJECTS------------------------
 
 	//Loop through all ObjectPackage:s and draw the corresponding models
@@ -145,7 +172,7 @@ void Render::GeometryDrawing(std::vector<ObjectPackage>& object_vector) {
 		temp_id = object_vector[i].id;
 		this->model_[temp_id]->Draw(geometry_pass_->GetProgram());
 	}
-	
+
 	//----------------DRAW THE MAP----------------------------
 
 	//We know the player object to be the first in the vector
@@ -157,7 +184,7 @@ void Render::GeometryDrawing(std::vector<ObjectPackage>& object_vector) {
 	//Then only retrieve cells nearby
 	std::vector<glm::vec2> cells = map_handler_.GridCulling(
 		map_handler_.CurrentCell(player_position));
-	
+
 	//Draw the map
 	while (!cells.empty()) {
 		ModelTransformation(map_handler_.Transformation((int)cells.back().x, (int)cells.back().y));
@@ -173,7 +200,10 @@ void Render::ModelTransformation(glm::mat4 model_matrix) {
 void Render::GeometryPass(
 	glm::vec3 camera_position,
 	glm::mat4 perspective_view_matrix) {
-	glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+	glViewport(0, 0, 
+		GlobalSettings::Access()->ValueOf("WINDOW_WIDTH"), 
+		GlobalSettings::Access()->ValueOf("WINDOW_HEIGHT"));
+	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glBindFramebuffer(GL_FRAMEBUFFER, geometry_pass_->GetBuffer());
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -201,18 +231,33 @@ void Render::LightingPass(glm::vec3 camera_position) {
 	glActiveTexture(GL_TEXTURE2);
 	glBindTexture(GL_TEXTURE_2D, geometry_pass_->GetAlbedoSpecular());
 
-	glUniform3f(
-		glGetUniformLocation(lighting_pass_->GetProgram(), "light_position"),
-		camera_position.x, camera_position.y, camera_position.z
-	);
-	glUniform3fv(glGetUniformLocation(lighting_pass_->GetProgram(), "viewPos"), 1, glm::value_ptr(camera_position)); //Add camera positions
-
+	for (int i = 0; i < nr_of_lights_; i++) {
+		glUniform3f(
+			glGetUniformLocation(lighting_pass_->GetProgram(), ("lights[" + std::to_string(i) + "].position").c_str()),
+			lights_[i].GetPos().x, lights_[i].GetPos().y, lights_[i].GetPos().z
+		);
+		glUniform3f(
+			glGetUniformLocation(lighting_pass_->GetProgram(), ("lights[" + std::to_string(i) + "].color").c_str()),
+			lights_[i].GetAmbientLight().r, lights_[i].GetAmbientLight().g, lights_[i].GetAmbientLight().b
+		);
+		// Attenuation parameters, and calculate radius
+		const float constant = 1.0f; // note that we don't send this to the shader, we assume it is always 1.0 (in our case)
+		const float linear = 0.007f;
+		const float quadratic = 0.0002f;
+		glUniform1f(glGetUniformLocation(lighting_pass_->GetProgram(), ("lights[" + std::to_string(i) + "].a_linear").c_str()), linear);
+		glUniform1f(glGetUniformLocation(lighting_pass_->GetProgram(), ("lights[" + std::to_string(i) + "].a_quadratic").c_str()), quadratic);
+		// then calculate radius of light volume/sphere
+		const float max_brightness = std::fmaxf(std::fmaxf(lights_[i].GetBrightness().r, lights_[i].GetBrightness().g), lights_[i].GetBrightness().b);
+		float radius = (-linear + std::sqrt(linear * linear - 4 * quadratic * (constant - (256.0f / 5.0f) * max_brightness))) / (2.0f * quadratic);
+		glUniform1f(glGetUniformLocation(lighting_pass_->GetProgram(), ("lights[" + std::to_string(i) + "].radius").c_str()), radius);
+	}
+	glUniform3fv(glGetUniformLocation(lighting_pass_->GetProgram(), "view_pos"), 1, glm::value_ptr(camera_position)); //Add camera positions
 }
 
 void Render::RenderMenuState(Menu menu) {
 	glClearColor(0.22f, 0.22f, 0.22f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
-	
+
 	menu.RenderMenu(text_shaders_);
 }
 

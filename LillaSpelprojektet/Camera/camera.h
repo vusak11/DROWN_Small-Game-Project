@@ -6,7 +6,7 @@
 #include <GLM/glm.hpp>
 #include <GLM/gtc/matrix_transform.hpp>
 
-#include "../Globals.h"
+#include "../global_settings.h"
 
 class Camera {
 private:

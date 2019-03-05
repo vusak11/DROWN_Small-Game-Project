@@ -146,6 +146,10 @@ void Game::InputForGameState(const sf::Event& in_event) {
 		if (in_event.key.code == sf::Keyboard::O) {
 			cam_handler_ptr_->SwapCamera();
 		}
+		if (in_event.key.code == sf::Keyboard::L) {
+			GlobalSettings::Access()->UpdateValuesFromFile();
+		}
+
 	default:
 		break;
 	}
@@ -184,15 +188,19 @@ void Game::InputForSecondaryCamera(const float& in_deltatime) {
 	}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::P)) {
-		//Move debug camera to its default position
-		cam_handler_ptr_->SetCameraPos(CAMERA_DEBUG_POSITION_X, CAMERA_DEBUG_POSITION_Y, CAMERA_DEBUG_POSITION_Z);
+		//Move active camera forwards ("zoom in")
+		cam_handler_ptr_->SetCameraPos(
+			GlobalSettings::Access()->ValueOf("CAMERA_DEBUG_POSITION_X"),
+			GlobalSettings::Access()->ValueOf("CAMERA_DEBUG_POSITION_Y"),
+			GlobalSettings::Access()->ValueOf("CAMERA_DEBUG_POSITION_Z")
+		);
 	}
 }
-
 //Public---------------------------------------------------
 
 Game::Game() {
-	this->cam_handler_ptr_ = new CameraHandler(glm::vec3(256.0, -256.0f, 0.0f), CAMERA_DEFAULT_ZOOM);
+	this->cam_handler_ptr_ = new CameraHandler(glm::vec3(256.0, -256.0f, 0.0f),
+		GlobalSettings::Access()->ValueOf("CAMERA_DEFAULT_ZOOM"));
 	this->obj_handler_ptr_ = new ObjectHandler();
 	
 	this->state_ = MENU;
@@ -255,10 +263,10 @@ void Game::GameIteration() {
 		}
 		/*----------End Restart Game when death occurs--------------*/
 	}
-	else if (state_ == PAUSE) {
+	else if (state_ == GameState::PAUSE) {
 		render_.RenderPauseMenu(menu_);
 	}
-	else if (state_ == DEATH) {
+	else if (state_ == GameState::DEATH) {
 		render_.RenderDeathMenu(menu_);
 	}
 	else if (state_ == QUIT) {
