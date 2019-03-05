@@ -245,9 +245,9 @@ void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map
 	this->drop_ptr_vector_.push_back(new KeyDrop(drop_pos));
 	this->drop_ptr_vector_.back()->SetScale(3.0f);
 
-	//drop_pos.x -= 10.0f;
-	//this->drop_ptr_vector_.push_back(new BossDoor(drop_pos));
-	//this->drop_ptr_vector_.back()->SetScale(5.0f);
+	drop_pos.x -= 10.0f;
+	this->drop_ptr_vector_.push_back(new BossDoor(drop_pos));
+	this->drop_ptr_vector_.back()->SetScale(3.0f);
 	//TEMP
 
 	this->physics_engine_ptr_ = new PhysicsEngine(map_height_list);
