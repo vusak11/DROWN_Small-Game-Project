@@ -161,7 +161,7 @@ glm::vec3 PhysicsEngine::CheckCollision(ObjectClass *& in_object_ptr, glm::vec3 
 		glm::vec3 diff = glm::normalize(obj_pos - new_pos);
 		glm::vec3 baseVec = glm::normalize(glm::vec3(1.0f, -1.0f, 0.0f));
 		float angle = glm::angle(diff, baseVec);
-		float pi = GlobalSettings::Access()->ValueOf("PI");
+		float pi = 3.1415f;
 
 		if (angle < pi/2.0f)// apply left
 		{

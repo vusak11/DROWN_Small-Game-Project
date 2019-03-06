@@ -22,11 +22,12 @@ void Character::SetMaxHealth(int in_hp) {
 	this->max_health_ = in_hp;
 }
 
-void Character::SetCurrentHealth(int in_hp) {
+bool Character::SetCurrentHealth(int in_hp) {
 	if (in_hp < 0	||	in_hp > this->max_health_) {
-		throw std::invalid_argument(
+		/*throw std::invalid_argument(
 			"ERROR::CHARACTER::SETCURRENTHEALTH::Argument out of valid scope"
-		);
+		);*/
+		return -1;
 	}
 	this->current_health_ = in_hp;
 }

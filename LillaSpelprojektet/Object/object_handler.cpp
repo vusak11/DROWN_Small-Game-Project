@@ -148,16 +148,14 @@ void ObjectHandler::ProcessNPCs(const float& in_deltatime, std::vector<ObjectCla
 }
 
 void ObjectHandler::DetermineNPCAction(const float& in_deltatime, NPC* in_npc) {
-
-	//TEMP
 	in_npc->ExecuteAI(in_deltatime, player_ptr_->GetPosition());
 	if (in_npc->CheckCollision(player_ptr_->GetPoints())) {
 		player_ptr_->SetCurrentHealth(player_ptr_->GetCurrentHealth() - 1);
+		if (in_npc->GetPosition().x > player_ptr_->GetPosition().x)
+			player_ptr_->SetVelocityVec(glm::vec3(-1500.0f, 200.0f, 0.0f));
+		else
+			player_ptr_->SetVelocityVec(glm::vec3(1500.0f, 200.0f, 0.0f));
 	}
-	
-	std::cout << player_ptr_->GetCurrentHealth() << std::endl;
-	//TEMP
-
 }
 
 void ObjectHandler::ProcessDrops(const float& in_deltatime, std::vector<ObjectClass*>& in_drops_ptr_vector) {

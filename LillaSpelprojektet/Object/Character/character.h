@@ -32,7 +32,7 @@ public:
 
 	//Character Stat Stuff------------------------------------
 	void SetMaxHealth(int in_hp);		//Throws invalid argument
-	void SetCurrentHealth(int in_hp);	//Throws invalid argument
+	bool SetCurrentHealth(int in_hp);	//Throws invalid argument
 	void SetAttackPower(int in_atk);	//Throws invalid argument
 	
 	int GetMaxHealth() const;

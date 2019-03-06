@@ -21,6 +21,4 @@ public:
 
 	virtual void ExecuteAI(float in_deltatime, glm::vec3 in_player_pos);
 };
-
-
 #endif // !NPC_H
