@@ -148,19 +148,34 @@ void ObjectHandler::ResolvePlayerAttack(std::vector<ObjectClass*>& in_relevant_n
 		//Typecast a ptr in the vector to the character type
 		character_ptr = dynamic_cast<Character*>(in_relevant_npcs_ptr_vector.at(i));
 		if (character_ptr != NULL) {
-			
-			//Make call to check for strike hit
-			/*
-			if (1 == blahblah) {
-				//If the enemy died save its index
+			//Send in a npc and check if the player hits it with the attack
+			//If the unit dies save its index
+			if (1 == this->player_ptr_->UseWeapon(*character_ptr)) {
 				index_of_the_dead.push_back(i);
 			}
-			*/
-
 		}
 	}
 
+	/*  WIP: Causes crash (most likely vector indexing)
+
 	//Lastly remove enemies on position indicated by the index vector
+	//We go backwards to not have to offset the index per deletion
+	//as only the indexes of things behind what we deleted are altered then
+	int index;
+	for (unsigned int i = (index_of_the_dead.size()-1); i > 0; i--) {
+
+		//Take the last index in the vector
+		index = index_of_the_dead.at(i);
+
+		//Delete the object and remove the pointer from the object handler's npc vector
+		this->RemoveObject(in_relevant_npcs_ptr_vector.at(index), this->npc_ptr_vector_);
+
+		//Then remove the entry from the list of relevant drops
+		in_relevant_npcs_ptr_vector.erase(in_relevant_npcs_ptr_vector.begin() + index);
+	}
+
+	*/
+
 }
 
 void ObjectHandler::ProcessNPCs(const float& in_deltatime, std::vector<ObjectClass*>& in_npcs_ptr_vector) {
@@ -181,7 +196,7 @@ void ObjectHandler::ProcessNPCs(const float& in_deltatime, std::vector<ObjectCla
 void ObjectHandler::DetermineNPCAction(const float& in_deltatime, NPC* in_npc) {
 
 	//TEMP
-	in_npc->ExecuteAI(in_deltatime, player_ptr_->GetPosition());
+	//in_npc->ExecuteAI(in_deltatime, player_ptr_->GetPosition());
 	//TEMP
 
 }
@@ -347,7 +362,7 @@ std::vector<ObjectPackage> ObjectHandler::UpdateAndRetrieve(float in_deltatime) 
 	relevant_drops_ptr_vector = this->CullAndRetrieveObjectPtrs(this->drop_ptr_vector_);
 
 	//Take input from player (i.e. set velocity, attack flags, etc)
-	this->DeterminePlayerAction(in_deltatime, relevant_drops_ptr_vector);
+	this->DeterminePlayerAction(in_deltatime, relevant_npcs_ptr_vector, relevant_drops_ptr_vector);
 	
 	//Go through all relevant NPCs and call their AI functions
 	this->ProcessNPCs(in_deltatime, relevant_npcs_ptr_vector);

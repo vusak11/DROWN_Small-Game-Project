@@ -65,10 +65,10 @@ int Weapon::ExecuteWeapon(Character& in_attacker, Character& in_target) {
 Sword::Sword()
 	: Weapon(
 		WEAPON_SWORD,
-		GlobalSettings::Access()->ValueOf("SWORD_DAMAGE"),
-		GlobalSettings::Access()->ValueOf("SWORD_COOLDOWN"),
-		GlobalSettings::Access()->ValueOf("SWORD_HITBOXBOX_OFFSET_X"),
-		GlobalSettings::Access()->ValueOf("SWORD_HITBOXBOX_OFFSET_Y")
+		GlobalSettings::Access()->ValueOf("WEAPON_SWORD_DAMAGE"),
+		GlobalSettings::Access()->ValueOf("WEAPON_SWORD_COOLDOWN"),
+		GlobalSettings::Access()->ValueOf("WEAPON_SWORD_HITBOXBOX_OFFSET_X"),
+		GlobalSettings::Access()->ValueOf("WEAPON_SWORD_HITBOXBOX_OFFSET_Y")
 	) {
 
 }
@@ -85,13 +85,13 @@ int Sword::ExecuteWeapon(Character& in_attacker, Character& in_target) {
 Axe::Axe()
 	: Weapon(
 		WEAPON_AXE,
-		GlobalSettings::Access()->ValueOf("AXE_DAMAGE"),
-		GlobalSettings::Access()->ValueOf("AXE_COOLDOWN"),
-		GlobalSettings::Access()->ValueOf("AXE_HITBOXBOX_OFFSET_X"),
-		GlobalSettings::Access()->ValueOf("AXE_HITBOXBOX_OFFSET_Y")
+		GlobalSettings::Access()->ValueOf("WEAPON_AXE_DAMAGE"),
+		GlobalSettings::Access()->ValueOf("WEAPON_AXE_COOLDOWN"),
+		GlobalSettings::Access()->ValueOf("WEAPON_AXE_HITBOX_OFFSET_X"),
+		GlobalSettings::Access()->ValueOf("WEAPON_AXE_HITBOX_OFFSET_Y")
 	) {
 
-	this->knock_back_ = GlobalSettings::Access()->ValueOf("AXE_KNOCKBACK");
+	this->knock_back_ = GlobalSettings::Access()->ValueOf("WEAPON_AXE_KNOCKBACK");
 
 }
 
