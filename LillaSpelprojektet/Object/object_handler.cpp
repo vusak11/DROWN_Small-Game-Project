@@ -152,11 +152,13 @@ void ObjectHandler::DetermineNPCAction(const float& in_deltatime, NPC* in_npc) {
 	if (in_npc->CheckCollision(player_ptr_->GetPoints())) {
 		if (player_ptr_->GetCurrentHealth() != 0) {
 			player_ptr_->SetCurrentHealth(player_ptr_->GetCurrentHealth() - 1);
+			float knockback_x = GlobalSettings::Access()->ValueOf("NPC_KNOCKBACK_X");
+			float knockback_y = GlobalSettings::Access()->ValueOf("NPC_KNOCKBACK_Y");
 			//Knockback player
 			if (in_npc->GetPosition().x > player_ptr_->GetPosition().x)
-				player_ptr_->SetVelocityVec(glm::vec3(-1500.0f, 200.0f, 0.0f));
+				player_ptr_->SetVelocityVec(glm::vec3(-1 * knockback_x, knockback_y, 0.0f));
 			else
-				player_ptr_->SetVelocityVec(glm::vec3(1500.0f, 200.0f, 0.0f));
+				player_ptr_->SetVelocityVec(glm::vec3(knockback_x, knockback_y, 0.0f));
 		}
 	}
 }
