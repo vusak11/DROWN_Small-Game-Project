@@ -19,6 +19,7 @@ public:
 	NPC(glm::vec3 start_pos, ObjectID id, int start_hp, int start_atk);
 	~NPC();
 
+	virtual bool Attack(Character& in_target);
 	virtual void ExecuteAI(float in_deltatime, glm::vec3 in_player_pos);
 };
 #endif // !NPC_H

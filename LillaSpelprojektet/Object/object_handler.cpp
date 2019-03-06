@@ -150,16 +150,7 @@ void ObjectHandler::ProcessNPCs(const float& in_deltatime, std::vector<ObjectCla
 void ObjectHandler::DetermineNPCAction(const float& in_deltatime, NPC* in_npc) {
 	in_npc->ExecuteAI(in_deltatime, player_ptr_->GetPosition());
 	if (in_npc->CheckCollision(player_ptr_->GetPoints())) {
-		if (player_ptr_->GetCurrentHealth() != 0) {
-			player_ptr_->SetCurrentHealth(player_ptr_->GetCurrentHealth() - 1);
-			float knockback_x = GlobalSettings::Access()->ValueOf("NPC_KNOCKBACK_X");
-			float knockback_y = GlobalSettings::Access()->ValueOf("NPC_KNOCKBACK_Y");
-			//Knockback player
-			if (in_npc->GetPosition().x > player_ptr_->GetPosition().x)
-				player_ptr_->SetVelocityVec(glm::vec3(-1 * knockback_x, knockback_y, 0.0f));
-			else
-				player_ptr_->SetVelocityVec(glm::vec3(knockback_x, knockback_y, 0.0f));
-		}
+		in_npc->Attack(*player_ptr_);
 	}
 }
 

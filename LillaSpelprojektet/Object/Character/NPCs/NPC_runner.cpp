@@ -9,6 +9,9 @@ NPCRunner::NPCRunner(glm::vec3 start_pos)
 		GlobalSettings::Access()->ValueOf("NPC_RUNNER_START_HP"),
 		GlobalSettings::Access()->ValueOf("NPC_RUNNER_START_ATK")
 	) {
+
+	knockback_ = glm::vec2(GlobalSettings::Access()->ValueOf("NPC_KNOCKBACK_X"),
+		GlobalSettings::Access()->ValueOf("NPC_KNOCKBACK_Y"));
 	time_to_next_move_ = 0.0f;
 	next_move_index_ = 0;
 	aggro_range_ = GlobalSettings::Access()->ValueOf("NPC_AGGRO_RANGE");
@@ -86,5 +89,16 @@ void NPCRunner::ExecuteAI(float in_deltatime, glm::vec3 in_player_pos)
 			SetVelocityVec({ temp_velocity.x , jump_velocity , temp_velocity.z });
 			SetAirborne(true);
 		}
+	}
+}
+
+bool NPCRunner::Attack(Character& in_target) {
+	if (this->NPC::Attack(in_target)) {
+		//Knockback player
+		in_target.TakeDamage(this->GetAttackPower());
+		if (in_target.GetPosition().x < GetPosition().x)
+			in_target.SetVelocityVec(glm::vec3(-1 * knockback_.x, knockback_.y, 0.0f));
+		else if (in_target.GetPosition().x > GetPosition().x)
+			in_target.SetVelocityVec(glm::vec3(knockback_.x, knockback_.y, 0.0f));
 	}
 }
