@@ -242,7 +242,6 @@ void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map
 			)
 		));
 	}
-	//this->npc_ptr_vector_.at(0)->SetScale(3.0f);
 	
 	//glm::vec3 npc_pos = PLAYER_START_POS;
 	//npc_pos.x -= 70.0f;
