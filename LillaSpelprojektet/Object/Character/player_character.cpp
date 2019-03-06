@@ -119,6 +119,10 @@ void PlayerCharacter::UpdateStatus(const float& in_deltatime) {
 		//If it is, update its cooldown
 		cd_class_ptr->UpdateCooldown(in_deltatime);
 	}
+
+	//Update weapon cooldown
+	this->weapon_ptr_->UpdateCooldown(in_deltatime);
+
 }
 
 void PlayerCharacter::IncreaseKeys() {
