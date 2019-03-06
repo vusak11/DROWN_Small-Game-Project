@@ -77,6 +77,7 @@ void ObjectHandler::DeterminePlayerAction(const float& in_deltatime, std::vector
 
 	//Update the player's status (such as cooldowns)
 	this->player_ptr_->UpdateStatus(in_deltatime);
+	player_ptr_->CalculateAnimationState(in_deltatime);
 
 	//Determine player movement on the x-axis
 	if (this->player_input_.left) {
@@ -148,11 +149,10 @@ void ObjectHandler::ProcessNPCs(const float& in_deltatime, std::vector<ObjectCla
 }
 
 void ObjectHandler::DetermineNPCAction(const float& in_deltatime, NPC* in_npc) {
-
-	//TEMP
 	in_npc->ExecuteAI(in_deltatime, player_ptr_->GetPosition());
-	//TEMP
-
+	if (in_npc->CheckCollision(player_ptr_->GetPoints())) {
+		in_npc->Attack(*player_ptr_);
+	}
 }
 
 void ObjectHandler::ProcessDrops(const float& in_deltatime, std::vector<ObjectClass*>& in_drops_ptr_vector) {
@@ -241,7 +241,6 @@ void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map
 			)
 		));
 	}
-	//this->npc_ptr_vector_.at(0)->SetScale(3.0f);
 	
 	//glm::vec3 npc_pos = PLAYER_START_POS;
 	//npc_pos.x -= 70.0f;
@@ -368,6 +367,9 @@ std::vector<ObjectPackage> ObjectHandler::UpdateAndRetrieve(float in_deltatime) 
 	this->PackObjectIntoVector(this->player_ptr_, package_vector);
 	this->PackObjectVectorIntoVector(relevant_npcs_ptr_vector, package_vector);
 	this->PackObjectVectorIntoVector(relevant_drops_ptr_vector, package_vector);
+
+
+
 
 	return package_vector;
 }

@@ -14,6 +14,11 @@
 //------------------------ENUMS----------------------------
 //---------------------------------------------------------
 
+enum AnimationState {
+	ANIMATION_STATE_PLAYER_IDLE,
+	ANIMATION_STATE_PLAYER_JUMP,
+	ANIMATION_STATE_PLAYER_WALK
+};
 
 //ObjectIDs------------------------------------------------
 //Object ID:s are used to determine what type of object is created
@@ -22,8 +27,14 @@
 //represented by an ObjectID
 enum ObjectID {
 	OBJECT_ID_NULL,				//:The Error Model
-	OBJECT_ID_PLAYER,			//:Player
+	OBJECT_ID_PLAYER_IDLE,		//:Start of Player
+	OBJECT_ID_PLAYER_JUMP,
+	OBJECT_ID_PLAYER_LEFT_WALK,
+	OBJECT_ID_PLAYER_RIGHT_WALK,
 	OBJECT_ID_DUMMY,			//:Start of NPCs
+	OBJECT_ID_ICE_AI,
+	OBJECT_ID_FIRE_AI,
+	OBJECT_ID_WOOD_AI,
 	OBJECT_ID_DROP_HP_RESTORE,	//:Start of Drops
 	OBJECT_ID_DROP_HP_UP,
 	OBJECT_ID_DROP_ATK_UP,

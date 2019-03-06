@@ -12,7 +12,6 @@ void ObjectClass::CalculateModelMatrix() {
 	this->UpdateHitbox(position_, scale_.x, scale_.y);
 }
 
-
 //Public---------------------------------------------------
 
 ObjectClass::ObjectClass(glm::vec3 start_pos, ObjectID id) {
@@ -118,6 +117,10 @@ void ObjectClass::SetVelocity(float in_velocity) {
 void ObjectClass::SetVelocityVec(glm::vec3 in_velocity_vec) {
 	//Set the velocity vector to be the new velocity
 	this->velocity_vec_ = in_velocity_vec;
+}
+
+void ObjectClass::SetObjectID(ObjectID object_id) {
+	id_ = object_id;
 }
 
 /*
