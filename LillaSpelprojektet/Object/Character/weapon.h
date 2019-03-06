@@ -33,7 +33,7 @@ public:
 	int GetAttackPower() const;
 
 
-	virtual int UseWeapon(Character& in_attacker, Character& in_target);	//Returns	-1	if attack unsuccessful
+	virtual int ExecuteWeapon(Character& in_attacker, Character& in_target);	//Returns	-1	if attack unsuccessful
 																			//			 0	if it was a hit
 																			//			 1	if the hit killed the target
 };
@@ -47,7 +47,7 @@ public:
 	Sword();
 	~Sword();
 
-	int UseWeapon(Character& in_attacker, Character& in_target);
+	int ExecuteWeapon(Character& in_attacker, Character& in_target);
 };
 
 //---------------------------------------------------------
@@ -59,7 +59,7 @@ public:
 	Axe();
 	~Axe();
 
-	int UseWeapon(Character& in_attacker, Character& in_target);
+	int ExecuteWeapon(Character& in_attacker, Character& in_target);
 };
 
 //---------------------------------------------------------

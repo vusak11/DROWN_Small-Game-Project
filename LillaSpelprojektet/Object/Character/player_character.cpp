@@ -100,6 +100,10 @@ void PlayerCharacter::UseAbility() {
 	this->ability_ptr_->ExecuteAbility(*this);
 }
 
+int PlayerCharacter::UseWeapon(Character& in_target) {
+	return this->weapon_ptr_->ExecuteWeapon(*this, in_target);
+}
+
 void PlayerCharacter::SetAirborne(bool in_air) {
 	this->airborne_ = in_air;
 

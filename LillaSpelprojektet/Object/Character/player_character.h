@@ -39,6 +39,7 @@ public:
 	void MoveRight();
 	void Jump();
 	void UseAbility();
+	int UseWeapon(Character& in_target);
 
 	void SetAirborne(bool in_bool);
 	void UpdateStatus(const float& in_deltatime);		//Updates time related stuff

@@ -25,7 +25,7 @@ int Weapon::GetAttackPower() const {
 	return this->attack_power_;
 }
 
-int Weapon::UseWeapon(Character& in_attacker, Character& in_target) {
+int Weapon::ExecuteWeapon(Character& in_attacker, Character& in_target) {
 	//Returns	-1	if attack unsuccessful
 	//			 0	if it was a hit
 	//			 1	if the hit killed the target
@@ -77,9 +77,9 @@ Sword::~Sword() {
 
 }
 
-int Sword::UseWeapon(Character& in_attacker, Character& in_target) {
+int Sword::ExecuteWeapon(Character& in_attacker, Character& in_target) {
 	//This weapon only uses the default damaging function
-	return this->Weapon::UseWeapon(in_attacker, in_target);
+	return this->Weapon::ExecuteWeapon(in_attacker, in_target);
 }
 //---------------------------------------------------------
 Axe::Axe()
@@ -99,9 +99,9 @@ Axe::~Axe() {
 
 }
 
-int Axe::UseWeapon(Character& in_attacker, Character& in_target) {
+int Axe::ExecuteWeapon(Character& in_attacker, Character& in_target) {
 	//Use the weapon
-	int outcome = this->Weapon::UseWeapon(in_attacker, in_target);
+	int outcome = this->Weapon::ExecuteWeapon(in_attacker, in_target);
 
 	//If attack connects, apply knock back
 	glm::vec3 direction;
