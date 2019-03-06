@@ -33,8 +33,6 @@ Render::Render() {
 		"../Resources/Map/MainMap.bmp",
 		"../Resources/Map/cavewall.png",
 		"../Resources/Map/v4.png");
-	nr_of_lights_ = map_handler_.GetLightPositions().size();
-	lights_ = new Light[nr_of_lights_];
 
 	//--------------------------------------------------------
 	//---------------Load Models to Array---------------------
@@ -75,16 +73,19 @@ Render::~Render() {
 	delete[] model_;
 }
 
-void Render::InitializeRender() {
+void Render::InitializeRender(MetaData* meta_data) {
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	hud_.Initiliaze();
+	meta_data_ptr_ = meta_data;
 
 	geometry_pass_->GeometryFrameBuffers();
 
-	// Fetch light positions and store locally
-	light_positions_ = map_handler_.GetLightPositions();
+	// Fetch light information and store locally
+	nr_of_lights_ = meta_data_ptr_->GetLightPositions().size();
+	lights_ = new Light[nr_of_lights_];
+	light_positions_ = meta_data_ptr_->GetLightPositions();
 	// Set player light
 	lights_[0].SetBrightness(glm::vec3(0.1f, 0.1f, 0.1f));
 	// Set danger light
@@ -94,13 +95,13 @@ void Render::InitializeRender() {
 	// Set colour of the light depending on where in the world it's located, starting at 2 to not affect player light or the "danger light"
 	for (int i = 2; i < nr_of_lights_; i++) {
 		lights_[i].SetPos(glm::vec3(light_positions_[i], 10.0f));
-		if (map_handler_.GetZone(light_positions_[i]) == "RED") {
+		if (meta_data_ptr_->GetZone(light_positions_[i]) == "RED") {
 			lights_[i].SetAmbientLight(glm::vec3(1.0f, 0.0f, 0.0f));
 		}
-		else if (map_handler_.GetZone(light_positions_[i]) == "GRE") {
+		else if (meta_data_ptr_->GetZone(light_positions_[i]) == "GRE") {
 			lights_[i].SetAmbientLight(glm::vec3(0.01f, 0.84f, 0.01f));
 		}
-		else if (map_handler_.GetZone(light_positions_[i]) == "BLU") {
+		else if (meta_data_ptr_->GetZone(light_positions_[i]) == "BLU") {
 			lights_[i].SetAmbientLight(glm::vec3(0.0f, 0.4f, 1.0f));
 		}
 	}
@@ -128,16 +129,16 @@ void Render::UpdateRender(
 	//  LIGHTING
 	lights_[0].SetPos(glm::vec3(camera_position.x, (camera_position.y + 15.0), 0.0));		//Place players light on our character
 	// Update color of players light depending on zone
-	if (map_handler_.GetZone(camera_position) == "DEF") {
+	if (meta_data_ptr_->GetZone(camera_position) == "DEF") {
 		lights_[0].SetAmbientLight(glm::vec3(1.0f, 0.58f, 0.20f));
 	}
-	else if (map_handler_.GetZone(camera_position) == "RED") {
+	else if (meta_data_ptr_->GetZone(camera_position) == "RED") {
 		lights_[0].SetAmbientLight(glm::vec3(1.0f, 0.0f, 0.0f));
 	}
-	else if (map_handler_.GetZone(camera_position) == "GRE") {
+	else if (meta_data_ptr_->GetZone(camera_position) == "GRE") {
 		lights_[0].SetAmbientLight(glm::vec3(0.01f, 0.84f, 0.01f));
 	}
-	else if (map_handler_.GetZone(camera_position) == "BLU") {
+	else if (meta_data_ptr_->GetZone(camera_position) == "BLU") {
 		lights_[0].SetAmbientLight(glm::vec3(0.0f, 0.4f, 1.0f));
 	}
 	LightingPass(camera_position);
@@ -311,11 +312,4 @@ void Render::RenderQuad() {
 std::vector<std::vector<float>>* Render::GetMapPointer()
 {
 	return map_handler_.GetMapDataPointer();
-}
-
-std::vector<glm::vec2> Render::GetDoorKeyPosition() {
-	std::vector<glm::vec2> storage;
-	storage.push_back(map_handler_.GetDoorPosition());
-	storage.push_back(map_handler_.GetKeyPosition());
-	return storage;
 }

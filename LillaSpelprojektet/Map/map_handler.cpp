@@ -22,7 +22,6 @@ void MapHandler::InitializeMaps(
 	ancillary_map.LoadTexture(texture_path_0.c_str(), texture_path_1.c_str());
 	test_data_ = ancillary_map.GetTestList();
 	map_data_ = ancillary_map.GetTempHeightList();
-	meta_data_.Initialize();
 	GridMap grid_cell;
 	std::vector<GridMap> grid_cells;
 
@@ -167,24 +166,4 @@ std::vector<glm::vec2> MapHandler::GridCulling(glm::vec2 current_cell) {
 std::vector<std::vector<float>>* MapHandler::GetMapDataPointer()
 {
 	return &test_data_;
-}
-
-std::string MapHandler::GetZone(glm::vec2 zone_central_points) {
-	return meta_data_.GetZone(zone_central_points);
-}
-
-std::vector<glm::vec2> MapHandler::GetLightPositions() const
-{
-	return meta_data_.GetLightPositions();
-}
-
-glm::vec2 MapHandler::GetDoorPosition() const {
-	std::cout << "X: " << meta_data_.GetBossDoorCoords().x
-		<< " Y: " << meta_data_.GetBossDoorCoords().y
-		<< std::endl;
-	return meta_data_.GetBossDoorCoords();
-}
-
-glm::vec2 MapHandler::GetKeyPosition() const {
-	return meta_data_.GetDoorKeyCoords();
 }

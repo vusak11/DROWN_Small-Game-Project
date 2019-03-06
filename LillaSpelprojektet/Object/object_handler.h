@@ -12,6 +12,7 @@
 #include "Character/npc.h"
 #include "Character/NPCs/NPC_runner.h"
 
+#include "../Map/metadata.h"
 #include "Drop/Drop.h"
 
 #include "Physics/physics_engine.h"
@@ -76,8 +77,8 @@ public:
 
 	// Takes map data to send to physics engine.
 	void InitializeObjectHandler(
-		std::vector<std::vector<float>>* map_height_list, 
-		std::vector<glm::vec2> door_key_position);		//Function creates player object, loads in enemies for the zones etc. Call from InitiateGame();
+		std::vector<std::vector<float>>* map_height_list,
+		MetaData* meta_data);		//Function creates player object, loads in enemies for the zones etc. Call from InitiateGame();
 
 	//Functions for controlling the player
 	//Call these functions when pressing buttons

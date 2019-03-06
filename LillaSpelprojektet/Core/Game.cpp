@@ -202,21 +202,27 @@ Game::Game() {
 	this->cam_handler_ptr_ = new CameraHandler(glm::vec3(256.0, -256.0f, 0.0f),
 		GlobalSettings::Access()->ValueOf("CAMERA_DEFAULT_ZOOM"));
 	this->obj_handler_ptr_ = new ObjectHandler();
-	
+	this->meta_data_ptr_ = new MetaData();
+
 	this->state_ = MENU;
 }
 
 Game::~Game() {
 	delete this->cam_handler_ptr_;
 	delete this->obj_handler_ptr_;
+	delete this->meta_data_ptr_;
 }
 
 void Game::InitializeGame() {
+	this->meta_data_ptr_->Initialize();
+	
 	this->menu_.Initiliaze();
-	this->render_.InitializeRender();
+	
+	this->render_.InitializeRender(meta_data_ptr_);
+	
 	this->obj_handler_ptr_->InitializeObjectHandler(
 		render_.GetMapPointer(),
-		render_.GetDoorKeyPosition());
+		meta_data_ptr_);
 
 	this->game_clock_.restart();	//Get the clock going correctly
 }
@@ -328,4 +334,8 @@ void Game::InputContinual() {
 bool Game::IsRunning() {
 	//If the game ain't quittin', it's runnin'
 	return (this->state_ != QUIT);
+}
+
+MetaData * Game::getMetaDataPtr() {
+	return meta_data_ptr_;
 }

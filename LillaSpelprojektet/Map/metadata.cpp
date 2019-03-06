@@ -31,9 +31,6 @@ void MetaData::Initialize() {
 		glm::vec2(1026, -525),
 		glm::vec2(446, -1664)
 	};
-	zone_origin_coords_ = FetchThreeRandomPOIs(800);
-	zone_radius_ = 400;
-
 	light_positions_ = {
 		//Special lights
 		glm::vec2(0, 0),		// Player
@@ -101,11 +98,11 @@ void MetaData::Initialize() {
 		glm::vec2(535, -160),
 		glm::vec2(310, -200)
 	};
-
+	zone_radius_ = 400;
+	zone_origin_coords_ = FetchThreeRandomPOIs(zone_radius_*2);
 	spawn_point_coords_ = FetchRandomPOI();
 	boss_door_coords_ = FetchRandomPOI();
-	door_key_coords_ = FetchRandomPOI();
-	boss_room_coords_ = glm::vec2(60, -1250);
+	door_key_coords_ = FetchThreeRandomPOIs(zone_radius_);
 }
 
 std::vector<glm::vec2> MetaData::FetchThreeRandomPOIs(int offset) {
@@ -199,12 +196,7 @@ glm::vec2 MetaData::GetBossDoorCoords() const
 	return boss_door_coords_;
 }
 
-glm::vec2 MetaData::GetDoorKeyCoords() const
+std::vector<glm::vec2> MetaData::GetDoorKeyCoords() const
 {
 	return door_key_coords_;
 }
-
-glm::vec2 MetaData::GetBossRoomCoords() const {
-	return boss_room_coords_;
-}
-

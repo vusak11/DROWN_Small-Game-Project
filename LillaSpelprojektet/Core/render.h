@@ -10,6 +10,7 @@
 #include "../UI/gui.h"
 #include "../Object/Character/model.h"
 #include "../Map/map_handler.h"
+#include "../Map/metadata.h"
 
 
 class Render {
@@ -25,12 +26,13 @@ private:
 	int nr_of_models_;
 	Model** model_;
 
+	MetaData* meta_data_ptr_;
+	std::vector<glm::vec2> light_positions_;
 	int nr_of_lights_;
 	Light* lights_;
-	std::vector<glm::vec2> light_positions_;
-
+	
 	MapHandler map_handler_;
-
+	
 	GUI hud_;
 
 	void DrawScene();
@@ -39,7 +41,7 @@ public:
 	Render();
 	~Render();
 
-	void InitializeRender();
+	void InitializeRender(MetaData* meta_data);
 	void UpdateRender(
 		float dt, 
 		glm::vec3 camera_position,
@@ -67,6 +69,5 @@ public:
 	void RenderQuad();
 
 	std::vector<std::vector<float>>* GetMapPointer();
-	std::vector<glm::vec2> GetDoorKeyPosition();
 };
 #endif
