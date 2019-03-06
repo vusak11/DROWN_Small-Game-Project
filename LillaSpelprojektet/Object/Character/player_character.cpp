@@ -42,7 +42,7 @@ PlayerCharacter::~PlayerCharacter() {
 }
 
 AbilityID PlayerCharacter::GetAbilityID() const {
-	return this->ability_ptr_->id_;
+	return this->ability_ptr_->GetID();
 }
 
 WeaponID PlayerCharacter::GetWeaponID() const {
@@ -88,7 +88,7 @@ void PlayerCharacter::Jump() {
 		this->SetVelocityVec(new_velocity);
 	}
 	//We now know the player to be in the air so we check if they have double jump
-	else if (this->ability_ptr_->id_ == ABILITY_DOUBLE_JUMP) {
+	else if (this->ability_ptr_->GetID() == ABILITY_DOUBLE_JUMP) {
 		//If they do we call for the execution of that ability
 		this->ability_ptr_->ExecuteAbility(*this);
 	}
@@ -105,7 +105,7 @@ void PlayerCharacter::SetAirborne(bool in_air) {
 
 	//If the player just was put out of the air
 	//and it has a double jump, set the double jump to available
-	if (!in_air && this->ability_ptr_->id_ == ABILITY_DOUBLE_JUMP) {
+	if (!in_air && (this->ability_ptr_->GetID() == ABILITY_DOUBLE_JUMP)) {
 		((DoubleJump*)this->ability_ptr_)->available_ = true;
 	}
 

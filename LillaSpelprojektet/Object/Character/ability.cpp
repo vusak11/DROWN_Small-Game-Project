@@ -8,6 +8,10 @@ Ability::Ability() {
 
 Ability::~Ability() {}
 
+AbilityID Ability::GetID() const {
+	return this->id_;
+}
+
 bool Ability::ExecuteAbility(PlayerCharacter& in_player) {
 	//This is the base ability that does nothing
 	return true;
@@ -39,9 +43,9 @@ bool DoubleJump::ExecuteAbility(PlayerCharacter& in_player) {
 	return true;
 }
 //---------------------------------------------------------
-Dash::Dash() : CooldownClass(GlobalSettings::Access()->ValueOf("DASH_COOLDOWN")) {
+Dash::Dash() : CooldownClass(GlobalSettings::Access()->ValueOf("ABILITY_DASH_COOLDOWN")) {
 	this->id_ = ABILITY_DASH;
-	this->dash_velocity_ = GlobalSettings::Access()->ValueOf("DASH_VELOCITY");
+	this->dash_velocity_ = GlobalSettings::Access()->ValueOf("ABILITY_DASH_VELOCITY");
 }
 
 Dash::~Dash(){}
