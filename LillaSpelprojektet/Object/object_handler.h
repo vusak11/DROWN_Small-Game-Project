@@ -35,10 +35,12 @@ private:
 	PlayerCharacter* player_ptr_;
 	std::vector<ObjectClass*> npc_ptr_vector_;				//All enemies
 	std::vector<ObjectClass*> drop_ptr_vector_;		//Things dropped on the ground (e.g. power-ups, health)
-
+	
 	PlayerInput player_input_;
 
 	PhysicsEngine* physics_engine_ptr_;
+
+
 
 	//std::vector<std::function<void()>> player_action_queue_;		//NTS: Not at home in ObjectHandler?
 	

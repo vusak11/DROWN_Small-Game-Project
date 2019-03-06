@@ -26,6 +26,8 @@ private:
 
 	Ability* ability_ptr_;
 	Weapon weapon_;
+	AnimationState animation_state_;
+	float animation_timeline_ = 0;
 
 	int num_of_keys_;
 
@@ -47,6 +49,8 @@ public:
 	void MoveRight();
 	void Jump();
 	void UseAbility();
+
+	void CalculateAnimationState(float delta_time);
 
 	void SetAirborne(bool in_bool);
 	void UpdateStatus(const float& in_deltatime);		//Updates time related stuff

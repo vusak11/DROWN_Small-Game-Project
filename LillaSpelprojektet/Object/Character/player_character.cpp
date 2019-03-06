@@ -22,7 +22,7 @@ void PlayerCharacter::AlterVelocity() {
 //Public---------------------------------------------------
 PlayerCharacter::PlayerCharacter(glm::vec3 start_pos)
 	: Character(start_pos,
-		OBJECT_ID_PLAYER,
+		OBJECT_ID_PLAYER_IDLE,
 		GlobalSettings::Access()->ValueOf("PLAYER_START_HP"),
 		GlobalSettings::Access()->ValueOf("PLAYER_START_ATK")
 	) {
@@ -35,6 +35,7 @@ PlayerCharacter::PlayerCharacter(glm::vec3 start_pos)
 	//this->ability_ptr_ = new Dash();
 	
 	this->weapon_.id = WEAPON_AXE;
+	animation_state_ = ANIMATION_STATE_PLAYER_IDLE;
 }
 
 PlayerCharacter::~PlayerCharacter() {
@@ -98,6 +99,34 @@ void PlayerCharacter::Jump() {
 
 void PlayerCharacter::UseAbility() {
 	this->ability_ptr_->ExecuteAbility(*this);
+}
+
+void PlayerCharacter::CalculateAnimationState(float delta_time) {
+
+	if (IsAirborne()) {
+		animation_state_ = ANIMATION_STATE_PLAYER_JUMP;
+		SetObjectID(OBJECT_ID_PLAYER_JUMP);
+	}
+	else if (abs(GetVelocityVec().x) > 0.0f) {
+		animation_state_ = ANIMATION_STATE_PLAYER_WALK;
+		animation_timeline_ += delta_time;
+		if (animation_timeline_ > 0.15f) {
+			if (id_ == OBJECT_ID_PLAYER_LEFT_WALK) {
+				SetObjectID(OBJECT_ID_PLAYER_IDLE);
+			}
+			else if (id_ == OBJECT_ID_PLAYER_IDLE) {
+				SetObjectID(OBJECT_ID_PLAYER_RIGHT_WALK);
+			}
+			else {
+				SetObjectID(OBJECT_ID_PLAYER_IDLE);
+			}
+			animation_timeline_ = 0.0f;
+		}
+	}
+	else {
+		animation_state_ = ANIMATION_STATE_PLAYER_IDLE;
+		SetObjectID(OBJECT_ID_PLAYER_IDLE);
+	}
 }
 
 void PlayerCharacter::SetAirborne(bool in_air) {

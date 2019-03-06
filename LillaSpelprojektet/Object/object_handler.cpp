@@ -77,6 +77,7 @@ void ObjectHandler::DeterminePlayerAction(const float& in_deltatime, std::vector
 
 	//Update the player's status (such as cooldowns)
 	this->player_ptr_->UpdateStatus(in_deltatime);
+	player_ptr_->CalculateAnimationState(in_deltatime);
 
 	//Determine player movement on the x-axis
 	if (this->player_input_.left) {
@@ -368,6 +369,9 @@ std::vector<ObjectPackage> ObjectHandler::UpdateAndRetrieve(float in_deltatime) 
 	this->PackObjectIntoVector(this->player_ptr_, package_vector);
 	this->PackObjectVectorIntoVector(relevant_npcs_ptr_vector, package_vector);
 	this->PackObjectVectorIntoVector(relevant_drops_ptr_vector, package_vector);
+
+
+
 
 	return package_vector;
 }

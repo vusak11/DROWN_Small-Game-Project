@@ -45,10 +45,11 @@ Render::Render() {
 
 	//Link models to a ObjectID
 	model_[OBJECT_ID_NULL] = new Model((char*)"../Resources/Models/DefaultDummyNPC/defaultDummyNPC.obj");
-	//model_[OBJECT_ID_PLAYER] = new Model((char*)"../Resources/Models/war_s.fbx");
-	model_[OBJECT_ID_PLAYER] = new Model((char*)"../Resources/Models/TestBox/testBOX.obj");
+	model_[OBJECT_ID_PLAYER_IDLE] = new Model((char*)"../Resources/Models/Character/IdleStance.obj");
+	model_[OBJECT_ID_PLAYER_JUMP] = new Model((char*)"../Resources/Models/Character/JumpStance.obj");
+	model_[OBJECT_ID_PLAYER_LEFT_WALK] = new Model((char*)"../Resources/Models/Character/LeftWalkStance.obj");
+	model_[OBJECT_ID_PLAYER_RIGHT_WALK] = new Model((char*)"../Resources/Models/Character/RightWalkStance.obj");
 	model_[OBJECT_ID_DUMMY] = new Model((char*)"../Resources/Models/DummyNPC/dummyNPC.obj");
-	
 	model_[OBJECT_ID_DROP_HP_RESTORE] = new Model((char*)"../Resources/Models/Drops/heart_drop/heart_drop.obj");
 	model_[OBJECT_ID_DROP_HP_UP] = new Model((char*)"../Resources/Models/Drops/hp_buff/hp_buff.obj");
 	model_[OBJECT_ID_DROP_ATK_UP] = new Model((char*)"../Resources/Models/Drops/attack_buff/attack_buff.obj");
