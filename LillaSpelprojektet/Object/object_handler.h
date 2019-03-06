@@ -54,11 +54,11 @@ private:
 
 	void DeterminePlayerAction(
 		const float& in_deltatime,
-		std::vector<ObjectClass*>& in_relevant_ncps_ptr_vector,
+		std::vector<ObjectClass*>& in_relevant_npcs_ptr_vector,
 		std::vector<ObjectClass*>& in_relevant_drops_ptr_vector
 	);
 	void ResolvePlayerPickUp(std::vector<ObjectClass*>& in_relevant_drops_ptr_vector);
-	void ResolvePlayerAttack(std::vector<ObjectClass*>& in_relevant_ncps_ptr_vector);
+	void ResolvePlayerAttack(std::vector<ObjectClass*>& in_relevant_npcs_ptr_vector);
 
 	void ProcessNPCs(const float& in_deltatime, std::vector<ObjectClass*>& in_npcs_ptr_vector);	//Call AI functions for NPCs in vector
 	void DetermineNPCAction(const float& in_deltatime, NPC* in_npc);							//Call the AI of the npc object to see what the npc does, then determine legal actions

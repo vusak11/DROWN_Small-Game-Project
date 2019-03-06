@@ -75,7 +75,7 @@ float ObjectHandler::DistanceBetween(const ObjectClass* in_object_a, const Objec
 
 void ObjectHandler::DeterminePlayerAction(
 	const float& in_deltatime,
-	std::vector<ObjectClass*>& in_relevant_ncps_ptr_vector,
+	std::vector<ObjectClass*>& in_relevant_npcs_ptr_vector,
 	std::vector<ObjectClass*>& in_relevant_drops_ptr_vector
 ) {
 
@@ -101,7 +101,7 @@ void ObjectHandler::DeterminePlayerAction(
 	}
 	//If input is attack
 	if (this->player_input_.attack) {
-		this->ResolvePlayerAttack(in_relevant_ncps_ptr_vector);
+		this->ResolvePlayerAttack(in_relevant_npcs_ptr_vector);
 	}
 	//If input is to pick up
 	if (this->player_input_.pick_up) {
@@ -136,10 +136,31 @@ void ObjectHandler::ResolvePlayerPickUp(std::vector<ObjectClass*>& in_relevant_d
 	}
 }
 
-void ObjectHandler::ResolvePlayerAttack(std::vector<ObjectClass*>& in_relevant_ncps_ptr_vector) {
+void ObjectHandler::ResolvePlayerAttack(std::vector<ObjectClass*>& in_relevant_npcs_ptr_vector) {
 
-	//
+	//WIP FUNCTION
 
+	std::vector<int> index_of_the_dead;
+	Character* character_ptr = NULL;
+
+	//Loop over all relevant npcs
+	for (unsigned int i = 0; i < in_relevant_npcs_ptr_vector.size(); i++) {
+		//Typecast a ptr in the vector to the character type
+		character_ptr = dynamic_cast<Character*>(in_relevant_npcs_ptr_vector.at(i));
+		if (character_ptr != NULL) {
+			
+			//Make call to check for strike hit
+			/*
+			if (1 == blahblah) {
+				//If the enemy died save its index
+				index_of_the_dead.push_back(i);
+			}
+			*/
+
+		}
+	}
+
+	//Lastly remove enemies on position indicated by the index vector
 }
 
 void ObjectHandler::ProcessNPCs(const float& in_deltatime, std::vector<ObjectClass*>& in_npcs_ptr_vector) {
