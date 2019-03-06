@@ -57,6 +57,7 @@ enum GameState {
 	PAUSE,
 	OPTIONS,
 	DEATH,
+	BOSS,
 	QUIT
 };
 

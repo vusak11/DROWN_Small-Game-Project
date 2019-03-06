@@ -162,6 +162,9 @@
     <ClCompile Include="Object\Character\NPCs\NPC_runner.cpp">
       <Filter>Source Files\Object\Character\NPCs</Filter>
     </ClCompile>
+    <ClCompile Include="Object\Character\NPCs\NPC_boss.cpp">
+      <Filter>Source Files\Object\Character\NPCs</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera\camera.h">
@@ -244,6 +247,9 @@
     </ClInclude>
     <ClInclude Include="Object\Drop\drop.h">
       <Filter>Header Files\Object\Drop</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Character\NPCs\NPC_boss.h">
+      <Filter>Header Files\Object\Character\NPCs</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

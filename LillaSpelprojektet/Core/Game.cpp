@@ -17,7 +17,10 @@ void Game::InputForMenuState(const sf::Event& in_event) {
 		if (in_event.key.code == sf::Keyboard::Enter) {
 			switch (menu_.GetSelectedItemIndex()) {
 			case 0:						//Start
-				state_ = GAME;
+
+				InitializeStartGame();
+				state_ = GameState::GAME;
+				
 				break;
 			case 1:						//Options
 				//state_ = OPTIONS; //REAL case
@@ -46,13 +49,27 @@ void Game::InputForPauseState(const sf::Event& in_event) {
 			menu_.NavigateDown();
 		}
 		if (in_event.key.code == sf::Keyboard::Escape) {
-			state_ = GAME;
+			if (previous_state_ == GameState::BOSS)
+			{
+				state_ = GameState::BOSS;
+			}
+			else
+			{
+				state_ = GameState::GAME;
+			}
 			menu_.StateManager(state_);
 		}
 		if (in_event.key.code == sf::Keyboard::Enter) {
 			switch (menu_.GetSelectedItemIndex()) {
 			case 0:						//Continue
-				state_ = GAME;
+				if (previous_state_ == GameState::BOSS)
+				{
+					state_ = GameState::BOSS;
+				}
+				else
+				{
+					state_ = GameState::GAME;
+				}
 				menu_.StateManager(state_);
 				break;
 			case 1:						//Save score
@@ -117,7 +134,7 @@ void Game::InputForGameState(const sf::Event& in_event) {
 		//--------------------Player Control---------------------
 		//-------------------------------------------------------
 		//Jump
-		if (in_event.key.code == sf::Keyboard::W) {
+		if (in_event.key.code == sf::Keyboard::W || in_event.key.code == sf::Keyboard::Space) {
 			this->obj_handler_ptr_->PlayerJump();
 		}
 		//Pick up
@@ -139,6 +156,7 @@ void Game::InputForGameState(const sf::Event& in_event) {
 		//-------------------------------------------------------
 		//Pause
 		if (in_event.key.code == sf::Keyboard::Escape) {
+			previous_state_ = state_;
 			state_ = PAUSE;
 			menu_.StateManager(state_);
 		}
@@ -218,7 +236,17 @@ void Game::InitializeGame() {
 		render_.GetMapPointer(),
 		render_.GetDoorKeyPosition());
 
+	sound_unit_game_.SetMusicFile((char*)"../Resources/Audio/menusong.wav");
+	sound_unit_game_.SetVolumeMusic(50);
+	sound_unit_game_.PlayMusic();
+
 	this->game_clock_.restart();	//Get the clock going correctly
+}
+
+void Game::InitializeStartGame() {
+	sound_unit_game_.SetMusicFile((char*)"../Resources/Audio/cavesong.wav");
+	sound_unit_game_.SetVolumeMusic(35);
+	sound_unit_game_.PlayMusic();
 }
 
 void Game::GameIteration() {
@@ -226,10 +254,10 @@ void Game::GameIteration() {
 	//Update deltatime
 	this->game_deltatime_ = this->game_clock_.restart().asSeconds();
 
-	if (state_ == MENU) {
+	if (state_ == GameState::MENU) {
 		render_.RenderMenuState(menu_);
 	}
-	else if (state_ == GAME) {
+	else if (state_ == GameState::GAME) {
 		// Create a vector to hold interesting objects
 		std::vector<ObjectPackage> object_vector;
 
@@ -242,11 +270,44 @@ void Game::GameIteration() {
 		//Update the camera's position
 		cam_handler_ptr_->SetPrimaryCameraPos(player_info.position);
 
+		//Update the screen
+		render_.UpdateRender(
+			this->game_deltatime_,
+			cam_handler_ptr_->GetCameraPosition(),
+			cam_handler_ptr_->GetViewPerspectiveMatrix(),
+			object_vector,
+			player_info
+		);
+
+		// INITIALIZE BOSS FIGHT
 		if (this->obj_handler_ptr_->PlayerInBossRoom()) { // Swap primary camera to 'boss' camera
 			cam_handler_ptr_->SwapCameraToBossCamera();
+			state_ = BOSS;
+			obj_handler_ptr_->SetPlayerZPosForBoss();
+			sound_unit_game_.StopMusic();
+			sound_unit_game_.SetMusicFile((char*)"../Resources/Audio/disco2.wav");
+			sound_unit_game_.SetVolumeMusic(100);
+			sound_unit_game_.PlayMusic();
+			std::cout << "ENTERING BOSS STATE" << std::endl;
+			// SPAWN BOSS
 		}
 
-		//TEMP
+		/*--------------Restart Game when death occurs--------------*/
+		if (player_info.current_hp == 0) { //Use this one
+			state_ = GameState::DEATH;
+		}
+		/*----------End Restart Game when death occurs--------------*/
+	}
+	else if (state_ == GameState::BOSS)
+	{
+		// Create a vector to hold interesting objects
+		std::vector<ObjectPackage> object_vector;
+
+		//Update the game logic and fill the vector
+		object_vector = this->obj_handler_ptr_->UpdateAndRetrieve(this->game_deltatime_);
+
+		//Get data about the player
+		PlayerInfoPackage player_info = this->obj_handler_ptr_->RetrievePlayerInfoPackage();
 
 		//Update the screen
 		render_.UpdateRender(
@@ -259,7 +320,7 @@ void Game::GameIteration() {
 
 		/*--------------Restart Game when death occurs--------------*/
 		if (player_info.current_hp == 0) { //Use this one
-			state_ = DEATH;
+			state_ = GameState::DEATH;
 		}
 		/*----------End Restart Game when death occurs--------------*/
 	}
@@ -269,7 +330,7 @@ void Game::GameIteration() {
 	else if (state_ == GameState::DEATH) {
 		render_.RenderDeathMenu(menu_);
 	}
-	else if (state_ == QUIT) {
+	else if (state_ == GameState::QUIT) {
 		//This will break the outside loops
 	}
 }
@@ -280,16 +341,16 @@ void Game::InputEvents(const sf::Event& in_event) {
 	//for things that should only trigger once
 	//per button press
 	
-	if (state_ == GAME) {
+	if (state_ == GameState::GAME || state_ == GameState::BOSS) {
 		this->InputForGameState(in_event);
 	}
-	else if (state_ == MENU) {
+	else if (state_ == GameState::MENU) {
 		this->InputForMenuState(in_event);
 	}
-	else if (state_ == PAUSE) {
+	else if (state_ == GameState::PAUSE) {
 		this->InputForPauseState(in_event);
 	}
-	else if (state_ == DEATH) {
+	else if (state_ == GameState::DEATH) {
 		this->InputForDeathState(in_event);
 	}
 }
@@ -301,7 +362,7 @@ void Game::InputContinual() {
 
 	this->input_deltatime_ = this->input_clock_.restart().asSeconds();
 
-	if (this->state_ != GAME) { return; }
+	if (this->state_ != GameState::GAME && this->state_ != GameState::BOSS) { return; }
 
 	//-------------------------------------------------------
 	//--------------------Player Control---------------------
@@ -327,5 +388,5 @@ void Game::InputContinual() {
 
 bool Game::IsRunning() {
 	//If the game ain't quittin', it's runnin'
-	return (this->state_ != QUIT);
+	return (this->state_ != GameState::QUIT);
 }

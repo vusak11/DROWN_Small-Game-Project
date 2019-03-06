@@ -98,6 +98,7 @@ public:
 	PlayerInfoPackage RetrievePlayerInfoPackage();
 
 	bool PlayerInBossRoom();
+	void SetPlayerZPosForBoss();
 	//Test functions------------------------------------------
 	void TestObjectHandler();
 

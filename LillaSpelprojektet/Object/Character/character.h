@@ -4,6 +4,7 @@
 #include "../object_class.h"
 
 #include <stdexcept>
+#include "../../Core/sound_unit.h"
 
 // This class is used as a base of each character in the game. 
 // Example:

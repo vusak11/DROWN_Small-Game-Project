@@ -5,6 +5,8 @@ SoundUnit::SoundUnit() {
 	sound_.setBuffer(buffer_);
 
 	music_file_name_ = ((char*)"../Resources/Audio/default_sound.wav");
+	music_.setVolume(100);
+	music_.setLoop(true);
 }
 
 SoundUnit::~SoundUnit() {
@@ -42,4 +44,8 @@ bool SoundUnit::PlayMusic() {
 
 void SoundUnit::StopMusic() {
 	music_.stop();
+}
+
+void SoundUnit::SetVolumeMusic(int volume) {
+	music_.setVolume(volume);
 }

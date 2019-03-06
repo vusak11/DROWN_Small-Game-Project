@@ -30,7 +30,7 @@ Render::Render() {
 	//-------------------Load Map Data------------------------
 	//--------------------------------------------------------
 	map_handler_.InitializeMaps(
-		"../Resources/Map/MainMap.bmp",
+		"../Resources/Map/MainMap_grayscale.bmp",
 		"../Resources/Map/cavewall.png",
 		"../Resources/Map/v4.png");
 	nr_of_lights_ = map_handler_.GetLightPositions().size();

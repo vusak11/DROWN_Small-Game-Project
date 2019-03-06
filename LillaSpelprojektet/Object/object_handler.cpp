@@ -243,10 +243,10 @@ void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map
 	}
 	//this->npc_ptr_vector_.at(0)->SetScale(3.0f);
 	
-	//glm::vec3 npc_pos = PLAYER_START_POS;
-	//npc_pos.x -= 70.0f;
-	//this->npc_ptr_vector_.push_back(new NPC(npc_pos));
-	//this->npc_ptr_vector_.at(0)->SetScale(3.0f);
+	glm::vec3 npc_pos = player_pos;
+	npc_pos.x += 120.0f;
+	this->npc_ptr_vector_.push_back(new NPCRunner(npc_pos));
+	this->npc_ptr_vector_.at(0)->SetScale(3.0f);
 
 	glm::vec3 drop_pos = player_pos;
 	
@@ -391,6 +391,12 @@ bool ObjectHandler::PlayerInBossRoom() {
 		this->player_ptr_->GetPosition().y > -1265.0f && this->player_ptr_->GetPosition().y < -1060.0f)
 		check = true;
 	 return check;
+}
+
+void ObjectHandler::SetPlayerZPosForBoss()
+{
+	glm::vec3 position = this->player_ptr_->GetPosition();
+	this->player_ptr_->SetPosition(position.x, position.y, 7);
 }
 
 void ObjectHandler::TestObjectHandler() {

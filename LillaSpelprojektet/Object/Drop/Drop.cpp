@@ -99,6 +99,9 @@ KeyDrop::~KeyDrop() {}
 bool BossDoor::TriggerEvent(PlayerCharacter& in_player) {
 	//Check if player has enough keys
 	if (in_player.GetNumOfKeys() >= this->keys_required_) {
+
+		// SET BOSS STATE
+
 		//If so, move player to boss-room
 		in_player.SetPosition(
 			GlobalSettings::Access()->ValueOf("DROP_BOSS_DOOR_DESTINATION_X"),

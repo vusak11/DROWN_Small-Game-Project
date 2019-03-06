@@ -30,6 +30,7 @@ public:
 
 	bool PlayMusic();
 	void StopMusic();
+	void SetVolumeMusic(int volume); // Volume from 0 -> 100
 
 private:
 	sf::SoundBuffer buffer_;
