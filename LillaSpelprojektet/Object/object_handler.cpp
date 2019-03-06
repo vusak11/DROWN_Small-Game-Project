@@ -73,7 +73,11 @@ float ObjectHandler::DistanceBetween(const ObjectClass* in_object_a, const Objec
 	return glm::distance(pos2_a, pos2_b);
 }
 
-void ObjectHandler::DeterminePlayerAction(const float& in_deltatime, std::vector<ObjectClass*>& in_relevant_drops_ptr_vector) {
+void ObjectHandler::DeterminePlayerAction(
+	const float& in_deltatime,
+	std::vector<ObjectClass*>& in_relevant_ncps_ptr_vector,
+	std::vector<ObjectClass*>& in_relevant_drops_ptr_vector
+) {
 
 	//Update the player's status (such as cooldowns)
 	this->player_ptr_->UpdateStatus(in_deltatime);
@@ -97,7 +101,7 @@ void ObjectHandler::DeterminePlayerAction(const float& in_deltatime, std::vector
 	}
 	//If input is attack
 	if (this->player_input_.attack) {
-
+		this->ResolvePlayerAttack(in_relevant_ncps_ptr_vector);
 	}
 	//If input is to pick up
 	if (this->player_input_.pick_up) {
@@ -130,6 +134,12 @@ void ObjectHandler::ResolvePlayerPickUp(std::vector<ObjectClass*>& in_relevant_d
 		//Then remove the entry from the list of relevant drops
 		in_relevant_drops_ptr_vector.erase(in_relevant_drops_ptr_vector.begin() + index);
 	}
+}
+
+void ObjectHandler::ResolvePlayerAttack(std::vector<ObjectClass*>& in_relevant_ncps_ptr_vector) {
+
+	//
+
 }
 
 void ObjectHandler::ProcessNPCs(const float& in_deltatime, std::vector<ObjectClass*>& in_npcs_ptr_vector) {

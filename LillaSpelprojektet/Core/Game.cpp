@@ -125,8 +125,12 @@ void Game::InputForGameState(const sf::Event& in_event) {
 			this->obj_handler_ptr_->PlayerPickUp();
 		}
 		//Use Ability
-		if (in_event.key.code == sf::Keyboard::E) {
+		if (in_event.key.code == sf::Keyboard::LShift) {
 			this->obj_handler_ptr_->PlayerUseAbility();
+		}
+		//Attack
+		if (in_event.key.code == sf::Keyboard::Space) {
+			this->obj_handler_ptr_->PlayerAttack();
 		}
 		/*---------------End Keyboard inputs-----------------*/
 

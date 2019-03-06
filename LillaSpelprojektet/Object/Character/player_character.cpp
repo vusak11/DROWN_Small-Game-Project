@@ -31,14 +31,15 @@ PlayerCharacter::PlayerCharacter(glm::vec3 start_pos)
 	this->jump_speed_ = GlobalSettings::Access()->ValueOf("PLAYER_JUMP_VELOCITY");
 	
 	//this->ability_ptr_ = new Ability();
-	this->ability_ptr_ = new DoubleJump();
-	//this->ability_ptr_ = new Dash();
+	//this->ability_ptr_ = new DoubleJump();
+	this->ability_ptr_ = new Dash();
 	
-	this->weapon_.id = WEAPON_AXE;
+	this->weapon_ptr_ = new Axe();
 }
 
 PlayerCharacter::~PlayerCharacter() {
-
+	delete ability_ptr_;
+	delete weapon_ptr_;
 }
 
 AbilityID PlayerCharacter::GetAbilityID() const {
@@ -46,8 +47,7 @@ AbilityID PlayerCharacter::GetAbilityID() const {
 }
 
 WeaponID PlayerCharacter::GetWeaponID() const {
-	//WIP
-	return this->weapon_.id;
+	return this->weapon_ptr_->GetID();
 }
 
 int PlayerCharacter::GetNumOfKeys() const {
