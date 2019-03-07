@@ -100,7 +100,7 @@ void MetaData::Initialize() {
 	};
 	zone_radius_ = 400;
 	zone_origin_coords_ = FetchThreeRandomPOIs(zone_radius_*2);
-	spawn_point_coords_ = FetchRandomPOI();
+	spawn_point_coords_ = FetchSpawnPoint();
 	boss_door_coords_ = FetchRandomPOI();
 	door_key_coords_ = FetchThreeRandomPOIs(zone_radius_);
 }
@@ -170,6 +170,25 @@ std::string MetaData::GetZone(glm::vec2 zone_central_points) {
 		zone_code = "BLU";
 	}
 	return zone_code;
+}
+
+glm::vec2 MetaData::FetchSpawnPoint() {
+	srand((unsigned)time(0));
+	int rand_num = ((rand() % (points_of_interest_.size() - 1)));		//Random number 0 - nr_of_pois_
+	glm::vec2 return_POI;
+
+	for (int i = rand_num; i < points_of_interest_.size(); i++) {
+		//IF OUT OF BOUNDS
+		if (i >= points_of_interest_.size()) {
+			i = 1 + ((rand() % (points_of_interest_.size() - 1)));			//START OVER ON NEW RANDOM VALUE BETWEEN 1 - 5
+		}
+		
+		if (GetZone(points_of_interest_[i]) == "DEF") {
+			return_POI = points_of_interest_[i];
+			points_of_interest_.erase(points_of_interest_.begin() + i);		//Erase coords from list of available POIs
+			return return_POI;
+		}
+	}
 }
 
 std::vector<glm::vec2> MetaData::GetRemainingPOIs() const {

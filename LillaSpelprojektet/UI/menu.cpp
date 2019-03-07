@@ -202,8 +202,8 @@ void Menu::RenderPauseMenu(ShaderHandler * shader_handler) {
 	RenderText(
 		shader_handler,
 		"Pause",
-		((float)window_width) / 3.0f,
-		(((float)window_height) / 10.0f) * 8.0f,
+		((float)window_width) / 9.0f * 3.5f,
+		(((float)window_height) / 11.0f) * 8.0f,
 		3.0f,
 		glm::vec3(1.0f, 1.0f, 1.0f)
 	);
