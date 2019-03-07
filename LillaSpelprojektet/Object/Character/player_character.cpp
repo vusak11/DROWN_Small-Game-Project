@@ -133,21 +133,25 @@ bool PlayerCharacter::SwapAbilities(ObjectID object_ability) {
 
 	if (this->ability_ptr_->id_ == ABILITY_NONE &&
 		object_ability == OBJECT_ID_DROP_DOUBLE_JUMP) {
+		delete this->ability_ptr_;
 		this->ability_ptr_ = new DoubleJump();
 		return true;
 	}
 	else if (this->ability_ptr_->id_ == ABILITY_NONE &&
 		object_ability == OBJECT_ID_DROP_DASH) {
+		delete this->ability_ptr_;
 		this->ability_ptr_ = new Dash();
 		return true;
 	}
 	else if (this->ability_ptr_->id_ == ABILITY_DASH &&
 		object_ability == OBJECT_ID_DROP_DOUBLE_JUMP) {
+		delete this->ability_ptr_;
 		this->ability_ptr_ = new DoubleJump();
 		return true;
 	} 
 	else if (this->ability_ptr_->id_ == ABILITY_DOUBLE_JUMP &&
 		object_ability == OBJECT_ID_DROP_DASH) {
+		delete this->ability_ptr_;
 		this->ability_ptr_ = new Dash();
 		return true;
 	}
