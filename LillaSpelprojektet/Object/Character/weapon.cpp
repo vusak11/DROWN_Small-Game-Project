@@ -144,8 +144,18 @@ int Axe::ExecuteWeapon(Character& in_attacker, Character& in_target) {
 
 		std::cout << "	Knocking back" << std::endl;
 
-		//Align directional vector from attacker to target and normalize it
-		direction = glm::normalize(in_target.GetPosition() - in_attacker.GetPosition());
+		//Align directional vector from attacker to target
+		direction = in_target.GetPosition() - in_attacker.GetPosition();
+
+		//Normailize vector
+		direction = glm::normalize(direction);
+
+		//TEST
+		//If y-direction is less than 45deg
+		//(y = 1/sqrt(2) = 0.707..)
+		//set y to be that
+		if (direction.y < 0.707) { direction.y = 0.707; }
+		//TEST
 
 		//Scale direction with knockback
 		direction *= this->knock_back_;
