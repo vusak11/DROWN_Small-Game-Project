@@ -126,10 +126,33 @@ void ObjectHandler::ResolvePlayerPickUp(std::vector<ObjectClass*>& in_relevant_d
 
 	//If we have triggered an event
 	if (triggered) {
-		//Delete the object and remove the pointer from the object handler's drop vector
-		this->RemoveObject(in_relevant_drops_ptr_vector.at(index), this->drop_ptr_vector_);
-		//Then remove the entry from the list of relevant drops
-		in_relevant_drops_ptr_vector.erase(in_relevant_drops_ptr_vector.begin() + index);
+		//Check if the ptr is an ability
+		bool same_ability = false;
+		drop_ptr = dynamic_cast<AbilitiesDrop*>(in_relevant_drops_ptr_vector.at(index));
+		//Swap abilities
+		if (drop_ptr != NULL) {
+			AbilityID old_ability = player_ptr_->GetAbilityID();
+			bool ability_swapped = player_ptr_->SwapAbilities(in_relevant_drops_ptr_vector.at(index)->GetObjectID());
+
+			if (ability_swapped) {
+				if (old_ability == ABILITY_DOUBLE_JUMP)
+					this->drop_ptr_vector_.push_back(
+						new DoubleJumpDrop(in_relevant_drops_ptr_vector.at(index)->GetPosition()));
+				else if (old_ability == ABILITY_DASH)
+					this->drop_ptr_vector_.push_back(
+						new DashDrop(in_relevant_drops_ptr_vector.at(index)->GetPosition()));
+				this->drop_ptr_vector_.back()->SetScale(3.0f);
+			}
+			else
+				same_ability = true;
+		}
+		
+		if (!same_ability) { //OBS! This case is needed for swapping abilities otherwise we will have to duplicate content
+			//Delete the object and remove the pointer from the object handler's drop vector
+			this->RemoveObject(in_relevant_drops_ptr_vector.at(index), this->drop_ptr_vector_);
+			//Then remove the entry from the list of relevant drops
+			in_relevant_drops_ptr_vector.erase(in_relevant_drops_ptr_vector.begin() + index);
+		}
 	}
 }
 
@@ -220,7 +243,16 @@ void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map
 	//this->player_ptr_ = new PlayerCharacter(glm::vec3(meta_data->GetSpawnPointCoords(), 3.0f));
 	this->player_ptr_ = new PlayerCharacter(glm::vec3(meta_data->GetSpawnPointCoords(), 3.0f));
 	this->player_ptr_->SetScale(2.0f);
+	
+	glm::vec3 drop_pos = player_pos;
+	
+	drop_pos.x += 10.0f;
+	this->drop_ptr_vector_.push_back(new DashDrop(drop_pos));
+	this->drop_ptr_vector_.back()->SetScale(3.0f);
 
+	drop_pos.x += 10.0f;
+	this->drop_ptr_vector_.push_back(new DoubleJumpDrop(drop_pos));
+	this->drop_ptr_vector_.back()->SetScale(3.0f);
 	// Create NPCs and spawn them on every light source
 	for (int i = 2; i < meta_data->GetLightPositions().size(); i++) {
 		if (sqrt(pow((meta_data->GetLightPositions()[i].x - meta_data->GetSpawnPointCoords().x), 2) + pow((meta_data->GetLightPositions()[i].y - meta_data->GetSpawnPointCoords().y), 2)) > 50) {
@@ -242,6 +274,12 @@ void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map
 	}
 	this->nr_of_runners_ = this->npc_ptr_vector_.size();
 
+	drop_pos.x += 10.0f;
+	this->drop_ptr_vector_.push_back(new DashDrop(drop_pos));
+	this->drop_ptr_vector_.back()->SetScale(3.0f);
+
+	drop_pos.x += 10.0f;
+	this->drop_ptr_vector_.push_back(new BossDoor(drop_pos));
 	// Spawn keys
 	for (int i = 0; i < 3; i++) {
 		this->drop_ptr_vector_.push_back(new KeyDrop(glm::vec3(meta_data->GetDoorKeyCoords()[i], 0.0f)));
