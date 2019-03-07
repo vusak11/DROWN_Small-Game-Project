@@ -103,8 +103,6 @@ public:
 	PlayerInfoPackage RetrievePlayerInfoPackage();
 
 	bool PlayerInBossRoom();
-	//Test functions------------------------------------------
-	void TestObjectHandler();
 
 };
 
