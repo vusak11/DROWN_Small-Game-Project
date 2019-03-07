@@ -221,35 +221,29 @@ void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map
 	this->player_ptr_->SetScale(2.0f);
 
 	// Create NPCs and spawn them on every light source
-	float nr_of_runners = GlobalSettings::Access()->ValueOf("NR_OF_NPC_RUNNER");
-	
-	for (int i = 0; i < nr_of_runners; i++) {
-		/*if (glm::distance(meta_data->GetLightPositions()[i], meta_data->GetSpawnPointCoords()) <= 10.0f) {
-			i++;
+	for (int i = 2; i < meta_data->GetLightPositions().size(); i++) {
+		if (sqrt(pow((meta_data->GetLightPositions()[i].x - meta_data->GetSpawnPointCoords().x), 2) + pow((meta_data->GetLightPositions()[i].y - meta_data->GetSpawnPointCoords().y), 2)) > 50) {
+			this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(meta_data->GetLightPositions()[i], 0.0f)));
+		}
+		// Different NPC's depending on where they spawn
+		/*else {
+			this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(meta_data->GetLightPositions()[i], 0.0f)));
 		}*/
-		/*if (sqrt(pow((meta_data->GetLightPositions()[i].x - meta_data->GetSpawnPointCoords().x), 2) + pow((meta_data->GetLightPositions()[i].y - meta_data->GetSpawnPointCoords().y), 2)) < 10) {
-			i++;
-		}*/
-		this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(meta_data->GetLightPositions()[i], 0.0f)));
-		this->npc_ptr_vector_.at(i)->SetScale(1.5f);
 		/*if (meta_data->GetZone(meta_data->GetLightPositions()[i]) == "DEF") {
 			this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(meta_data->GetLightPositions()[i], 0.0f)));
-			this->npc_ptr_vector_.at(i)->SetScale(3.0f);
 		}
 		else if (meta_data->GetZone(meta_data->GetLightPositions()[i]) == "RED") {
 			this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(meta_data->GetLightPositions()[i], 0.0f)));
-			this->npc_ptr_vector_.at(i)->SetScale(3.0f);
 		}
 		else if (meta_data->GetZone(meta_data->GetLightPositions()[i]) == "GRE") {
 			this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(meta_data->GetLightPositions()[i], 0.0f)));
-			this->npc_ptr_vector_.at(i)->SetScale(3.0f);
 		}
 		else if (meta_data->GetZone(meta_data->GetLightPositions()[i]) == "BLU") {
 			this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(meta_data->GetLightPositions()[i], 0.0f)));
-			this->npc_ptr_vector_.at(i)->SetScale(3.0f);
 		}*/
 	}
-	
+	this->nr_of_runners_ = this->npc_ptr_vector_.size();
+
 	// Spawn keys
 	for (int i = 0; i < 3; i++) {
 		this->drop_ptr_vector_.push_back(new KeyDrop(glm::vec3(meta_data->GetDoorKeyCoords()[i], 0.0f)));

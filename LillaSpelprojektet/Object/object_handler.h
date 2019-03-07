@@ -37,6 +37,8 @@ private:
 	std::vector<ObjectClass*> npc_ptr_vector_;				//All enemies
 	std::vector<ObjectClass*> drop_ptr_vector_;		//Things dropped on the ground (e.g. power-ups, health)
 
+	float nr_of_runners_;
+
 	PlayerInput player_input_;
 
 	PhysicsEngine* physics_engine_ptr_;
