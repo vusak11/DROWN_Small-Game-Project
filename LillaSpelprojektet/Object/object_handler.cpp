@@ -404,10 +404,13 @@ bool ObjectHandler::PlayerInBossRoom() {
 	 return check;
 }
 
-void ObjectHandler::SetPlayerZPosForBoss()
+void ObjectHandler::SetPlayerXYZPosForBoss()
 {
-	glm::vec3 position = this->player_ptr_->GetPosition();
-	this->player_ptr_->SetPosition(position.x, position.y, 7);
+	this->player_ptr_->SetPosition(
+		GlobalSettings::Access()->ValueOf("DROP_BOSS_DOOR_DESTINATION_X"),
+		GlobalSettings::Access()->ValueOf("DROP_BOSS_DOOR_DESTINATION_Y"),
+		7
+	);
 }
 
 void ObjectHandler::SpawnBoss() {
