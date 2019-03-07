@@ -127,3 +127,43 @@ BossDoor::~BossDoor() {}
 void BossDoor::SpinDrop(const float& in_deltatime) {
 	//Empty as the boss-door shouldn't rotate
 }
+
+//----------------------------------------------------------
+//Private
+bool TriggerEvent(PlayerCharacter& in_player) {
+
+	return true;
+}
+
+AbilitiesDrop::AbilitiesDrop(glm::vec3 creation_pos, ObjectID id)
+	: Drop(creation_pos, id) {}
+
+AbilitiesDrop::~AbilitiesDrop() {}
+//Private
+bool DashDrop::TriggerEvent(PlayerCharacter& in_player) {
+	
+	return true;
+}
+
+//Public
+DashDrop::DashDrop(glm::vec3 creation_pos)
+	: AbilitiesDrop(creation_pos, OBJECT_ID_DROP_DASH) {
+
+}
+
+DashDrop::~DashDrop() {}
+
+//---------------------------------------------------------
+//Private
+bool DoubleJumpDrop::TriggerEvent(PlayerCharacter& in_player) {
+	
+	return true;
+}
+
+//Public
+DoubleJumpDrop::DoubleJumpDrop(glm::vec3 creation_pos)
+	: AbilitiesDrop(creation_pos, OBJECT_ID_DROP_DOUBLE_JUMP) {
+
+}
+
+DoubleJumpDrop::~DoubleJumpDrop() {}

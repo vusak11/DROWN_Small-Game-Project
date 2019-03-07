@@ -89,5 +89,33 @@ public:
 	void SpinDrop(const float& in_deltatime);
 };
 
+//---------------------------------------------------------
+//------------------ABILITY DROPS--------------------------
+class AbilitiesDrop : public Drop {
+private:
+	//bool TriggerEvent(PlayerCharacter& in_player);
+
+public:
+	AbilitiesDrop(glm::vec3 creation_pos, ObjectID id);
+	~AbilitiesDrop();
+};
+class DashDrop : public AbilitiesDrop {
+private:
+	bool TriggerEvent(PlayerCharacter& in_player);
+
+public:
+	DashDrop(glm::vec3 creation_pos);
+	~DashDrop();
+};
+
+class DoubleJumpDrop : public AbilitiesDrop {
+private:
+	bool TriggerEvent(PlayerCharacter& in_player);
+
+public:
+	DoubleJumpDrop(glm::vec3 creation_pos);
+	~DoubleJumpDrop();
+};
+
 
 #endif // !DROP_H

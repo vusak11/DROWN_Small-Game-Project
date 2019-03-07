@@ -129,6 +129,32 @@ void PlayerCharacter::CalculateAnimationState(float delta_time) {
 	}
 }
 
+bool PlayerCharacter::SwapAbilities(ObjectID object_ability) {
+
+	if (this->ability_ptr_->id_ == ABILITY_NONE &&
+		object_ability == OBJECT_ID_DROP_DOUBLE_JUMP) {
+		this->ability_ptr_ = new DoubleJump();
+		return true;
+	}
+	else if (this->ability_ptr_->id_ == ABILITY_NONE &&
+		object_ability == OBJECT_ID_DROP_DASH) {
+		this->ability_ptr_ = new Dash();
+		return true;
+	}
+	else if (this->ability_ptr_->id_ == ABILITY_DASH &&
+		object_ability == OBJECT_ID_DROP_DOUBLE_JUMP) {
+		this->ability_ptr_ = new DoubleJump();
+		return true;
+	} 
+	else if (this->ability_ptr_->id_ == ABILITY_DOUBLE_JUMP &&
+		object_ability == OBJECT_ID_DROP_DASH) {
+		this->ability_ptr_ = new Dash();
+		return true;
+	}
+	
+	return false;
+}
+
 void PlayerCharacter::SetAirborne(bool in_air) {
 	this->airborne_ = in_air;
 
