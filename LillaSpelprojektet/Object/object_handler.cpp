@@ -138,10 +138,6 @@ void ObjectHandler::ResolvePlayerPickUp(std::vector<ObjectClass*>& in_relevant_d
 
 void ObjectHandler::ResolvePlayerAttack(std::vector<ObjectClass*>& in_relevant_npcs_ptr_vector) {
 
-	//WIP FUNCTION
-	std::cout << "In ObjectHandler::ResolvePlayerAttack()" << std::endl;
-
-
 	std::vector<int> index_of_the_dead;
 	Character* character_ptr = NULL;
 
@@ -153,7 +149,6 @@ void ObjectHandler::ResolvePlayerAttack(std::vector<ObjectClass*>& in_relevant_n
 			//Send in a npc and check if the player hits it with the attack
 			//If the unit dies save its index
 			if (1 == this->player_ptr_->UseWeapon(*character_ptr)) {
-				std::cout << "Death registered in ObjectHandler::ResolvePlayerAttack()" << std::endl;
 				index_of_the_dead.push_back(i);
 			}
 		}

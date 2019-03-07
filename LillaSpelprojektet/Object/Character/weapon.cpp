@@ -31,13 +31,12 @@ int Weapon::ExecuteWeapon(Character& in_attacker, Character& in_target) {
 	//			 0	if it was a hit
 	//			 1	if the hit killed the target
 
+	// TBA in later Task ;)
 	//Check if the weapon is off cooldown
 	//	if (!this->IsOffCooldown()) {
 	//		//If it isn't return -1
 	//		return -1;
 	//	}
-	//	
-	//	std::cout << "	Weapon is off cooldown" << std::endl;
 
 	//Otherwise set the cooldown as we now make an attack
 	this->BeginCooldown();
