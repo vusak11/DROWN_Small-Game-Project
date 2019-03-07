@@ -2,10 +2,10 @@
 #include <stdlib.h>  	//Has abs()
 #include <iostream> // just for debug
 
-NPCRunner::NPCRunner(glm::vec3 start_pos)
+NPCRunner::NPCRunner(glm::vec3 start_pos, ObjectID id)
 	: NPC(
 		start_pos, 
-		OBJECT_ID_DUMMY,
+		id,
 		GlobalSettings::Access()->ValueOf("NPC_RUNNER_START_HP"),
 		GlobalSettings::Access()->ValueOf("NPC_RUNNER_START_ATK")
 	) {

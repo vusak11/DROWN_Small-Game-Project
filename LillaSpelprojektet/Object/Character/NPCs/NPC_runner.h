@@ -12,7 +12,7 @@ private:
 	glm::vec2 knockback_;
 
 public:
-	NPCRunner(glm::vec3 start_pos);
+	NPCRunner(glm::vec3 start_pos, ObjectID id);
 	~NPCRunner();
 
 	void ExecuteAI(float in_deltatime, glm::vec3 in_player_pos);

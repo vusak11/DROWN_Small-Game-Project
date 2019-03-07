@@ -217,30 +217,28 @@ void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map
 
 	//Create player
 	//Assign spawn position randomly via meta data
-	this->player_ptr_ = new PlayerCharacter(glm::vec3(meta_data->GetSpawnPointCoords(), 0.0f));
+	//this->player_ptr_ = new PlayerCharacter(glm::vec3(meta_data->GetSpawnPointCoords(), 3.0f));
+	this->player_ptr_ = new PlayerCharacter(glm::vec3(meta_data->GetZonePOIs()[0], 3.0f));
 	this->player_ptr_->SetScale(2.0f);
 
 	// Create NPCs and spawn them on every light source
 	for (int i = 2; i < meta_data->GetLightPositions().size(); i++) {
 		if (sqrt(pow((meta_data->GetLightPositions()[i].x - meta_data->GetSpawnPointCoords().x), 2) + pow((meta_data->GetLightPositions()[i].y - meta_data->GetSpawnPointCoords().y), 2)) > 50) {
-			this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(meta_data->GetLightPositions()[i], 0.0f)));
+			// Different NPC's depending on where they spawn
+			if (meta_data->GetZone(meta_data->GetLightPositions()[i]) == "DEF") {
+				this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(meta_data->GetLightPositions()[i], 5.0f), OBJECT_ID_DUMMY));
+			}
+			else if (meta_data->GetZone(meta_data->GetLightPositions()[i]) == "RED") {
+				this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(meta_data->GetLightPositions()[i], 5.0f), OBJECT_ID_FIRE_AI));
+			}
+			else if (meta_data->GetZone(meta_data->GetLightPositions()[i]) == "GRE") {
+				this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(meta_data->GetLightPositions()[i], 5.0f), OBJECT_ID_WOOD_AI));
+			}
+			else if (meta_data->GetZone(meta_data->GetLightPositions()[i]) == "BLU") {
+				this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(meta_data->GetLightPositions()[i], 5.0f), OBJECT_ID_ICE_AI));
+			}
+			this->npc_ptr_vector_.back()->SetScale(GlobalSettings::Access()->ValueOf("NPC_RUNNER_SCALE"));
 		}
-		// Different NPC's depending on where they spawn
-		/*else {
-			this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(meta_data->GetLightPositions()[i], 0.0f)));
-		}*/
-		/*if (meta_data->GetZone(meta_data->GetLightPositions()[i]) == "DEF") {
-			this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(meta_data->GetLightPositions()[i], 0.0f)));
-		}
-		else if (meta_data->GetZone(meta_data->GetLightPositions()[i]) == "RED") {
-			this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(meta_data->GetLightPositions()[i], 0.0f)));
-		}
-		else if (meta_data->GetZone(meta_data->GetLightPositions()[i]) == "GRE") {
-			this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(meta_data->GetLightPositions()[i], 0.0f)));
-		}
-		else if (meta_data->GetZone(meta_data->GetLightPositions()[i]) == "BLU") {
-			this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(meta_data->GetLightPositions()[i], 0.0f)));
-		}*/
 	}
 	this->nr_of_runners_ = this->npc_ptr_vector_.size();
 
