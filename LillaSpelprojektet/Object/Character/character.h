@@ -38,6 +38,7 @@ public:
 	int GetMaxHealth() const;
 	int GetCurrentHealth() const;
 	int GetAttackPower() const;
+	int GetFacingDirection() const;
 
 	int TakeDamage(int in_dmg);		//Returns	-1 if in-value is negative,
 	int HealDamage(int in_heal);	//			 0 if operation was successful

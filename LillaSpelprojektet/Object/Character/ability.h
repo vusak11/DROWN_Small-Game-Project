@@ -14,10 +14,14 @@ class PlayerCharacter;
 //---------------------------------------------------------
 
 class Ability {
-public:
+protected:
 	AbilityID id_;
+public:
 	Ability();
 	~Ability();
+
+	AbilityID GetID() const;
+
 	virtual bool ExecuteAbility(PlayerCharacter& in_player);
 };
 

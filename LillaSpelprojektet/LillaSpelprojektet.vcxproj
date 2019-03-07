@@ -156,6 +156,7 @@
     <ClCompile Include="Object\Character\npc.cpp" />
     <ClCompile Include="Object\Character\NPCs\NPC_runner.cpp" />
     <ClCompile Include="Object\Character\player_character.cpp" />
+    <ClCompile Include="Object\Character\weapon.cpp" />
     <ClCompile Include="Object\hitbox.cpp" />
     <ClCompile Include="Object\Drop\drop.cpp" />
     <ClCompile Include="Object\object_class.cpp" />
@@ -183,6 +184,7 @@
     <ClInclude Include="Object\Character\npc.h" />
     <ClInclude Include="Object\Character\NPCs\NPC_runner.h" />
     <ClInclude Include="Object\Character\player_character.h" />
+    <ClInclude Include="Object\Character\weapon.h" />
     <ClInclude Include="Object\Drop\drop.h" />
     <ClInclude Include="Object\hitbox.h" />
     <ClInclude Include="Object\object_class.h" />

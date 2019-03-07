@@ -31,24 +31,26 @@ PlayerCharacter::PlayerCharacter(glm::vec3 start_pos)
 	this->jump_speed_ = GlobalSettings::Access()->ValueOf("PLAYER_JUMP_VELOCITY");
 	
 	//this->ability_ptr_ = new Ability();
-	this->ability_ptr_ = new DoubleJump();
-	//this->ability_ptr_ = new Dash();
+	//this->ability_ptr_ = new DoubleJump();
+	this->ability_ptr_ = new Dash();
 	
-	this->weapon_.id = WEAPON_AXE;
+	//this->weapon_ptr_ = new Sword();
+	this->weapon_ptr_ = new Axe();
+
 	animation_state_ = ANIMATION_STATE_PLAYER_IDLE;
 }
 
 PlayerCharacter::~PlayerCharacter() {
-
+	delete ability_ptr_;
+	delete weapon_ptr_;
 }
 
 AbilityID PlayerCharacter::GetAbilityID() const {
-	return this->ability_ptr_->id_;
+	return this->ability_ptr_->GetID();
 }
 
 WeaponID PlayerCharacter::GetWeaponID() const {
-	//WIP
-	return this->weapon_.id;
+	return this->weapon_ptr_->GetID();
 }
 
 int PlayerCharacter::GetNumOfKeys() const {
@@ -89,7 +91,7 @@ void PlayerCharacter::Jump() {
 		this->SetVelocityVec(new_velocity);
 	}
 	//We now know the player to be in the air so we check if they have double jump
-	else if (this->ability_ptr_->id_ == ABILITY_DOUBLE_JUMP) {
+	else if (this->ability_ptr_->GetID() == ABILITY_DOUBLE_JUMP) {
 		//If they do we call for the execution of that ability
 		this->ability_ptr_->ExecuteAbility(*this);
 	}
@@ -99,6 +101,10 @@ void PlayerCharacter::Jump() {
 
 void PlayerCharacter::UseAbility() {
 	this->ability_ptr_->ExecuteAbility(*this);
+}
+
+int PlayerCharacter::UseWeapon(Character& in_target) {
+	return this->weapon_ptr_->ExecuteWeapon(*this, in_target);
 }
 
 void PlayerCharacter::CalculateAnimationState(float delta_time) {
@@ -164,7 +170,7 @@ void PlayerCharacter::SetAirborne(bool in_air) {
 
 	//If the player just was put out of the air
 	//and it has a double jump, set the double jump to available
-	if (!in_air && this->ability_ptr_->id_ == ABILITY_DOUBLE_JUMP) {
+	if (!in_air && (this->ability_ptr_->GetID() == ABILITY_DOUBLE_JUMP)) {
 		((DoubleJump*)this->ability_ptr_)->available_ = true;
 	}
 
@@ -178,6 +184,10 @@ void PlayerCharacter::UpdateStatus(const float& in_deltatime) {
 		//If it is, update its cooldown
 		cd_class_ptr->UpdateCooldown(in_deltatime);
 	}
+
+	//Update weapon cooldown
+	this->weapon_ptr_->UpdateCooldown(in_deltatime);
+
 }
 
 void PlayerCharacter::IncreaseKeys() {

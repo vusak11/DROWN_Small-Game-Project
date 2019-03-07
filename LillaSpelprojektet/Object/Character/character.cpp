@@ -52,7 +52,15 @@ int Character::GetAttackPower() const {
 	return this->attack_power_;
 }
 
+int Character::GetFacingDirection() const {
+	return this->looking_towards_x_;
+}
+
 int Character::TakeDamage(int in_dmg) {
+	//Returns	-1 if in-value is negative (operation fails)
+	//			 0 if operation was successful
+	//			 1 if cap (max hp/0 hp) was hit
+
 	//If the in parameter is negative, return -1
 	if (in_dmg < 0) {
 		//throw std::invalid_argument(

@@ -3,19 +3,11 @@
 
 #include "character.h"
 #include "ability.h"
+#include "weapon.h"
 
 //Forward declaraction
 //class Ability;
 
-//WIP: Placeholder for proper weapons and abilities
-
-struct Weapon {
-	WeaponID id;
-	int damage;
-	float cooldown;
-	//Hitbox data
-};
-//
 
 class PlayerCharacter : public Character {
 private:
@@ -25,7 +17,7 @@ private:
 	float jump_speed_;
 
 	Ability* ability_ptr_;
-	Weapon weapon_;
+	Weapon* weapon_ptr_;
 	AnimationState animation_state_;
 	float animation_timeline_ = 0;
 
@@ -49,6 +41,7 @@ public:
 	void MoveRight();
 	void Jump();
 	void UseAbility();
+	int UseWeapon(Character& in_target);
 
 	void CalculateAnimationState(float delta_time);
 

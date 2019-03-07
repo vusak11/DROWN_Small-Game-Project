@@ -18,5 +18,5 @@ bool NPC::Attack(Character& in_target) {
 }
 
 void NPC::ExecuteAI(float in_deltatime, glm::vec3 in_player_pos) {
-
+	
 }

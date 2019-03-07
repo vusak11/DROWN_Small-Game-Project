@@ -73,7 +73,11 @@ float ObjectHandler::DistanceBetween(const ObjectClass* in_object_a, const Objec
 	return glm::distance(pos2_a, pos2_b);
 }
 
-void ObjectHandler::DeterminePlayerAction(const float& in_deltatime, std::vector<ObjectClass*>& in_relevant_drops_ptr_vector) {
+void ObjectHandler::DeterminePlayerAction(
+	const float& in_deltatime,
+	std::vector<ObjectClass*>& in_relevant_npcs_ptr_vector,
+	std::vector<ObjectClass*>& in_relevant_drops_ptr_vector
+) {
 
 	//Update the player's status (such as cooldowns)
 	this->player_ptr_->UpdateStatus(in_deltatime);
@@ -98,7 +102,7 @@ void ObjectHandler::DeterminePlayerAction(const float& in_deltatime, std::vector
 	}
 	//If input is attack
 	if (this->player_input_.attack) {
-
+		this->ResolvePlayerAttack(in_relevant_npcs_ptr_vector);
 	}
 	//If input is to pick up
 	if (this->player_input_.pick_up) {
@@ -154,6 +158,47 @@ void ObjectHandler::ResolvePlayerPickUp(std::vector<ObjectClass*>& in_relevant_d
 			in_relevant_drops_ptr_vector.erase(in_relevant_drops_ptr_vector.begin() + index);
 		}
 	}
+}
+
+void ObjectHandler::ResolvePlayerAttack(std::vector<ObjectClass*>& in_relevant_npcs_ptr_vector) {
+
+	std::vector<int> index_of_the_dead;
+	Character* character_ptr = NULL;
+
+	//Loop over all relevant npcs
+	for (unsigned int i = 0; i < in_relevant_npcs_ptr_vector.size(); i++) {
+		//Typecast a ptr in the vector to the character type
+		character_ptr = dynamic_cast<Character*>(in_relevant_npcs_ptr_vector.at(i));
+		if (character_ptr != NULL) {
+			//Send in a npc and check if the player hits it with the attack
+			//If the unit dies save its index
+			if (1 == this->player_ptr_->UseWeapon(*character_ptr)) {
+				index_of_the_dead.push_back(i);
+			}
+		}
+	}
+
+	//Lastly remove enemies on position indicated by the index vector
+	//We need to track the offset  of how many thing we have deleted
+	//to be able to access the right index in the relevant npcs vector
+	int index;
+	int offset = 0;
+	for (unsigned int i = 0; i < index_of_the_dead.size(); i++) {
+
+		//Pick index from vector
+		index = index_of_the_dead.at(i);
+
+		//Delete the object and remove the pointer from the object handler's npc vector
+		this->RemoveObject(in_relevant_npcs_ptr_vector.at(index), this->npc_ptr_vector_);
+
+		//Then remove the entry from the list of relevant drops
+		in_relevant_npcs_ptr_vector.erase(in_relevant_npcs_ptr_vector.begin() + (index - offset));
+
+		//Increase offset
+		offset++;
+	}
+
+
 }
 
 void ObjectHandler::ProcessNPCs(const float& in_deltatime, std::vector<ObjectClass*>& in_npcs_ptr_vector) {
@@ -330,7 +375,7 @@ std::vector<ObjectPackage> ObjectHandler::UpdateAndRetrieve(float in_deltatime) 
 	relevant_drops_ptr_vector = this->CullAndRetrieveObjectPtrs(this->drop_ptr_vector_);
 
 	//Take input from player (i.e. set velocity, attack flags, etc)
-	this->DeterminePlayerAction(in_deltatime, relevant_drops_ptr_vector);
+	this->DeterminePlayerAction(in_deltatime, relevant_npcs_ptr_vector, relevant_drops_ptr_vector);
 	
 	//Go through all relevant NPCs and call their AI functions
 	this->ProcessNPCs(in_deltatime, relevant_npcs_ptr_vector);
@@ -408,89 +453,4 @@ bool ObjectHandler::PlayerInBossRoom() {
 		this->player_ptr_->GetPosition().y > -1265.0f && this->player_ptr_->GetPosition().y < -1060.0f)
 		check = true;
 	 return check;
-}
-
-void ObjectHandler::TestObjectHandler() {
-	std::cout << "Test of ObjectHandler started" << std::endl;
-
-	glm::vec3 best_pos = glm::vec3(0.0f, 0.0f, 0.0f);
-
-	std::cout << "A:	Creating three ObjectClass:es in npc_vector_" << std::endl;
-	this->npc_ptr_vector_.push_back(new ObjectClass(best_pos, OBJECT_ID_DUMMY));
-	this->npc_ptr_vector_.push_back(new ObjectClass(best_pos, OBJECT_ID_DUMMY));
-	this->npc_ptr_vector_.push_back(new ObjectClass(best_pos, OBJECT_ID_DUMMY));
-
-	std::cout << "B:	Moving second entry (index 1) to position (3000, 3000)" << std::endl;
-	this->npc_ptr_vector_.at(1)->SetPosition(3000, 3000);
-	glm::vec3 test_pos;
-	for (unsigned int i = 0; i < this->npc_ptr_vector_.size(); i++) {
-		test_pos = this->npc_ptr_vector_.at(i)->GetPosition();
-		std::cout << "	ObjectClass [" << i << "]: (" << test_pos.x << "," << test_pos.y << "," << test_pos.z << ")" << std::endl;
-	}
-
-	std::cout << "C:	Creating culled vector" << std::endl;
-	std::vector<ObjectClass*> test_vector = this->CullAndRetrieveObjectPtrs(this->npc_ptr_vector_);
-	std::cout << "	npc_vector_ length: " << this->npc_ptr_vector_.size() << std::endl;
-	std::cout << "	test_vector length: " << test_vector.size() << std::endl;
-
-	std::cout << "D:	Changing the position of first entry to (-3000, -3000) via pointer in test vector" << std::endl;
-	test_vector.at(0)->SetPosition(-3000, -3000);
-	for (unsigned int i = 0; i < this->npc_ptr_vector_.size(); i++) {
-		test_pos = this->npc_ptr_vector_.at(i)->GetPosition();
-		std::cout << "	ObjectClass [" << i << "]: (" << test_pos.x << "," << test_pos.y << "," << test_pos.z << ")" << std::endl;
-	}
-
-	std::cout << "E:	Creating new culled vector" << std::endl;
-	test_vector = this->CullAndRetrieveObjectPtrs(this->npc_ptr_vector_);
-	std::cout << "	npc_vector_ length: " << this->npc_ptr_vector_.size() << std::endl;
-	std::cout << "	test_vector length: " << test_vector.size() << std::endl;
-
-
-	std::cout << "F:	Remove the last entry in the culled vector from the npc_ptr_vector_" << std::endl;
-	this->RemoveObject(test_vector.at(0), this->npc_ptr_vector_);
-	for (unsigned int i = 0; i < this->npc_ptr_vector_.size(); i++) {
-		test_pos = this->npc_ptr_vector_.at(i)->GetPosition();
-		std::cout << "	ObjectClass [" << i << "]: (" << test_pos.x << "," << test_pos.y << "," << test_pos.z << ")" << std::endl;
-	}
-	std::cout << "	Word of warning, the culled vector still holds 1 element: a pointer leading to trash" << std::endl;
-	std::cout << "	npc_vector_ length: " << this->npc_ptr_vector_.size() << std::endl;
-	std::cout << "	test_vector length: " << test_vector.size() << std::endl;
-
-	std::cout << "G:	Clear npc_ptr_vector from its elements" << std::endl;
-	this->ClearPtrVector(this->npc_ptr_vector_);
-	std::cout << "	npc_vector_ length: " << this->npc_ptr_vector_.size() << std::endl;
-
-	std::cout << "H:	Testing the UpdateAndRetrive() early function" << std::endl;
-	std::cout << "	Add 2 objects to npc vector and 2 to drop vector" << std::endl;
-	this->npc_ptr_vector_.push_back(new ObjectClass(best_pos, OBJECT_ID_DUMMY));
-	this->npc_ptr_vector_.push_back(new ObjectClass(best_pos, OBJECT_ID_DUMMY));
-	this->drop_ptr_vector_.push_back(new ObjectClass(best_pos, OBJECT_ID_DUMMY));
-	this->drop_ptr_vector_.push_back(new ObjectClass(best_pos, OBJECT_ID_DUMMY));
-	std::cout << "	npc_vector_ length: " << this->npc_ptr_vector_.size() << std::endl;
-	std::cout << "	drop_vector_ length: " << this->drop_ptr_vector_.size() << std::endl;
-	std::cout << "	Move one drop to (3000, 3000)" << std::endl;
-	this->drop_ptr_vector_.at(0)->SetPosition(3000, 3000);
-	std::cout << "	Call UpdateAndRetrieve and check returned vector length (should be 4: One Player, Two NPCs, One Drop)" << std::endl;
-	std::vector<ObjectPackage> pckg_vector = this->UpdateAndRetrieve(1.0f);
-	std::cout << "	pckg_vec length: " << pckg_vector.size() << std::endl;
-
-	std::cout << "I:	Test throw functions in Character" << std::endl;
-	try { this->player_ptr_->HealDamage(-3); }
-	catch (std::invalid_argument a) { std::cout << a.what() << std::endl; }
-
-	try { this->player_ptr_->TakeDamage(-17); }
-	catch (std::invalid_argument a) { std::cout << a.what() << std::endl; }
-
-	try { this->player_ptr_->SetAttackPower(0); }
-	catch (std::invalid_argument a) { std::cout << a.what() << std::endl; }
-
-	try { this->player_ptr_->SetCurrentHealth(-98); }
-	catch (std::invalid_argument a) { std::cout << a.what() << std::endl; }
-
-	try { this->player_ptr_->SetCurrentHealth(1000); }
-	catch (std::invalid_argument a) { std::cout << a.what() << std::endl; }
-
-	try { this->player_ptr_->SetMaxHealth(-1); }
-	catch (std::invalid_argument a) { std::cout << a.what() << std::endl; }
-
 }
