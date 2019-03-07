@@ -1,5 +1,4 @@
 #include "player_character.h"
-#include <iostream>	//For debug
 
 //Private--------------------------------------------------
 void PlayerCharacter::AlterVelocity() {

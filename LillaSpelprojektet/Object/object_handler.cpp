@@ -159,25 +159,26 @@ void ObjectHandler::ResolvePlayerAttack(std::vector<ObjectClass*>& in_relevant_n
 		}
 	}
 
-	/*  WIP: Causes crash (most likely vector indexing)
-
 	//Lastly remove enemies on position indicated by the index vector
-	//We go backwards to not have to offset the index per deletion
-	//as only the indexes of things behind what we deleted are altered then
+	//We need to track the offset  of how many thing we have deleted
+	//to be able to access the right index in the relevant npcs vector
 	int index;
-	for (unsigned int i = (index_of_the_dead.size()-1); i > 0; i--) {
+	int offset = 0;
+	for (unsigned int i = 0; i < index_of_the_dead.size(); i++) {
 
-		//Take the last index in the vector
+		//Pick index from vector
 		index = index_of_the_dead.at(i);
 
 		//Delete the object and remove the pointer from the object handler's npc vector
 		this->RemoveObject(in_relevant_npcs_ptr_vector.at(index), this->npc_ptr_vector_);
 
 		//Then remove the entry from the list of relevant drops
-		in_relevant_npcs_ptr_vector.erase(in_relevant_npcs_ptr_vector.begin() + index);
+		in_relevant_npcs_ptr_vector.erase(in_relevant_npcs_ptr_vector.begin() + (index - offset));
+
+		//Increase offset
+		offset++;
 	}
 
-	*/
 
 }
 
