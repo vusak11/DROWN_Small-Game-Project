@@ -336,6 +336,6 @@ bool Game::IsRunning() {
 	return (this->state_ != QUIT);
 }
 
-MetaData * Game::getMetaDataPtr() {
+MetaData * Game::getMetaDataPtr() const {
 	return meta_data_ptr_;
 }

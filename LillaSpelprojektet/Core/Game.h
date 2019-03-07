@@ -50,7 +50,7 @@ public:
 	void InputContinual();
 
 	bool IsRunning();
-	MetaData* getMetaDataPtr();
+	MetaData* getMetaDataPtr() const;
 };
 
 #endif // !GAME_H
