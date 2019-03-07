@@ -34,8 +34,8 @@ PlayerCharacter::PlayerCharacter(glm::vec3 start_pos)
 	//this->ability_ptr_ = new DoubleJump();
 	this->ability_ptr_ = new Dash();
 	
-	//this->weapon_ptr_ = new Sword();
-	this->weapon_ptr_ = new Axe();
+	this->weapon_ptr_ = new Sword();
+	//this->weapon_ptr_ = new Axe();
 
 	animation_state_ = ANIMATION_STATE_PLAYER_IDLE;
 }
