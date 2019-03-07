@@ -134,7 +134,7 @@ void Game::InputForGameState(const sf::Event& in_event) {
 		//--------------------Player Control---------------------
 		//-------------------------------------------------------
 		//Jump
-		if (in_event.key.code == sf::Keyboard::W || in_event.key.code == sf::Keyboard::Space) {
+		if (in_event.key.code == sf::Keyboard::W) {
 			this->obj_handler_ptr_->PlayerJump();
 		}
 		//Pick up
