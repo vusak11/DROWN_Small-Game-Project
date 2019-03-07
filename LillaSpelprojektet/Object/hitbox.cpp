@@ -1,4 +1,5 @@
 #include "hitbox.h"
+#include <iostream>	//For debug
 
 
 
@@ -91,47 +92,55 @@ BoxPoints Hitbox::GetPoints() const {
 }
 
 bool Hitbox::CheckCollision(const BoxPoints& other_box) {
-	//Check if any of the points is inside other entity's bounding box
-	int x_side = 0;
-	int y_side = 0;
+	
+	//
+	//	y3	---------			ts	---------
+	//		|		|				|		| 
+	//		|  Box  |				|  Box  |
+	//		|		|				|		| 
+	//	y0	---------			bs	---------
+	//		x0     x1				ls     rs
+	//
+	// Each of the denotations of the side represents a
+	// line on the x-y-plane. We know the boxes to *not*
+	// overlap if the top line of one box is lower than
+	// the bottom line of the other *or* the rightmost
+	// line of one box is further leftwards than the
+	// leftmost of the other
 
-	//Check if left side of the other box lies between the vertical
-	//sides of this one
-	bool left_side = false;
-	x_side = other_box.bottom_left.x;
+	//We start by assuming that the boxes are overlapping
+	bool ls_x1 = true;	//ls < x0
+	bool x0_rs = true;	//x0 < rs
+	bool bs_y3 = true;	//bs < y3
+	bool y0_ts = true;	//y0 < ts
 
-	if (this->GetPoint0().x < x_side	&&	x_side < this->GetPoint1().x) {
-		left_side = true;
-	}
+	//Check if any of the sides breaks the criteria
+	//(note the >)
+	int side = other_box.bottom_left.x;
+	if (side > this->GetPoint1().x) { ls_x1 = false; }
 
-	//Then do the same check for the right side
-	bool right_side = false;
-	x_side = other_box.bottom_right.x;
+	side = other_box.bottom_right.x;
+	if (this->GetPoint0().x > side) { x0_rs = false; }
 
-	if (this->GetPoint0().x < x_side	&&	x_side < this->GetPoint1().x) {
-		right_side = true;
-	}
+	side = other_box.bottom_left.y;
+	if (side > this->GetPoint3().y) { bs_y3 = false; }
 
-	//Now check if bottom side of the other box lies between the horizontal
-	//sides of this one
-	bool bot_side = false;
-	y_side = other_box.bottom_left.y;
+	side = other_box.top_left.y;
+	if (this->GetPoint0().y > side) { y0_ts = false; }
 
-	if (this->GetPoint0().y < y_side	&&	y_side < this->GetPoint3().y) {
-		bot_side = true;
-	}
+	//DEBUG
+	//std::cout << "		Result:"
+	//	<< "\n		ls_x1 : " << ls_x1
+	//	<< "\n		x0_rs : " << x0_rs
+	//	<< "\n		bs_y3 : " << bs_y3
+	//	<< "\n		y0_ts : " << y0_ts
+	//	<< "\n		Final : " << (ls_x1 && x0_rs && bs_y3 && y0_ts)
+	//	<< std::endl;
+	//DEBUG
 
-	//Finally check the top side
-	bool top_side = false;
-	y_side = other_box.top_left.y;
-
-	if (this->GetPoint0().y < y_side	&&	y_side < this->GetPoint3().y) {
-		top_side = true;
-	}
-
-	//We have a hit if AT LEAST one of the vertical AND one of the
-	//horizontal sides are contained, then return true
-	if ((left_side || right_side) && (bot_side || top_side)) {
+	//We need the all the assumptions to be true
+	//If one has been proven false we do not have a overlap
+	if (ls_x1 && x0_rs && bs_y3 && y0_ts) {
 		return true;
 	}
 
