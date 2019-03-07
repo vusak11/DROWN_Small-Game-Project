@@ -169,8 +169,6 @@ void ObjectHandler::ProcessDrops(const float& in_deltatime, std::vector<ObjectCl
 			drop_ptr->SpinDrop(in_deltatime);
 		}
 	}
-	
-
 }
 
 void ObjectHandler::ClearPlayerInput() {
@@ -215,58 +213,48 @@ ObjectHandler::~ObjectHandler() {
 	delete this->physics_engine_ptr_;
 }
 
-void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map_height_list, std::vector<glm::vec2> door_key_position) {
+void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map_height_list, MetaData* meta_data) {
 
 	//Create player
-	glm::vec3 player_pos = glm::vec3(
-		GlobalSettings::Access()->ValueOf("PLAYER_START_POS_X"),
-		GlobalSettings::Access()->ValueOf("PLAYER_START_POS_Y"),
-		GlobalSettings::Access()->ValueOf("PLAYER_START_POS_Z")
-	);
-	this->player_ptr_ = new PlayerCharacter(player_pos);
-
+	//Assign spawn position randomly via meta data
+	this->player_ptr_ = new PlayerCharacter(glm::vec3(meta_data->GetSpawnPointCoords(), 0.0f));
 	this->player_ptr_->SetScale(2.0f);
 
-	//TEMP---
-
-	// Create an NPC
-	float nr_of_runners = GlobalSettings::Access()->ValueOf("NR_OF_NPC_RUNNER");
-	for (int i = 0; i < nr_of_runners; i++)
-	{
-		this->npc_ptr_vector_.push_back(new NPCRunner(
-			glm::vec3(
-				GlobalSettings::Access()->ValueOf("PLAYER_START_POS_X") + 10 * i,
-				GlobalSettings::Access()->ValueOf("PLAYER_START_POS_Y"),
-				GlobalSettings::Access()->ValueOf("PLAYER_START_POS_Z")
-			)
-		));
+	// Create NPCs and spawn them on every light source
+	for (int i = 2; i < meta_data->GetLightPositions().size(); i++) {
+		if (sqrt(pow((meta_data->GetLightPositions()[i].x - meta_data->GetSpawnPointCoords().x), 2) + pow((meta_data->GetLightPositions()[i].y - meta_data->GetSpawnPointCoords().y), 2)) > 50) {
+			this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(meta_data->GetLightPositions()[i], 0.0f)));
+		}
+		// Different NPC's depending on where they spawn
+		/*else {
+			this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(meta_data->GetLightPositions()[i], 0.0f)));
+		}*/
+		/*if (meta_data->GetZone(meta_data->GetLightPositions()[i]) == "DEF") {
+			this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(meta_data->GetLightPositions()[i], 0.0f)));
+		}
+		else if (meta_data->GetZone(meta_data->GetLightPositions()[i]) == "RED") {
+			this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(meta_data->GetLightPositions()[i], 0.0f)));
+		}
+		else if (meta_data->GetZone(meta_data->GetLightPositions()[i]) == "GRE") {
+			this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(meta_data->GetLightPositions()[i], 0.0f)));
+		}
+		else if (meta_data->GetZone(meta_data->GetLightPositions()[i]) == "BLU") {
+			this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(meta_data->GetLightPositions()[i], 0.0f)));
+		}*/
 	}
-	
-	//glm::vec3 npc_pos = PLAYER_START_POS;
-	//npc_pos.x -= 70.0f;
-	//this->npc_ptr_vector_.push_back(new NPC(npc_pos));
-	//this->npc_ptr_vector_.at(0)->SetScale(3.0f);
+	this->nr_of_runners_ = this->npc_ptr_vector_.size();
 
-	glm::vec3 drop_pos = player_pos;
-	
-	drop_pos.x += 10.0f;
-	this->drop_ptr_vector_.push_back(new KeyDrop(drop_pos));
+	// Spawn keys
+	for (int i = 0; i < 3; i++) {
+		this->drop_ptr_vector_.push_back(new KeyDrop(glm::vec3(meta_data->GetDoorKeyCoords()[i], 0.0f)));
+		this->drop_ptr_vector_.back()->SetScale(3.0f);
+	}
+	// Spawn boss door
+	this->drop_ptr_vector_.push_back(new BossDoor(glm::vec3(meta_data->GetBossDoorCoords(), 0.0f)));
 	this->drop_ptr_vector_.back()->SetScale(3.0f);
 
-	drop_pos.x += 10.0f;
-	this->drop_ptr_vector_.push_back(new KeyDrop(drop_pos));
-	this->drop_ptr_vector_.back()->SetScale(3.0f);
 
-	drop_pos.x += 10.0f;
-	this->drop_ptr_vector_.push_back(new KeyDrop(drop_pos));
-	this->drop_ptr_vector_.back()->SetScale(3.0f);
-
-	drop_pos.x += 10.0f;
-	this->drop_ptr_vector_.push_back(new BossDoor(drop_pos));
-	this->drop_ptr_vector_.back()->SetScale(3.0f);
-	
-	//TEMP---
-
+	// Apply physics
 	this->physics_engine_ptr_ = new PhysicsEngine(map_height_list);
 
 

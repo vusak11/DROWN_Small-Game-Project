@@ -9,6 +9,7 @@
 #include "../UI/menu.h"
 #include "../Camera/camera_handler.h"
 #include "../Object/object_handler.h"
+#include "../Map/metadata.h"
 #include "../global_settings.h"
 
 class Game {
@@ -16,6 +17,7 @@ private:
 	//Variables
 	CameraHandler* cam_handler_ptr_;
 	ObjectHandler* obj_handler_ptr_;
+	MetaData* meta_data_ptr_;
 
 	Render render_;
 
@@ -48,6 +50,7 @@ public:
 	void InputContinual();
 
 	bool IsRunning();
+	MetaData* getMetaDataPtr() const;
 };
 
 #endif // !GAME_H

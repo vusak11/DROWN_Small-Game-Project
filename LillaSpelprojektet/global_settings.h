@@ -109,7 +109,6 @@ private:
 	void operator=(GlobalSettings const&) = delete;
 
 	std::map<std::string, float> settings_;
-
 };
 
 #endif
