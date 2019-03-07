@@ -292,7 +292,7 @@ void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map
 	glm::vec3 drop_pos = this->player_ptr_->GetPosition();
 	//TEMP
 	drop_pos.x += 10.0f;
-	this->drop_ptr_vector_.push_back(new DoubleJumpDrop(drop_pos));
+	this->drop_ptr_vector_.push_back(new DashDrop(drop_pos));
 	this->drop_ptr_vector_.back()->SetScale(3.0f);
 
 	// Create NPCs and spawn them on every light source
