@@ -97,7 +97,14 @@ std::vector<glm::vec2> MapHandler::GridCulling(glm::vec2 current_cell) {
 	int grid_row = GlobalSettings::Access()->ValueOf("GRID_ROW");
 
 	cells_to_draw_.clear();
-	if (current_cell.x == 0 && current_cell.y == 0) {							// Upper left corner
+	if (current_cell.x >= 0 && current_cell.x <= 4 &&
+		current_cell.y >= 16 && current_cell.y <= 19) {
+		for (int i = 0; i < 5; i++) {
+			for (int j = 16; j < 20; j++) {
+				cells_to_draw_.push_back(glm::vec2(i, j));
+			}
+		}
+	} else if (current_cell.x == 0 && current_cell.y == 0) {							// Upper left corner
 		cells_to_draw_.push_back(glm::vec2(current_cell.x, current_cell.y));			// 0, 0, 0
 		cells_to_draw_.push_back(glm::vec2(current_cell.x + 1, current_cell.y));		// 0, 1, 1
 		cells_to_draw_.push_back(glm::vec2(current_cell.x, current_cell.y + 1));		// 0, 1, 1

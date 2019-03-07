@@ -154,6 +154,7 @@
     <ClCompile Include="Object\Character\model.cpp" />
     <ClCompile Include="Object\Character\cooldown_class.cpp" />
     <ClCompile Include="Object\Character\npc.cpp" />
+    <ClCompile Include="Object\Character\NPCs\NPC_boss.cpp" />
     <ClCompile Include="Object\Character\NPCs\NPC_runner.cpp" />
     <ClCompile Include="Object\Character\player_character.cpp" />
     <ClCompile Include="Object\Character\weapon.cpp" />
@@ -182,6 +183,7 @@
     <ClInclude Include="Object\Character\model.h" />
     <ClInclude Include="Object\Character\cooldown_class.h" />
     <ClInclude Include="Object\Character\npc.h" />
+    <ClInclude Include="Object\Character\NPCs\NPC_boss.h" />
     <ClInclude Include="Object\Character\NPCs\NPC_runner.h" />
     <ClInclude Include="Object\Character\player_character.h" />
     <ClInclude Include="Object\Character\weapon.h" />

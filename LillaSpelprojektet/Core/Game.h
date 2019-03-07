@@ -11,16 +11,19 @@
 #include "../Object/object_handler.h"
 #include "../Map/metadata.h"
 #include "../global_settings.h"
+#include "sound_unit.h"
 
 class Game {
 private:
 	//Variables
 	CameraHandler* cam_handler_ptr_;
 	ObjectHandler* obj_handler_ptr_;
+	SoundUnit sound_unit_game_;	// this variable contains functionality to play overworld songs
 	MetaData* meta_data_ptr_;
 
 	Render render_;
 
+	GameState previous_state_;
 	GameState state_;
 	Menu menu_;
 	
@@ -44,6 +47,7 @@ public:
 	~Game();
 
 	void InitializeGame();
+	void InitializeStartGame();
 	void GameIteration();
 	
 	void InputEvents(const sf::Event& in_event);

@@ -11,6 +11,7 @@
 #include "Character/player_character.h"
 #include "Character/npc.h"
 #include "Character/NPCs/NPC_runner.h"
+#include "Character/NPCs/NPC_boss.h"
 
 #include "../Map/metadata.h"
 #include "Drop/Drop.h"
@@ -36,10 +37,12 @@ private:
 	PlayerCharacter* player_ptr_;
 	std::vector<ObjectClass*> npc_ptr_vector_;				//All enemies
 	std::vector<ObjectClass*> drop_ptr_vector_;		//Things dropped on the ground (e.g. power-ups, health)
+	NPCBoss* boss_ptr_;
 
 	float nr_of_runners_;
 
 	PlayerInput player_input_;
+	BossActions boss_actions_;
 
 	PhysicsEngine* physics_engine_ptr_;
 
@@ -108,6 +111,10 @@ public:
 	PlayerInfoPackage RetrievePlayerInfoPackage();
 
 	bool PlayerInBossRoom();
+	void SetPlayerXYZPosForBoss();	// Adds a few values to z to move the player more into the room.
+	void SpawnBoss();
+	void DetermineBossAction();	// From wich flags are true in the boss, do things
+
 
 };
 
