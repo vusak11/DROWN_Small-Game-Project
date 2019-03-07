@@ -7,6 +7,7 @@ SoundUnit::SoundUnit() {
 	music_file_name_ = ((char*)"../Resources/Audio/default_sound.wav");
 	music_.setVolume(100);
 	music_.setLoop(true);
+	music_.setRelativeToListener(true);
 }
 
 SoundUnit::~SoundUnit() {
@@ -49,3 +50,15 @@ void SoundUnit::StopMusic() {
 void SoundUnit::SetVolumeMusic(int volume) {
 	music_.setVolume(volume);
 }
+
+//void SoundUnit::SetAttenuation(float attenuation) {
+//	music_.setAttenuation(attenuation);
+//}
+//
+//void SoundUnit::SetMinDistance(float distance) {
+//	music_.setMinDistance(distance);
+//}
+//
+//void SoundUnit::SetPosition(float x, float y, float z) {
+//	music_.setPosition(x, y, z);
+//}

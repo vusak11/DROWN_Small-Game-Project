@@ -204,6 +204,7 @@ void ObjectHandler::PackObjectVectorIntoVector(std::vector<ObjectClass*>& in_ptr
 
 ObjectHandler::ObjectHandler() {
 	this->player_ptr_ = NULL;
+	this->boss_ptr_ = NULL;
 	this->physics_engine_ptr_ = NULL;
 }
 
@@ -211,8 +212,10 @@ ObjectHandler::~ObjectHandler() {
 	delete this->player_ptr_;
 	this->ClearPtrVector(this->npc_ptr_vector_);
 	this->ClearPtrVector(this->drop_ptr_vector_);
+	delete this->boss_ptr_;
 
 	delete this->physics_engine_ptr_;
+	
 }
 
 void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map_height_list, std::vector<glm::vec2> door_key_position) {
@@ -369,6 +372,14 @@ std::vector<ObjectPackage> ObjectHandler::UpdateAndRetrieve(float in_deltatime) 
 	this->PackObjectVectorIntoVector(relevant_npcs_ptr_vector, package_vector);
 	this->PackObjectVectorIntoVector(relevant_drops_ptr_vector, package_vector);
 
+	// if boss exists, process all boss stuff
+	if (boss_ptr_) {
+		boss_ptr_->ExecuteAI(in_deltatime, player_ptr_->GetPosition());
+		this->PackObjectIntoVector(this->boss_ptr_, package_vector);
+		std::vector<ObjectClass*> temp_boss_list = boss_ptr_->GetBossObjectVector();
+		this->PackObjectVectorIntoVector(temp_boss_list, package_vector);
+	}
+
 	return package_vector;
 }
 
@@ -397,6 +408,13 @@ void ObjectHandler::SetPlayerZPosForBoss()
 {
 	glm::vec3 position = this->player_ptr_->GetPosition();
 	this->player_ptr_->SetPosition(position.x, position.y, 7);
+}
+
+void ObjectHandler::SpawnBoss() {
+	
+	boss_ptr_ = new NPCBoss(glm::vec3(160, -1100, 10));
+	boss_ptr_->SetPosition(160, -1110, 10);
+	std::cout << "Spawned boss" << std::endl;
 }
 
 void ObjectHandler::TestObjectHandler() {

@@ -289,6 +289,7 @@ void Game::GameIteration() {
 			sound_unit_game_.SetVolumeMusic(100);
 			sound_unit_game_.PlayMusic();
 			std::cout << "ENTERING BOSS STATE" << std::endl;
+			obj_handler_ptr_->SpawnBoss();
 			// SPAWN BOSS
 		}
 
