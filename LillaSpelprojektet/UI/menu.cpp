@@ -120,9 +120,9 @@ void Menu::RenderMenu(ShaderHandler * shader_handler) {
 	/*----------------Title---------------*/
 	RenderText(
 		shader_handler,
-		"Main Menu",
-		((float)window_width) / 2.0f - 530.0f,
-		(((float)window_height) / 10.0f) * 8.0f,
+		"D R O W N",
+		((float)window_width) / 4.0f,
+		(((float)window_height) / 10.0f) * 7.0f,
 		3.0f,
 		glm::vec3(1.0f, 1.0f, 1.0f)
 	);
@@ -132,10 +132,10 @@ void Menu::RenderMenu(ShaderHandler * shader_handler) {
 		RenderText(
 			shader_handler,
 			"Start",
-			((float)window_width) / 2.0f - 530.0f,
-			(((float)window_height) / 10.0f) * 6.0f,
+			((float)window_width) / 2.0f - 500.0f,
+			(((float)window_height) / 10.0f) * 5.0f,
 			2.0f,
-			glm::vec3(1.0f, 1.0f, 1.0f)
+			glm::vec3(0.8f, 0.8f, 0.8f)
 		);
 	}
 	else {
@@ -143,9 +143,9 @@ void Menu::RenderMenu(ShaderHandler * shader_handler) {
 			shader_handler,
 			"Start",
 			((float)window_width) / 2.0f - 530.0f,
-			(((float)window_height) / 10.0f) * 6.0f,
+			(((float)window_height) / 10.0f) * 5.0f,
 			2.0f,
-			glm::vec3(0.26f, 0.54f, 0.59f)
+			glm::vec3(0.75f, 0.0f, 0.0f)
 		);
 	}
 
@@ -154,10 +154,10 @@ void Menu::RenderMenu(ShaderHandler * shader_handler) {
 		RenderText(
 			shader_handler,
 			"Options",
-			((float)window_width) / 2.0f - 530.0f,
-			((float)window_height) / 10.0f * 4.0f,
+			((float)window_width) / 2.0f - 500.0f,
+			((float)window_height) / 10.0f * 3.0f,
 			2.0f,
-			glm::vec3(1.0f, 1.0f, 1.0f)
+			glm::vec3(0.8f, 0.8f, 0.8f)
 		);
 	}
 	else {
@@ -165,9 +165,9 @@ void Menu::RenderMenu(ShaderHandler * shader_handler) {
 			shader_handler,
 			"Options",
 			((float)window_width) / 2.0f - 530.0f,
-			((float)window_height) / 10.0f * 4.0f,
+			((float)window_height) / 10.0f * 3.0f,
 			2.0f,
-			glm::vec3(0.26f, 0.54f, 0.59f)
+			glm::vec3(0.75f, 0.0f, 0.0f)
 		);
 	}
 
@@ -176,10 +176,10 @@ void Menu::RenderMenu(ShaderHandler * shader_handler) {
 		RenderText(
 			shader_handler,
 			"Quit",
-			((float)window_width) / 2.0f - 530.0f,
-			((float)window_height) / 10.0f * 2.0f,
+			((float)window_width) / 2.0f - 500.0f,
+			((float)window_height) / 10.0f * 1.0f,
 			2.0f,
-			glm::vec3(1.0f, 1.0f, 1.0f)
+			glm::vec3(0.8f, 0.8f, 0.8f)
 		);
 	}
 	else {
@@ -187,9 +187,9 @@ void Menu::RenderMenu(ShaderHandler * shader_handler) {
 			shader_handler,
 			"Quit",
 			((float)window_width) / 2.0f - 530.0f,
-			((float)window_height) / 10.0f * 2.0f,
+			((float)window_height) / 10.0f * 1.0f,
 			2.0f,
-			glm::vec3(0.26f, 0.54f, 0.59f)
+			glm::vec3(0.75f, 0.0f, 0.0f)
 		);
 	}
 }
@@ -202,7 +202,7 @@ void Menu::RenderPauseMenu(ShaderHandler * shader_handler) {
 	RenderText(
 		shader_handler,
 		"Pause",
-		((float)window_width) / 2.0f - 530.0f,
+		((float)window_width) / 3.0f,
 		(((float)window_height) / 10.0f) * 8.0f,
 		3.0f,
 		glm::vec3(1.0f, 1.0f, 1.0f)
@@ -213,10 +213,10 @@ void Menu::RenderPauseMenu(ShaderHandler * shader_handler) {
 		RenderText(
 			shader_handler,
 			"Continue",
-			((float)window_width) / 2.0f - 530.0f,
-			((float)window_height) / 10.0f * 6.0f,
+			((float)window_width) / 2.0f - 500.0f,
+			((float)window_height) / 10.0f * 5.5f,
 			2.0f,
-			glm::vec3(1.0f, 1.0f, 1.0f)
+			glm::vec3(0.8f, 0.8f, 0.8f)
 		);
 	}
 	else {
@@ -224,9 +224,9 @@ void Menu::RenderPauseMenu(ShaderHandler * shader_handler) {
 			shader_handler,
 			"Continue",
 			((float)window_width) / 2.0f - 530.0f,
-			((float)window_height) / 10.0f * 6.0f,
+			((float)window_height) / 10.0f * 5.5f,
 			2.0f,
-			glm::vec3(0.26f, 0.54f, 0.59f)
+			glm::vec3(0.75f, 0.0f, 0.0f)
 		);
 	}
 	//----------------End Continue---------------*/
@@ -235,10 +235,10 @@ void Menu::RenderPauseMenu(ShaderHandler * shader_handler) {
 		RenderText(
 			shader_handler,
 			"Save score (Death)",
-			((float)window_width) / 2.0f - 530.0f,
-			((float)window_height) / 10.0f * 4.5f,
+			((float)window_width) / 2.0f - 500.0f,
+			((float)window_height) / 10.0f * 4.0f,
 			2.0f,
-			glm::vec3(1.0f, 1.0f, 1.0f)
+			glm::vec3(0.8f, 0.8f, 0.8f)
 		);
 	}
 	else {
@@ -246,9 +246,9 @@ void Menu::RenderPauseMenu(ShaderHandler * shader_handler) {
 			shader_handler,
 			"Save score (Death)",
 			((float)window_width) / 2.0f - 530.0f,
-			((float)window_height) / 10.0f * 4.5f,
+			((float)window_height) / 10.0f * 4.0f,
 			2.0f,
-			glm::vec3(0.26f, 0.54f, 0.59f)
+			glm::vec3(0.75f, 0.0f, 0.0f)
 		);
 	}
 	//----------------End Save score-----------*/
@@ -257,10 +257,10 @@ void Menu::RenderPauseMenu(ShaderHandler * shader_handler) {
 		RenderText(
 			shader_handler,
 			"Options",
-			((float)window_width) / 2.0f - 530.0f,
-			((float)window_height) / 10.0f * 3.0f,
+			((float)window_width) / 2.0f - 500.0f,
+			((float)window_height) / 10.0f * 2.5f,
 			2.0f,
-			glm::vec3(1.0f, 1.0f, 1.0f)
+			glm::vec3(0.8f, 0.8f, 0.8f)
 		);
 	}
 	else {
@@ -268,9 +268,9 @@ void Menu::RenderPauseMenu(ShaderHandler * shader_handler) {
 			shader_handler,
 			"Options",
 			((float)window_width) / 2.0f - 530.0f,
-			((float)window_height) / 10.0f * 3.0f,
+			((float)window_height) / 10.0f * 2.5f,
 			2.0f,
-			glm::vec3(0.26f, 0.54f, 0.59f)
+			glm::vec3(0.75f, 0.0f, 0.0f)
 		);
 	}
 	//----------------End Options-----------*/
@@ -279,10 +279,10 @@ void Menu::RenderPauseMenu(ShaderHandler * shader_handler) {
 		RenderText(
 			shader_handler,
 			"Quit",
-			((float)window_width) / 2.0f - 530.0f,
-			((float)window_height) / 10.0f * 1.5f,
+			((float)window_width) / 2.0f - 500.0f,
+			((float)window_height) / 10.0f * 1.0f,
 			2.0f,
-			glm::vec3(1.0f, 1.0f, 1.0f)
+			glm::vec3(0.8f, 0.8f, 0.8f)
 		);
 	}
 	else {
@@ -290,9 +290,9 @@ void Menu::RenderPauseMenu(ShaderHandler * shader_handler) {
 			shader_handler,
 			"Quit",
 			((float)window_width) / 2.0f - 530.0f,
-			((float)window_height) / 10.0f * 1.5f,
+			((float)window_height) / 10.0f * 1.0f,
 			2.0f,
-			glm::vec3(0.26f, 0.54f, 0.59f)
+			glm::vec3(0.75f, 0.0f, 0.0f)
 		);
 	}
 }
@@ -304,9 +304,9 @@ void Menu::RenderDeathMenu(ShaderHandler * shader_handler) {
 	/*----------------Title---------------------*/
 	RenderText(
 		shader_handler,
-		"You are dead, rekt",
-		((float)window_width) / 2.0f - 530.0f,
-		(((float)window_height) / 10.0f) * 8.0f,
+		"YOU ARE DEAD",
+		((float)window_width) / 5.0f,
+		(((float)window_height) / 10.0f) * 7.0f,
 		3.0f,
 		glm::vec3(1.0f, 1.0f, 1.0f)
 	);
@@ -316,10 +316,10 @@ void Menu::RenderDeathMenu(ShaderHandler * shader_handler) {
 		RenderText(
 			shader_handler,
 			"Restart",
-			((float)window_width) / 2.0f - 530.0f,
-			((float)window_height) / 10.0f * 6.0f,
+			((float)window_width) / 2.0f - 500.0f,
+			((float)window_height) / 10.0f * 5.0f,
 			2.0f,
-			glm::vec3(1.0f, 1.0f, 1.0f)
+			glm::vec3(0.8f, 0.8f, 0.8f)
 		);
 	}
 	else {
@@ -327,9 +327,9 @@ void Menu::RenderDeathMenu(ShaderHandler * shader_handler) {
 			shader_handler,
 			"Restart",
 			((float)window_width) / 2.0f - 530.0f,
-			((float)window_height) / 10.0f * 6.0f,
+			((float)window_height) / 10.0f * 5.0f,
 			2.0f,
-			glm::vec3(0.26f, 0.54f, 0.59f)
+			glm::vec3(0.75f, 0.0f, 0.0f)
 		);
 	}
 	/*------------End Restart-----------------*/
@@ -338,10 +338,10 @@ void Menu::RenderDeathMenu(ShaderHandler * shader_handler) {
 		RenderText(
 			shader_handler,
 			"Save score",
-			((float)window_width) / 2.0f - 530.0f,
-			((float)window_height) / 10.0f * 4.0f,
+			((float)window_width) / 2.0f - 500.0f,
+			((float)window_height) / 10.0f * 3.0f,
 			2.0f,
-			glm::vec3(1.0f, 1.0f, 1.0f)
+			glm::vec3(0.8f, 0.8f, 0.8f)
 		);
 	}
 	else {
@@ -349,9 +349,9 @@ void Menu::RenderDeathMenu(ShaderHandler * shader_handler) {
 			shader_handler,
 			"Save score",
 			((float)window_width) / 2.0f - 530.0f,
-			((float)window_height) / 10.0f * 4.0f,
+			((float)window_height) / 10.0f * 3.0f,
 			2.0f,
-			glm::vec3(0.26f, 0.54f, 0.59f)
+			glm::vec3(0.75f, 0.0f, 0.0f)
 		);
 	}
 	/*------------End Save score-----------------*/
@@ -360,10 +360,10 @@ void Menu::RenderDeathMenu(ShaderHandler * shader_handler) {
 		RenderText(
 			shader_handler,
 			"Quit",
-			((float)window_width) / 2.0f - 530.0f,
-			((float)window_height) / 10.0f * 2.0f,
+			((float)window_width) / 2.0f - 500.0f,
+			((float)window_height) / 10.0f * 1.0f,
 			2.0f,
-			glm::vec3(1.0f, 1.0f, 1.0f)
+			glm::vec3(0.8f, 0.8f, 0.8f)
 		);
 	}
 	else {
@@ -371,9 +371,9 @@ void Menu::RenderDeathMenu(ShaderHandler * shader_handler) {
 			shader_handler,
 			"Quit",
 			((float)window_width) / 2.0f - 530.0f,
-			((float)window_height) / 10.0f * 2.0f,
+			((float)window_height) / 10.0f * 1.0f,
 			2.0f,
-			glm::vec3(0.26f, 0.54f, 0.59f)
+			glm::vec3(0.75f, 0.0f, 0.0f)
 		);
 	}
 	/*---------End Quit-----------------*/

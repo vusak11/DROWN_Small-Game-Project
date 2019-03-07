@@ -218,7 +218,7 @@ void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map
 	//Create player
 	//Assign spawn position randomly via meta data
 	//this->player_ptr_ = new PlayerCharacter(glm::vec3(meta_data->GetSpawnPointCoords(), 3.0f));
-	this->player_ptr_ = new PlayerCharacter(glm::vec3(meta_data->GetZonePOIs()[0], 3.0f));
+	this->player_ptr_ = new PlayerCharacter(glm::vec3(meta_data->GetSpawnPointCoords(), 3.0f));
 	this->player_ptr_->SetScale(2.0f);
 
 	// Create NPCs and spawn them on every light source

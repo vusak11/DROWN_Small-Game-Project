@@ -259,7 +259,7 @@ void Render::LightingPass(glm::vec3 camera_position) {
 }
 
 void Render::RenderMenuState(Menu menu) {
-	glClearColor(0.22f, 0.22f, 0.22f, 1.0f);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	menu.RenderMenu(text_shaders_);
@@ -268,7 +268,7 @@ void Render::RenderMenuState(Menu menu) {
 void Render::RenderPauseMenu(Menu menu) {
 	glDisable(GL_DEPTH_TEST);
 	glEnable(GL_BLEND);
-	glClearColor(0.22f, 0.22f, 0.22f, 1.0f);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	menu.RenderPauseMenu(text_shaders_);
@@ -277,7 +277,7 @@ void Render::RenderPauseMenu(Menu menu) {
 void Render::RenderDeathMenu(Menu menu) {
 	glDisable(GL_DEPTH_TEST);
 	glEnable(GL_BLEND);
-	glClearColor(0.22f, 0.22f, 0.22f, 1.0f);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	menu.RenderDeathMenu(text_shaders_);
