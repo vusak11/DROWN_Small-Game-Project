@@ -42,7 +42,7 @@ private:
 	float nr_of_runners_;
 
 	PlayerInput player_input_;
-	BossActions boss_actions_;
+	//BossActions boss_actions_;
 
 	PhysicsEngine* physics_engine_ptr_;
 

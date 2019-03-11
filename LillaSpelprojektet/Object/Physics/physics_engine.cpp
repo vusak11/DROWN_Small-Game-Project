@@ -97,9 +97,8 @@ glm::vec3 PhysicsEngine::CheckCollision(ObjectClass *& in_object_ptr, glm::vec3 
 	bool collision_3 = false;
 
 	in_object_ptr->SetAirborne(true);
-
 	Hitbox hitbox;
-	hitbox.UpdateHitbox(object_pos, in_object_ptr->GetScale().x, in_object_ptr->GetScale().y);
+	hitbox.UpdateHitbox(object_pos, in_object_ptr->GetXOffset(), in_object_ptr->GetYOffset());
 	BoxPoints points = hitbox.GetPoints();
 
 	// Map each hitbox point to a map tile index

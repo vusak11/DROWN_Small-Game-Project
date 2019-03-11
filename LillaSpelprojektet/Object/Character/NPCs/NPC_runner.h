@@ -11,12 +11,15 @@ private:
 	int aggro_range_;
 	glm::vec2 knockback_;
 
+
 public:
 	NPCRunner(glm::vec3 start_pos, ObjectID id);
 	~NPCRunner();
 
 	void ExecuteAI(float in_deltatime, glm::vec3 in_player_pos);
 	bool Attack(Character& in_target);
+
+	void SetAggroRange(int aggro_range);
 };
 
 

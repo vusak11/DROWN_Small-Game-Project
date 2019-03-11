@@ -102,3 +102,7 @@ bool NPCRunner::Attack(Character& in_target) {
 			in_target.SetVelocityVec(glm::vec3(knockback_.x, knockback_.y, 0.0f));
 	}
 }
+
+void NPCRunner::SetAggroRange(int aggro_range) {
+	aggro_range_ = aggro_range;
+}

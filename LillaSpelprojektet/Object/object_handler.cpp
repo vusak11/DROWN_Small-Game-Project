@@ -146,6 +146,7 @@ void ObjectHandler::ResolvePlayerPickUp(std::vector<ObjectClass*>& in_relevant_d
 					this->drop_ptr_vector_.push_back(
 						new DashDrop(in_relevant_drops_ptr_vector.at(index)->GetPosition()));
 				this->drop_ptr_vector_.back()->SetScale(3.0f);
+				this->drop_ptr_vector_.back()->SetOffsets(3.0f, 3.0f);
 			}
 			else
 				same_ability = true;
@@ -291,12 +292,14 @@ void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map
 	//this->player_ptr_ = new PlayerCharacter(glm::vec3(meta_data->GetSpawnPointCoords(), 3.0f));
 	this->player_ptr_ = new PlayerCharacter(glm::vec3(meta_data->GetSpawnPointCoords(), 3.0f));
 	this->player_ptr_->SetScale(2.0f);
+	this->player_ptr_->SetOffsets(2, 2);
 	
 	glm::vec3 drop_pos = this->player_ptr_->GetPosition();
 	//TEMP
 	drop_pos.x += 10.0f;
 	this->drop_ptr_vector_.push_back(new DoubleJumpDrop(drop_pos));
 	this->drop_ptr_vector_.back()->SetScale(3.0f);
+	this->drop_ptr_vector_.back()->SetOffsets(3.0f, 3.0f);
 
 	// Create NPCs and spawn them on every light source
 	for (int i = 2; i < meta_data->GetLightPositions().size(); i++) {
@@ -314,7 +317,9 @@ void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map
 			else if (meta_data->GetZone(meta_data->GetLightPositions()[i]) == "BLU") {
 				this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(meta_data->GetLightPositions()[i], 5.0f), OBJECT_ID_ICE_AI));
 			}
-			this->npc_ptr_vector_.back()->SetScale(GlobalSettings::Access()->ValueOf("NPC_RUNNER_SCALE"));
+			float scale = GlobalSettings::Access()->ValueOf("NPC_RUNNER_SCALE");
+			this->npc_ptr_vector_.back()->SetScale(scale);
+			this->npc_ptr_vector_.back()->SetOffsets(scale, scale);
 		}
 	}
 	this->nr_of_runners_ = this->npc_ptr_vector_.size();
@@ -323,11 +328,12 @@ void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map
 	for (int i = 0; i < 3; i++) {
 		this->drop_ptr_vector_.push_back(new KeyDrop(glm::vec3(meta_data->GetDoorKeyCoords()[i], 0.0f)));
 		this->drop_ptr_vector_.back()->SetScale(3.0f);
+		this->drop_ptr_vector_.back()->SetOffsets(3.0f, 3.0f);
 	}
 	// Spawn boss door
 	this->drop_ptr_vector_.push_back(new BossDoor(glm::vec3(meta_data->GetBossDoorCoords(), 0.0f)));
 	this->drop_ptr_vector_.back()->SetScale(3.0f);
-
+	this->drop_ptr_vector_.back()->SetOffsets(3.0f, 3.0f);
 
 	// Apply physics
 	this->physics_engine_ptr_ = new PhysicsEngine(map_height_list);
@@ -434,9 +440,11 @@ std::vector<ObjectPackage> ObjectHandler::UpdateAndRetrieve(float in_deltatime) 
 	// if boss exists, process all boss stuff
 	if (boss_ptr_) {
 		boss_ptr_->ExecuteAI(in_deltatime, player_ptr_->GetPosition());
+		boss_ptr_->UpdateBossDamageToPlayer(in_deltatime, player_ptr_);
 		this->PackObjectIntoVector(this->boss_ptr_, package_vector);
 		std::vector<ObjectClass*> temp_boss_list = boss_ptr_->GetBossObjectVector();
 		this->PackObjectVectorIntoVector(temp_boss_list, package_vector);
+		DetermineBossAction();
 	}
 
 	return package_vector;
@@ -477,5 +485,27 @@ void ObjectHandler::SpawnBoss() {
 	boss_ptr_ = new NPCBoss(glm::vec3(160, -1100, 10));
 	boss_ptr_->SetPosition(160, -1110, 10);
 	std::cout << "Spawned boss" << std::endl;
+}
+
+void ObjectHandler::DetermineBossAction() {
+
+	if (boss_ptr_->actions_.spawn_mobs)
+	{
+		this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(100, -1160, 5.0f), OBJECT_ID_FIRE_AI));
+		this->npc_ptr_vector_.back()->SetScale(3);
+		this->npc_ptr_vector_.back()->SetOffsets(3, 3);
+		NPCRunner* temp_npc_ptr = dynamic_cast<NPCRunner*>(this->npc_ptr_vector_.back());
+		temp_npc_ptr->SetAggroRange(200);
+
+		this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(220, -1160, 5.0f), OBJECT_ID_FIRE_AI));
+		this->npc_ptr_vector_.back()->SetScale(3);
+		this->npc_ptr_vector_.back()->SetOffsets(3, 3);
+		temp_npc_ptr = dynamic_cast<NPCRunner*>(this->npc_ptr_vector_.back());
+		temp_npc_ptr->SetAggroRange(200);
+
+		boss_ptr_->actions_.spawn_mobs = false;
+	}
+
+
 }
 

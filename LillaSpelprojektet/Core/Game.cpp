@@ -308,7 +308,7 @@ void Game::GameIteration() {
 		}
 
 		/*--------------Restart Game when death occurs--------------*/
-		if (player_info.current_hp == 0) { //Use this one
+		if (player_info.current_hp <= 0) { //Use this one
 			state_ = GameState::DEATH;
 		}
 		/*----------End Restart Game when death occurs--------------*/
