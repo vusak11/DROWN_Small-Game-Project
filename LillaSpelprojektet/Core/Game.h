@@ -15,7 +15,14 @@
 
 class Game {
 private:
+	enum ScreenState {
+		FULLSCREEN,
+		BIG,
+		MEDIUM,
+		SMALL
+	};
 	//Variables
+	ScreenState resolution_;
 	CameraHandler* cam_handler_ptr_;
 	ObjectHandler* obj_handler_ptr_;
 	SoundUnit sound_unit_game_;	// this variable contains functionality to play overworld songs
@@ -38,6 +45,7 @@ private:
 	void InputForPauseState(const sf::Event& in_event);
 	void InputForOptionsState(const sf::Event& in_event);
 	void InputForDeathState(const sf::Event& in_event);
+	void InputForChangingRes(const sf::Event& in_event);
 
 	void InputForGameState(const sf::Event& in_event);
 	void InputForSecondaryCamera(const float& in_deltatime);

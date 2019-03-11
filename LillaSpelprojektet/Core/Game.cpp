@@ -125,6 +125,10 @@ void Game::InputForDeathState(const sf::Event& in_event) {
 	}
 }
 
+void Game::InputForChangingRes(const sf::Event& in_event) {
+
+}
+
 void Game::InputForGameState(const sf::Event& in_event) {
 
 	switch (in_event.type) {
@@ -174,6 +178,21 @@ void Game::InputForGameState(const sf::Event& in_event) {
 		if (in_event.key.code == sf::Keyboard::B)
 		{
 			obj_handler_ptr_->SetPlayerXYZPosForBoss();
+		}
+		if (in_event.key.code == sf::Keyboard::R) {
+			GlobalSettings::Access()->UpdateResolutionValues(1280.0f, 720.0f);
+			/*switch (resolution_) {
+			case FULLSCREEN:
+
+
+				break;
+			case BIG:
+				break;
+			case MEDIUM:
+				break;
+			case SMALL:
+				break;
+			}*/
 		}
 
 	default:

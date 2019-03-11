@@ -51,6 +51,37 @@ float GlobalSettings::ValueOf(std::string setting_name)
 	return returnValue;
 }
 
+void GlobalSettings::UpdateResolutionValues(float width, float height) {
+	/*fpos_t position;
+	FILE *myfile;
+	myfile = fopen("../Resources/Global_Settings.txt", "w");
+	if (myfile != NULL) {
+		bool find_position = false;
+		while (!find_position) {
+			fgetpos(myfile, &position);
+			if ()
+		}
+		fgetpos(myfile, &position);
+	}*/
+	
+	std::ifstream file_input("../Resources/Global_Settings.txt");
+	std::vector<std::string> file;
+	std::string reader;
+
+	std::string new_data = "bajs";
+	getline(file_input, reader);
+	
+	while (getline(file_input, reader))
+		file.push_back(reader);
+
+	file.at(0) = "WINDOW_WIDTH=" + std::to_string(width);
+	file.at(1) = "WINDOW_HEIGHT=" + std::to_string(height);
+
+	std::ofstream file_output("../Resources/Global_Settings.txt");
+	for (const auto & e : file)
+		file_output << e << "\n";
+}
+
 GlobalSettings::~GlobalSettings()
 {
 }
