@@ -2,8 +2,7 @@
 #define OBJECT_OBJECT_HANDLER_H_
 
 #include <vector>
-#include <functional>		//Allows function pointers and lambdas
-							//Ref. for how it works: https://en.cppreference.com/w/cpp/utility/functional/function
+#include <iostream>			//Included for debug output
 
 #include "object_class.h"
 
@@ -17,8 +16,6 @@
 #include "Drop/Drop.h"
 
 #include "Physics/physics_engine.h"
-
-#include <iostream>			//Included for output in test function.
 
 class ObjectHandler {
 private:
@@ -45,11 +42,6 @@ private:
 	BossActions boss_actions_;
 
 	PhysicsEngine* physics_engine_ptr_;
-
-
-
-	//std::vector<std::function<void()>> player_action_queue_;		//NTS: Not at home in ObjectHandler?
-	
 
 	//Functions-----------------------------------------------
 	bool ClearPtrVector(std::vector<ObjectClass*>& in_vec);

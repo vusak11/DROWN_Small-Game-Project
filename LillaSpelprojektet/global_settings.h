@@ -42,9 +42,9 @@ enum ObjectID {
 	OBJECT_ID_DROP_DOUBLE_JUMP,
 	OBJECT_ID_DROP_SWORD,
 	OBJECT_ID_DROP_AXE,
-	OBJECT_ID_DROP_KEY,
+	OBJECT_ID_DROP_KEY,			//:note - last drop in spawn list (set in randomizer constructor)
 	OBJECT_ID_DROP_DOOR,
-	OBJECT_ID_BOSS,
+	OBJECT_ID_BOSS,				//:Start of Boss
 	OBJECT_ID_BOSS_HAND,
 	NUMBER_OF_OBJECT_IDS		//:The Last Enum
 };
