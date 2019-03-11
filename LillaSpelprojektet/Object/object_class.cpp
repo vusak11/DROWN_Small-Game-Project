@@ -1,5 +1,7 @@
 #include "object_class.h"
 
+#include <iostream>			//TEMP
+
 //Private--------------------------------------------------
 
 void ObjectClass::CalculateModelMatrix() {
@@ -7,24 +9,40 @@ void ObjectClass::CalculateModelMatrix() {
 	//The order is important here.
 	//First we scale, then we rotate and finally we translate
 	this->model_matrix_ = this->translation_matrix_ * this->rotation_matrix_ * this->scaling_matrix_;
+	this->UpdateHitbox(position_, scale_.x, scale_.y);
 }
-
 
 //Public---------------------------------------------------
 
 ObjectClass::ObjectClass(glm::vec3 start_pos, ObjectID id) {
 
-	this->position_ = start_pos;
-
 	this->id_ = id;
+	this->airborne_ = false;
+
+	this->position_ = start_pos;	// start_pos;
+
+	this->turn_rate_radians_ = glm::radians(GlobalSettings::Access()->ValueOf("OBJECT_TURN_RATE"));
+
+	this->velocity_vec_ = { 0.0f,0.0f,0.0f };		// Not ilizializing this makes weiered start values.
+	this->scale_ = glm::vec3(1.0f, 1.0f, 1.0f);
+
+	int rotation_around_x_ = 0;
+	int rotation_around_y_ = 0;
+	int rotation_around_z_ = 0;
 
 	this->scaling_matrix_ = glm::mat4(1.0f);
 	this->rotation_matrix_ = glm::mat4(1.0f);
 	this->translation_matrix_ = glm::mat4(1.0f);
 
+	//hitbox_ = HitBox(position_, scale_.x, scale_.y);
+	this->UpdateHitbox(position_, scale_.x, scale_.y);
+
 	//TBA: Use the ID to determine the specs of a Object (Character/Drop/etc)
 
 	this->model_matrix_up_to_date_ = false;
+
+	this->velocity_vec_ = glm::vec3(0.0f);
+	//this->acceleration_vec_ = glm::vec3(0.0f);
 }
 
 ObjectClass::~ObjectClass() {
@@ -46,32 +64,38 @@ void ObjectClass::SetPosition(float in_x, float in_y, float in_z) {
 
 	//Model matrix is now out of date
 	this->model_matrix_up_to_date_ = false;
+
+	//Apply new position on the hitbox
+	this->UpdateHitbox(position_, scale_.x, scale_.y);
 }
 
 void ObjectClass::SetScale(float in_s) {
 	scale_ = glm::vec3(in_s, in_s, in_s);
 
 	//Scale an identity matrix by scale_
-	this->scaling_matrix_ = glm::scale(glm::mat4(), this->scale_);
+	this->scaling_matrix_ = glm::scale(glm::mat4(1.0f), this->scale_);
 
 	//Model matrix is now out of date
 	this->model_matrix_up_to_date_ = false;
+
+	//Apply new scale on the hitbox
+	this->UpdateHitbox(position_, scale_.x, scale_.y);
 }
 
 void ObjectClass::SetScale(float in_x, float in_y, float in_z) {
 	scale_ = glm::vec3(in_x, in_y, in_z);
 
 	//Scale an identity matrix by scale_
-	this->scaling_matrix_ = glm::scale(glm::mat4(), this->scale_);
+	this->scaling_matrix_ = glm::scale(glm::mat4(1.0f), this->scale_);
 
 	//Model matrix is now out of date
 	this->model_matrix_up_to_date_ = false;
 }
 
-void ObjectClass::SetRotation(int in_x, int in_y, int in_z) {
-	this->rotation_around_x_ = in_x % 360;
-	this->rotation_around_y_ = in_y % 360;
-	this->rotation_around_z_ = in_z % 360;
+void ObjectClass::SetRotation(float in_x, float in_y, float in_z) {
+	this->rotation_around_x_ = in_x;
+	this->rotation_around_y_ = in_y;
+	this->rotation_around_z_ = in_z;
 
 	//Create three matrices for rotating around x, y and z
 	glm::mat4 rotation_matrix_x = glm::rotate((float)this->rotation_around_x_, glm::vec3(1.0f, 0.0f, 0.0f));
@@ -86,15 +110,6 @@ void ObjectClass::SetRotation(int in_x, int in_y, int in_z) {
 }
 
 void ObjectClass::SetVelocity(float in_velocity) {
-	//If the velocity given is greater than our allowed maximum
-	//clamp it down to it
-	if (in_velocity > OBJECT_MAX_VELOCITY) {
-		in_velocity = OBJECT_MAX_VELOCITY;
-	}
-	else if (in_velocity < -OBJECT_MAX_VELOCITY) {
-		in_velocity = -OBJECT_MAX_VELOCITY;
-	}
-
 	//Normalize the current vector and then scale it in accordance with the new velocity
 	this->velocity_vec_ = glm::normalize(this->velocity_vec_) * in_velocity;
 }
@@ -102,11 +117,18 @@ void ObjectClass::SetVelocity(float in_velocity) {
 void ObjectClass::SetVelocityVec(glm::vec3 in_velocity_vec) {
 	//Set the velocity vector to be the new velocity
 	this->velocity_vec_ = in_velocity_vec;
-
-	//Then call the SetVelocity function to clamp the value below OBJECT_MAX_VELOCITY
-	this->SetVelocity(glm::length(this->velocity_vec_));
-
 }
+
+void ObjectClass::SetObjectID(ObjectID object_id) {
+	id_ = object_id;
+}
+
+/*
+void ObjectClass::SetAccelerationVec(glm::vec3 in_acceleration_vec) {
+	//Set the acceleration vector to be the new velocity
+	this->acceleration_vec_ = in_acceleration_vec;
+}
+*/
 
 ObjectID ObjectClass::GetObjectID() const {
 	return this->id_;
@@ -114,6 +136,11 @@ ObjectID ObjectClass::GetObjectID() const {
 
 glm::vec3 ObjectClass::GetPosition() const {
 	return this->position_;
+}
+
+glm::vec3 ObjectClass::GetScale() const
+{
+	return this->scale_;
 }
 
 float ObjectClass::GetVelocity() const {
@@ -124,7 +151,7 @@ glm::vec3 ObjectClass::GetVelocityVec() const {
 	return this->velocity_vec_;
 }
 
-glm::mat4 ObjectClass::GetModelMatrix() {
+glm::mat4 ObjectClass::RetrieveModelMatrix() {
 	//If the model matrix is not up to date call the function calculating it
 	if (!this->model_matrix_up_to_date_) {
 		this->CalculateModelMatrix();
@@ -133,41 +160,10 @@ glm::mat4 ObjectClass::GetModelMatrix() {
 	return this->model_matrix_;
 }
 
-void ObjectClass::UpdatePosition(float in_deltatime) {
-	//Updates object position in accordance with how far its velocity would have taken it
-	this->position_ = this->position_ + (in_deltatime * this->velocity_vec_);
-
-	//NTS: This function has no stops. It does not stop by walls. Keep in mind that even with
-	//the function moving back if we end up in a wall enough velocity would just carry us through it
+bool ObjectClass::IsAirborne() {
+	return this->airborne_;
 }
 
-
-void ObjectClass::AlterVelocityVec(glm::vec3 in_vec) {
-	//Alter the current velocity vector with the new given one
-	this->velocity_vec_ = this->velocity_vec_ + in_vec;
-
-	//Then call the SetVelocity function to clam the value below OBJECT_MAX_VELOCITY
-	this->SetVelocity(glm::length(this->velocity_vec_));
-}
-
-void ObjectClass::TurnLeft() {
-	//Turn the model leftwards (positive direction)
-	int new_rotation = (this->rotation_around_y_ + OBJECT_TURN_RATE) % 360;
-
-	//If the new orientation lies somewhere in [90, 180] we have turned too far
-	//and we snap back to 90
-	if ((new_rotation > 90) && (new_rotation < 180)) { new_rotation = 90; }
-
-	this->SetRotation(this->rotation_around_x_, new_rotation, this->rotation_around_z_);
-}
-
-void ObjectClass::TurnRight() {
-	//Turn the model rightwards (negative direction)
-	int new_rotation = (this->rotation_around_y_ - OBJECT_TURN_RATE) % 360;
-
-	//If the new orientation lies somewhere in [180, 270] we have turned too far
-	//and we snap back to 270
-	if ((new_rotation > 180) && (new_rotation < 270)) { new_rotation = 270; }
-
-	this->SetRotation(this->rotation_around_x_, new_rotation, this->rotation_around_z_);
+void ObjectClass::SetAirborne(bool in_bool) {
+	this->airborne_ = in_bool;
 }

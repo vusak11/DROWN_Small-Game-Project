@@ -52,13 +52,34 @@
     <Filter Include="Source Files\GLSL\GeometryPass">
       <UniqueIdentifier>{c79053f2-ea70-4b39-a0a1-e1f34f1b31f5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Object\Physics">
+      <UniqueIdentifier>{c69e7378-7ee1-44c9-95b5-edfaf9edc73a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object\Physics">
+      <UniqueIdentifier>{82d238f0-d9db-4431-a4d6-634c3c72b062}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UI">
+      <UniqueIdentifier>{996bc5d3-956b-45a8-a64a-edbbeed86f84}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\UI">
+      <UniqueIdentifier>{89789ba0-9a16-4825-90fd-79b6ed350a5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Object\Character\NPCs">
+      <UniqueIdentifier>{b7373c07-0fbf-4fbe-9e30-9c5f55bec386}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object\Character\NPCs">
+      <UniqueIdentifier>{79cbcebb-5c3b-42b2-9afd-0bdbf71c5fe9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Object\Drop">
+      <UniqueIdentifier>{e9cbf214-89e8-41ba-8542-497c9f49a9bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object\Drop">
+      <UniqueIdentifier>{66ca0b9b-0058-4791-9c44-ae276b476c48}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="game.cpp">
-      <Filter>Source Files\Core</Filter>
     </ClCompile>
     <ClCompile Include="Camera\camera.cpp">
       <Filter>Source Files\Camera</Filter>
@@ -66,61 +87,94 @@
     <ClCompile Include="Camera\camera_handler.cpp">
       <Filter>Source Files\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="map.cpp">
-      <Filter>Source Files\Map</Filter>
-    </ClCompile>
-    <ClCompile Include="map_handler.cpp">
-      <Filter>Source Files\Map</Filter>
-    </ClCompile>
-    <ClCompile Include="shader_handler.cpp">
-      <Filter>Source Files\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="sound_unit.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Object\object_class.cpp">
       <Filter>Source Files\Object</Filter>
     </ClCompile>
     <ClCompile Include="Object\Character\character.cpp">
       <Filter>Source Files\Object\Character</Filter>
     </ClCompile>
-    <ClCompile Include="mesh.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="model.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Object\object_handler.cpp">
       <Filter>Source Files\Object</Filter>
     </ClCompile>
-    <ClCompile Include="light.cpp">
+    <ClCompile Include="Object\Physics\physics_engine.cpp">
+      <Filter>Source Files\Object\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Game.cpp">
+      <Filter>Source Files\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\light.cpp">
+      <Filter>Source Files\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\render.cpp">
+      <Filter>Source Files\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\shader_handler.cpp">
+      <Filter>Source Files\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\sound_unit.cpp">
+      <Filter>Source Files\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Map\map.cpp">
+      <Filter>Source Files\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Map\map_handler.cpp">
+      <Filter>Source Files\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Character\mesh.cpp">
+      <Filter>Source Files\Object\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Character\model.cpp">
+      <Filter>Source Files\Object\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\gui.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Character\player_character.cpp">
+      <Filter>Source Files\Object\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Character\ability.cpp">
+      <Filter>Source Files\Object\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Character\cooldown_class.cpp">
+      <Filter>Source Files\Object\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Character\npc.cpp">
+      <Filter>Source Files\Object\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\menu.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="GLDebug.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="render.cpp">
-      <Filter>Source Files\Core</Filter>
+    <ClCompile Include="Object\hitbox.cpp">
+      <Filter>Source Files\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="global_settings.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Map\metadata.cpp">
+      <Filter>Source Files\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Drop\drop.cpp">
+      <Filter>Source Files\Object\Drop</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Character\NPCs\NPC_runner.cpp">
+      <Filter>Source Files\Object\Character\NPCs</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Character\NPCs\NPC_boss.cpp">
+      <Filter>Source Files\Object\Character\NPCs</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Character\weapon.cpp">
+      <Filter>Source Files\Object\Character</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="map_handler.h">
-      <Filter>Header Files\Map</Filter>
-    </ClInclude>
-    <ClInclude Include="map.h">
-      <Filter>Header Files\Map</Filter>
-    </ClInclude>
     <ClInclude Include="Camera\camera.h">
       <Filter>Header Files\Camera</Filter>
     </ClInclude>
     <ClInclude Include="Camera\camera_handler.h">
       <Filter>Header Files\Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="game.h">
-      <Filter>Header Files\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="shader_handler.h">
-      <Filter>Header Files\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="sound_unit.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Object\object_class.h">
       <Filter>Header Files\Object</Filter>
@@ -131,20 +185,77 @@
     <ClInclude Include="Object\object_handler.h">
       <Filter>Header Files\Object</Filter>
     </ClInclude>
-    <ClInclude Include="mesh.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Object\Physics\physics_engine.h">
+      <Filter>Header Files\Object\Physics</Filter>
     </ClInclude>
-    <ClInclude Include="model.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="globals.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="light.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="render.h">
+    <ClInclude Include="Core\Game.h">
       <Filter>Header Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\light.h">
+      <Filter>Header Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\render.h">
+      <Filter>Header Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\shader_handler.h">
+      <Filter>Header Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\sound_unit.h">
+      <Filter>Header Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Map\map.h">
+      <Filter>Header Files\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Map\map_handler.h">
+      <Filter>Header Files\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Character\mesh.h">
+      <Filter>Header Files\Object\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Character\model.h">
+      <Filter>Header Files\Object\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\gui.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\menu.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Character\player_character.h">
+      <Filter>Header Files\Object\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Character\ability.h">
+      <Filter>Header Files\Object\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Character\cooldown_class.h">
+      <Filter>Header Files\Object\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Character\npc.h">
+      <Filter>Header Files\Object\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\hitbox.h">
+      <Filter>Header Files\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="global_settings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GLDebug.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Map\metadata.h">
+      <Filter>Header Files\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Character\NPCs\NPC_runner.h">
+      <Filter>Header Files\Object\Character\NPCs</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Drop\drop.h">
+      <Filter>Header Files\Object\Drop</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Character\NPCs\NPC_boss.h">
+      <Filter>Header Files\Object\Character\NPCs</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Character\weapon.h">
+      <Filter>Header Files\Object\Character</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -170,6 +281,18 @@
       <Filter>Source Files\GLSL\LightingPass</Filter>
     </None>
     <None Include="glsl\forward_gs.glsl">
+      <Filter>Source Files\GLSL</Filter>
+    </None>
+    <None Include="glsl\textshader_fs.glsl">
+      <Filter>Source Files\GLSL</Filter>
+    </None>
+    <None Include="glsl\textshader_vs.glsl">
+      <Filter>Source Files\GLSL</Filter>
+    </None>
+    <None Include="glsl\guishader_fs.glsl">
+      <Filter>Source Files\GLSL</Filter>
+    </None>
+    <None Include="glsl\guishader_vs.glsl">
       <Filter>Source Files\GLSL</Filter>
     </None>
   </ItemGroup>
