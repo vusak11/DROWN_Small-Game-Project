@@ -168,6 +168,9 @@
     <ClCompile Include="Object\Character\weapon.cpp">
       <Filter>Source Files\Object\Character</Filter>
     </ClCompile>
+    <ClCompile Include="Object\randomizer.cpp">
+      <Filter>Source Files\Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera\camera.h">
@@ -256,6 +259,9 @@
     </ClInclude>
     <ClInclude Include="Object\Character\weapon.h">
       <Filter>Header Files\Object\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\randomizer.h">
+      <Filter>Header Files\Object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
