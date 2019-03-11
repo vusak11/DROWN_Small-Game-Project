@@ -24,7 +24,11 @@ private:
 	GLuint current_slot_1_;
 	GLuint current_slot_2_;
 
+	GLuint mini_map_;
+	GLuint map_marker_;
+
 	int health_bar_length_;
+	glm::vec2 mm_marker_pos_;
 
 	GLuint vertex_array_object_;
 	GLuint vertex_buffer_object_;
