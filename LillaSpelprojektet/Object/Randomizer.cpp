@@ -1,6 +1,35 @@
 #include "randomizer.h"
 
 //Private--------------------------------------------------
+void Randomizer::LoadRates(ZoneID in_id, std::string in_zone_name) {
+
+	this->zone_rates_arr_[in_id].hp_restore		= GlobalSettings::Access()->ValueOf(in_zone_name + "_ZONE_DROP_RATE_HP_RESTORE");
+	this->zone_rates_arr_[in_id].hp_up			= GlobalSettings::Access()->ValueOf(in_zone_name + "_ZONE_DROP_RATE_HP_UP");
+	this->zone_rates_arr_[in_id].atk_up			= GlobalSettings::Access()->ValueOf(in_zone_name + "_ZONE_DROP_RATE_ATK_UP");
+	this->zone_rates_arr_[in_id].dash			= GlobalSettings::Access()->ValueOf(in_zone_name + "_ZONE_DROP_RATE_DASH");
+	this->zone_rates_arr_[in_id].double_jump	= GlobalSettings::Access()->ValueOf(in_zone_name + "_ZONE_DROP_RATE_DOUBLE_JUMP");
+	this->zone_rates_arr_[in_id].sword			= GlobalSettings::Access()->ValueOf(in_zone_name + "_ZONE_DROP_RATE_SWORD");
+	this->zone_rates_arr_[in_id].axe			= GlobalSettings::Access()->ValueOf(in_zone_name + "_ZONE_DROP_RATE_AXE");
+	this->zone_rates_arr_[in_id].key			= GlobalSettings::Access()->ValueOf(in_zone_name + "_ZONE_DROP_RATE_KEY");
+
+}
+
+Drop* Randomizer::DropZoneDef(const float& in_verdict) {
+	
+}
+
+Drop* Randomizer::DropZoneRed(const float& in_verdict) {
+
+}
+
+Drop* Randomizer::DropZoneGre(const float& in_verdict) {
+
+}
+
+Drop* Randomizer::DropZoneBlu(const float& in_verdict) {
+
+}
+
 
 //Public---------------------------------------------------
 Randomizer::Randomizer() {
@@ -10,19 +39,19 @@ Randomizer::Randomizer() {
 	//		of the code
 	srand(static_cast<unsigned>(time(0)));
 
-	//Set the range of randomization for drops
-	this->first_spawnable_drop_ = OBJECT_ID_DROP_HP_RESTORE;
-	this->last_spawnable_drop_ = OBJECT_ID_DROP_KEY;
-	int num_of_drops = this->last_spawnable_drop_ - this->first_spawnable_drop_ + 1;
+	//Allocate space for drop rates for each zone
+	this->zone_rates_arr_ = new DropRates[NUM_OF_ZONES];
 
-	//Calculate the number of spawnable drops
-	this->num_of_drops_ = this->last_spawnable_drop_ - this->first_spawnable_drop_ + 1;
-
-	if (this->num_of_drops_ < 0) { this->num_of_drops_ = 0; }
+	//Load in the drop rates for each zone from the globals
+	this->LoadRates(DEF, "DEF");
+	this->LoadRates(RED, "RED");
+	this->LoadRates(GRE, "GRE");
+	this->LoadRates(BLU, "BLU");
+	
 }
 
 Randomizer::~Randomizer() {
-
+	delete this->zone_rates_arr_;
 }
 
 Drop* Randomizer::RandomNewDropPtr(glm::vec3 in_pos, float in_drop_rate) {
@@ -33,35 +62,35 @@ Drop* Randomizer::RandomNewDropPtr(glm::vec3 in_pos, float in_drop_rate) {
 	
 	//NOTE 2:
 	//This function can return a null pointer. Ensure to handle outside
-	
-	//Avoid division on 0
-	if (this->num_of_drops_ == 0) { return NULL; }
-
-	//Split the drop rate range into that many equally sized sections
-	float range_per_drop = in_drop_rate / (float)this->num_of_drops_;
 
 	//Get a random number in the range 0 - 100
 	float verdict = static_cast<float>(rand()) / static_cast<float>(100);
 
 	//If the verdic is higher than the drop rate, return null
-	if (verdict < in_drop_rate) { return NULL; }
+	if (verdict > in_drop_rate) { return NULL; }
 	
-	//If the verdic is lower it means we should spawn a drop
-	//Loop over all ranges to figure out which one it belongs to
-	//We start from the lowest and increase for each iteration,
-	//meaning we only need to check if the verdic is lower than
-	//the next range maximum
+	//Otherwise determine a drop using the drop functions
+	//Each of these functions start with the lowest range
+	//by checking if the verdic is below its maximum.
+	//If it isn't we can simply increase the maximum to cover
+	//the next range while practically excluding the first
+	//(as we know there to be no match).
 	Drop* drop_ptr = NULL;
-	for (unsigned int i = 1; i <= this->num_of_drops_; i++) {
-		if (verdict < range_per_drop * i) {
-
-			//drop_ptr = Call to drop selection function()
-			//WORKING HERE
-
-			//Break loop
-			i = this->num_of_drops_ + 1;
-		}
+	switch (zone) {
+	case "RED":
+		drop_ptr = this->DropZoneRed(verdict);
+		break;
+	case "GRE":
+		drop_ptr = this->DropZoneBlu(verdict);
+		break;
+	case "BLU":
+		drop_ptr = this->DropZoneGre(verdict);
+		break;
+	default:
+		drop_ptr = this->DropZoneDef(verdict);
+		break;
 	}
+	
 	
 	//Return drop pointer, if the drop was not propernly represented this
 	//might reurn null

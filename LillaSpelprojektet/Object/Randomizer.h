@@ -6,12 +6,42 @@
 
 #include <cstdlib>
 #include <ctime>
+#include <string>
 
 class Randomizer {
 private:
-	ObjectID first_spawnable_drop_;
-	ObjectID last_spawnable_drop_;
-	int num_of_drops_;
+	//Enums:
+	enum ZoneID {
+		DEF,
+		RED,
+		GRE,
+		BLU,
+		NUM_OF_ZONES
+	};
+
+	//Structs:
+	struct DropRates {
+		float hp_restore;
+		float hp_up;
+		float atk_up;
+		float dash;
+		float double_jump;
+		float sword;
+		float axe;
+		float key;
+	};
+
+	//Variables:
+	DropRates* zone_rates_arr_;
+	
+	//Functions:
+	void LoadRates(ZoneID in_id, std::string in_zone_name);
+
+
+	Drop* DropZoneDef(const float& in_verdict);
+	Drop* DropZoneRed(const float& in_verdict);
+	Drop* DropZoneGre(const float& in_verdict);
+	Drop* DropZoneBlu(const float& in_verdict);
 
 public:
 	Randomizer();
