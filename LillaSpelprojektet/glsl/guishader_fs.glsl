@@ -12,7 +12,7 @@ void main()
 	// Fragments that belong to the mini map portion of the GUI
 	if (gl_FragCoord.x >= 1000.0f && gl_FragCoord.y <= 300) {
 		// Only render part of mini map within a radius around the map marker
-		if (pow(gl_FragCoord.x - marker_pos.x, 2) + pow(gl_FragCoord.y - marker_pos.y, 2) > pow(35, 2)) {
+		if (pow(gl_FragCoord.x - marker_pos.x - 5.0, 2) + pow(gl_FragCoord.y - marker_pos.y + 5.0, 2) > pow(35, 2)) {
 			discard;
 		}
 		else {
