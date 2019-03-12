@@ -121,6 +121,9 @@ void ObjectHandler::ResolvePlayerPickUp(std::vector<ObjectClass*>& in_relevant_d
 		//Typecast a ptr in the vector to the drop type
 		drop_ptr = dynamic_cast<Drop*>(in_relevant_drops_ptr_vector.at(i));
 		if (drop_ptr != NULL) {
+
+			//If it is swappable drop
+
 			//Check if the player touches any of the drops (loop breaks if so)
 			triggered = drop_ptr->CheckCollision(*(this->player_ptr_));
 		}
@@ -130,11 +133,21 @@ void ObjectHandler::ResolvePlayerPickUp(std::vector<ObjectClass*>& in_relevant_d
 
 	//If we have triggered an event
 	if (triggered) {
-		//Check if the ptr is an ability
+		//Delete the object and remove the pointer from the object handler's drop vector
+		this->RemoveObject(in_relevant_drops_ptr_vector.at(index), this->drop_ptr_vector_);
+		//Then remove the entry from the list of relevant drops
+		in_relevant_drops_ptr_vector.erase(in_relevant_drops_ptr_vector.begin() + index);
+	}
+
+	/* TEMP REMOVED: Might have to rework
+
+	//If we have triggered an event
+	if (triggered) {
+		//If the triggered drop is a swappable drop
 		bool same_ability = false;
-		drop_ptr = dynamic_cast<AbilitiesDrop*>(in_relevant_drops_ptr_vector.at(index));
+		drop_ptr = dynamic_cast<Drop*>(in_relevant_drops_ptr_vector.at(index));
 		//Swap abilities
-		if (drop_ptr != NULL) {
+		if (drop_ptr->IsSwappable()) {
 			AbilityID old_ability = player_ptr_->GetAbilityID();
 			bool ability_swapped = player_ptr_->SwapAbilities(in_relevant_drops_ptr_vector.at(index)->GetObjectID());
 
@@ -158,6 +171,8 @@ void ObjectHandler::ResolvePlayerPickUp(std::vector<ObjectClass*>& in_relevant_d
 			in_relevant_drops_ptr_vector.erase(in_relevant_drops_ptr_vector.begin() + index);
 		}
 	}
+
+	*/
 }
 
 void ObjectHandler::ResolvePlayerAttack(std::vector<ObjectClass*>& in_relevant_npcs_ptr_vector) {
