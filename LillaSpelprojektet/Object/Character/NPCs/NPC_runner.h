@@ -10,7 +10,9 @@ private:
 	int next_move_index_;		// 0 = idle, 1 = move right, 2 = move left
 	int aggro_range_;
 	glm::vec2 knockback_;
-
+	int health_last_frame_;	// used for calculating stun
+	bool stunned_ = false;
+	float stun_timer = 0;
 
 public:
 	NPCRunner(glm::vec3 start_pos, ObjectID id);

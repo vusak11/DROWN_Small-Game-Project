@@ -60,8 +60,8 @@ Render::Render() {
 	model_[OBJECT_ID_DROP_AXE] = new Model((char*)"../Resources/Models/Drops/axe/axe.obj");
 	model_[OBJECT_ID_DROP_KEY] = new Model((char*)"../Resources/Models/Drops/key/key.obj");
 	model_[OBJECT_ID_DROP_DOOR] = new Model((char*)"../Resources/Models/Drops/Gate/Gate.obj");
-	model_[OBJECT_ID_BOSS] = new Model((char*)"../Resources/Models/Boss/bossLayout1.obj");
-	model_[OBJECT_ID_BOSS_HAND] = new Model((char*)"../Resources/Models/Boss/bossHand.fbx");
+	model_[OBJECT_ID_BOSS] = new Model((char*)"../Resources/Models/Boss/boss.obj");
+	model_[OBJECT_ID_BOSS_HAND] = new Model((char*)"../Resources/Models/Boss/bossHand.obj");
 
 }
 

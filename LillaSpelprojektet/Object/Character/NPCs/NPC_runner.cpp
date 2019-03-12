@@ -30,66 +30,87 @@ void NPCRunner::ExecuteAI(float in_deltatime, glm::vec3 in_player_pos)
 	float jump_velocity = GlobalSettings::Access()->ValueOf("NPC_RUNNER_JUMP_VELOCITY");
 
 	static float private_time = 0.0f;
+	
+	float stun_duration = 0.6;
 
 
-	float length_to_player_x = (in_player_pos.x - temp_position.x);
-	float length_to_player_y = (in_player_pos.y - temp_position.y);
-	if (abs(length_to_player_x) < aggro_range_ && abs(length_to_player_y) < aggro_range_)
+	int health = GetCurrentHealth();
+	stun_timer += in_deltatime;
+	if (health_last_frame_ > health)
 	{
-		state_ = NPC_STATE_AGGRO;
+		stunned_ = true;
+		stun_timer = 0;
 	}
-	else
+	health_last_frame_ = health;
+
+	if (!stunned_)
 	{
-		if (state_ == NPC_STATE_AGGRO)
+		float length_to_player_x = (in_player_pos.x - temp_position.x);
+		float length_to_player_y = (in_player_pos.y - temp_position.y);
+		if (abs(length_to_player_x) < aggro_range_ && abs(length_to_player_y) < aggro_range_)
 		{
-			private_time = 3.0f;
-			next_move_index_ = 0.0f;
+			state_ = NPC_STATE_AGGRO;
 		}
-		state_ = NPC_STATE_IDLE;
+		else
+		{
+			if (state_ == NPC_STATE_AGGRO)
+			{
+				private_time = 3.0f;
+				next_move_index_ = 0.0f;
+			}
+			state_ = NPC_STATE_IDLE;
+		}
+
+		if (state_ == NPC_STATE_IDLE)
+		{
+			private_time += (float)in_deltatime;
+
+			if (private_time > time_to_next_move_)
+			{
+				private_time = 0;
+				next_move_index_ = rand() % 3;
+				time_to_next_move_ = rand() % 10 + 2;
+			}
+
+			switch (next_move_index_)
+			{
+			case 1:
+				SetVelocityVec({ idle_speed * in_deltatime ,temp_velocity.y , temp_velocity.z });
+				break;
+			case 2:
+				SetVelocityVec({ -idle_speed * in_deltatime ,temp_velocity.y , temp_velocity.z });
+				break;
+			default:
+				break;
+			} // switch
+		} // if Idle
+		else if (state_ == NPC_STATE_AGGRO)
+		{
+			if (in_player_pos.x < temp_position.x)
+			{
+				SetVelocityVec({ -aggro_speed * in_deltatime ,temp_velocity.y , temp_velocity.z });
+			}
+			else if (in_player_pos.x > temp_position.x)
+			{
+				SetVelocityVec({ aggro_speed * in_deltatime ,temp_velocity.y , temp_velocity.z });
+			}
+
+			temp_velocity = GetVelocityVec();
+
+			if (in_player_pos.y - temp_position.y > 10 && !IsAirborne())
+			{
+				SetVelocityVec({ temp_velocity.x , jump_velocity , temp_velocity.z });
+				SetAirborne(true);
+			}
+		}
+	}
+	else if (stun_timer > stun_duration)
+	{
+		stunned_ = false;
 	}
 
-	if (state_ == NPC_STATE_IDLE)
-	{
-		private_time += (float)in_deltatime;
 
-		if (private_time > time_to_next_move_)
-		{
-			private_time = 0;
-			next_move_index_ = rand() % 3;
-			time_to_next_move_ = rand() % 10 + 2;
-		}
-
-		switch (next_move_index_)
-		{
-		case 1:
-			SetVelocityVec({ idle_speed * in_deltatime ,temp_velocity.y , temp_velocity.z });
-			break;
-		case 2:
-			SetVelocityVec({ -idle_speed * in_deltatime ,temp_velocity.y , temp_velocity.z });
-			break;
-		default:
-			break;
-		} // switch
-	} // if Idle
-	else if (state_ == NPC_STATE_AGGRO)
-	{
-		if (in_player_pos.x < temp_position.x)
-		{
-			SetVelocityVec({ -aggro_speed * in_deltatime ,temp_velocity.y , temp_velocity.z });
-		}
-		else if (in_player_pos.x > temp_position.x)
-		{
-			SetVelocityVec({ aggro_speed * in_deltatime ,temp_velocity.y , temp_velocity.z });
-		}
-
-		temp_velocity = GetVelocityVec();
-
-		if (in_player_pos.y - temp_position.y > 10 && !IsAirborne())
-		{
-			SetVelocityVec({ temp_velocity.x , jump_velocity , temp_velocity.z });
-			SetAirborne(true);
-		}
-	}
+	
 }
 
 bool NPCRunner::Attack(Character& in_target) {

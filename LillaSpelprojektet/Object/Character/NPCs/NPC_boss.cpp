@@ -13,7 +13,7 @@ NPCBoss::NPCBoss(glm::vec3 start_pos) : NPC(
 
 	laugh1_.LoadSound((char*)"../Resources/Audio/evil_laugh2.wav");
 	laugh2_.LoadSound((char*)"../Resources/Audio/evil_laugh3.wav");
-	//laugh3_.LoadSound((char*)"../Resources/Audio/evil_laugh1.wav");
+	laugh3_.LoadSound((char*)"../Resources/Audio/evil_laugh1.wav");
 	
 	arm_hit_ground_.LoadSound((char*)"../Resources/Audio/boss_arm_boom.wav");
 	laugh1_.PlaySound();
@@ -22,7 +22,7 @@ NPCBoss::NPCBoss(glm::vec3 start_pos) : NPC(
 
 	boss_objects_.push_back(new ObjectClass(start_pos, OBJECT_ID_BOSS_HAND));
 	boss_objects_[0]->SetPosition(start_pos.x, start_pos.y + 200, 5.0f);
-	boss_objects_[0]->SetScale(6, 6, 4);
+	boss_objects_[0]->SetScale(6, 6, 2);
 	boss_objects_[0]->SetOffsets(16,60);
 }
 
@@ -54,13 +54,13 @@ void NPCBoss::ExecuteAI(float in_deltatime, glm::vec3 in_player_pos) {
 				stage_ = STAGE_2;
 				time = 0.0f;
 				stage_2_counter = 0;
-				//laugh3_.PlaySound();
+				laugh3_.PlaySound();
 			}
 		}
 
 	}
 	else if (stage_ == STAGE_2) {
-		if (time > 2.8f)
+		if (time > 3.5f)
 		{
 			actions_.spawn_mobs = true;
 			stage_2_counter++;

@@ -82,6 +82,8 @@ void ObjectHandler::DeterminePlayerAction(
 	//Update the player's status (such as cooldowns)
 	this->player_ptr_->UpdateStatus(in_deltatime);
 	player_ptr_->CalculateAnimationState(in_deltatime);
+	static float time = 0;
+	time += in_deltatime;
 
 	//Determine player movement on the x-axis
 	if (this->player_input_.left) {
@@ -102,7 +104,12 @@ void ObjectHandler::DeterminePlayerAction(
 	}
 	//If input is attack
 	if (this->player_input_.attack) {
-		this->ResolvePlayerAttack(in_relevant_npcs_ptr_vector);
+		if (time > player_ptr_->GetWeapon()->GetCooldown())
+		{
+			time = 0;
+			this->ResolvePlayerAttack(in_relevant_npcs_ptr_vector);
+		}
+		
 	}
 	//If input is to pick up
 	if (this->player_input_.pick_up) {
@@ -165,6 +172,8 @@ void ObjectHandler::ResolvePlayerAttack(std::vector<ObjectClass*>& in_relevant_n
 
 	std::vector<int> index_of_the_dead;
 	Character* character_ptr = NULL;
+	int temp_index = -1;
+	int sound_index = -1;
 
 	//Loop over all relevant npcs
 	for (unsigned int i = 0; i < in_relevant_npcs_ptr_vector.size(); i++) {
@@ -173,11 +182,19 @@ void ObjectHandler::ResolvePlayerAttack(std::vector<ObjectClass*>& in_relevant_n
 		if (character_ptr != NULL) {
 			//Send in a npc and check if the player hits it with the attack
 			//If the unit dies save its index
-			if (1 == this->player_ptr_->UseWeapon(*character_ptr)) {
+			temp_index = this->player_ptr_->UseWeapon(*character_ptr);
+			if (0 == temp_index && sound_index != 1)
+			{
+				sound_index = 0;
+			}
+			if (1 == temp_index) {
 				index_of_the_dead.push_back(i);
+				sound_index = 1;
 			}
 		}
 	}
+
+	this->player_ptr_->PlaySound(sound_index);
 
 	//Lastly remove enemies on position indicated by the index vector
 	//We need to track the offset  of how many thing we have deleted
@@ -293,6 +310,7 @@ void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map
 	this->player_ptr_ = new PlayerCharacter(glm::vec3(meta_data->GetSpawnPointCoords(), 3.0f));
 	this->player_ptr_->SetScale(2.0f);
 	this->player_ptr_->SetOffsets(2, 2);
+	this->player_ptr_->LoadPlayerSounds();
 	
 	glm::vec3 drop_pos = this->player_ptr_->GetPosition();
 	//TEMP
@@ -491,15 +509,15 @@ void ObjectHandler::DetermineBossAction() {
 
 	if (boss_ptr_->actions_.spawn_mobs)
 	{
-		this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(100, -1160, 5.0f), OBJECT_ID_FIRE_AI));
-		this->npc_ptr_vector_.back()->SetScale(3);
-		this->npc_ptr_vector_.back()->SetOffsets(3, 3);
+		this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(100, -1180, 5.0f), OBJECT_ID_FIRE_AI));
+		this->npc_ptr_vector_.back()->SetScale(2);
+		this->npc_ptr_vector_.back()->SetOffsets(2, 2);
 		NPCRunner* temp_npc_ptr = dynamic_cast<NPCRunner*>(this->npc_ptr_vector_.back());
 		temp_npc_ptr->SetAggroRange(200);
 
-		this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(220, -1160, 5.0f), OBJECT_ID_FIRE_AI));
-		this->npc_ptr_vector_.back()->SetScale(3);
-		this->npc_ptr_vector_.back()->SetOffsets(3, 3);
+		this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(220, -1180, 5.0f), OBJECT_ID_FIRE_AI));
+		this->npc_ptr_vector_.back()->SetScale(2);
+		this->npc_ptr_vector_.back()->SetOffsets(2, 2);
 		temp_npc_ptr = dynamic_cast<NPCRunner*>(this->npc_ptr_vector_.back());
 		temp_npc_ptr->SetAggroRange(200);
 

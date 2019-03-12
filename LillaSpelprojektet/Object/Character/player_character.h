@@ -23,6 +23,12 @@ private:
 
 	int num_of_keys_;
 
+	SoundUnit sound_atk_1_;
+	SoundUnit sound_atk_2_;
+	SoundUnit sound_atk_3_;
+	SoundUnit sound_axe_1_;
+	SoundUnit sound_axe_2_;
+
 	//friend bool Ability::ExecuteAbility(PlayerCharacter&);
 	friend bool DoubleJump::ExecuteAbility(PlayerCharacter& in_player);
 	friend bool Dash::ExecuteAbility(PlayerCharacter& in_player);
@@ -36,6 +42,7 @@ public:
 	AbilityID GetAbilityID() const;
 	WeaponID GetWeaponID() const;
 	int GetNumOfKeys() const;
+	Weapon* GetWeapon() const;
 
 	void MoveLeft();
 	void MoveRight();
@@ -51,6 +58,9 @@ public:
 														//e.g. cooldown on abilities
 														//or attack windows
 	void IncreaseKeys();
+
+	void LoadPlayerSounds();
+	void PlaySound(int sound_index);
 
 };
 
