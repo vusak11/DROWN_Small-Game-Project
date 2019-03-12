@@ -124,7 +124,7 @@ void GUI::RenderGUI(ShaderHandler * shader_program, PlayerInfoPackage player_dat
 		}
 	}
 	// Render mini map
-	RenderGUIObject(1010.0f, 240.0f, 250.0f, mini_map_);
+	RenderGUIObject(1010.0f, 260.0f, 250.0f, mini_map_);
 	// Render mini map player marker
 	RenderGUIObject(mm_marker_pos_.x, mm_marker_pos_.y, 10.0f, map_marker_);
 }
@@ -154,7 +154,7 @@ void GUI::updateHUD(PlayerInfoPackage player_data) {
 	//Max length of health bar divided by Max HP, multiplied by current HP
 	health_bar_length_ = (300 / player_data.max_hp) * player_data.current_hp;
 	//Update map marker position [Coordinates = (PlayerPos / MapResolution) * MiniMapResolution + MiniMapGUIcoords + MarkerOffset / 2]
-	mm_marker_pos_ = glm::vec2((player_data.position.x / 2048.0f) * 250.0f + 1010.0f - 5.0f, (player_data.position.y / 2048.0f) * 250.0f + 240 + 7.0f);
+	mm_marker_pos_ = glm::vec2((player_data.position.x / 2048.0f) * 250.0f + 1010.0f - 5.0f, (player_data.position.y / 2048.0f) * 250.0f + 260 + 7.0f);
 
 	switch (player_data.weapon_id) {
 	case WEAPON_NONE:
