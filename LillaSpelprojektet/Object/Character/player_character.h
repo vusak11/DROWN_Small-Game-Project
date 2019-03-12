@@ -45,7 +45,7 @@ public:
 
 	void CalculateAnimationState(float delta_time);
 
-	//bool SwapAbilities(ObjectID object_ability);
+	Ability* SwapAbility(Ability* in_ability_ptr);
 	
 	void SetAirborne(bool in_bool);
 	void UpdateStatus(const float& in_deltatime);		//Updates time related stuff

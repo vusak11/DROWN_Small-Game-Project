@@ -4,6 +4,7 @@
 #include "../object_class.h"
 #include "../Character/player_character.h"
 #include "../../global_settings.h"
+#include "../Character/ability.h"
 
 //---------------------------------------------------------
 //-----------------ABSTRACT-BASE-CLASS---------------------

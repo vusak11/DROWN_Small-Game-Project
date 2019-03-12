@@ -135,37 +135,18 @@ void PlayerCharacter::CalculateAnimationState(float delta_time) {
 	}
 }
 
-/*
-bool PlayerCharacter::SwapAbilities(ObjectID object_ability) {
 
-	if (this->ability_ptr_->GetID() == ABILITY_NONE &&
-		object_ability == OBJECT_ID_DROP_DOUBLE_JUMP) {
-		delete this->ability_ptr_;
-		this->ability_ptr_ = new DoubleJump();
-		return true;
-	}
-	else if (this->ability_ptr_->GetID() == ABILITY_NONE &&
-		object_ability == OBJECT_ID_DROP_DASH) {
-		delete this->ability_ptr_;
-		this->ability_ptr_ = new Dash();
-		return true;
-	}
-	else if (this->ability_ptr_->GetID() == ABILITY_DASH &&
-		object_ability == OBJECT_ID_DROP_DOUBLE_JUMP) {
-		delete this->ability_ptr_;
-		this->ability_ptr_ = new DoubleJump();
-		return true;
-	} 
-	else if (this->ability_ptr_->GetID() == ABILITY_DOUBLE_JUMP &&
-		object_ability == OBJECT_ID_DROP_DASH) {
-		delete this->ability_ptr_;
-		this->ability_ptr_ = new Dash();
-		return true;
-	}
+Ability* PlayerCharacter::SwapAbility(Ability* in_ability_ptr) {
+
+	//Save the pointer to the old ability
+	Ability* old_ability_ptr = this->ability_ptr_;
+
+	//Save the pointer to the new ability
+	this->ability_ptr_ = in_ability_ptr;
 	
-	return false;
+	//Return the old ability
+	return old_ability_ptr;
 }
-*/
 
 
 void PlayerCharacter::SetAirborne(bool in_air) {

@@ -141,6 +141,13 @@ void BossDoor::SpinDrop(const float& in_deltatime) {
 //Private
 bool DashDrop::TriggerEvent(PlayerCharacter& in_player) {
 	
+	//Give the player a dash and catch the ptr to the old ability
+	Ability* old_ability_ptr = in_player.SwapAbility(new Dash());
+
+	//Delete the old ability
+	delete old_ability_ptr;
+
+	//Return true
 	return true;
 }
 
@@ -157,6 +164,13 @@ DashDrop::~DashDrop() {}
 //Private
 bool DoubleJumpDrop::TriggerEvent(PlayerCharacter& in_player) {
 	
+	//Give the player a double jump and catch the ptr to the old ability
+	Ability* old_ability_ptr = in_player.SwapAbility(new DoubleJump());
+
+	//Delete the old ability
+	delete old_ability_ptr;
+
+	//Return true
 	return true;
 }
 
