@@ -58,6 +58,7 @@ public:
 
 
 	void RenderMenuState(Menu menu);
+	void RenderOptionsMenu(Menu menu);
 	void RenderPauseMenu(Menu menu);
 	void RenderDeathMenu(Menu menu);
 	//void GeometryDrawing();

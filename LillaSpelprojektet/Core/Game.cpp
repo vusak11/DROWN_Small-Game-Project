@@ -3,7 +3,7 @@
 //Private--------------------------------------------------
 
 void Game::InputForMenuState(const sf::Event& in_event) {
-	menu_.StateManager(state_);
+	menu_.StateManager(this->previous_states_.back());
 	switch (in_event.type) {
 	case sf::Event::KeyPressed:
 		if (in_event.key.code == sf::Keyboard::W
@@ -17,18 +17,16 @@ void Game::InputForMenuState(const sf::Event& in_event) {
 		if (in_event.key.code == sf::Keyboard::Enter) {
 			switch (menu_.GetSelectedItemIndex()) {
 			case 0:						//Start
-
 				InitializeStartGame();
-				state_ = GameState::GAME;
-				
+				this->previous_states_.push_back(GameState::GAME);
 				break;
 			case 1:						//Options
-				//state_ = OPTIONS; //REAL case
-				//menu_.StateManager(state_);
+				this->previous_states_.push_back(GameState::OPTIONS); //REAL case
+				menu_.StateManager(this->previous_states_.back());
 				//Do something, change FOV and so on
 				break;
 			case 2:						//Quit
-				state_ = QUIT;
+				this->previous_states_.push_back(GameState::QUIT);
 			}
 		}
 		break;
@@ -49,40 +47,26 @@ void Game::InputForPauseState(const sf::Event& in_event) {
 			menu_.NavigateDown();
 		}
 		if (in_event.key.code == sf::Keyboard::Escape) {
-			if (previous_state_ == GameState::BOSS)
-			{
-				state_ = GameState::BOSS;
-			}
-			else
-			{
-				state_ = GameState::GAME;
-			}
-			menu_.StateManager(state_);
+			this->previous_states_.pop_back();
+			menu_.StateManager(this->previous_states_.back());
 		}
 		if (in_event.key.code == sf::Keyboard::Enter) {
 			switch (menu_.GetSelectedItemIndex()) {
 			case 0:						//Continue
-				if (previous_state_ == GameState::BOSS)
-				{
-					state_ = GameState::BOSS;
-				}
-				else
-				{
-					state_ = GameState::GAME;
-				}
-				menu_.StateManager(state_);
+				this->previous_states_.pop_back();
+				menu_.StateManager(this->previous_states_.back());
 				break;
 			case 1:						//Save score
-				state_ = DEATH;
-				menu_.StateManager(state_);
+				this->previous_states_.push_back(GameState::DEATH);
+				menu_.StateManager(this->previous_states_.back());
 				//Save highscore
 				break;
-			case 2:
-				//state_ = OPTIONS;		//Options
-				//menu_.StateManager(state_);
+			case 2:						//Options
+				this->previous_states_.push_back(GameState::OPTIONS);
+				menu_.StateManager(this->previous_states_.back());
 				break;
 			case 3:						//Quit
-				state_ = QUIT;
+				this->previous_states_.push_back(GameState::QUIT);
 			}
 		}
 		break;
@@ -92,7 +76,45 @@ void Game::InputForPauseState(const sf::Event& in_event) {
 }
 
 void Game::InputForOptionsState(const sf::Event& in_event) {
-	//Empty as of now
+	switch (in_event.type) {
+	case sf::Event::KeyPressed:
+		if (in_event.key.code == sf::Keyboard::W
+			|| in_event.key.code == sf::Keyboard::Up) {
+			menu_.NavigateUp();
+		}
+		if (in_event.key.code == sf::Keyboard::S
+			|| in_event.key.code == sf::Keyboard::Down) {
+			menu_.NavigateDown();
+		}
+		if (in_event.key.code == sf::Keyboard::Escape) {
+			this->previous_states_.pop_back();
+			menu_.StateManager(this->previous_states_.back());
+		}
+		if (in_event.key.code == sf::Keyboard::Enter) {
+			switch (menu_.GetSelectedItemIndex()) {
+			case 0:						//Resolution
+				
+				//menu_.StateManager(this->previous_states_.back());
+				break;
+			case 1:						//Volume
+				
+				//menu_.StateManager(this->previous_states_.back());
+				//Save highscore
+				break;
+			case 2:						//XD
+				
+				//menu_.StateManager(this->previous_states_.back());
+				break;
+			case 3:						//BACK
+				this->previous_states_.pop_back();
+				menu_.StateManager(this->previous_states_.back());
+				break;
+			}
+		}
+		break;
+	default:
+		break;
+	}
 }
 
 void Game::InputForDeathState(const sf::Event& in_event) {
@@ -110,13 +132,13 @@ void Game::InputForDeathState(const sf::Event& in_event) {
 			switch (menu_.GetSelectedItemIndex()) {
 			case 0:						//Restart
 				system("restartGame.cmd"); // TEST case
-				state_ = QUIT;
+				this->previous_states_.push_back(GameState::QUIT);
 				break;
 			case 1:						//Save score
 				//Save highscore
 				break;
 			case 2:						//QUIT
-				state_ = QUIT;
+				this->previous_states_.push_back(GameState::QUIT);
 			}
 		}
 		break;
@@ -160,9 +182,8 @@ void Game::InputForGameState(const sf::Event& in_event) {
 		//-------------------------------------------------------
 		//Pause
 		if (in_event.key.code == sf::Keyboard::Escape) {
-			previous_state_ = state_;
-			state_ = PAUSE;
-			menu_.StateManager(state_);
+			this->previous_states_.push_back(GameState::PAUSE);
+			menu_.StateManager(this->previous_states_.back());
 		}
 		//Swap between normal and debug camera
 		if (in_event.key.code == sf::Keyboard::O) {
@@ -230,7 +251,8 @@ Game::Game() {
 	this->obj_handler_ptr_ = new ObjectHandler();
 	this->meta_data_ptr_ = new MetaData();
 
-	this->state_ = MENU;
+	//this->state_ = MENU;
+	this->previous_states_.push_back(GameState::MENU);
 }
 
 Game::~Game() {
@@ -268,10 +290,10 @@ void Game::GameIteration() {
 	//Update deltatime
 	this->game_deltatime_ = this->game_clock_.restart().asSeconds();
 
-	if (state_ == GameState::MENU) {
+	if (this->previous_states_.back() == GameState::MENU) {
 		render_.RenderMenuState(menu_);
 	}
-	else if (state_ == GameState::GAME) {
+	else if (this->previous_states_.back() == GameState::GAME) {
 		// Create a vector to hold interesting objects
 		std::vector<ObjectPackage> object_vector;
 
@@ -296,7 +318,7 @@ void Game::GameIteration() {
 		// INITIALIZE BOSS FIGHT
 		if (this->obj_handler_ptr_->PlayerInBossRoom()) { // Swap primary camera to 'boss' camera
 			cam_handler_ptr_->SwapCameraToBossCamera();
-			state_ = BOSS;
+			this->previous_states_.push_back(GameState::BOSS);
 			obj_handler_ptr_->SetPlayerXYZPosForBoss();
 			sound_unit_game_.StopMusic();
 			sound_unit_game_.SetMusicFile((char*)"../Resources/Audio/disco2.wav");
@@ -309,11 +331,11 @@ void Game::GameIteration() {
 
 		/*--------------Restart Game when death occurs--------------*/
 		if (player_info.current_hp == 0) { //Use this one
-			state_ = GameState::DEATH;
+			this->previous_states_.push_back(GameState::DEATH);
 		}
 		/*----------End Restart Game when death occurs--------------*/
 	}
-	else if (state_ == GameState::BOSS)
+	else if (this->previous_states_.back() == GameState::BOSS)
 	{
 		// Create a vector to hold interesting objects
 		std::vector<ObjectPackage> object_vector;
@@ -335,17 +357,20 @@ void Game::GameIteration() {
 
 		/*--------------Restart Game when death occurs--------------*/
 		if (player_info.current_hp == 0) { //Use this one
-			state_ = GameState::DEATH;
+			this->previous_states_.push_back(GameState::DEATH);
 		}
 		/*----------End Restart Game when death occurs--------------*/
 	}
-	else if (state_ == GameState::PAUSE) {
+	else if (this->previous_states_.back() == GameState::PAUSE) {
 		render_.RenderPauseMenu(menu_);
 	}
-	else if (state_ == GameState::DEATH) {
+	else if (this->previous_states_.back() == GameState::OPTIONS) {
+		render_.RenderOptionsMenu(menu_);
+	}
+	else if (this->previous_states_.back() == GameState::DEATH) {
 		render_.RenderDeathMenu(menu_);
 	}
-	else if (state_ == GameState::QUIT) {
+	else if (this->previous_states_.back() == GameState::QUIT) {
 		//This will break the outside loops
 	}
 }
@@ -356,28 +381,30 @@ void Game::InputEvents(const sf::Event& in_event) {
 	//for things that should only trigger once
 	//per button press
 	
-	if (state_ == GameState::GAME || state_ == GameState::BOSS) {
+	if (this->previous_states_.back() == GameState::GAME || this->previous_states_.back() == GameState::BOSS) {
 		this->InputForGameState(in_event);
 	}
-	else if (state_ == GameState::MENU) {
+	else if (this->previous_states_.back() == GameState::MENU) {
 		this->InputForMenuState(in_event);
 	}
-	else if (state_ == GameState::PAUSE) {
+	else if (this->previous_states_.back() == GameState::PAUSE) {
 		this->InputForPauseState(in_event);
 	}
-	else if (state_ == GameState::DEATH) {
+	else if (this->previous_states_.back() == GameState::OPTIONS) {
+		this->InputForOptionsState(in_event);
+	}
+	else if (this->previous_states_.back() == GameState::DEATH) {
 		this->InputForDeathState(in_event);
 	}
 }
 
 void Game::InputContinual() {
-
 	//This function tracks continual input
 	//for things such as player movement sideways
 
 	this->input_deltatime_ = this->input_clock_.restart().asSeconds();
 
-	if (this->state_ != GameState::GAME && this->state_ != GameState::BOSS) { return; }
+	if (this->previous_states_.back() != GameState::GAME && this->previous_states_.back() != GameState::BOSS) { return; }
 
 	//-------------------------------------------------------
 	//--------------------Player Control---------------------
@@ -403,7 +430,7 @@ void Game::InputContinual() {
 
 bool Game::IsRunning() {
 	//If the game ain't quittin', it's runnin'
-	return (this->state_ != QUIT);
+	return (this->previous_states_.back() != QUIT);
 }
 
 MetaData * Game::getMetaDataPtr() const {

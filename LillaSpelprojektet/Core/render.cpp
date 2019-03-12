@@ -268,6 +268,13 @@ void Render::RenderMenuState(Menu menu) {
 	menu.RenderMenu(text_shaders_);
 }
 
+void Render::RenderOptionsMenu(Menu menu) {
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT);
+
+	menu.RenderOptionsMenu(text_shaders_);
+}
+
 void Render::RenderPauseMenu(Menu menu) {
 	glDisable(GL_DEPTH_TEST);
 	glEnable(GL_BLEND);

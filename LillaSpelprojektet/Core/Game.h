@@ -23,7 +23,8 @@ private:
 
 	Render render_;
 
-	GameState previous_state_;
+	//GameState previous_state_;
+	std::vector<GameState> previous_states_;
 	GameState state_;
 	Menu menu_;
 	

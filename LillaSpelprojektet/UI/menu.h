@@ -50,6 +50,7 @@ public:
 	void NavigateUp();
 	void NavigateDown();
 	void RenderMenu(ShaderHandler* shader_handler);
+	void RenderOptionsMenu(ShaderHandler* shader_handler);
 	void RenderPauseMenu(ShaderHandler* shader_handler);
 	void RenderDeathMenu(ShaderHandler* shader_handler);
 	void StateManager(GameState state);

@@ -194,6 +194,110 @@ void Menu::RenderMenu(ShaderHandler * shader_handler) {
 	}
 }
 
+void Menu::RenderOptionsMenu(ShaderHandler * shader_handler) {
+	int window_width = GlobalSettings::Access()->ValueOf("WINDOW_WIDTH");
+	int window_height = GlobalSettings::Access()->ValueOf("WINDOW_HEIGHT");
+
+	/*----------------Title---------------------*/
+	RenderText(
+		shader_handler,
+		"Options",
+		((float)window_width) / 9.0f * 3.5f,
+		(((float)window_height) / 11.0f) * 9.0f,
+		2.5f,
+		glm::vec3(1.0f, 1.0f, 1.0f)
+	);
+	/*----------------END Title-----------------*/
+	//----------------Resolution-------------------*/
+	if (selected_item_index_ == 0) {
+		RenderText(
+			shader_handler,
+			"Resolution",
+			((float)window_width) / 8.0f * 3.0f,
+			((float)window_height) / 10.0f * 5.5f,
+			2.0f,
+			glm::vec3(0.8f, 0.8f, 0.8f)
+		);
+	}
+	else {
+		RenderText(
+			shader_handler,
+			"Resolution",
+			((float)window_width) / 8.0f * 3.0f,
+			((float)window_height) / 10.0f * 5.5f,
+			2.0f,
+			glm::vec3(0.75f, 0.0f, 0.0f)
+		);
+	}
+	//----------------END Resolution---------------*/
+	//----------------Volume---------------*/
+	if (selected_item_index_ == 1) {
+		RenderText(
+			shader_handler,
+			"Volume",
+			((float)window_width) / 5.0f * 2.0f,
+			((float)window_height) / 10.0f * 4.0f,
+			2.0f,
+			glm::vec3(0.8f, 0.8f, 0.8f)
+		);
+	}
+	else {
+		RenderText(
+			shader_handler,
+			"Volume",
+			((float)window_width) / 5.0f * 2.0f,
+			((float)window_height) / 10.0f * 4.0f,
+			2.0f,
+			glm::vec3(0.75f, 0.0f, 0.0f)
+		);
+	}
+	//----------------END Volume-----------*/
+	//----------------XD---------------*/
+	if (selected_item_index_ == 2) {
+		RenderText(
+			shader_handler,
+			"XD",
+			((float)window_width) / 5.0f * 2.0f,
+			((float)window_height) / 10.0f * 2.5f,
+			2.0f,
+			glm::vec3(0.8f, 0.8f, 0.8f)
+		);
+	}
+	else {
+		RenderText(
+			shader_handler,
+			"XD",
+			((float)window_width) / 5.0f * 2.0f,
+			((float)window_height) / 10.0f * 2.5f,
+			2.0f,
+			glm::vec3(0.75f, 0.0f, 0.0f)
+		);
+	}
+	//----------------END XD-----------*/
+	// ---------- BACK ----------
+	if (selected_item_index_ == 3) {
+		RenderText(
+			shader_handler,
+			"Back",
+			((float)window_width) / 2.0f - 500.0f,
+			((float)window_height) / 10.0f * 1.0f,
+			2.0f,
+			glm::vec3(0.8f, 0.8f, 0.8f)
+		);
+	}
+	else {
+		RenderText(
+			shader_handler,
+			"Back",
+			((float)window_width) / 2.0f - 530.0f,
+			((float)window_height) / 10.0f * 1.0f,
+			2.0f,
+			glm::vec3(0.75f, 0.0f, 0.0f)
+		);
+	}
+	//----------------END BACK-----------*/
+}
+
 void Menu::RenderPauseMenu(ShaderHandler * shader_handler) {
 	int window_width = GlobalSettings::Access()->ValueOf("WINDOW_WIDTH");
 	int window_height = GlobalSettings::Access()->ValueOf("WINDOW_HEIGHT");
@@ -387,7 +491,7 @@ void Menu::StateManager(GameState state) {
 		nr_of_items_ = 4;
 	}
 	else if (state == OPTIONS) {
-
+		nr_of_items_ = 4;
 	}
 }
 
