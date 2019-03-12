@@ -182,3 +182,4 @@ DoubleJumpDrop::DoubleJumpDrop(glm::vec3 creation_pos)
 }
 
 DoubleJumpDrop::~DoubleJumpDrop() {}
+

@@ -382,6 +382,7 @@ void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map
 	this->physics_engine_ptr_ = new PhysicsEngine(map_height_list);
 
 	// Create the randomizer
+	this->randomizer_ptr_ = new Randomizer(meta_data);
 
 }
 

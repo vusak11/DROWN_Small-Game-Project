@@ -96,7 +96,7 @@ Drop* Randomizer::RandomNewDropPtr(glm::vec3 in_pos, float in_drop_rate) {
 	//by multiplying it sum_of_all_rates/drop_rate (dr * x = sor	->	x = sor/dr)
 	ZoneID zone_id = this->meta_data_ptr_->GetZone(in_pos);
 	float sum_of_all_rates = this->zone_rates_arr_[zone_id].sum_of_rates;
-	verdict *= 100.0f / in_drop_rate;			//NTS: If this doesn't work
+	verdict *= (sum_of_all_rates / in_drop_rate);			//NTS: If this doesn't work
 												//just generate a new verdict here
 												//Inaccuracy rises with smaller drop rates
 
