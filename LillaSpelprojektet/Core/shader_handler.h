@@ -24,6 +24,7 @@ private:
 	GLuint position_;
 	GLuint normal_;
 	GLuint albedo_specular_;
+	GLuint rbo_depth_;
 public:
 	ShaderHandler();
 	ShaderHandler(const char* vertex_path, const char* fragment_path);
@@ -39,6 +40,8 @@ public:
 	void GeometryFrameBuffers();
 	void CompileStatus(GLuint shader_id, int success, char* info, GL_ID gl_type);
 	void Use();
+	void DeleteFrameBuffer();
+	void ResizeTextures();
 
 };
 #endif

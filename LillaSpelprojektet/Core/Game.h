@@ -6,6 +6,7 @@
 #include "render.h"
 #include <GL/glew.h>
 #include <SFML/Window.hpp>
+#include <SFML/Graphics.hpp>
 #include "../UI/menu.h"
 #include "../Camera/camera_handler.h"
 #include "../Object/object_handler.h"
@@ -47,7 +48,7 @@ private:
 	void InputForDeathState(const sf::Event& in_event);
 	void InputForChangingRes(const sf::Event& in_event);
 
-	void InputForGameState(const sf::Event& in_event);
+	void InputForGameState(const sf::Event& in_event, sf::RenderWindow& window);
 	void InputForSecondaryCamera(const float& in_deltatime);
 
 public:
@@ -58,7 +59,7 @@ public:
 	void InitializeStartGame();
 	void GameIteration();
 	
-	void InputEvents(const sf::Event& in_event);
+	void InputEvents(const sf::Event& in_event, sf::RenderWindow& window);
 	void InputContinual();
 
 	bool IsRunning();

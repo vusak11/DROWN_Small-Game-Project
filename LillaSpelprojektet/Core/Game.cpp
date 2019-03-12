@@ -129,7 +129,7 @@ void Game::InputForChangingRes(const sf::Event& in_event) {
 
 }
 
-void Game::InputForGameState(const sf::Event& in_event) {
+void Game::InputForGameState(const sf::Event& in_event, sf::RenderWindow& window) {
 
 	switch (in_event.type) {
 	case sf::Event::KeyPressed:
@@ -180,7 +180,18 @@ void Game::InputForGameState(const sf::Event& in_event) {
 			obj_handler_ptr_->SetPlayerXYZPosForBoss();
 		}
 		if (in_event.key.code == sf::Keyboard::R) {
-			GlobalSettings::Access()->UpdateResolutionValues(1280.0f, 720.0f);
+			int old_width = GlobalSettings::Access()->ValueOf("WINDOW_WIDTH");
+			int old_height = GlobalSettings::Access()->ValueOf("WINDOW_HEIGHT");
+			GlobalSettings::Access()->UpdateResolutionValues(1920, 1080);
+			//GlobalSettings::Access()->UpdateResolutionValues(1280, 720);
+			int width_ratio = old_width / GlobalSettings::Access()->ValueOf("WINDOW_WIDTH");
+			int height_ratio = old_height / GlobalSettings::Access()->ValueOf("WINDOW_HEIGHT");
+			GlobalSettings::Access()->UpdateValuesFromFile();
+			this->render_.UpdateFrameBuffer(width_ratio, height_ratio);
+			this->cam_handler_ptr_->UpdatePerspective();
+			window.setSize(sf::Vector2u(
+				GlobalSettings::Access()->ValueOf("WINDOW_WIDTH"),
+				GlobalSettings::Access()->ValueOf("WINDOW_HEIGHT")));
 			/*switch (resolution_) {
 			case FULLSCREEN:
 
@@ -369,14 +380,14 @@ void Game::GameIteration() {
 	}
 }
 
-void Game::InputEvents(const sf::Event& in_event) {
+void Game::InputEvents(const sf::Event& in_event, sf::RenderWindow& window) {
 	
 	//This function tracks event input
 	//for things that should only trigger once
 	//per button press
 	
 	if (state_ == GameState::GAME || state_ == GameState::BOSS) {
-		this->InputForGameState(in_event);
+		this->InputForGameState(in_event, window);
 	}
 	else if (state_ == GameState::MENU) {
 		this->InputForMenuState(in_event);

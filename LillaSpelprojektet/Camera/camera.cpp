@@ -72,6 +72,16 @@ void Camera::SetCameraPos(float in_x, float in_y, float in_z) {
 	this->UpdateViewMatrix();
 }
 
+void Camera::UpdatePerspective() {
+	float fov = 3.141592653589f * 0.45f;
+	float aspect = ((float)GlobalSettings::Access()->ValueOf("WINDOW_WIDTH") /
+		(float)GlobalSettings::Access()->ValueOf("WINDOW_HEIGHT"));
+
+	float nearplane = 0.1f;
+	float farplane = 1000.0f;
+	this->perspective_mat_ = glm::perspective(fov, aspect, nearplane, farplane);
+}
+
 glm::mat4 Camera::GetPerspectiveMatrix() const
 {
 	return perspective_mat_;

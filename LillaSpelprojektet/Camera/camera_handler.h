@@ -24,6 +24,7 @@ public:
 
 	void SwapCamera();
 	void SwapCameraToBossCamera();
+	void UpdatePerspective();
 	int GetMode();
 
 	glm::mat4 MoveCamera(float in_x, float in_y, float in_z = 0.0f);

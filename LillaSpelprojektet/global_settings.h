@@ -102,7 +102,7 @@ public:
 	}
 	void UpdateValuesFromFile();
 	float ValueOf(std::string setting_name);
-	void UpdateResolutionValues(float width, float height);
+	void UpdateResolutionValues(int width, int height);
 
 private:
 	GlobalSettings() {};

@@ -19,17 +19,15 @@ int main() {
 
 	GlobalSettings::Access()->UpdateValuesFromFile();
 
-	sf::Window window(sf::VideoMode(
+	sf::RenderWindow window(sf::VideoMode(
 		GlobalSettings::Access()->ValueOf("WINDOW_WIDTH"),
 		GlobalSettings::Access()->ValueOf("WINDOW_HEIGHT")),
 		"Drown", 
 		sf::Style::Default, 
 		sf::ContextSettings(32));
-	float test = GlobalSettings::Access()->ValueOf("WINDOW_WIDTH");
 	window.setVerticalSyncEnabled(true);
 
 	window.setActive(true);
-	 
 	glewExperimental = GL_TRUE;
 	if (glewInit() != GLEW_OK) {
 		std::cout << "GLEW not linking" << std::endl;
@@ -78,7 +76,7 @@ int main() {
 			}
 			/*----------------Only exit window commands-----------*/
 			/*----------------Input from mouse / keyboard---------*/
-			game.InputEvents(event);
+			game.InputEvents(event, window);
 			/*----------------Input from mouse / keyboard---------*/
 		}
 

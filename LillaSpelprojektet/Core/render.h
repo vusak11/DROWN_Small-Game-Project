@@ -25,6 +25,8 @@ private:
 	
 	int nr_of_models_;
 	Model** model_;
+	int screen_ratio_width;
+	int screen_ratio_height;
 
 	MetaData* meta_data_ptr_;
 	std::vector<glm::vec2> light_positions_;
@@ -42,6 +44,7 @@ public:
 	~Render();
 
 	void InitializeRender(MetaData* meta_data);
+	void UpdateFrameBuffer(int width_ratio, int height_ratio);
 	void UpdateRender(
 		float dt, 
 		glm::vec3 camera_position,
@@ -55,7 +58,6 @@ public:
 		glm::mat4 perspective_view_matrix);
 	void LightingPass(
 		glm::vec3 camera_position);
-
 
 	void RenderMenuState(Menu menu);
 	void RenderPauseMenu(Menu menu);

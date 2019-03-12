@@ -6,6 +6,8 @@ void Render::DrawScene() {
 Render::Render() {
 	quad_vertex_array_object_ = 0;
 	quad_vertex_buffer_object_ = 0;
+	screen_ratio_width = 1;
+	screen_ratio_height = 1;
 
 	//--------------------------------------------------------
 	//-------------------Create Shaders-----------------------
@@ -114,6 +116,20 @@ void Render::InitializeRender(MetaData* meta_data) {
 	map_handler_.InitializeBuffers(geometry_pass_->GetProgram());
 }
 
+void Render::UpdateFrameBuffer(int width_ratio, int height_ratio) {
+	//geometry_pass_->DeleteFrameBuffer();
+	/*if (glIsFramebuffer(geometry_pass_->GetBuffer())) {
+		std::cout << "Framebuffer still exists" << std::endl;
+	}
+	else if (!glIsFramebuffer(geometry_pass_->GetBuffer())) {
+		std::cout << "Framebuffer doesn't exist" << std::endl;
+	}*/
+	//geometry_pass_->GeometryFrameBuffers();
+	this->screen_ratio_width = width_ratio;
+	this->screen_ratio_height = height_ratio;
+	//geometry_pass_->ResizeTextures();
+}
+
 void Render::UpdateRender(
 	float dt,
 	glm::vec3 camera_position,
@@ -208,8 +224,8 @@ void Render::GeometryPass(
 	glm::vec3 camera_position,
 	glm::mat4 perspective_view_matrix) {
 	glViewport(0, 0, 
-		GlobalSettings::Access()->ValueOf("WINDOW_WIDTH"), 
-		GlobalSettings::Access()->ValueOf("WINDOW_HEIGHT"));
+		(GLsizei)GlobalSettings::Access()->ValueOf("WINDOW_WIDTH"), 
+		(GLsizei)GlobalSettings::Access()->ValueOf("WINDOW_HEIGHT"));
 	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glBindFramebuffer(GL_FRAMEBUFFER, geometry_pass_->GetBuffer());
@@ -233,10 +249,13 @@ void Render::LightingPass(glm::vec3 camera_position) {
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, geometry_pass_->GetPosition());
+	glGenerateMipmapEXT(GL_TEXTURE_2D);
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, geometry_pass_->GetNormal());
+	glGenerateMipmapEXT(GL_TEXTURE_2D);
 	glActiveTexture(GL_TEXTURE2);
 	glBindTexture(GL_TEXTURE_2D, geometry_pass_->GetAlbedoSpecular());
+	glGenerateMipmapEXT(GL_TEXTURE_2D);
 
 	for (int i = 0; i < nr_of_lights_; i++) {
 		glUniform3f(
@@ -293,10 +312,10 @@ void Render::RenderQuad() {
 	{
 		GLfloat quad_vertices[] = {
 			// Positions        // Texture Coords
-			-1.0f,  1.0f, 0.0f, 0.0f, 1.0f,
+			-1.0f,  1.0f, 0.0f, 0.0f, 1.0f * screen_ratio_height,
 			-1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
-			 1.0f,  1.0f, 0.0f, 1.0f, 1.0f,
-			 1.0f, -1.0f, 0.0f, 1.0f, 0.0f
+			 1.0f,  1.0f, 0.0f, 1.0f * screen_ratio_width, 1.0f * screen_ratio_height,
+			 1.0f, -1.0f, 0.0f, 1.0f * screen_ratio_width, 0.0f
 		};
 		// Setup plane VAO
 		glGenVertexArrays(1, &quad_vertex_array_object_);

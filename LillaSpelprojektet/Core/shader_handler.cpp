@@ -5,10 +5,6 @@ ShaderHandler::ShaderHandler() {
 
 	this->program_ = 0;
 
-	this->buffer_ = 0;
-	this->position_ = 0;
-	this->normal_ = 0;
-	this->albedo_specular_ = 0;
 }
 
 ShaderHandler::ShaderHandler(
@@ -19,6 +15,7 @@ ShaderHandler::ShaderHandler(
 	this->success_ = 0;
 
 	this->program_ = 0;
+
 
 	//				Vertex shader
 	//Open and retrieve VERTEX file content
@@ -81,10 +78,7 @@ ShaderHandler::ShaderHandler(
 	this->success_ = 0;
 
 	this->program_ = 0;
-	this->buffer_ = 0;
-	this->position_ = 0;
-	this->normal_ = 0;
-	this->albedo_specular_ = 0;
+
 	
 	//				Vertex shader
 	//Open and retrieve VERTEX file content
@@ -216,7 +210,7 @@ void ShaderHandler::GeometryFrameBuffers() {
 		this->position_, 0);
 
 	// Color buffer - Normal
-	glGenTextures(1, &normal_);
+	glGenTextures(1, &this->normal_);
 	glBindTexture(GL_TEXTURE_2D, this->normal_);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, window_width, window_height,
 		0, GL_RGB, GL_FLOAT, NULL);
@@ -243,15 +237,46 @@ void ShaderHandler::GeometryFrameBuffers() {
 	};
 	glDrawBuffers(3, attachments);
 
-	GLuint rbo_depth;
-	glGenRenderbuffers(1, &rbo_depth);
-	glBindRenderbuffer(GL_RENDERBUFFER, rbo_depth);
+	glGenRenderbuffers(1, &this->rbo_depth_);
+	glBindRenderbuffer(GL_RENDERBUFFER, rbo_depth_);
 	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, window_width, window_height);
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rbo_depth);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rbo_depth_);
 
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-		std::cout << "Framebuffer is not sound!" << std::endl;
+		std::cout << "FBO STATUS: " << glCheckFramebufferStatus(GL_FRAMEBUFFER) << std::endl;
+	else
+		std::cout << "FBO STATUS: COMPLETED" << std::endl;
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+
+void ShaderHandler::DeleteFrameBuffer() {
+	glBindFramebuffer(GL_FRAMEBUFFER, this->buffer_);
+	glDeleteTextures(1, &this->position_);
+	glDeleteTextures(1, &this->normal_);
+	glDeleteTextures(1, &this->albedo_specular_);
+	glDeleteRenderbuffers(1, &this->rbo_depth_);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glDeleteFramebuffers(1, &this->buffer_);
+}
+
+void ShaderHandler::ResizeTextures() {
+	int window_width = GlobalSettings::Access()->ValueOf("WINDOW_WIDTH");
+	int window_height = GlobalSettings::Access()->ValueOf("WINDOW_HEIGHT");
+
+	glBindTexture(GL_TEXTURE_2D, this->position_);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, window_width, window_height,
+		0, GL_RGB, GL_FLOAT, NULL);
+	glBindTexture(this->position_, 0);
+
+	glBindTexture(GL_TEXTURE_2D, this->normal_);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, window_width, window_height,
+		0, GL_RGB, GL_FLOAT, NULL);
+	glBindTexture(this->normal_, 0);
+
+	glBindTexture(GL_TEXTURE_2D, this->albedo_specular_);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, window_width, window_height,
+		0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+	glBindTexture(this->albedo_specular_, 0);
 }
 
 GLuint ShaderHandler::GetProgram() {

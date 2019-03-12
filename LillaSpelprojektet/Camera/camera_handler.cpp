@@ -21,6 +21,10 @@ void CameraHandler::SwapCameraToBossCamera() {
 	SetCameraPos(160.0f, -1152.0f, 100.0f);
 }
 
+void CameraHandler::UpdatePerspective() {
+	this->cams_[this->mode_].UpdatePerspective();
+}
+
 int CameraHandler::GetMode() {
 	return this->mode_;
 }
