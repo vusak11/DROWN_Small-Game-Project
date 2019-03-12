@@ -2,7 +2,6 @@
 
 layout(location = 0) in vec4 vertex; // <vec2 pos, vec2 tex>
 out vec2 tex_coords;
-out vec2 pos_coords;
 
 uniform mat4 in_matrix;
 
