@@ -13,14 +13,16 @@ class Randomizer {
 private:
 	//Structs:
 	struct DropRates {
-		float hp_restore;
-		float hp_up;
-		float atk_up;
-		float dash;
-		float double_jump;
-		float sword;
-		float axe;
-		float key;
+		float hp_restore = 0.0f;
+		float hp_up = 0.0f;
+		float atk_up = 0.0f;
+		float dash = 0.0f;
+		float double_jump = 0.0f;
+		float sword = 0.0f;
+		float axe = 0.0f;
+		float key = 0.0f;
+
+		float sum_of_rates = 0.0f;
 	};
 
 	//Variables:
@@ -29,12 +31,6 @@ private:
 
 	//Functions:
 	void LoadRates(ZoneID in_id);
-
-
-	Drop* DropZoneDef(const float& in_verdict);
-	Drop* DropZoneRed(const float& in_verdict);
-	Drop* DropZoneGre(const float& in_verdict);
-	Drop* DropZoneBlu(const float& in_verdict);
 
 public:
 	Randomizer(MetaData* in_metadata_ptr);

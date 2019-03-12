@@ -32,21 +32,15 @@ void Randomizer::LoadRates(ZoneID in_id) {
 	this->zone_rates_arr_[in_id].axe			= GlobalSettings::Access()->ValueOf(zone_str + "_ZONE_DROP_RATE_AXE");
 	this->zone_rates_arr_[in_id].key			= GlobalSettings::Access()->ValueOf(zone_str + "_ZONE_DROP_RATE_KEY");
 
-}
-
-Drop* Randomizer::DropZoneDef(const float& in_verdict) {
-	
-}
-
-Drop* Randomizer::DropZoneRed(const float& in_verdict) {
-
-}
-
-Drop* Randomizer::DropZoneGre(const float& in_verdict) {
-
-}
-
-Drop* Randomizer::DropZoneBlu(const float& in_verdict) {
+	this->zone_rates_arr_[in_id].sum_of_rates =
+		this->zone_rates_arr_[in_id].hp_restore
+		+ this->zone_rates_arr_[in_id].hp_up
+		+ this->zone_rates_arr_[in_id].atk_up
+		+ this->zone_rates_arr_[in_id].dash
+		+ this->zone_rates_arr_[in_id].double_jump
+		+ this->zone_rates_arr_[in_id].sword
+		+ this->zone_rates_arr_[in_id].axe
+		+ this->zone_rates_arr_[in_id].key;
 
 }
 
@@ -98,8 +92,10 @@ Drop* Randomizer::RandomNewDropPtr(glm::vec3 in_pos, float in_drop_rate) {
 	//the last we scale up the verdict from
 	//			[0.0, drop_rate]
 	//to
-	//			[0.0, 100.0]
-	//by multiplying it by 100.0/drop_rate (drop_rate * x = 100	->	x = 100/drop_rate)
+	//			[0.0, sum_of_all_rates]
+	//by multiplying it sum_of_all_rates/drop_rate (dr * x = sor	->	x = sor/dr)
+	ZoneID zone_id = this->meta_data_ptr_->GetZone(in_pos);
+	float sum_of_all_rates = this->zone_rates_arr_[zone_id].sum_of_rates;
 	verdict *= 100.0f / in_drop_rate;			//NTS: If this doesn't work
 												//just generate a new verdict here
 												//Inaccuracy rises with smaller drop rates
@@ -117,7 +113,7 @@ Drop* Randomizer::RandomNewDropPtr(glm::vec3 in_pos, float in_drop_rate) {
 	//			range becomes the 0 of the current one
 	
 	
-	ZoneID zone_id = this->meta_data_ptr_->GetZone(in_pos);
+	
 	float range_max = 0.0;
 
 	range_max += this->zone_rates_arr_[zone_id].hp_restore;
@@ -165,5 +161,5 @@ Drop* Randomizer::RandomNewDropPtr(glm::vec3 in_pos, float in_drop_rate) {
 	
 	//Return drop pointer, if the drop was not propernly represented this
 	//might reurn null
-	return drop_ptr;
+	return NULL;
 }
