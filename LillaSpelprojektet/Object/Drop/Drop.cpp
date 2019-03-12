@@ -3,6 +3,8 @@
 //Public
 Drop::Drop(glm::vec3 creation_pos, ObjectID id) : ObjectClass(creation_pos, id) {
 	//Class is abstract
+
+	this->swappable_ = false; //This should be overwritten in swappable child classes.
 }
 
 Drop::~Drop() {}
@@ -17,6 +19,10 @@ bool Drop::CheckCollision(PlayerCharacter& in_player) {
 	
 	//Otherwise trigger its event and return true/false
 	return this->TriggerEvent(in_player);
+}
+
+bool Drop::IsSwappable() {
+	return this->swappable_;
 }
 
 void Drop::SpinDrop(const float& in_deltatime) {
@@ -133,16 +139,6 @@ void BossDoor::SpinDrop(const float& in_deltatime) {
 
 //----------------------------------------------------------
 //Private
-bool TriggerEvent(PlayerCharacter& in_player) {
-
-	return true;
-}
-
-AbilitiesDrop::AbilitiesDrop(glm::vec3 creation_pos, ObjectID id)
-	: Drop(creation_pos, id) {}
-
-AbilitiesDrop::~AbilitiesDrop() {}
-//Private
 bool DashDrop::TriggerEvent(PlayerCharacter& in_player) {
 	
 	return true;
@@ -150,8 +146,9 @@ bool DashDrop::TriggerEvent(PlayerCharacter& in_player) {
 
 //Public
 DashDrop::DashDrop(glm::vec3 creation_pos)
-	: AbilitiesDrop(creation_pos, OBJECT_ID_DROP_DASH) {
-
+	: Drop(creation_pos, OBJECT_ID_DROP_DASH) {
+	//This drop is swappable!
+	this->swappable_ = true;
 }
 
 DashDrop::~DashDrop() {}
@@ -165,8 +162,9 @@ bool DoubleJumpDrop::TriggerEvent(PlayerCharacter& in_player) {
 
 //Public
 DoubleJumpDrop::DoubleJumpDrop(glm::vec3 creation_pos)
-	: AbilitiesDrop(creation_pos, OBJECT_ID_DROP_DOUBLE_JUMP) {
-
+	: Drop(creation_pos, OBJECT_ID_DROP_DOUBLE_JUMP) {
+	//This drop is swappable!
+	this->swappable_ = true;
 }
 
 DoubleJumpDrop::~DoubleJumpDrop() {}

@@ -11,9 +11,10 @@
 
 class Drop : public ObjectClass {
 private:
-	bool swappable;
-
 	virtual bool TriggerEvent(PlayerCharacter& in_player) = 0;
+
+protected:
+	bool swappable_;
 
 public:
 	Drop(glm::vec3 creation_pos, ObjectID id);
@@ -92,18 +93,7 @@ public:
 	void SpinDrop(const float& in_deltatime);
 };
 
-//---------------------------------------------------------
-//------------------ABILITY DROPS--------------------------
-class AbilitiesDrop : public Drop {
-private:
-	//bool TriggerEvent(PlayerCharacter& in_player);
-
-public:
-	AbilitiesDrop(glm::vec3 creation_pos, ObjectID id);
-	~AbilitiesDrop();
-};
-
-class DashDrop : public AbilitiesDrop {
+class DashDrop : public Drop {
 private:
 	bool TriggerEvent(PlayerCharacter& in_player);
 
@@ -112,7 +102,7 @@ public:
 	~DashDrop();
 };
 
-class DoubleJumpDrop : public AbilitiesDrop {
+class DoubleJumpDrop : public Drop {
 private:
 	bool TriggerEvent(PlayerCharacter& in_player);
 

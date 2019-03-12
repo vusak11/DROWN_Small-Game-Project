@@ -45,7 +45,8 @@ public:
 
 	void CalculateAnimationState(float delta_time);
 
-	bool SwapAbilities(ObjectID object_ability);
+	//bool SwapAbilities(ObjectID object_ability);
+	
 	void SetAirborne(bool in_bool);
 	void UpdateStatus(const float& in_deltatime);		//Updates time related stuff
 														//e.g. cooldown on abilities

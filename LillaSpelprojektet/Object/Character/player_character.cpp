@@ -135,6 +135,7 @@ void PlayerCharacter::CalculateAnimationState(float delta_time) {
 	}
 }
 
+/*
 bool PlayerCharacter::SwapAbilities(ObjectID object_ability) {
 
 	if (this->ability_ptr_->GetID() == ABILITY_NONE &&
@@ -164,6 +165,8 @@ bool PlayerCharacter::SwapAbilities(ObjectID object_ability) {
 	
 	return false;
 }
+*/
+
 
 void PlayerCharacter::SetAirborne(bool in_air) {
 	this->airborne_ = in_air;
