@@ -10,15 +10,6 @@
 
 class Randomizer {
 private:
-	//Enums:
-	enum ZoneID {
-		DEF,
-		RED,
-		GRE,
-		BLU,
-		NUM_OF_ZONES
-	};
-
 	//Structs:
 	struct DropRates {
 		float hp_restore;
@@ -35,7 +26,7 @@ private:
 	DropRates* zone_rates_arr_;
 	
 	//Functions:
-	void LoadRates(ZoneID in_id, std::string in_zone_name);
+	void LoadRates(ZoneID in_id);
 
 
 	Drop* DropZoneDef(const float& in_verdict);

@@ -1,16 +1,36 @@
 #include "randomizer.h"
 
 //Private--------------------------------------------------
-void Randomizer::LoadRates(ZoneID in_id, std::string in_zone_name) {
+void Randomizer::LoadRates(ZoneID in_id) {
 
-	this->zone_rates_arr_[in_id].hp_restore		= GlobalSettings::Access()->ValueOf(in_zone_name + "_ZONE_DROP_RATE_HP_RESTORE");
-	this->zone_rates_arr_[in_id].hp_up			= GlobalSettings::Access()->ValueOf(in_zone_name + "_ZONE_DROP_RATE_HP_UP");
-	this->zone_rates_arr_[in_id].atk_up			= GlobalSettings::Access()->ValueOf(in_zone_name + "_ZONE_DROP_RATE_ATK_UP");
-	this->zone_rates_arr_[in_id].dash			= GlobalSettings::Access()->ValueOf(in_zone_name + "_ZONE_DROP_RATE_DASH");
-	this->zone_rates_arr_[in_id].double_jump	= GlobalSettings::Access()->ValueOf(in_zone_name + "_ZONE_DROP_RATE_DOUBLE_JUMP");
-	this->zone_rates_arr_[in_id].sword			= GlobalSettings::Access()->ValueOf(in_zone_name + "_ZONE_DROP_RATE_SWORD");
-	this->zone_rates_arr_[in_id].axe			= GlobalSettings::Access()->ValueOf(in_zone_name + "_ZONE_DROP_RATE_AXE");
-	this->zone_rates_arr_[in_id].key			= GlobalSettings::Access()->ValueOf(in_zone_name + "_ZONE_DROP_RATE_KEY");
+	//Use the ID to get the string needed to access the global value
+	std::string zone_str = "";
+	switch (in_id) {
+	case DEF:
+		zone_str = "DEF";
+		break;
+	case RED:
+		zone_str = "RED";
+		break;
+	case GRE:
+		zone_str = "GRE";
+		break;
+	case BLU:
+		zone_str = "BLU";
+		break;
+	default:
+		break;
+	}
+
+	//LOad in the value from the globals
+	this->zone_rates_arr_[in_id].hp_restore		= GlobalSettings::Access()->ValueOf(zone_str + "_ZONE_DROP_RATE_HP_RESTORE");
+	this->zone_rates_arr_[in_id].hp_up			= GlobalSettings::Access()->ValueOf(zone_str + "_ZONE_DROP_RATE_HP_UP");
+	this->zone_rates_arr_[in_id].atk_up			= GlobalSettings::Access()->ValueOf(zone_str + "_ZONE_DROP_RATE_ATK_UP");
+	this->zone_rates_arr_[in_id].dash			= GlobalSettings::Access()->ValueOf(zone_str + "_ZONE_DROP_RATE_DASH");
+	this->zone_rates_arr_[in_id].double_jump	= GlobalSettings::Access()->ValueOf(zone_str + "_ZONE_DROP_RATE_DOUBLE_JUMP");
+	this->zone_rates_arr_[in_id].sword			= GlobalSettings::Access()->ValueOf(zone_str + "_ZONE_DROP_RATE_SWORD");
+	this->zone_rates_arr_[in_id].axe			= GlobalSettings::Access()->ValueOf(zone_str + "_ZONE_DROP_RATE_AXE");
+	this->zone_rates_arr_[in_id].key			= GlobalSettings::Access()->ValueOf(zone_str + "_ZONE_DROP_RATE_KEY");
 
 }
 
@@ -43,10 +63,10 @@ Randomizer::Randomizer() {
 	this->zone_rates_arr_ = new DropRates[NUM_OF_ZONES];
 
 	//Load in the drop rates for each zone from the globals
-	this->LoadRates(DEF, "DEF");
-	this->LoadRates(RED, "RED");
-	this->LoadRates(GRE, "GRE");
-	this->LoadRates(BLU, "BLU");
+	this->LoadRates(DEF);
+	this->LoadRates(RED);
+	this->LoadRates(GRE);
+	this->LoadRates(BLU);
 	
 }
 

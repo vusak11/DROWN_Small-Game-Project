@@ -53,15 +53,26 @@ enum ObjectID {
 enum AbilityID {
 	ABILITY_NONE,
 	ABILITY_DOUBLE_JUMP,
-	ABILITY_DASH
+	ABILITY_DASH,
+	NUM_OF_ABILITIES
 };
 
 enum WeaponID {
 	WEAPON_NONE,
 	WEAPON_SWORD,
-	WEAPON_AXE
+	WEAPON_AXE,
+	NUM_OF_WEAPONS
+
 };
 
+//Zone IDs-------------------------------------------------
+enum ZoneID {
+	DEF,
+	RED,
+	GRE,
+	BLU,
+	NUM_OF_ZONES
+};
 
 //States---------------------------------------------------
 enum GameState {
