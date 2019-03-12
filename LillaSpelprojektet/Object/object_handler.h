@@ -33,7 +33,7 @@ private:
 
 	//Variables-----------------------------------------------
 	PlayerCharacter* player_ptr_;
-	std::vector<ObjectClass*> npc_ptr_vector_;				//All enemies
+	std::vector<ObjectClass*> npc_ptr_vector_;		//All enemies
 	std::vector<ObjectClass*> drop_ptr_vector_;		//Things dropped on the ground (e.g. power-ups, health)
 	NPCBoss* boss_ptr_;
 
@@ -62,6 +62,7 @@ private:
 	);
 	void ResolvePlayerPickUp(std::vector<ObjectClass*>& in_relevant_drops_ptr_vector);
 	void ResolvePlayerAttack(std::vector<ObjectClass*>& in_relevant_npcs_ptr_vector);
+	void ResolveRandomDropSpawn(glm::vec3 in_pos);
 
 	void ProcessNPCs(const float& in_deltatime, std::vector<ObjectClass*>& in_npcs_ptr_vector);	//Call AI functions for NPCs in vector
 	void DetermineNPCAction(const float& in_deltatime, NPC* in_npc);							//Call the AI of the npc object to see what the npc does, then determine legal actions

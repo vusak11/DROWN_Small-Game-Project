@@ -98,7 +98,10 @@ void ObjectHandler::DeterminePlayerAction(
 	}
 	//If input is use ability
 	if (this->player_input_.use_ability) {
-		this->player_ptr_->UseAbility();
+		//this->player_ptr_->UseAbility();
+		
+		//TEMP
+		this->ResolveRandomDropSpawn(this->player_ptr_->GetPosition());
 	}
 	//If input is attack
 	if (this->player_input_.attack) {
@@ -198,10 +201,21 @@ void ObjectHandler::ResolvePlayerAttack(std::vector<ObjectClass*>& in_relevant_n
 	//to be able to access the right index in the relevant npcs vector
 	int index;
 	int offset = 0;
+	
+	//NEW
+	glm::vec3 spawn_pos = glm::vec3(0.0f);
+	//NEW
+
 	for (unsigned int i = 0; i < index_of_the_dead.size(); i++) {
 
 		//Pick index from vector
 		index = index_of_the_dead.at(i);
+
+		//Randomly spawn drop
+		//NEW
+		spawn_pos = in_relevant_npcs_ptr_vector.at(index)->GetPosition();
+		this->ResolveRandomDropSpawn(spawn_pos);
+		//NEW
 
 		//Delete the object and remove the pointer from the object handler's npc vector
 		this->RemoveObject(in_relevant_npcs_ptr_vector.at(index), this->npc_ptr_vector_);
@@ -213,6 +227,22 @@ void ObjectHandler::ResolvePlayerAttack(std::vector<ObjectClass*>& in_relevant_n
 		offset++;
 	}
 
+
+}
+
+void ObjectHandler::ResolveRandomDropSpawn(glm::vec3 in_pos) {
+	Drop* spawn_ptr = NULL;
+
+	//Call randomizer and retrieve a drop pointer
+	spawn_ptr = this->randomizer_ptr_->RandomNewDropPtr(in_pos, 100); //NTS: <-100% chance something spawns
+	
+	//If the pointer is not null
+	if (spawn_ptr != NULL) {
+		//Make it move a bit upwards
+		spawn_ptr->SetVelocityVec(glm::vec3(0.0f, 20.0f, 0.0f));
+		//And place it in the vector
+		this->drop_ptr_vector_.push_back(spawn_ptr);
+	}
 
 }
 
