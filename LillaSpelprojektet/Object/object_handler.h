@@ -16,6 +16,7 @@
 #include "Drop/Drop.h"
 
 #include "Physics/physics_engine.h"
+#include "randomizer.h"
 
 class ObjectHandler {
 private:
@@ -42,6 +43,8 @@ private:
 	BossActions boss_actions_;
 
 	PhysicsEngine* physics_engine_ptr_;
+	
+	Randomizer* randomizer_ptr_;
 
 	//Functions-----------------------------------------------
 	bool ClearPtrVector(std::vector<ObjectClass*>& in_vec);

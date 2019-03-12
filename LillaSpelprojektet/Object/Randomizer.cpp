@@ -52,7 +52,7 @@ Drop* Randomizer::DropZoneBlu(const float& in_verdict) {
 
 
 //Public---------------------------------------------------
-Randomizer::Randomizer() {
+Randomizer::Randomizer(const MetaData* in_metadata_ptr) {
 	//Initiate the random seed
 	//NOTE:	This should preferably be done nowhere else in the program
 	//		As of now the zone generation does it twice before this part
@@ -67,6 +67,9 @@ Randomizer::Randomizer() {
 	this->LoadRates(RED);
 	this->LoadRates(GRE);
 	this->LoadRates(BLU);
+
+	//Save the MetaData pointer
+	this->meta_data_ptr_ = in_metadata_ptr;
 	
 }
 

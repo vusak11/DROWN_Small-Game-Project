@@ -3,6 +3,7 @@
 
 #include "../global_settings.h"
 #include "Drop/Drop.h"
+#include "../Map/metadata.h"
 
 #include <cstdlib>
 #include <ctime>
@@ -24,7 +25,8 @@ private:
 
 	//Variables:
 	DropRates* zone_rates_arr_;
-	
+	const MetaData* meta_data_ptr_;
+
 	//Functions:
 	void LoadRates(ZoneID in_id);
 
@@ -35,7 +37,7 @@ private:
 	Drop* DropZoneBlu(const float& in_verdict);
 
 public:
-	Randomizer();
+	Randomizer(const MetaData* in_metadata_ptr);
 	~Randomizer();
 
 	Drop* RandomNewDropPtr(glm::vec3 in_pos, float in_drop_rate);

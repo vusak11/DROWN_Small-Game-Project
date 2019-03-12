@@ -272,6 +272,7 @@ ObjectHandler::ObjectHandler() {
 	this->player_ptr_ = NULL;
 	this->boss_ptr_ = NULL;
 	this->physics_engine_ptr_ = NULL;
+	this->randomizer_ptr_ = NULL;
 }
 
 ObjectHandler::~ObjectHandler() {
@@ -281,6 +282,8 @@ ObjectHandler::~ObjectHandler() {
 	delete this->boss_ptr_;
 
 	delete this->physics_engine_ptr_;
+
+	delete this->randomizer_ptr_;
 	
 }
 
@@ -293,25 +296,27 @@ void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map
 	this->player_ptr_->SetScale(2.0f);
 	
 	glm::vec3 drop_pos = this->player_ptr_->GetPosition();
+	
 	//TEMP
 	drop_pos.x += 10.0f;
 	this->drop_ptr_vector_.push_back(new DoubleJumpDrop(drop_pos));
 	this->drop_ptr_vector_.back()->SetScale(3.0f);
+	//TEMP
 
 	// Create NPCs and spawn them on every light source
 	for (int i = 2; i < meta_data->GetLightPositions().size(); i++) {
 		if (sqrt(pow((meta_data->GetLightPositions()[i].x - meta_data->GetSpawnPointCoords().x), 2) + pow((meta_data->GetLightPositions()[i].y - meta_data->GetSpawnPointCoords().y), 2)) > 50) {
 			// Different NPC's depending on where they spawn
-			if (meta_data->GetZone(meta_data->GetLightPositions()[i]) == "DEF") {
+			if (meta_data->GetZone(meta_data->GetLightPositions()[i]) == DEF) {
 				this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(meta_data->GetLightPositions()[i], 5.0f), OBJECT_ID_DUMMY));
 			}
-			else if (meta_data->GetZone(meta_data->GetLightPositions()[i]) == "RED") {
+			else if (meta_data->GetZone(meta_data->GetLightPositions()[i]) == RED) {
 				this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(meta_data->GetLightPositions()[i], 5.0f), OBJECT_ID_FIRE_AI));
 			}
-			else if (meta_data->GetZone(meta_data->GetLightPositions()[i]) == "GRE") {
+			else if (meta_data->GetZone(meta_data->GetLightPositions()[i]) == GRE) {
 				this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(meta_data->GetLightPositions()[i], 5.0f), OBJECT_ID_WOOD_AI));
 			}
-			else if (meta_data->GetZone(meta_data->GetLightPositions()[i]) == "BLU") {
+			else if (meta_data->GetZone(meta_data->GetLightPositions()[i]) == BLU) {
 				this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(meta_data->GetLightPositions()[i], 5.0f), OBJECT_ID_ICE_AI));
 			}
 			this->npc_ptr_vector_.back()->SetScale(GlobalSettings::Access()->ValueOf("NPC_RUNNER_SCALE"));
@@ -328,12 +333,11 @@ void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map
 	this->drop_ptr_vector_.push_back(new BossDoor(glm::vec3(meta_data->GetBossDoorCoords(), 0.0f)));
 	this->drop_ptr_vector_.back()->SetScale(3.0f);
 
-
-	// Apply physics
+	// Create physics engine
 	this->physics_engine_ptr_ = new PhysicsEngine(map_height_list);
 
+	// Create the randomizer
 
-	//this->TestObjectHandler();		//NTS: Just for testing
 }
 
 void ObjectHandler::PlayerMoveLeft() {
