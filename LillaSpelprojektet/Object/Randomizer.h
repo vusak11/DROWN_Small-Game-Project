@@ -25,7 +25,7 @@ private:
 
 	//Variables:
 	DropRates* zone_rates_arr_;
-	const MetaData* meta_data_ptr_;
+	MetaData* meta_data_ptr_;
 
 	//Functions:
 	void LoadRates(ZoneID in_id);
@@ -37,7 +37,7 @@ private:
 	Drop* DropZoneBlu(const float& in_verdict);
 
 public:
-	Randomizer(const MetaData* in_metadata_ptr);
+	Randomizer(MetaData* in_metadata_ptr);
 	~Randomizer();
 
 	Drop* RandomNewDropPtr(glm::vec3 in_pos, float in_drop_rate);

@@ -52,7 +52,7 @@ Drop* Randomizer::DropZoneBlu(const float& in_verdict) {
 
 
 //Public---------------------------------------------------
-Randomizer::Randomizer(const MetaData* in_metadata_ptr) {
+Randomizer::Randomizer(MetaData* in_metadata_ptr) {
 	//Initiate the random seed
 	//NOTE:	This should preferably be done nowhere else in the program
 	//		As of now the zone generation does it twice before this part
@@ -89,30 +89,78 @@ Drop* Randomizer::RandomNewDropPtr(glm::vec3 in_pos, float in_drop_rate) {
 	//Get a random number in the range 0 - 100
 	float verdict = static_cast<float>(rand()) / static_cast<float>(100);
 
-	//If the verdic is higher than the drop rate, return null
+	//If the verdict is higher than the drop rate value, return null
 	if (verdict > in_drop_rate) { return NULL; }
 	
-	//Otherwise determine a drop using the drop functions
-	//Each of these functions start with the lowest range
-	//by checking if the verdic is below its maximum.
-	//If it isn't we can simply increase the maximum to cover
-	//the next range while practically excluding the first
-	//(as we know there to be no match).
-	Drop* drop_ptr = NULL;
-	switch (zone) {
-	case "RED":
-		drop_ptr = this->DropZoneRed(verdict);
-		break;
-	case "GRE":
-		drop_ptr = this->DropZoneBlu(verdict);
-		break;
-	case "BLU":
-		drop_ptr = this->DropZoneGre(verdict);
-		break;
-	default:
-		drop_ptr = this->DropZoneDef(verdict);
-		break;
+	//If the verdict is lower than the drop rate value we should return
+	//a drop. 
+	//Since we do not want to generate a new random number so close to
+	//the last we scale up the verdict from
+	//			[0.0, drop_rate]
+	//to
+	//			[0.0, 100.0]
+	//by multiplying it by 100.0/drop_rate (drop_rate * x = 100	->	x = 100/drop_rate)
+	verdict *= 100.0f / in_drop_rate;			//NTS: If this doesn't work
+												//just generate a new verdict here
+												//Inaccuracy rises with smaller drop rates
+
+	//We now go through the zone's drop rates to see what drop is to be spawned.
+	//We will check if the "new" verdict is lower than the rate of a specific
+	//drop in that zone.
+	//	NOTE:	We are checking if the rate is LOWER. This means that
+	//			a drop with 0% spawn rate will not be created
+	//After we have determined the verdict to not be lower than that drop rate
+	//we add the drop rate of the next drop on top of the old one and check again.
+	//This will practically let us examine a range without defining a lower bound
+	//as we already know the drop to not be in any ranges below what we are checking
+	//	NOTE:	Given that we check "lower than" the max of the previous
+	//			range becomes the 0 of the current one
+	
+	
+	ZoneID zone_id = this->meta_data_ptr_->GetZone(in_pos);
+	float range_max = 0.0;
+
+	range_max += this->zone_rates_arr_[zone_id].hp_restore;
+	if (verdict < range_max) {
+		return new HPRestoreDrop(in_pos);
 	}
+
+	range_max += this->zone_rates_arr_[zone_id].hp_up;
+	if (verdict < range_max) {
+		return new HPUpDrop(in_pos);
+	}
+
+	range_max += this->zone_rates_arr_[zone_id].atk_up;
+	if (verdict < range_max) {
+		return new AtkUpDrop(in_pos);
+	}
+
+	range_max += this->zone_rates_arr_[zone_id].dash;
+	if (verdict < range_max) {
+		return new DashDrop(in_pos);
+	}
+
+	range_max += this->zone_rates_arr_[zone_id].double_jump;
+	if (verdict < range_max) {
+		return new DoubleJumpDrop(in_pos);
+	}
+
+	range_max += this->zone_rates_arr_[zone_id].sword;
+	if (verdict < range_max) {
+		return new SwordDrop(in_pos);
+	}
+
+	range_max += this->zone_rates_arr_[zone_id].axe;
+	if (verdict < range_max) {
+		return new AxeDrop(in_pos);
+	}
+
+	range_max += this->zone_rates_arr_[zone_id].key;
+	if (verdict < range_max) {
+		return new KeyDrop(in_pos);
+	}
+
+
 	
 	
 	//Return drop pointer, if the drop was not propernly represented this
