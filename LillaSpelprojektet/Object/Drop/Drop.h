@@ -94,6 +94,8 @@ public:
 	void SpinDrop(const float& in_deltatime);
 };
 
+//---------------------------------------------------------
+
 class DashDrop : public Drop {
 private:
 	bool TriggerEvent(PlayerCharacter& in_player);
@@ -102,6 +104,8 @@ public:
 	DashDrop(glm::vec3 creation_pos);
 	~DashDrop();
 };
+
+//---------------------------------------------------------
 
 class DoubleJumpDrop : public Drop {
 private:
@@ -112,5 +116,30 @@ public:
 	~DoubleJumpDrop();
 };
 
+/*
+
+//---------------------------------------------------------
+
+class SwordDrop : public Drop {
+private:
+	bool TriggerEvent(PlayerCharacter& in_player);
+
+public:
+	SwordDrop(glm::vec3 creation_pos);
+	~SwordDrop();
+};
+
+//---------------------------------------------------------
+
+class AxeDrop : public Drop {
+private:
+	bool TriggerEvent(PlayerCharacter& in_player);
+
+public:
+	AxeDrop(glm::vec3 creation_pos);
+	~AxeDrop();
+};
+
+*/
 
 #endif // !DROP_H
