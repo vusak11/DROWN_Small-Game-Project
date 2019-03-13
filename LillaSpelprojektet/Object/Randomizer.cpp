@@ -81,7 +81,7 @@ Drop* Randomizer::RandomNewDropPtr(glm::vec3 in_pos, float in_drop_rate) {
 	//This function can return a null pointer. Ensure to handle outside
 
 	//Get a random number in the range 0 - 100
-	float verdict = static_cast<float>(rand()) / static_cast<float>(100);
+	float verdict = static_cast<float>(rand()) / static_cast<float>(RAND_MAX/100);
 
 	//If the verdict is higher than the drop rate value, return null
 	if (verdict > in_drop_rate) { return NULL; }
@@ -95,10 +95,17 @@ Drop* Randomizer::RandomNewDropPtr(glm::vec3 in_pos, float in_drop_rate) {
 	//			[0.0, sum_of_all_rates]
 	//by multiplying it sum_of_all_rates/drop_rate (dr * x = sor	->	x = sor/dr)
 	ZoneID zone_id = this->meta_data_ptr_->GetZone(in_pos);
+	
+	//NTS: What is best?
+
+	//ALT 1:	Not calling for a new rand() within a set time span of the last call
 	float sum_of_all_rates = this->zone_rates_arr_[zone_id].sum_of_rates;
-	verdict *= (sum_of_all_rates / in_drop_rate);			//NTS: If this doesn't work
-												//just generate a new verdict here
-												//Inaccuracy rises with smaller drop rates
+	verdict *= (sum_of_all_rates / in_drop_rate);	//NTS: Inaccuracy rises with smaller drop rates
+	
+	//ALT 2:	Not dilating a low verdict when in_drop_rate is low
+	//verdict = static_cast<float>(rand()) / static_cast<float>(RAND_MAX/100);
+
+	//
 
 	//We now go through the zone's drop rates to see what drop is to be spawned.
 	//We will check if the "new" verdict is lower than the rate of a specific
