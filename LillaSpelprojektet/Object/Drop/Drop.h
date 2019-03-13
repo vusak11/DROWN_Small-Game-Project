@@ -155,5 +155,18 @@ public:
 	void SpinDrop(const float& in_deltatime);
 };
 
+//---------------------------------------------------------
+
+class Chest : public Drop {
+private:
+	bool TriggerEvent(PlayerCharacter& in_player);
+
+public:
+	Chest(glm::vec3 creation_pos);
+	~Chest();
+
+	void SpinDrop(const float& in_deltatime);
+};
+
 
 #endif // !DROP_H

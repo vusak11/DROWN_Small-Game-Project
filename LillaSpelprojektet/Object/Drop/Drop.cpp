@@ -247,3 +247,24 @@ BossDoor::~BossDoor() {}
 void BossDoor::SpinDrop(const float& in_deltatime) {
 	//Empty as the boss-door shouldn't rotate
 }
+
+//---------------------------------------------------------
+//Private
+bool Chest::TriggerEvent(PlayerCharacter& in_player) {
+	
+	this->SetObjectID(OBJECT_ID_DROP_CHEST_OPEN);
+
+	return false;
+}
+
+//Public
+Chest::Chest(glm::vec3 creation_pos)
+	: Drop(creation_pos, OBJECT_ID_DROP_CHEST_CLOSED) {
+
+}
+
+Chest::~Chest() {}
+
+void Chest::SpinDrop(const float& in_deltatime) {
+	//Empty as chests shouldn't rotate
+}
