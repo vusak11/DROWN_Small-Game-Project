@@ -240,7 +240,7 @@ void ObjectHandler::ResolveRandomDropSpawn(glm::vec3 in_pos) {
 	//If the pointer is not null
 	if (spawn_ptr != NULL) {
 		//Make it move a bit upwards
-		spawn_ptr->SetVelocityVec(glm::vec3(0.0f, 20.0f, 0.0f));
+		spawn_ptr->SetVelocityVec(glm::vec3(0.0f, 100.0f, 0.0f));
 		//And place it in the vector
 		this->drop_ptr_vector_.push_back(spawn_ptr);
 	}
