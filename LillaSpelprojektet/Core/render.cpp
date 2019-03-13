@@ -42,24 +42,37 @@ Render::Render() {
 	model_ = new Model*[this->nr_of_models_];
 
 	//Link models to a ObjectID
-	model_[OBJECT_ID_NULL] = new Model((char*)"../Resources/Models/DefaultDummyNPC/defaultDummyNPC.obj");
+	model_[OBJECT_ID_NULL] = new Model((char*)"../Resources/Models/DefaultNull/defaultNull.obj");
+
+	//!!!
+	//Set everything in the game to be the default dummy. This let's us identify missing models
+	for (unsigned int i = 0; i < NUMBER_OF_OBJECT_IDS; i++) {
+		model_[i] = model_[OBJECT_ID_NULL];
+	}
+	//!!!
+
+	//Continue setting models
 	model_[OBJECT_ID_PLAYER_IDLE] = new Model((char*)"../Resources/Models/Character/IdleStance.obj");
 	model_[OBJECT_ID_PLAYER_JUMP] = new Model((char*)"../Resources/Models/Character/JumpStance.obj");
 	model_[OBJECT_ID_PLAYER_LEFT_WALK] = new Model((char*)"../Resources/Models/Character/LeftWalkStance.obj");
 	model_[OBJECT_ID_PLAYER_RIGHT_WALK] = new Model((char*)"../Resources/Models/Character/RightWalkStance.obj");
+	
 	model_[OBJECT_ID_DUMMY] = new Model((char*)"../Resources/Models/NPC/AI.obj");
 	model_[OBJECT_ID_FIRE_AI] = new Model((char*)"../Resources/Models/NPC/fireAI.obj");
 	model_[OBJECT_ID_WOOD_AI] = new Model((char*)"../Resources/Models/NPC/grassAI.obj");
 	model_[OBJECT_ID_ICE_AI] = new Model((char*)"../Resources/Models/NPC/iceAI.obj");
+	
 	model_[OBJECT_ID_DROP_HP_RESTORE] = new Model((char*)"../Resources/Models/Drops/heart_drop/heart_drop.obj");
 	model_[OBJECT_ID_DROP_HP_UP] = new Model((char*)"../Resources/Models/Drops/hp_buff/hp_buff.obj");
 	model_[OBJECT_ID_DROP_ATK_UP] = new Model((char*)"../Resources/Models/Drops/attack_buff/attack_buff.obj");
+	model_[OBJECT_ID_DROP_SPD_UP] = new Model((char*)"../Resources/Models/Drops/speed_buff/speed_buff.obj");
 	model_[OBJECT_ID_DROP_DASH] = new Model((char*)"../Resources/Models/Drops/dash/dash.obj");
 	model_[OBJECT_ID_DROP_DOUBLE_JUMP] = new Model((char*)"../Resources/Models/Drops/double_jump/double_jump.obj");
 	model_[OBJECT_ID_DROP_SWORD] = new Model((char*)"../Resources/Models/Drops/sword/sword.obj");
 	model_[OBJECT_ID_DROP_AXE] = new Model((char*)"../Resources/Models/Drops/axe/axe.obj");
 	model_[OBJECT_ID_DROP_KEY] = new Model((char*)"../Resources/Models/Drops/key/key.obj");
 	model_[OBJECT_ID_DROP_DOOR] = new Model((char*)"../Resources/Models/Drops/Gate/Gate.obj");
+	
 	model_[OBJECT_ID_BOSS] = new Model((char*)"../Resources/Models/Boss/bossLayout1.obj");
 	model_[OBJECT_ID_BOSS_HAND] = new Model((char*)"../Resources/Models/Boss/bossHand.fbx");
 
@@ -73,7 +86,14 @@ Render::~Render() {
 	delete text_shaders_;
 	delete gui_shaders_;
 
+	//Save the adress to the null model that is deleted first.
+	//If that pointer is encountered later in the following loop
+	//just set it to null. This prevents crashes by deleting a 
+	//non-existant object.
+	Model* ptr_to_null = model_[0];
+
 	for (int i = 0; i < nr_of_models_; i++) {
+		if (model_[i] == ptr_to_null) { model_[i] = NULL; }
 		delete model_[i];
 	}
 	delete[] model_;

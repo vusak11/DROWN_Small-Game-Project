@@ -70,6 +70,19 @@ public:
 
 //---------------------------------------------------------
 
+class SpdUpDrop : public Drop {
+private:
+	int speed_;
+
+	bool TriggerEvent(PlayerCharacter& in_player);
+
+public:
+	SpdUpDrop(glm::vec3 creation_pos);
+	~SpdUpDrop();
+};
+
+//---------------------------------------------------------
+
 class KeyDrop : public Drop {
 private:
 	bool TriggerEvent(PlayerCharacter& in_player);

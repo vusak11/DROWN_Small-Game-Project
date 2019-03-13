@@ -22,10 +22,11 @@ void Randomizer::LoadRates(ZoneID in_id) {
 		break;
 	}
 
-	//LOad in the value from the globals
+	//Load in the value from the globals
 	this->zone_rates_arr_[in_id].hp_restore		= GlobalSettings::Access()->ValueOf(zone_str + "_ZONE_DROP_RATE_HP_RESTORE");
 	this->zone_rates_arr_[in_id].hp_up			= GlobalSettings::Access()->ValueOf(zone_str + "_ZONE_DROP_RATE_HP_UP");
 	this->zone_rates_arr_[in_id].atk_up			= GlobalSettings::Access()->ValueOf(zone_str + "_ZONE_DROP_RATE_ATK_UP");
+	this->zone_rates_arr_[in_id].spd_up			= GlobalSettings::Access()->ValueOf(zone_str + "_ZONE_DROP_RATE_SPD_UP");
 	this->zone_rates_arr_[in_id].dash			= GlobalSettings::Access()->ValueOf(zone_str + "_ZONE_DROP_RATE_DASH");
 	this->zone_rates_arr_[in_id].double_jump	= GlobalSettings::Access()->ValueOf(zone_str + "_ZONE_DROP_RATE_DOUBLE_JUMP");
 	this->zone_rates_arr_[in_id].sword			= GlobalSettings::Access()->ValueOf(zone_str + "_ZONE_DROP_RATE_SWORD");
@@ -36,6 +37,7 @@ void Randomizer::LoadRates(ZoneID in_id) {
 		this->zone_rates_arr_[in_id].hp_restore
 		+ this->zone_rates_arr_[in_id].hp_up
 		+ this->zone_rates_arr_[in_id].atk_up
+		+ this->zone_rates_arr_[in_id].spd_up
 		+ this->zone_rates_arr_[in_id].dash
 		+ this->zone_rates_arr_[in_id].double_jump
 		+ this->zone_rates_arr_[in_id].sword
@@ -136,6 +138,11 @@ Drop* Randomizer::RandomNewDropPtr(glm::vec3 in_pos, float in_drop_rate) {
 	range_max += this->zone_rates_arr_[zone_id].atk_up;
 	if (verdict < range_max) {
 		return new AtkUpDrop(in_pos);
+	}
+
+	range_max += this->zone_rates_arr_[zone_id].spd_up;
+	if (verdict < range_max) {
+		return new SpdUpDrop(in_pos);
 	}
 
 	range_max += this->zone_rates_arr_[zone_id].dash;

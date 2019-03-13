@@ -16,6 +16,7 @@ private:
 		float hp_restore = 0.0f;
 		float hp_up = 0.0f;
 		float atk_up = 0.0f;
+		float spd_up = 0.0f;
 		float dash = 0.0f;
 		float double_jump = 0.0f;
 		float sword = 0.0f;

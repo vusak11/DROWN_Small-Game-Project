@@ -98,11 +98,11 @@ void ObjectHandler::DeterminePlayerAction(
 	}
 	//If input is use ability
 	if (this->player_input_.use_ability) {
-		this->player_ptr_->UseAbility();
+		//this->player_ptr_->UseAbility();
 		
 		//TEMP
-		//this->ResolveRandomDropSpawn(this->player_ptr_->GetPosition());
-		//std::cout << "	" << this->drop_ptr_vector_.size() << "	" << std::endl;
+		this->ResolveRandomDropSpawn(this->player_ptr_->GetPosition());
+		std::cout << "	" << this->drop_ptr_vector_.size() << "	" << std::endl;
 	}
 	//If input is attack
 	if (this->player_input_.attack) {
@@ -345,7 +345,7 @@ void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map
 	
 	//TEMP
 	drop_pos.x += 10.0f;
-	this->drop_ptr_vector_.push_back(new DoubleJumpDrop(drop_pos));
+	this->drop_ptr_vector_.push_back(new SpdUpDrop(drop_pos));
 	this->drop_ptr_vector_.back()->SetScale(3.0f);
 	//TEMP
 

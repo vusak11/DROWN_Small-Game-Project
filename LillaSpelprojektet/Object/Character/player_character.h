@@ -12,8 +12,6 @@
 class PlayerCharacter : public Character {
 private:
 	//Player stats
-	float move_top_speed_;
-	float move_acceleration_;
 	float jump_speed_;
 
 	Ability* ability_ptr_;

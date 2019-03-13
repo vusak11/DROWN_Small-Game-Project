@@ -27,7 +27,8 @@ PlayerCharacter::PlayerCharacter(glm::vec3 start_pos)
 		GlobalSettings::Access()->ValueOf("PLAYER_START_ATK")
 	) {
 	this->move_top_speed_ = GlobalSettings::Access()->ValueOf("PLAYER_MOVE_VELOCITY");
-	this->move_acceleration_ = this->move_top_speed_ / GlobalSettings::Access()->ValueOf("PLAYER_MOVE_ACCELERATION_RATE");
+	this->move_acceleration_rate_ = GlobalSettings::Access()->ValueOf("PLAYER_MOVE_ACCELERATION_RATE");
+	this->move_acceleration_ = this->move_top_speed_ / this->move_acceleration_rate_;
 	this->jump_speed_ = GlobalSettings::Access()->ValueOf("PLAYER_JUMP_VELOCITY");
 	
 	//this->ability_ptr_ = new Ability();
