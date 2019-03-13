@@ -13,7 +13,8 @@ struct BossActions {		//A way for the object handler to see what actions to make
 
 enum BossStage {
 	STAGE_1,
-	STAGE_2
+	STAGE_2,
+	STAGE_3
 };
 
 class NPCBoss : public NPC {
@@ -23,8 +24,13 @@ private:
 	SoundUnit laugh1_;
 	SoundUnit laugh2_;
 	SoundUnit laugh3_;
+	SoundUnit damaged_;
 	SoundUnit arm_hit_ground_;
 	std::vector<ObjectClass*> boss_objects_;
+
+	int health_last_frame_;
+
+	float phases_complete_ = 0; // add one after each phace complete to scale the boss.
 
 	// stage 1 variables
 	int stage_1_counter = 0;

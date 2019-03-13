@@ -8,12 +8,15 @@ NPCBoss::NPCBoss(glm::vec3 start_pos) : NPC(
 	GlobalSettings::Access()->ValueOf("BOSS_ATK")
 ) {
 	stage_ = STAGE_1;
-	SetScale(8, 8, 1);
-	SetOffsets(8, 3);
+	SetScale(12, 12, 6);
+	SetOffsets(40, 12);
+
+	health_last_frame_ = GetCurrentHealth();
 
 	laugh1_.LoadSound((char*)"../Resources/Audio/evil_laugh2.wav");
 	laugh2_.LoadSound((char*)"../Resources/Audio/evil_laugh3.wav");
 	laugh3_.LoadSound((char*)"../Resources/Audio/evil_laugh1.wav");
+	damaged_.LoadSound((char*)"../Resources/Audio/boss_damaged.wav");
 	
 	arm_hit_ground_.LoadSound((char*)"../Resources/Audio/boss_arm_boom.wav");
 	laugh1_.PlaySound();
@@ -37,10 +40,17 @@ void NPCBoss::ExecuteAI(float in_deltatime, glm::vec3 in_player_pos) {
 	time += in_deltatime;
 
 	
+	int health = GetCurrentHealth();
+	if (health_last_frame_ > health)
+	{
+		damaged_.PlaySound();
+		std::cout << "boss health: " << GetCurrentHealth() << std::endl;
+	}
+	health_last_frame_ = health;
 
 	// set time to 0 after each cycle
 	if (stage_ == STAGE_1) {
-
+		
 		if (time > 0.0f && time < 3.0f) {
 			actions_.arm_attack = true; actions_.arm_attack_process = true;
 			laugh2_.PlaySound();
@@ -49,18 +59,31 @@ void NPCBoss::ExecuteAI(float in_deltatime, glm::vec3 in_player_pos) {
 		if (time > 9.0f) {
 			time = 0.0f;
 			stage_1_counter++;
-			if (stage_1_counter >= 4)
+			if (stage_1_counter >= 5)
 			{
 				stage_ = STAGE_2;
 				time = 0.0f;
 				stage_2_counter = 0;
 				laugh3_.PlaySound();
+				SetVelocityVec(glm::vec3(0.0f, +30.0f, 0.0f));
 			}
 		}
-
+		if (health < GetMaxHealth() * 0.8f)
+		{
+			stage_ = STAGE_3;
+			std::cout << "Du har typ klarat spelet xD: " << std::endl;
+		}
+		if (GetPosition().y > -1110)
+		{
+			SetVelocityVec(glm::vec3(0.0f, -30.0f, 0.0f));
+		}
 	}
 	else if (stage_ == STAGE_2) {
-		if (time > 3.5f)
+		if (GetPosition().y < -900)
+		{
+			SetVelocityVec(glm::vec3(0.0f, +30.0f, 0.0f));
+		}
+		if (time > __max(3.0f - phases_complete_ * 0.4f, 0.3f) )
 		{
 			actions_.spawn_mobs = true;
 			stage_2_counter++;
@@ -70,7 +93,17 @@ void NPCBoss::ExecuteAI(float in_deltatime, glm::vec3 in_player_pos) {
 		{
 			stage_ = STAGE_1;
 			stage_1_counter = 0;
+			time = 6.0f;
+			SetVelocityVec(glm::vec3(0.0f, -30.0f, 0.0f));
+			glm::vec3 temp_pos = GetPosition();
+			SetPosition(160, temp_pos.y, temp_pos.z);
+
 		}
+
+	}
+	else if (stage_ == STAGE_3)
+	{
+
 	}
 
 
@@ -81,6 +114,23 @@ void NPCBoss::ExecuteAI(float in_deltatime, glm::vec3 in_player_pos) {
 
 void NPCBoss::ExecuteActions(float in_deltatime, glm::vec3 in_player_pos) {
 	
+	// Set x velocity depending on player position
+	glm::vec3 temp_velocity = GetVelocityVec();
+	if (in_player_pos.y > -1170)
+	{
+		// this acts strange with negative values obv
+		float diff = (GetPosition().x - in_player_pos.x);
+		float move_speed = __max(50 - 5.0 * phases_complete_, 10);
+		if (diff < 0)
+		{
+			SetVelocityVec({ -1 * move_speed, temp_velocity.y , temp_velocity.z });
+		}
+		else if (diff > 0)
+		{
+			SetVelocityVec({ move_speed, temp_velocity.y, temp_velocity.z });
+		}
+	}
+
 	if (actions_.arm_attack) {
 		boss_objects_[0]->SetPosition(in_player_pos.x, -900, 5.0f);
 		boss_objects_[0]->SetVelocityVec(glm::vec3( 0.0f, -300.0f, 0.0f ));
@@ -90,9 +140,45 @@ void NPCBoss::ExecuteActions(float in_deltatime, glm::vec3 in_player_pos) {
 }
 
 void NPCBoss::UpdateBossObjects(float in_deltatime, glm::vec3 in_player_pos) {
+	
+	glm::vec3 temp_pos = GetPosition();
+	glm::vec3 temp_velocity = GetVelocityVec();
+	temp_pos += GetVelocityVec() * in_deltatime;
 
+	if (temp_velocity.x > 0)
+	{
+		if (GetPosition().x < 220) {
+			SetPosition(temp_pos.x, GetPosition().y, temp_pos.z);
+		}
+	}
+	else if (temp_velocity.x < 0)
+	{
+		if (GetPosition().x > 100) {
+			SetPosition(temp_pos.x, GetPosition().y, temp_pos.z);
+		}
+	}
+
+	if (temp_velocity.y != 0)
+	{
+		if (temp_velocity.y > 0 && GetPosition().y < -900)
+		{
+			SetPosition(GetPosition().x, temp_pos.y, GetPosition().z);
+		}
+		else if (temp_velocity.y < 0 && GetPosition().y > -1110)
+		{
+			SetPosition(GetPosition().x, temp_pos.y, GetPosition().z);
+		}
+		else
+		{
+			SetVelocityVec(glm::vec3(0.0f, 0.0f, 0.0f));
+		}
+	}
+	
+
+
+	// Boss objects
 	for (int i = 0; i < boss_objects_.size(); i++) {
-		glm::vec3 temp_pos = boss_objects_[i]->GetPosition();
+		temp_pos = boss_objects_[i]->GetPosition();
 		temp_pos += boss_objects_[i]->GetVelocityVec() * in_deltatime;
 
 		if (boss_objects_[i]->GetPosition().y > -1160 || boss_objects_[i]->GetVelocityVec().y > 0) {

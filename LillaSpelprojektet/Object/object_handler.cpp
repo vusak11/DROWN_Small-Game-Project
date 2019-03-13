@@ -116,6 +116,15 @@ void ObjectHandler::DeterminePlayerAction(
 		this->ResolvePlayerPickUp(in_relevant_drops_ptr_vector);
 	}
 
+	// Uppdate the listeners postion for the sound
+	//glm::vec3 tmp_pos = player_ptr_->GetPosition();
+	//sf::Listener::setPosition(tmp_pos.x, tmp_pos.y, tmp_pos.z);
+	//sf::Listener::setDirection(player_ptr_->GetFacingDirection(), 0.0f, 1.0f);
+	//sf::Listener::setUpVector(0.f, 1.f, 0.f);
+	
+	
+	
+
 }
 
 void ObjectHandler::ResolvePlayerPickUp(std::vector<ObjectClass*>& in_relevant_drops_ptr_vector) {
@@ -172,8 +181,17 @@ void ObjectHandler::ResolvePlayerAttack(std::vector<ObjectClass*>& in_relevant_n
 
 	std::vector<int> index_of_the_dead;
 	Character* character_ptr = NULL;
-	int temp_index = -1;
+	int outcome = -1;
 	int sound_index = -1;
+
+	// First check if boss is hit
+	if (boss_ptr_)
+	{
+		if (player_ptr_->UseWeapon(*boss_ptr_) != -1)
+		{
+			sound_index = 0;
+		}
+	}
 
 	//Loop over all relevant npcs
 	for (unsigned int i = 0; i < in_relevant_npcs_ptr_vector.size(); i++) {
@@ -182,12 +200,12 @@ void ObjectHandler::ResolvePlayerAttack(std::vector<ObjectClass*>& in_relevant_n
 		if (character_ptr != NULL) {
 			//Send in a npc and check if the player hits it with the attack
 			//If the unit dies save its index
-			temp_index = this->player_ptr_->UseWeapon(*character_ptr);
-			if (0 == temp_index && sound_index != 1)
+			outcome = this->player_ptr_->UseWeapon(*character_ptr);
+			if (0 == outcome && sound_index != 1)
 			{
 				sound_index = 0;
 			}
-			if (1 == temp_index) {
+			if (1 == outcome) {
 				index_of_the_dead.push_back(i);
 				sound_index = 1;
 			}
@@ -307,7 +325,7 @@ void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map
 	//Create player
 	//Assign spawn position randomly via meta data
 	//this->player_ptr_ = new PlayerCharacter(glm::vec3(meta_data->GetSpawnPointCoords(), 3.0f));
-	this->player_ptr_ = new PlayerCharacter(glm::vec3(meta_data->GetSpawnPointCoords(), 3.0f));
+	this->player_ptr_ = new PlayerCharacter(glm::vec3(564.0f, -220.0f, 5.0f));
 	this->player_ptr_->SetScale(2.0f);
 	this->player_ptr_->SetOffsets(2, 2);
 	this->player_ptr_->LoadPlayerSounds();
@@ -464,6 +482,7 @@ std::vector<ObjectPackage> ObjectHandler::UpdateAndRetrieve(float in_deltatime) 
 		this->PackObjectVectorIntoVector(temp_boss_list, package_vector);
 		DetermineBossAction();
 	}
+	
 
 	return package_vector;
 }
@@ -491,6 +510,8 @@ bool ObjectHandler::PlayerInBossRoom() {
 
 void ObjectHandler::SetPlayerXYZPosForBoss()
 {
+	this->player_ptr_->SetVelocityVec({ 0,0,0 });
+
 	this->player_ptr_->SetPosition(
 		GlobalSettings::Access()->ValueOf("DROP_BOSS_DOOR_DESTINATION_X"),
 		GlobalSettings::Access()->ValueOf("DROP_BOSS_DOOR_DESTINATION_Y"),
@@ -500,7 +521,7 @@ void ObjectHandler::SetPlayerXYZPosForBoss()
 
 void ObjectHandler::SpawnBoss() {
 	
-	boss_ptr_ = new NPCBoss(glm::vec3(160, -1100, 10));
+	boss_ptr_ = new NPCBoss(glm::vec3(160, -1110, 10));
 	boss_ptr_->SetPosition(160, -1110, 10);
 	std::cout << "Spawned boss" << std::endl;
 }

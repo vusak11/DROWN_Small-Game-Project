@@ -57,7 +57,7 @@ bool Dash::ExecuteAbility(PlayerCharacter& in_player) {
 
 	//Create a vector of dash_velocity length in the player's facing direction
 	float x_speed = this->dash_velocity_ * in_player.looking_towards_x_;
-	glm::vec3 new_velocity = glm::vec3(x_speed, 0.0f, 0.0f);
+	glm::vec3 new_velocity = glm::vec3(x_speed, 50.0f, 0.0f);
 
 	//Set it as new player velocity
 	in_player.SetVelocityVec(new_velocity);
