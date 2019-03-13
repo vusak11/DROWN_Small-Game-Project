@@ -100,58 +100,6 @@ SpdUpDrop::SpdUpDrop(glm::vec3 creation_pos)
 
 SpdUpDrop::~SpdUpDrop() {}
 
-//---------------------------------------------------------
-//Private
-bool KeyDrop::TriggerEvent(PlayerCharacter& in_player) {
-	//Giving the playr a key, then return true
-	in_player.IncreaseKeys();
-	return true;
-}
-
-//Public
-KeyDrop::KeyDrop(glm::vec3 creation_pos)
-	: Drop(creation_pos, OBJECT_ID_DROP_KEY) {
-}
-
-KeyDrop::~KeyDrop() {}
-
-//---------------------------------------------------------
-//Private
-bool BossDoor::TriggerEvent(PlayerCharacter& in_player) {
-	//Check if player has enough keys
-	if (in_player.GetNumOfKeys() >= this->keys_required_) {
-
-		// SET BOSS STATE
-
-		//If so, move player to boss-room
-		in_player.SetPosition(
-			GlobalSettings::Access()->ValueOf("DROP_BOSS_DOOR_DESTINATION_X"),
-			GlobalSettings::Access()->ValueOf("DROP_BOSS_DOOR_DESTINATION_Y"),
-			GlobalSettings::Access()->ValueOf("DROP_BOSS_DOOR_DESTINATION_Z")
-		);
-
-		//Then return true
-		return true;
-	}
-
-	//If not, return false
-	return false;
-}
-
-//Public
-BossDoor::BossDoor(glm::vec3 creation_pos)
-	: Drop(creation_pos, OBJECT_ID_DROP_DOOR) {
-
-	this->keys_required_ = GlobalSettings::Access()->ValueOf("DROP_NUM_OF_KEYS");
-
-}
-
-BossDoor::~BossDoor() {}
-
-void BossDoor::SpinDrop(const float& in_deltatime) {
-	//Empty as the boss-door shouldn't rotate
-}
-
 //----------------------------------------------------------
 //Private
 bool DashDrop::TriggerEvent(PlayerCharacter& in_player) {
@@ -198,3 +146,125 @@ DoubleJumpDrop::DoubleJumpDrop(glm::vec3 creation_pos)
 
 DoubleJumpDrop::~DoubleJumpDrop() {}
 
+//---------------------------------------------------------
+//Private
+bool SwordDrop::TriggerEvent(PlayerCharacter& in_player) {
+
+	//Give the player a double jump and catch the ptr to the old ability
+	Weapon* old_weapon_ptr = in_player.SwapWeapon(new Sword());
+
+	//Delete the old ability
+	delete old_weapon_ptr;
+
+	//Return true
+	return true;
+}
+
+//Public
+SwordDrop::SwordDrop(glm::vec3 creation_pos)
+	: Drop(creation_pos, OBJECT_ID_DROP_SWORD) {
+	//This drop is swappable!
+	this->swappable_ = true;
+}
+
+SwordDrop::~SwordDrop() {}
+
+//---------------------------------------------------------
+//Private
+bool AxeDrop::TriggerEvent(PlayerCharacter& in_player) {
+
+	//Give the player a double jump and catch the ptr to the old ability
+	Weapon* old_weapon_ptr = in_player.SwapWeapon(new Axe());
+
+	//Delete the old ability
+	delete old_weapon_ptr;
+
+	//Return true
+	return true;
+}
+
+//Public
+AxeDrop::AxeDrop(glm::vec3 creation_pos)
+	: Drop(creation_pos, OBJECT_ID_DROP_AXE) {
+	//This drop is swappable!
+	this->swappable_ = true;
+}
+
+AxeDrop::~AxeDrop() {}
+
+//---------------------------------------------------------
+//Private
+bool KeyDrop::TriggerEvent(PlayerCharacter& in_player) {
+	//Giving the playr a key, then return true
+	in_player.IncreaseKeys();
+	return true;
+}
+
+//Public
+KeyDrop::KeyDrop(glm::vec3 creation_pos)
+	: Drop(creation_pos, OBJECT_ID_DROP_KEY) {
+}
+
+KeyDrop::~KeyDrop() {}
+
+//---------------------------------------------------------
+//Private
+bool BossDoor::TriggerEvent(PlayerCharacter& in_player) {
+	//Check if player has enough keys
+	if (in_player.GetNumOfKeys() >= this->keys_required_) {
+
+		// SET BOSS STATE
+
+		//If so, move player to boss-room
+		in_player.SetPosition(
+			this->target_coordinate_x_,
+			this->target_coordinate_y_,
+			this->target_coordinate_z_
+		);
+
+		//Then return true
+		return true;
+	}
+
+	//If not, return false
+	return false;
+}
+
+//Public
+BossDoor::BossDoor(glm::vec3 creation_pos)
+	: Drop(creation_pos, OBJECT_ID_DROP_DOOR) {
+
+	this->keys_required_ = GlobalSettings::Access()->ValueOf("DROP_NUM_OF_KEYS");
+
+	this->target_coordinate_x_ = GlobalSettings::Access()->ValueOf("DROP_BOSS_DOOR_DESTINATION_X");
+	this->target_coordinate_y_ = GlobalSettings::Access()->ValueOf("DROP_BOSS_DOOR_DESTINATION_Y");
+	this->target_coordinate_z_ = GlobalSettings::Access()->ValueOf("DROP_BOSS_DOOR_DESTINATION_Z");
+
+}
+
+BossDoor::~BossDoor() {}
+
+void BossDoor::SpinDrop(const float& in_deltatime) {
+	//Empty as the boss-door shouldn't rotate
+}
+
+//---------------------------------------------------------
+//Private
+bool Chest::TriggerEvent(PlayerCharacter& in_player) {
+	
+	this->SetObjectID(OBJECT_ID_DROP_CHEST_OPEN);
+
+	return false;
+}
+
+//Public
+Chest::Chest(glm::vec3 creation_pos)
+	: Drop(creation_pos, OBJECT_ID_DROP_CHEST_CLOSED) {
+
+}
+
+Chest::~Chest() {}
+
+void Chest::SpinDrop(const float& in_deltatime) {
+	//Empty as chests shouldn't rotate
+}
