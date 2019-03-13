@@ -5,7 +5,7 @@ SoundUnit::SoundUnit() {
 	sound_.setBuffer(buffer_);
 
 	music_file_name_ = ((char*)"../Resources/Audio/default_sound.wav");
-	music_.setVolume(100);
+	music_.setVolume(20);
 	music_.setLoop(true);
 	music_.setRelativeToListener(true);
 }
@@ -49,6 +49,10 @@ void SoundUnit::StopMusic() {
 
 void SoundUnit::SetVolumeMusic(int volume) {
 	music_.setVolume(volume);
+}
+
+int SoundUnit::GetVolumeMusic() const {
+	return std::round(music_.getVolume());
 }
 
 //void SoundUnit::SetAttenuation(float attenuation) {

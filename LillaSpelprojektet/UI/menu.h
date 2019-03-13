@@ -10,8 +10,10 @@
 #include <map>
 #include <ft2build.h>
 #include FT_FREETYPE_H
+#include <SOIL/SOIL.h>
 
 #include "../Core/shader_handler.h"
+#include "../Core/sound_unit.h"
 
 class Menu {
 private:
@@ -29,9 +31,10 @@ private:
 	GLuint vertex_array_object_;
 	GLuint vertex_buffer_object_;
 
+	//GLuint background_image_;
+
 	int selected_item_index_;
 	int nr_of_items_;
-	
 
 	void RenderText(
 		ShaderHandler* shader_handler,
@@ -46,13 +49,15 @@ public:
 	Menu();
 	~Menu();
 
-	void Initiliaze();
+	void Initialize();
 	void NavigateUp();
 	void NavigateDown();
 	void RenderMenu(ShaderHandler* shader_handler);
-	void RenderOptionsMenu(ShaderHandler* shader_handler);
+	void RenderOptionsMenu(ShaderHandler* shader_handler, SoundUnit *sount_unit_ptr);
 	void RenderPauseMenu(ShaderHandler* shader_handler);
 	void RenderDeathMenu(ShaderHandler* shader_handler);
+	//void RenderBackground(/*ShaderHandler * shader_handler*/);
+	//void LoadTexture(char * texture_name, GLuint &texture_variable);
 	void StateManager(GameState state);
 
 	int GetSelectedItemIndex() const;

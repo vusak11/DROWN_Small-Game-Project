@@ -90,6 +90,20 @@ void Game::InputForOptionsState(const sf::Event& in_event) {
 			this->previous_states_.pop_back();
 			menu_.StateManager(this->previous_states_.back());
 		}
+		//Alter volume using left and right navigation keys
+		if (menu_.GetSelectedItemIndex() == 1) {
+			if (in_event.key.code == sf::Keyboard::A
+				|| in_event.key.code == sf::Keyboard::Left) {
+				sound_unit_ptr_->SetVolumeMusic(sound_unit_ptr_->GetVolumeMusic() - 5);
+			}
+			if (in_event.key.code == sf::Keyboard::D
+				|| in_event.key.code == sf::Keyboard::Right) {
+				sound_unit_ptr_->SetVolumeMusic(sound_unit_ptr_->GetVolumeMusic() + 5);
+				if (sound_unit_ptr_->GetVolumeMusic() > 100) {
+					sound_unit_ptr_->SetVolumeMusic(100);
+				}
+			}
+		}
 		if (in_event.key.code == sf::Keyboard::Enter) {
 			switch (menu_.GetSelectedItemIndex()) {
 			case 0:						//Resolution
@@ -97,9 +111,7 @@ void Game::InputForOptionsState(const sf::Event& in_event) {
 				//menu_.StateManager(this->previous_states_.back());
 				break;
 			case 1:						//Volume
-				
-				//menu_.StateManager(this->previous_states_.back());
-				//Save highscore
+				menu_.NavigateDown();
 				break;
 			case 2:						//XD
 				
@@ -249,6 +261,7 @@ Game::Game() {
 	this->cam_handler_ptr_ = new CameraHandler(glm::vec3(256.0, -256.0f, 0.0f),
 		GlobalSettings::Access()->ValueOf("CAMERA_DEFAULT_ZOOM"));
 	this->obj_handler_ptr_ = new ObjectHandler();
+	this->sound_unit_ptr_ = new SoundUnit();
 	this->meta_data_ptr_ = new MetaData();
 
 	//this->state_ = MENU;
@@ -258,13 +271,14 @@ Game::Game() {
 Game::~Game() {
 	delete this->cam_handler_ptr_;
 	delete this->obj_handler_ptr_;
+	delete this->sound_unit_ptr_;
 	delete this->meta_data_ptr_;
 }
 
 void Game::InitializeGame() {
 	this->meta_data_ptr_->Initialize();
 	
-	this->menu_.Initiliaze();
+	this->menu_.Initialize();
 	
 	this->render_.InitializeRender(meta_data_ptr_);
 	
@@ -272,17 +286,15 @@ void Game::InitializeGame() {
 		render_.GetMapPointer(),
 		meta_data_ptr_);
 
-	sound_unit_game_.SetMusicFile((char*)"../Resources/Audio/menusong.wav");
-	sound_unit_game_.SetVolumeMusic(50);
-	sound_unit_game_.PlayMusic();
+	sound_unit_ptr_->SetMusicFile((char*)"../Resources/Audio/menusong.wav");
+	sound_unit_ptr_->PlayMusic();
 
 	this->game_clock_.restart();	//Get the clock going correctly
 }
 
 void Game::InitializeStartGame() {
-	sound_unit_game_.SetMusicFile((char*)"../Resources/Audio/cavesong.wav");
-	sound_unit_game_.SetVolumeMusic(35);
-	sound_unit_game_.PlayMusic();
+	sound_unit_ptr_->SetMusicFile((char*)"../Resources/Audio/cavesong.wav");
+	sound_unit_ptr_->PlayMusic();
 }
 
 void Game::GameIteration() {
@@ -320,10 +332,9 @@ void Game::GameIteration() {
 			cam_handler_ptr_->SwapCameraToBossCamera();
 			this->previous_states_.push_back(GameState::BOSS);
 			obj_handler_ptr_->SetPlayerXYZPosForBoss();
-			sound_unit_game_.StopMusic();
-			sound_unit_game_.SetMusicFile((char*)"../Resources/Audio/disco2.wav");
-			sound_unit_game_.SetVolumeMusic(100);
-			sound_unit_game_.PlayMusic();
+			sound_unit_ptr_->StopMusic();
+			sound_unit_ptr_->SetMusicFile((char*)"../Resources/Audio/disco2.wav");
+			sound_unit_ptr_->PlayMusic();
 			std::cout << "ENTERING BOSS STATE" << std::endl;
 			obj_handler_ptr_->SpawnBoss();
 			// SPAWN BOSS
@@ -365,7 +376,7 @@ void Game::GameIteration() {
 		render_.RenderPauseMenu(menu_);
 	}
 	else if (this->previous_states_.back() == GameState::OPTIONS) {
-		render_.RenderOptionsMenu(menu_);
+		render_.RenderOptionsMenu(menu_, sound_unit_ptr_);
 	}
 	else if (this->previous_states_.back() == GameState::DEATH) {
 		render_.RenderDeathMenu(menu_);
@@ -431,8 +442,4 @@ void Game::InputContinual() {
 bool Game::IsRunning() {
 	//If the game ain't quittin', it's runnin'
 	return (this->previous_states_.back() != QUIT);
-}
-
-MetaData * Game::getMetaDataPtr() const {
-	return meta_data_ptr_;
 }

@@ -58,7 +58,7 @@ public:
 
 
 	void RenderMenuState(Menu menu);
-	void RenderOptionsMenu(Menu menu);
+	void RenderOptionsMenu(Menu menu, SoundUnit* sound_unit);
 	void RenderPauseMenu(Menu menu);
 	void RenderDeathMenu(Menu menu);
 	//void GeometryDrawing();

@@ -62,7 +62,6 @@ Render::Render() {
 	model_[OBJECT_ID_DROP_DOOR] = new Model((char*)"../Resources/Models/Drops/Gate/Gate.obj");
 	model_[OBJECT_ID_BOSS] = new Model((char*)"../Resources/Models/Boss/bossLayout1.obj");
 	model_[OBJECT_ID_BOSS_HAND] = new Model((char*)"../Resources/Models/Boss/bossHand.fbx");
-
 }
 
 Render::~Render() {
@@ -268,11 +267,11 @@ void Render::RenderMenuState(Menu menu) {
 	menu.RenderMenu(text_shaders_);
 }
 
-void Render::RenderOptionsMenu(Menu menu) {
+void Render::RenderOptionsMenu(Menu menu, SoundUnit* sound_unit) {
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	menu.RenderOptionsMenu(text_shaders_);
+	menu.RenderOptionsMenu(text_shaders_, sound_unit);
 }
 
 void Render::RenderPauseMenu(Menu menu) {
