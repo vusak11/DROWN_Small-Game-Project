@@ -125,7 +125,9 @@ int Axe::ExecuteWeapon(Character& in_attacker, Character& in_target) {
 		//TEST
 
 		//Scale direction with knockback
-		direction *= this->knock_back_;
+		direction.x *= this->knock_back_;
+		direction.y *= this->knock_back_ / 2;
+		direction.z = 0.0f;
 
 		//Set the target's velocity
 		in_target.SetVelocityVec(direction);
