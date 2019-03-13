@@ -10,10 +10,15 @@
 
 #define _CRTDBG_MAP_ALLOC 
 
+void LoadingLoop(
+	Game& in_game,
+	sf::Window& in_window);
+
 void GameLoop(
 	const bool& in_running,
 	Game& in_game,
 	sf::Window& in_window);
+
 int main() {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 
@@ -46,8 +51,18 @@ int main() {
 	
 	/*-----------Initialize---------------*/
 	
+	//Start loading screen
+	std::thread loading_thread(
+		&LoadingLoop,
+		std::ref(game),
+		std::ref(window)
+	);
+
 	//Start the game
 	game.InitializeGame();
+	
+	//Wait for loading screen to finish
+	loading_thread.join();
 
 	//Start thread iterating game
 	std::thread game_thread(
@@ -88,6 +103,21 @@ int main() {
 	game_thread.join();	//wait for thread to finish
 
 	return 0;
+}
+
+void LoadingLoop(
+	Game& in_game,
+	sf::Window& in_window) {
+
+	//Def what you need
+
+	while (!in_game.IsLoaded()) {
+		//show loading animation :)
+		std::cout << "A";
+		//use what you need
+	}
+
+	//remove any trash
 }
 
 void GameLoop(

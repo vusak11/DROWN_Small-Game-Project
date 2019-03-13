@@ -225,6 +225,8 @@ void Game::InputForSecondaryCamera(const float& in_deltatime) {
 //Public---------------------------------------------------
 
 Game::Game() {
+	this->game_loaded_ = false;
+
 	this->cam_handler_ptr_ = new CameraHandler(glm::vec3(256.0, -256.0f, 0.0f),
 		GlobalSettings::Access()->ValueOf("CAMERA_DEFAULT_ZOOM"));
 	this->obj_handler_ptr_ = new ObjectHandler();
@@ -255,6 +257,8 @@ void Game::InitializeGame() {
 	sound_unit_game_.PlayMusic();
 
 	this->game_clock_.restart();	//Get the clock going correctly
+
+	this->game_loaded_ = true;
 }
 
 void Game::InitializeStartGame() {
@@ -399,6 +403,10 @@ void Game::InputContinual() {
 	if (cam_handler_ptr_->GetMode()) {
 		this->InputForSecondaryCamera(this->input_deltatime_);
 	}
+}
+
+bool Game::IsLoaded() {
+	return this->game_loaded_;
 }
 
 bool Game::IsRunning() {
