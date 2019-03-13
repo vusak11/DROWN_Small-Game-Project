@@ -5,6 +5,9 @@ Drop::Drop(glm::vec3 creation_pos, ObjectID id) : ObjectClass(creation_pos, id) 
 	//Class is abstract
 
 	this->swappable_ = false; //This should be overwritten in swappable child classes.
+
+	//Set the base scale of this type of unit
+	this->SetScale(2.0f);
 }
 
 Drop::~Drop() {}
@@ -261,6 +264,16 @@ bool Chest::TriggerEvent(PlayerCharacter& in_player) {
 Chest::Chest(glm::vec3 creation_pos)
 	: Drop(creation_pos, OBJECT_ID_DROP_CHEST_CLOSED) {
 
+	//---
+	//Mess a bit with the look of a chest
+	//---
+	//Set the base scale of this type of unit
+	this->SetScale(1.0f, 2.5f, 1.0f);
+
+	// Move the chest a bit outwards
+	glm::vec3 pos = this->GetPosition();
+	pos.z += 2.0f;
+	this->SetPosition(pos.x, pos.y, pos.z);
 }
 
 Chest::~Chest() {}
