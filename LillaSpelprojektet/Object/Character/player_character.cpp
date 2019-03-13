@@ -39,6 +39,9 @@ PlayerCharacter::PlayerCharacter(glm::vec3 start_pos)
 	//this->weapon_ptr_ = new Axe();
 
 	animation_state_ = ANIMATION_STATE_PLAYER_IDLE;
+
+	//Set the base scale of this type of unit
+	this->SetScale(2.0f);
 }
 
 PlayerCharacter::~PlayerCharacter() {

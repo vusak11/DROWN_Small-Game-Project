@@ -337,16 +337,13 @@ void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map
 
 	//Create player
 	//Assign spawn position randomly via meta data
-	//this->player_ptr_ = new PlayerCharacter(glm::vec3(meta_data->GetSpawnPointCoords(), 3.0f));
 	this->player_ptr_ = new PlayerCharacter(glm::vec3(meta_data->GetSpawnPointCoords(), 3.0f));
-	this->player_ptr_->SetScale(2.0f);
 	
 	glm::vec3 drop_pos = this->player_ptr_->GetPosition();
 	
 	//TEMP
 	drop_pos.x += 10.0f;
 	this->drop_ptr_vector_.push_back(new Chest(drop_pos));
-	this->drop_ptr_vector_.back()->SetScale(3.0f);
 	//TEMP
 
 	// Create NPCs and spawn them on every light source
@@ -365,7 +362,6 @@ void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map
 			else if (meta_data->GetZone(meta_data->GetLightPositions()[i]) == BLU) {
 				this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(meta_data->GetLightPositions()[i], 5.0f), OBJECT_ID_ICE_AI));
 			}
-			this->npc_ptr_vector_.back()->SetScale(GlobalSettings::Access()->ValueOf("NPC_RUNNER_SCALE"));
 		}
 	}
 	this->nr_of_runners_ = this->npc_ptr_vector_.size();
@@ -373,11 +369,9 @@ void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map
 	// Spawn keys
 	for (int i = 0; i < 3; i++) {
 		this->drop_ptr_vector_.push_back(new KeyDrop(glm::vec3(meta_data->GetDoorKeyCoords()[i], 0.0f)));
-		this->drop_ptr_vector_.back()->SetScale(3.0f);
 	}
 	// Spawn boss door
 	this->drop_ptr_vector_.push_back(new BossDoor(glm::vec3(meta_data->GetBossDoorCoords(), 0.0f)));
-	this->drop_ptr_vector_.back()->SetScale(3.0f);
 
 	// Create physics engine
 	this->physics_engine_ptr_ = new PhysicsEngine(map_height_list);
