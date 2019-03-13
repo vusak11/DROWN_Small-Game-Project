@@ -87,6 +87,21 @@ AtkUpDrop::~AtkUpDrop() {}
 
 //---------------------------------------------------------
 //Private
+bool SpdUpDrop::TriggerEvent(PlayerCharacter& in_player) {
+	//Increase the player's attack power, return true is successful
+	return in_player.IncreaseSpeed(this->speed_);
+}
+
+//Public
+SpdUpDrop::SpdUpDrop(glm::vec3 creation_pos)
+	: Drop(creation_pos, OBJECT_ID_DROP_SPD_UP) {
+	this->speed_ = GlobalSettings::Access()->ValueOf("DROP_SPD_UP");
+}
+
+SpdUpDrop::~SpdUpDrop() {}
+
+//---------------------------------------------------------
+//Private
 bool KeyDrop::TriggerEvent(PlayerCharacter& in_player) {
 	//Giving the playr a key, then return true
 	in_player.IncreaseKeys();
