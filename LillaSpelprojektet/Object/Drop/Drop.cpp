@@ -100,58 +100,6 @@ SpdUpDrop::SpdUpDrop(glm::vec3 creation_pos)
 
 SpdUpDrop::~SpdUpDrop() {}
 
-//---------------------------------------------------------
-//Private
-bool KeyDrop::TriggerEvent(PlayerCharacter& in_player) {
-	//Giving the playr a key, then return true
-	in_player.IncreaseKeys();
-	return true;
-}
-
-//Public
-KeyDrop::KeyDrop(glm::vec3 creation_pos)
-	: Drop(creation_pos, OBJECT_ID_DROP_KEY) {
-}
-
-KeyDrop::~KeyDrop() {}
-
-//---------------------------------------------------------
-//Private
-bool BossDoor::TriggerEvent(PlayerCharacter& in_player) {
-	//Check if player has enough keys
-	if (in_player.GetNumOfKeys() >= this->keys_required_) {
-
-		// SET BOSS STATE
-
-		//If so, move player to boss-room
-		in_player.SetPosition(
-			GlobalSettings::Access()->ValueOf("DROP_BOSS_DOOR_DESTINATION_X"),
-			GlobalSettings::Access()->ValueOf("DROP_BOSS_DOOR_DESTINATION_Y"),
-			GlobalSettings::Access()->ValueOf("DROP_BOSS_DOOR_DESTINATION_Z")
-		);
-
-		//Then return true
-		return true;
-	}
-
-	//If not, return false
-	return false;
-}
-
-//Public
-BossDoor::BossDoor(glm::vec3 creation_pos)
-	: Drop(creation_pos, OBJECT_ID_DROP_DOOR) {
-
-	this->keys_required_ = GlobalSettings::Access()->ValueOf("DROP_NUM_OF_KEYS");
-
-}
-
-BossDoor::~BossDoor() {}
-
-void BossDoor::SpinDrop(const float& in_deltatime) {
-	//Empty as the boss-door shouldn't rotate
-}
-
 //----------------------------------------------------------
 //Private
 bool DashDrop::TriggerEvent(PlayerCharacter& in_player) {
@@ -243,3 +191,59 @@ AxeDrop::AxeDrop(glm::vec3 creation_pos)
 }
 
 AxeDrop::~AxeDrop() {}
+
+//---------------------------------------------------------
+//Private
+bool KeyDrop::TriggerEvent(PlayerCharacter& in_player) {
+	//Giving the playr a key, then return true
+	in_player.IncreaseKeys();
+	return true;
+}
+
+//Public
+KeyDrop::KeyDrop(glm::vec3 creation_pos)
+	: Drop(creation_pos, OBJECT_ID_DROP_KEY) {
+}
+
+KeyDrop::~KeyDrop() {}
+
+//---------------------------------------------------------
+//Private
+bool BossDoor::TriggerEvent(PlayerCharacter& in_player) {
+	//Check if player has enough keys
+	if (in_player.GetNumOfKeys() >= this->keys_required_) {
+
+		// SET BOSS STATE
+
+		//If so, move player to boss-room
+		in_player.SetPosition(
+			this->target_coordinate_x_,
+			this->target_coordinate_y_,
+			this->target_coordinate_z_
+		);
+
+		//Then return true
+		return true;
+	}
+
+	//If not, return false
+	return false;
+}
+
+//Public
+BossDoor::BossDoor(glm::vec3 creation_pos)
+	: Drop(creation_pos, OBJECT_ID_DROP_DOOR) {
+
+	this->keys_required_ = GlobalSettings::Access()->ValueOf("DROP_NUM_OF_KEYS");
+
+	this->target_coordinate_x_ = GlobalSettings::Access()->ValueOf("DROP_BOSS_DOOR_DESTINATION_X");
+	this->target_coordinate_y_ = GlobalSettings::Access()->ValueOf("DROP_BOSS_DOOR_DESTINATION_Y");
+	this->target_coordinate_z_ = GlobalSettings::Access()->ValueOf("DROP_BOSS_DOOR_DESTINATION_Z");
+
+}
+
+BossDoor::~BossDoor() {}
+
+void BossDoor::SpinDrop(const float& in_deltatime) {
+	//Empty as the boss-door shouldn't rotate
+}

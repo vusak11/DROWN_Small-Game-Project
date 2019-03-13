@@ -84,32 +84,6 @@ public:
 
 //---------------------------------------------------------
 
-class KeyDrop : public Drop {
-private:
-	bool TriggerEvent(PlayerCharacter& in_player);
-
-public:
-	KeyDrop(glm::vec3 creation_pos);
-	~KeyDrop();
-};
-
-//---------------------------------------------------------
-
-class BossDoor : public Drop {
-private:
-	int keys_required_;
-
-	bool TriggerEvent(PlayerCharacter& in_player);
-
-public:
-	BossDoor(glm::vec3 creation_pos);
-	~BossDoor();
-
-	void SpinDrop(const float& in_deltatime);
-};
-
-//---------------------------------------------------------
-
 class DashDrop : public Drop {
 private:
 	bool TriggerEvent(PlayerCharacter& in_player);
@@ -151,5 +125,35 @@ public:
 	AxeDrop(glm::vec3 creation_pos);
 	~AxeDrop();
 };
+
+//---------------------------------------------------------
+
+class KeyDrop : public Drop {
+private:
+	bool TriggerEvent(PlayerCharacter& in_player);
+
+public:
+	KeyDrop(glm::vec3 creation_pos);
+	~KeyDrop();
+};
+
+//---------------------------------------------------------
+
+class BossDoor : public Drop {
+private:
+	int keys_required_;
+	float target_coordinate_x_;
+	float target_coordinate_y_;
+	float target_coordinate_z_;
+
+	bool TriggerEvent(PlayerCharacter& in_player);
+
+public:
+	BossDoor(glm::vec3 creation_pos);
+	~BossDoor();
+
+	void SpinDrop(const float& in_deltatime);
+};
+
 
 #endif // !DROP_H
