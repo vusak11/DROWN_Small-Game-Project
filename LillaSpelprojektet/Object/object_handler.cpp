@@ -345,7 +345,7 @@ void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map
 	
 	//TEMP
 	drop_pos.x += 10.0f;
-	this->drop_ptr_vector_.push_back(new SpdUpDrop(drop_pos));
+	this->drop_ptr_vector_.push_back(new SwordDrop(drop_pos));
 	this->drop_ptr_vector_.back()->SetScale(3.0f);
 	//TEMP
 

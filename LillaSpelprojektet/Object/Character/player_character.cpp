@@ -136,7 +136,6 @@ void PlayerCharacter::CalculateAnimationState(float delta_time) {
 	}
 }
 
-
 Ability* PlayerCharacter::SwapAbility(Ability* in_ability_ptr) {
 
 	//Save the pointer to the old ability
@@ -149,6 +148,16 @@ Ability* PlayerCharacter::SwapAbility(Ability* in_ability_ptr) {
 	return old_ability_ptr;
 }
 
+Weapon* PlayerCharacter::SwapWeapon(Weapon* in_weapon_ptr) {
+	//Save the pointer to the old weapon
+	Weapon* old_weapon_ptr = this->weapon_ptr_;
+
+	//Save the pointer to the new weapon
+	this->weapon_ptr_ = in_weapon_ptr;
+
+	//Return the old weapon
+	return old_weapon_ptr;
+}
 
 void PlayerCharacter::SetAirborne(bool in_air) {
 	this->airborne_ = in_air;

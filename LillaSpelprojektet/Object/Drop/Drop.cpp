@@ -198,3 +198,48 @@ DoubleJumpDrop::DoubleJumpDrop(glm::vec3 creation_pos)
 
 DoubleJumpDrop::~DoubleJumpDrop() {}
 
+//---------------------------------------------------------
+//Private
+bool SwordDrop::TriggerEvent(PlayerCharacter& in_player) {
+
+	//Give the player a double jump and catch the ptr to the old ability
+	Weapon* old_weapon_ptr = in_player.SwapWeapon(new Sword());
+
+	//Delete the old ability
+	delete old_weapon_ptr;
+
+	//Return true
+	return true;
+}
+
+//Public
+SwordDrop::SwordDrop(glm::vec3 creation_pos)
+	: Drop(creation_pos, OBJECT_ID_DROP_SWORD) {
+	//This drop is swappable!
+	this->swappable_ = true;
+}
+
+SwordDrop::~SwordDrop() {}
+
+//---------------------------------------------------------
+//Private
+bool AxeDrop::TriggerEvent(PlayerCharacter& in_player) {
+
+	//Give the player a double jump and catch the ptr to the old ability
+	Weapon* old_weapon_ptr = in_player.SwapWeapon(new Axe());
+
+	//Delete the old ability
+	delete old_weapon_ptr;
+
+	//Return true
+	return true;
+}
+
+//Public
+AxeDrop::AxeDrop(glm::vec3 creation_pos)
+	: Drop(creation_pos, OBJECT_ID_DROP_AXE) {
+	//This drop is swappable!
+	this->swappable_ = true;
+}
+
+AxeDrop::~AxeDrop() {}

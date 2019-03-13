@@ -5,6 +5,7 @@
 #include "../Character/player_character.h"
 #include "../../global_settings.h"
 #include "../Character/ability.h"
+#include "../Character/weapon.h"
 
 //---------------------------------------------------------
 //-----------------ABSTRACT-BASE-CLASS---------------------
@@ -129,8 +130,6 @@ public:
 	~DoubleJumpDrop();
 };
 
-/*
-
 //---------------------------------------------------------
 
 class SwordDrop : public Drop {
@@ -152,7 +151,5 @@ public:
 	AxeDrop(glm::vec3 creation_pos);
 	~AxeDrop();
 };
-
-*/
 
 #endif // !DROP_H

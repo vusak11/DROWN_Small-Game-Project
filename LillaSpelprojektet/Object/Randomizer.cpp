@@ -155,15 +155,15 @@ Drop* Randomizer::RandomNewDropPtr(glm::vec3 in_pos, float in_drop_rate) {
 		return new DoubleJumpDrop(in_pos);
 	}
 
-	//range_max += this->zone_rates_arr_[zone_id].sword;
-	//if (verdict < range_max) {
-	//	return new SwordDrop(in_pos);
-	//}
-	//
-	//range_max += this->zone_rates_arr_[zone_id].axe;
-	//if (verdict < range_max) {
-	//	return new AxeDrop(in_pos);
-	//}
+	range_max += this->zone_rates_arr_[zone_id].sword;
+	if (verdict < range_max) {
+		return new SwordDrop(in_pos);
+	}
+	
+	range_max += this->zone_rates_arr_[zone_id].axe;
+	if (verdict < range_max) {
+		return new AxeDrop(in_pos);
+	}
 
 	range_max += this->zone_rates_arr_[zone_id].key;
 	if (verdict < range_max) {
