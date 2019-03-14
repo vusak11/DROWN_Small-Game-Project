@@ -1,8 +1,5 @@
 #include "render.h"
 
-void Render::DrawScene() {
-}
-
 Render::Render() {
 	quad_vertex_array_object_ = 0;
 	quad_vertex_buffer_object_ = 0;
@@ -26,18 +23,55 @@ Render::Render() {
 		"glsl/lightingpass/lighting_vs.glsl",
 		"glsl/lightingpass/lighting_fs.glsl");
 
+	geometry_pass_->GeometryFrameBuffers();
 	//--------------------------------------------------------
 	//-------------------Load Map Data------------------------
 	//--------------------------------------------------------
-	map_handler_.InitializeMaps(
-		"../Resources/Map/MainMap_Blocks.bmp",
-		"../Resources/Map/cavewall.png",
-		"../Resources/Map/v4.png");
 
 	//--------------------------------------------------------
 	//---------------Load Models to Array---------------------
 	//--------------------------------------------------------
 	//Make space for 1 model per ObjectID
+
+}
+
+Render::~Render() {
+	delete geometry_pass_;
+	delete lighting_pass_;
+	//delete[] lights_;
+
+	delete text_shaders_;
+	delete gui_shaders_;
+
+	/*for (int i = 0; i < nr_of_models_; i++) {
+		delete model_[i];
+	}*/
+	//delete[] model_;
+}
+
+void Render::InitializeGUI() {
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	hud_.Initiliaze();
+}
+
+void Render::InitializeRender(MetaData* meta_data) {
+	glDisable(GL_BLEND);
+	glEnable(GL_DEPTH_TEST);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	map_handler_.InitializeMaps(
+		"../Resources/Map/MainMap_Blocks.bmp",
+		"../Resources/Map/cavewall.png",
+		"../Resources/Map/v4.png");
+
+	map_handler_.InitializeBuffers(geometry_pass_->GetProgram());
+
 	this->nr_of_models_ = NUMBER_OF_OBJECT_IDS;
 	model_ = new Model*[this->nr_of_models_];
 
@@ -71,30 +105,8 @@ Render::Render() {
 	model_[OBJECT_ID_PLAYER_ATTACK_AXE_STANCE_2] = new Model((char*)"../Resources/Models/Character/Attack/Axe/AxeStance2/axeStance2.obj");
 	model_[OBJECT_ID_PLAYER_ATTACK_AXE_STANCE_3] = new Model((char*)"../Resources/Models/Character/Attack/Axe/AxeStance3/axeStance3.obj");
 
-}
 
-Render::~Render() {
-	delete geometry_pass_;
-	delete lighting_pass_;
-	delete[] lights_;
-
-	delete text_shaders_;
-	delete gui_shaders_;
-
-	for (int i = 0; i < nr_of_models_; i++) {
-		delete model_[i];
-	}
-	delete[] model_;
-}
-
-void Render::InitializeRender(MetaData* meta_data) {
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-	hud_.Initiliaze();
 	meta_data_ptr_ = meta_data;
-
-	geometry_pass_->GeometryFrameBuffers();
 
 	// Fetch light information and store locally
 	nr_of_lights_ = meta_data_ptr_->GetLightPositions().size();
@@ -119,7 +131,6 @@ void Render::InitializeRender(MetaData* meta_data) {
 			lights_[i].SetAmbientLight(glm::vec3(0.0f, 0.4f, 1.0f));
 		}
 	}
-	map_handler_.InitializeBuffers(geometry_pass_->GetProgram());
 }
 
 void Render::UpdateRender(
@@ -134,7 +145,8 @@ void Render::UpdateRender(
 	glEnable(GL_DEPTH_TEST);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	//  GEOMETRY
 	GeometryPass(camera_position, perspective_view_matrix);

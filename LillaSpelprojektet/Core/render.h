@@ -35,13 +35,12 @@ private:
 	
 	GUI hud_;
 
-	void DrawScene();
-
 public:
 	Render();
 	~Render();
 
 	void InitializeRender(MetaData* meta_data);
+	void InitializeGUI();
 	void UpdateRender(
 		float dt, 
 		glm::vec3 camera_position,

@@ -17,10 +17,8 @@ void Game::InputForMenuState(const sf::Event& in_event) {
 		if (in_event.key.code == sf::Keyboard::Enter) {
 			switch (menu_.GetSelectedItemIndex()) {
 			case 0:						//Start
-
 				InitializeStartGame();
 				state_ = GameState::GAME;
-				
 				break;
 			case 1:						//Options
 				//state_ = OPTIONS; //REAL case
@@ -242,15 +240,9 @@ Game::~Game() {
 }
 
 void Game::InitializeGame() {
-	this->meta_data_ptr_->Initialize();
-	
 	this->menu_.Initiliaze();
 	
-	this->render_.InitializeRender(meta_data_ptr_);
-	
-	this->obj_handler_ptr_->InitializeObjectHandler(
-		render_.GetMapPointer(),
-		meta_data_ptr_);
+	this->render_.InitializeGUI();
 
 	sound_unit_game_.SetMusicFile((char*)"../Resources/Audio/menusong.wav");
 	sound_unit_game_.SetVolumeMusic(50);
@@ -262,6 +254,12 @@ void Game::InitializeGame() {
 }
 
 void Game::InitializeStartGame() {
+	this->meta_data_ptr_->Initialize();
+	this->render_.InitializeRender(meta_data_ptr_);
+	this->obj_handler_ptr_->InitializeObjectHandler(
+		render_.GetMapPointer(),
+		meta_data_ptr_);
+
 	sound_unit_game_.SetMusicFile((char*)"../Resources/Audio/cavesong.wav");
 	sound_unit_game_.SetVolumeMusic(35);
 	sound_unit_game_.PlayMusic();
