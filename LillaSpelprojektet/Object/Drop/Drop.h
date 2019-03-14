@@ -13,9 +13,6 @@
 
 class Drop : public ObjectClass {
 private:
-	Drop* IDToDropPtr(AbilityID in_id);
-	Drop* IDToDropPtr(WeaponID in_id);
-
 	virtual bool TriggerEvent(PlayerCharacter& in_player) = 0;
 
 protected:
@@ -27,6 +24,9 @@ protected:
 	int random_spawns_;
 	Drop* set_spawns_ptr_;
 
+	//Functions to help
+	Drop* IDToDropPtr(AbilityID in_id);
+	Drop* IDToDropPtr(WeaponID in_id);
 
 public:
 	Drop(glm::vec3 creation_pos, ObjectID id);

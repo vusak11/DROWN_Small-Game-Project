@@ -1,6 +1,6 @@
 #include "drop.h"
 
-//Private
+//Protected
 Drop* Drop::IDToDropPtr(AbilityID in_id) {
 	glm::vec3 pos = this->GetPosition();
 	
@@ -171,6 +171,9 @@ bool DashDrop::TriggerEvent(PlayerCharacter& in_player) {
 	//Give the player a dash and catch the ptr to the old ability
 	Ability* old_ability_ptr = in_player.SwapAbility(new Dash());
 
+	//Set this drop's values to spawn a swapable drop
+	this->set_spawns_ptr_ = this->IDToDropPtr(old_ability_ptr->GetID());
+
 	//Delete the old ability
 	delete old_ability_ptr;
 
@@ -193,6 +196,9 @@ bool DoubleJumpDrop::TriggerEvent(PlayerCharacter& in_player) {
 	
 	//Give the player a double jump and catch the ptr to the old ability
 	Ability* old_ability_ptr = in_player.SwapAbility(new DoubleJump());
+
+	//Set this drop's values to spawn a swapable drop
+	this->set_spawns_ptr_ = this->IDToDropPtr(old_ability_ptr->GetID());
 
 	//Delete the old ability
 	delete old_ability_ptr;
@@ -217,6 +223,9 @@ bool SwordDrop::TriggerEvent(PlayerCharacter& in_player) {
 	//Give the player a double jump and catch the ptr to the old ability
 	Weapon* old_weapon_ptr = in_player.SwapWeapon(new Sword());
 
+	//Set this drop's values to spawn a swapable drop
+	this->set_spawns_ptr_ = this->IDToDropPtr(old_weapon_ptr->GetID());
+
 	//Delete the old ability
 	delete old_weapon_ptr;
 
@@ -239,6 +248,9 @@ bool AxeDrop::TriggerEvent(PlayerCharacter& in_player) {
 
 	//Give the player a double jump and catch the ptr to the old ability
 	Weapon* old_weapon_ptr = in_player.SwapWeapon(new Axe());
+
+	//Set this drop's values to spawn a swapable drop
+	this->set_spawns_ptr_ = this->IDToDropPtr(old_weapon_ptr->GetID());
 
 	//Delete the old ability
 	delete old_weapon_ptr;
