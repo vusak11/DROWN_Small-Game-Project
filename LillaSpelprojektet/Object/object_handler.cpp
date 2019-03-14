@@ -129,35 +129,41 @@ void ObjectHandler::ResolvePlayerPickUp(std::vector<ObjectClass*>& in_relevant_d
 	}
 
 	//If we have triggered an event
-	if (triggered) {
-		//Check if the ptr is an ability
-		bool same_ability = false;
-		drop_ptr = dynamic_cast<AbilitiesDrop*>(in_relevant_drops_ptr_vector.at(index));
-		//Swap abilities
-		if (drop_ptr != NULL) {
-			AbilityID old_ability = player_ptr_->GetAbilityID();
-			bool ability_swapped = player_ptr_->SwapAbilities(in_relevant_drops_ptr_vector.at(index)->GetObjectID());
+	//NTS: We do not need to worry about a vector index offset as we only
+	//trigger one drop at a time
+	int num_random = 0;
+	Drop* spawn_ptr = NULL;
 
-			if (ability_swapped) {
-				if (old_ability == ABILITY_DOUBLE_JUMP)
-					this->drop_ptr_vector_.push_back(
-						new DoubleJumpDrop(in_relevant_drops_ptr_vector.at(index)->GetPosition()));
-				else if (old_ability == ABILITY_DASH)
-					this->drop_ptr_vector_.push_back(
-						new DashDrop(in_relevant_drops_ptr_vector.at(index)->GetPosition()));
-				this->drop_ptr_vector_.back()->SetScale(3.0f);
-			}
-			else
-				same_ability = true;
+	if (triggered) {
+
+		//NEW
+		//Spawn any additional drops the triggered one stores
+		//First do the random ones by calling the randomizer that many times
+		num_random = drop_ptr->ConsumeNumOfRandomSpawns();
+		for (unsigned int i = 0; i < num_random; i++) {
+			this->ResolveRandomDropSpawn(drop_ptr->GetPosition(), this->chest_drop_rate_);
 		}
 		
-		if (!same_ability) { //OBS! This case is needed for swapping abilities otherwise we will have to duplicate content
-			//Delete the object and remove the pointer from the object handler's drop vector
-			this->RemoveObject(in_relevant_drops_ptr_vector.at(index), this->drop_ptr_vector_);
-			//Then remove the entry from the list of relevant drops
-			in_relevant_drops_ptr_vector.erase(in_relevant_drops_ptr_vector.begin() + index);
+		//Then do the set one, if it exists
+		spawn_ptr = drop_ptr->RetrieveSetSpawnPtr();
+		if (spawn_ptr != NULL) {
+			this->drop_ptr_vector_.push_back(spawn_ptr);
 		}
+
+		//We return early if the drop we are handling is a chest as those
+		//should stay around and not be deleted
+		//NTS: Triggered chests can only be OBJECT_ID_DROP_CHEST_OPEN as that
+		//is the id set when they are triggered
+		if (drop_ptr->GetObjectID() == OBJECT_ID_DROP_CHEST_OPEN) { return; }
+
+		//NEW
+
+		//Delete the object and remove the pointer from the object handler's drop vector
+		this->RemoveObject(in_relevant_drops_ptr_vector.at(index), this->drop_ptr_vector_);
+		//Then remove the entry from the list of relevant drops
+		in_relevant_drops_ptr_vector.erase(in_relevant_drops_ptr_vector.begin() + index);
 	}
+
 }
 
 void ObjectHandler::ResolvePlayerAttack(std::vector<ObjectClass*>& in_relevant_npcs_ptr_vector) {
@@ -183,10 +189,21 @@ void ObjectHandler::ResolvePlayerAttack(std::vector<ObjectClass*>& in_relevant_n
 	//to be able to access the right index in the relevant npcs vector
 	int index;
 	int offset = 0;
+	
+	//NEW
+	glm::vec3 spawn_pos = glm::vec3(0.0f);
+	//NEW
+
 	for (unsigned int i = 0; i < index_of_the_dead.size(); i++) {
 
 		//Pick index from vector
 		index = index_of_the_dead.at(i);
+
+		//Randomly spawn drop
+		//NEW
+		spawn_pos = in_relevant_npcs_ptr_vector.at(index)->GetPosition();
+		this->ResolveRandomDropSpawn(spawn_pos, this->enemy_drop_rate_);
+		//NEW
 
 		//Delete the object and remove the pointer from the object handler's npc vector
 		this->RemoveObject(in_relevant_npcs_ptr_vector.at(index), this->npc_ptr_vector_);
@@ -198,6 +215,25 @@ void ObjectHandler::ResolvePlayerAttack(std::vector<ObjectClass*>& in_relevant_n
 		offset++;
 	}
 
+
+}
+
+void ObjectHandler::ResolveRandomDropSpawn(glm::vec3 in_pos, float in_drop_rate) {
+	Drop* spawn_ptr = NULL;
+	float x_variation = -100;
+
+	//Call randomizer and retrieve a drop pointer
+	spawn_ptr = this->randomizer_ptr_->RandomNewDropPtr(in_pos, in_drop_rate); //NTS: <-100% chance something spawns
+	
+	//If the pointer is not null
+	if (spawn_ptr != NULL) {
+		//Get a bit of an variation for x (Note x_variation's negative start value)
+		x_variation += this->randomizer_ptr_->RandomizeFloat(0.0f, 200.f);
+		//Make it move a bit upwards
+		spawn_ptr->SetVelocityVec(glm::vec3(x_variation, 100.0f, 0.0f));
+		//And place it in the vector
+		this->drop_ptr_vector_.push_back(spawn_ptr);
+	}
 
 }
 
@@ -272,6 +308,7 @@ ObjectHandler::ObjectHandler() {
 	this->player_ptr_ = NULL;
 	this->boss_ptr_ = NULL;
 	this->physics_engine_ptr_ = NULL;
+	this->randomizer_ptr_ = NULL;
 }
 
 ObjectHandler::~ObjectHandler() {
@@ -281,6 +318,8 @@ ObjectHandler::~ObjectHandler() {
 	delete this->boss_ptr_;
 
 	delete this->physics_engine_ptr_;
+
+	delete this->randomizer_ptr_;
 	
 }
 
@@ -288,33 +327,31 @@ void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map
 
 	//Create player
 	//Assign spawn position randomly via meta data
-	//this->player_ptr_ = new PlayerCharacter(glm::vec3(meta_data->GetSpawnPointCoords(), 3.0f));
 	this->player_ptr_ = new PlayerCharacter(glm::vec3(meta_data->GetSpawnPointCoords(), 3.0f));
-	this->player_ptr_->SetScale(2.0f);
 	
 	glm::vec3 drop_pos = this->player_ptr_->GetPosition();
+	
 	//TEMP
 	drop_pos.x += 10.0f;
-	this->drop_ptr_vector_.push_back(new DoubleJumpDrop(drop_pos));
-	this->drop_ptr_vector_.back()->SetScale(3.0f);
+	this->drop_ptr_vector_.push_back(new Chest(drop_pos));
+	//TEMP
 
 	// Create NPCs and spawn them on every light source
 	for (int i = 2; i < meta_data->GetLightPositions().size(); i++) {
 		if (sqrt(pow((meta_data->GetLightPositions()[i].x - meta_data->GetSpawnPointCoords().x), 2) + pow((meta_data->GetLightPositions()[i].y - meta_data->GetSpawnPointCoords().y), 2)) > 50) {
 			// Different NPC's depending on where they spawn
-			if (meta_data->GetZone(meta_data->GetLightPositions()[i]) == "DEF") {
+			if (meta_data->GetZone(meta_data->GetLightPositions()[i]) == DEF) {
 				this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(meta_data->GetLightPositions()[i], 5.0f), OBJECT_ID_DUMMY));
 			}
-			else if (meta_data->GetZone(meta_data->GetLightPositions()[i]) == "RED") {
+			else if (meta_data->GetZone(meta_data->GetLightPositions()[i]) == RED) {
 				this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(meta_data->GetLightPositions()[i], 5.0f), OBJECT_ID_FIRE_AI));
 			}
-			else if (meta_data->GetZone(meta_data->GetLightPositions()[i]) == "GRE") {
+			else if (meta_data->GetZone(meta_data->GetLightPositions()[i]) == GRE) {
 				this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(meta_data->GetLightPositions()[i], 5.0f), OBJECT_ID_WOOD_AI));
 			}
-			else if (meta_data->GetZone(meta_data->GetLightPositions()[i]) == "BLU") {
+			else if (meta_data->GetZone(meta_data->GetLightPositions()[i]) == BLU) {
 				this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(meta_data->GetLightPositions()[i], 5.0f), OBJECT_ID_ICE_AI));
 			}
-			this->npc_ptr_vector_.back()->SetScale(GlobalSettings::Access()->ValueOf("NPC_RUNNER_SCALE"));
 		}
 	}
 	this->nr_of_runners_ = this->npc_ptr_vector_.size();
@@ -322,18 +359,19 @@ void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map
 	// Spawn keys
 	for (int i = 0; i < 3; i++) {
 		this->drop_ptr_vector_.push_back(new KeyDrop(glm::vec3(meta_data->GetDoorKeyCoords()[i], 0.0f)));
-		this->drop_ptr_vector_.back()->SetScale(3.0f);
 	}
 	// Spawn boss door
 	this->drop_ptr_vector_.push_back(new BossDoor(glm::vec3(meta_data->GetBossDoorCoords(), 0.0f)));
-	this->drop_ptr_vector_.back()->SetScale(3.0f);
 
-
-	// Apply physics
+	// Create physics engine
 	this->physics_engine_ptr_ = new PhysicsEngine(map_height_list);
 
+	// Create the randomizer
+	this->randomizer_ptr_ = new Randomizer(meta_data);
+	//Set drop rates
+	this->enemy_drop_rate_ = GlobalSettings::Access()->ValueOf("ENEMY_DROP_RATE");
+	this->chest_drop_rate_ = GlobalSettings::Access()->ValueOf("CHEST_DROP_RATE");
 
-	//this->TestObjectHandler();		//NTS: Just for testing
 }
 
 void ObjectHandler::PlayerMoveLeft() {

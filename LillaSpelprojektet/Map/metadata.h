@@ -1,6 +1,8 @@
 #ifndef METADATA_H
 #define METADATA_H
 
+#include "../global_settings.h"
+
 #include <iostream>
 #include <GLM/glm.hpp>
 #include <vector>
@@ -25,7 +27,7 @@ public:
 
 	std::vector<glm::vec2> FetchThreeRandomPOIs(int offset);
 	glm::vec2 FetchRandomPOI();
-	std::string GetZone(glm::vec2 zone_central_points);
+	ZoneID GetZone(glm::vec2 in_pos);
 	glm::vec2 FetchSpawnPoint();
 
 	std::vector<glm::vec2> GetRemainingPOIs() const;

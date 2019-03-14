@@ -50,6 +50,8 @@ protected:
 	float rotation_around_y_;			//around the x, y and z-axises
 	float rotation_around_z_;
 
+	void SetObjectID(ObjectID object_id);
+
 public:
 	ObjectClass(glm::vec3 start_pos = glm::vec3(0.0f, 0.0f, 0.0f), ObjectID id = OBJECT_ID_NULL);
 	~ObjectClass();
@@ -65,7 +67,6 @@ public:
 	//Physics
 	void SetVelocity(float in_velocity);					//Set current velocity to in-parameter (does not change direction)
 	void SetVelocityVec(glm::vec3 in_velocity_vec);			//Set current velocity and movement direction to match in-parameter
-	void SetObjectID(ObjectID object_id);
 
 	//Get Functions----------------------------------------
 	ObjectID GetObjectID() const;

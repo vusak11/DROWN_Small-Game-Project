@@ -46,13 +46,16 @@ enum ObjectID {
 	OBJECT_ID_OPEN_CHEST,
 	OBJECT_ID_DROP_HP_UP,
 	OBJECT_ID_DROP_ATK_UP,
+	OBJECT_ID_DROP_SPD_UP,
 	OBJECT_ID_DROP_DASH,
 	OBJECT_ID_DROP_DOUBLE_JUMP,
 	OBJECT_ID_DROP_SWORD,
 	OBJECT_ID_DROP_AXE,
 	OBJECT_ID_DROP_KEY,
 	OBJECT_ID_DROP_DOOR,
-	OBJECT_ID_BOSS,
+	OBJECT_ID_DROP_CHEST_CLOSED,
+	OBJECT_ID_DROP_CHEST_OPEN,
+	OBJECT_ID_BOSS,				//:Start of Boss
 	OBJECT_ID_BOSS_HAND,
 	NUMBER_OF_OBJECT_IDS		//:The Last Enum
 };
@@ -61,15 +64,26 @@ enum ObjectID {
 enum AbilityID {
 	ABILITY_NONE,
 	ABILITY_DOUBLE_JUMP,
-	ABILITY_DASH
+	ABILITY_DASH,
+	NUM_OF_ABILITIES
 };
 
 enum WeaponID {
 	WEAPON_NONE,
 	WEAPON_SWORD,
-	WEAPON_AXE
+	WEAPON_AXE,
+	NUM_OF_WEAPONS
+
 };
 
+//Zone IDs-------------------------------------------------
+enum ZoneID {
+	DEF,
+	RED,
+	GRE,
+	BLU,
+	NUM_OF_ZONES
+};
 
 //States---------------------------------------------------
 enum GameState {
