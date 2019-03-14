@@ -56,7 +56,13 @@ Render::Render() {
 	model_[OBJECT_ID_PLAYER_JUMP] = new Model((char*)"../Resources/Models/Character/JumpStance.obj");
 	model_[OBJECT_ID_PLAYER_LEFT_WALK] = new Model((char*)"../Resources/Models/Character/LeftWalkStance.obj");
 	model_[OBJECT_ID_PLAYER_RIGHT_WALK] = new Model((char*)"../Resources/Models/Character/RightWalkStance.obj");
-	
+	model_[OBJECT_ID_PLAYER_ATTACK_SWORD_STANCE_1] = new Model((char*)"../Resources/Models/Character/Attack/Sword/AttackStance1/attackStance1.obj");
+	model_[OBJECT_ID_PLAYER_ATTACK_SWORD_STANCE_2] = new Model((char*)"../Resources/Models/Character/Attack/Sword/AttackStance2/attackStance2.obj");
+	model_[OBJECT_ID_PLAYER_ATTACK_SWORD_STANCE_3] = new Model((char*)"../Resources/Models/Character/Attack/Sword/AttackStance3/attackStance3.obj");
+	model_[OBJECT_ID_PLAYER_ATTACK_AXE_STANCE_1] = new Model((char*)"../Resources/Models/Character/Attack/Axe/AxeStance1/axeStance1.obj");
+	model_[OBJECT_ID_PLAYER_ATTACK_AXE_STANCE_2] = new Model((char*)"../Resources/Models/Character/Attack/Axe/AxeStance2/axeStance2.obj");
+	model_[OBJECT_ID_PLAYER_ATTACK_AXE_STANCE_3] = new Model((char*)"../Resources/Models/Character/Attack/Axe/AxeStance3/axeStance3.obj");
+
 	model_[OBJECT_ID_DUMMY] = new Model((char*)"../Resources/Models/NPC/AI.obj");
 	model_[OBJECT_ID_FIRE_AI] = new Model((char*)"../Resources/Models/NPC/fireAI.obj");
 	model_[OBJECT_ID_WOOD_AI] = new Model((char*)"../Resources/Models/NPC/grassAI.obj");
@@ -76,20 +82,10 @@ Render::Render() {
 	model_[OBJECT_ID_DROP_CHEST_CLOSED] = new Model((char*)"../Resources/Models/Drops/Chest/Closed/chestClosed.obj");
 	model_[OBJECT_ID_DROP_CHEST_OPEN] = new Model((char*)"../Resources/Models/Drops/Chest/Open/openChest.obj");
 
-	//FIX
-	//model_[OBJECT_ID_OPEN_CHEST] = new Model((char*)"../Resources/Models/Chest/Open/openChest.obj");
-	//model_[OBJECT_ID_CLOSED_CHEST] = new Model((char*)"../Resources/Models/Chest/Closed/chestClosed.obj");
-
 	model_[OBJECT_ID_BOSS] = new Model((char*)"../Resources/Models/Boss/boss.obj");
 	model_[OBJECT_ID_BOSS_HAND] = new Model((char*)"../Resources/Models/Boss/bossHand.obj");
 
-	model_[OBJECT_ID_PLAYER_ATTACK_SWORD_STANCE_1] = new Model((char*)"../Resources/Models/Character/Attack/Sword/AttackStance1/attackStance1.obj");
-	model_[OBJECT_ID_PLAYER_ATTACK_SWORD_STANCE_2] = new Model((char*)"../Resources/Models/Character/Attack/Sword/AttackStance2/attackStance2.obj");
-	model_[OBJECT_ID_PLAYER_ATTACK_SWORD_STANCE_3] = new Model((char*)"../Resources/Models/Character/Attack/Sword/AttackStance3/attackStance3.obj");
-	model_[OBJECT_ID_PLAYER_ATTACK_AXE_STANCE_1] = new Model((char*)"../Resources/Models/Character/Attack/Axe/AxeStance1/axeStance1.obj");
-	model_[OBJECT_ID_PLAYER_ATTACK_AXE_STANCE_2] = new Model((char*)"../Resources/Models/Character/Attack/Axe/AxeStance2/axeStance2.obj");
-	model_[OBJECT_ID_PLAYER_ATTACK_AXE_STANCE_3] = new Model((char*)"../Resources/Models/Character/Attack/Axe/AxeStance3/axeStance3.obj");
-
+	
 }
 
 Render::~Render() {
