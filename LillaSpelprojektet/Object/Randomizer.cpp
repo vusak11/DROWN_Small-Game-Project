@@ -73,6 +73,16 @@ Randomizer::~Randomizer() {
 	delete this->zone_rates_arr_;
 }
 
+float Randomizer::RandomizeFloat(float lower_bound, float upper_bound) {
+	return lower_bound 
+		+ (static_cast<float>(rand())
+			/ static_cast<float>(RAND_MAX 
+				/ (upper_bound - lower_bound)
+				)
+			)
+		;
+}
+
 Drop* Randomizer::RandomNewDropPtr(glm::vec3 in_pos, float in_drop_rate) {
 	//NOTE 1:
 	//Note that this pointer returns a pointer to a Drop object

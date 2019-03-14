@@ -13,6 +13,9 @@
 
 class Drop : public ObjectClass {
 private:
+	Drop* IDToDropPtr(AbilityID in_id);
+	Drop* IDToDropPtr(WeaponID in_id);
+
 	virtual bool TriggerEvent(PlayerCharacter& in_player) = 0;
 
 protected:

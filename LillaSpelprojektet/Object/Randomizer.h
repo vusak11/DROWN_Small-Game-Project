@@ -37,6 +37,8 @@ public:
 	Randomizer(MetaData* in_metadata_ptr);
 	~Randomizer();
 
+	float RandomizeFloat(float lower_bound, float upper_bound);
+
 	Drop* RandomNewDropPtr(glm::vec3 in_pos, float in_drop_rate);
 };
 

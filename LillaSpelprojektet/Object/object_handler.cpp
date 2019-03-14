@@ -158,7 +158,7 @@ void ObjectHandler::ResolvePlayerPickUp(std::vector<ObjectClass*>& in_relevant_d
 		//should stay around and not be deleted
 		//NTS: Triggered chests can only be OBJECT_ID_DROP_CHEST_OPEN as that
 		//is the id set when they are triggered
-		if (drop_ptr->GetObjectID == OBJECT_ID_DROP_CHEST_OPEN) { return; }
+		if (drop_ptr->GetObjectID() == OBJECT_ID_DROP_CHEST_OPEN) { return; }
 
 		//NEW
 
@@ -258,14 +258,17 @@ void ObjectHandler::ResolvePlayerAttack(std::vector<ObjectClass*>& in_relevant_n
 
 void ObjectHandler::ResolveRandomDropSpawn(glm::vec3 in_pos) {
 	Drop* spawn_ptr = NULL;
+	float x_variation = -100;
 
 	//Call randomizer and retrieve a drop pointer
 	spawn_ptr = this->randomizer_ptr_->RandomNewDropPtr(in_pos, 100); //NTS: <-100% chance something spawns
 	
 	//If the pointer is not null
 	if (spawn_ptr != NULL) {
+		//Get a bit of an variation for x (Note x_variation's negative start value)
+		x_variation += this->randomizer_ptr_->RandomizeFloat(0.0f, 200.f);
 		//Make it move a bit upwards
-		spawn_ptr->SetVelocityVec(glm::vec3(0.0f, 100.0f, 0.0f));
+		spawn_ptr->SetVelocityVec(glm::vec3(x_variation, 100.0f, 0.0f));
 		//And place it in the vector
 		this->drop_ptr_vector_.push_back(spawn_ptr);
 	}

@@ -1,5 +1,38 @@
 #include "drop.h"
 
+//Private
+Drop* Drop::IDToDropPtr(AbilityID in_id) {
+	glm::vec3 pos = this->GetPosition();
+	
+	switch (in_id) {
+	case ABILITY_DOUBLE_JUMP:
+		return new DoubleJumpDrop(pos);
+		break;
+	case ABILITY_DASH:
+		return new DashDrop(pos);
+		break;
+	default:
+		return NULL;
+		break;
+	}
+}
+
+Drop* Drop::IDToDropPtr(WeaponID in_id) {
+	glm::vec3 pos = this->GetPosition();
+	
+	switch (in_id) {
+	case WEAPON_SWORD:
+		return new SwordDrop(pos);
+		break;
+	case WEAPON_AXE:
+		return new AxeDrop(pos);
+		break;
+	default:
+		return NULL;
+		break;
+	}
+}
+
 //Public
 Drop::Drop(glm::vec3 creation_pos, ObjectID id) : ObjectClass(creation_pos, id) {
 	//Class is abstract
