@@ -18,12 +18,22 @@ private:
 protected:
 	bool swappable_;
 
+	//These two variables are used for drops that can
+	//spawn other drops. The resolution logic lies in
+	//the ObjectHandler
+	int random_spawns_;
+	Drop* set_spawns_ptr_;
+
+
 public:
 	Drop(glm::vec3 creation_pos, ObjectID id);
 	~Drop();
 
 	bool CheckCollision(PlayerCharacter& in_player);
 	bool IsSwappable();
+
+	int ConsumeNumOfRandomSpawns();
+	Drop* RetrieveSetSpawnPtr();
 
 	virtual void SpinDrop(const float& in_deltatime);
 };
@@ -159,6 +169,8 @@ public:
 
 class Chest : public Drop {
 private:
+	int num_of_loot_;
+
 	bool TriggerEvent(PlayerCharacter& in_player);
 
 public:

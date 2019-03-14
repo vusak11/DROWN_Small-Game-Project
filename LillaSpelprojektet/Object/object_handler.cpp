@@ -125,9 +125,6 @@ void ObjectHandler::ResolvePlayerPickUp(std::vector<ObjectClass*>& in_relevant_d
 		//Typecast a ptr in the vector to the drop type
 		drop_ptr = dynamic_cast<Drop*>(in_relevant_drops_ptr_vector.at(i));
 		if (drop_ptr != NULL) {
-
-			//If it is swappable drop
-
 			//Check if the player touches any of the drops (loop breaks if so)
 			triggered = drop_ptr->CheckCollision(*(this->player_ptr_));
 		}
@@ -136,7 +133,35 @@ void ObjectHandler::ResolvePlayerPickUp(std::vector<ObjectClass*>& in_relevant_d
 	}
 
 	//If we have triggered an event
+	//NTS: We do not need to worry about a vector index offset as we only
+	//trigger one drop at a time
+	int num_random = 0;
+	Drop* spawn_ptr = NULL;
+
 	if (triggered) {
+
+		//NEW
+		//Spawn any additional drops the triggered one stores
+		//First do the random ones by calling the randomizer that many times
+		num_random = drop_ptr->ConsumeNumOfRandomSpawns();
+		for (unsigned int i = 0; i < num_random; i++) {
+			this->ResolveRandomDropSpawn(drop_ptr->GetPosition());
+		}
+		
+		//Then do the set one, if it exists
+		spawn_ptr = drop_ptr->RetrieveSetSpawnPtr();
+		if (spawn_ptr != NULL) {
+			this->drop_ptr_vector_.push_back(spawn_ptr);
+		}
+
+		//We return early if the drop we are handling is a chest as those
+		//should stay around and not be deleted
+		//NTS: Triggered chests can only be OBJECT_ID_DROP_CHEST_OPEN as that
+		//is the id set when they are triggered
+		if (drop_ptr->GetObjectID == OBJECT_ID_DROP_CHEST_OPEN) { return; }
+
+		//NEW
+
 		//Delete the object and remove the pointer from the object handler's drop vector
 		this->RemoveObject(in_relevant_drops_ptr_vector.at(index), this->drop_ptr_vector_);
 		//Then remove the entry from the list of relevant drops
