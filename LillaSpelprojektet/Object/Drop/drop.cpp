@@ -1,16 +1,54 @@
 #include "drop.h"
 
+//Protected
+Drop* Drop::IDToDropPtr(AbilityID in_id) {
+	glm::vec3 pos = this->GetPosition();
+	
+	switch (in_id) {
+	case ABILITY_DOUBLE_JUMP:
+		return new DoubleJumpDrop(pos);
+		break;
+	case ABILITY_DASH:
+		return new DashDrop(pos);
+		break;
+	default:
+		return NULL;
+		break;
+	}
+}
+
+Drop* Drop::IDToDropPtr(WeaponID in_id) {
+	glm::vec3 pos = this->GetPosition();
+	
+	switch (in_id) {
+	case WEAPON_SWORD:
+		return new SwordDrop(pos);
+		break;
+	case WEAPON_AXE:
+		return new AxeDrop(pos);
+		break;
+	default:
+		return NULL;
+		break;
+	}
+}
+
 //Public
 Drop::Drop(glm::vec3 creation_pos, ObjectID id) : ObjectClass(creation_pos, id) {
 	//Class is abstract
 
 	this->swappable_ = false; //This should be overwritten in swappable child classes.
 
+	this->random_spawns_ = 0;
+	this->set_spawns_ptr_ = NULL;
+
 	//Set the base scale of this type of unit
 	this->SetScale(2.0f);
 }
 
-Drop::~Drop() {}
+Drop::~Drop() {
+	delete this->set_spawns_ptr_;
+}
 
 bool Drop::CheckCollision(PlayerCharacter& in_player) {
 	
@@ -26,6 +64,29 @@ bool Drop::CheckCollision(PlayerCharacter& in_player) {
 
 bool Drop::IsSwappable() {
 	return this->swappable_;
+}
+
+int Drop::ConsumeNumOfRandomSpawns() {
+	//This function return the number of randoms spawns the
+	//ObjectHandler should create. It also resets its own counter
+	//while doing so
+	int temp = this->random_spawns_;
+	this->random_spawns_ = 0;
+	return temp;
+}
+
+Drop* Drop::RetrieveSetSpawnPtr() {
+	//This function return a pointer to the set
+	//drop the function held by this drop, then
+	//set that pointer to null
+	//Note that the function will return null if
+	//there is none.
+	//Also note that the object the pointer points
+	//at will no longer be deleted by this destructor
+	//after this function has been called
+	Drop* temp = this->set_spawns_ptr_;
+	this->set_spawns_ptr_ = NULL;
+	return temp;
 }
 
 void Drop::SpinDrop(const float& in_deltatime) {
@@ -110,6 +171,9 @@ bool DashDrop::TriggerEvent(PlayerCharacter& in_player) {
 	//Give the player a dash and catch the ptr to the old ability
 	Ability* old_ability_ptr = in_player.SwapAbility(new Dash());
 
+	//Set this drop's values to spawn a swapable drop
+	this->set_spawns_ptr_ = this->IDToDropPtr(old_ability_ptr->GetID());
+
 	//Delete the old ability
 	delete old_ability_ptr;
 
@@ -132,6 +196,9 @@ bool DoubleJumpDrop::TriggerEvent(PlayerCharacter& in_player) {
 	
 	//Give the player a double jump and catch the ptr to the old ability
 	Ability* old_ability_ptr = in_player.SwapAbility(new DoubleJump());
+
+	//Set this drop's values to spawn a swapable drop
+	this->set_spawns_ptr_ = this->IDToDropPtr(old_ability_ptr->GetID());
 
 	//Delete the old ability
 	delete old_ability_ptr;
@@ -156,6 +223,9 @@ bool SwordDrop::TriggerEvent(PlayerCharacter& in_player) {
 	//Give the player a double jump and catch the ptr to the old ability
 	Weapon* old_weapon_ptr = in_player.SwapWeapon(new Sword());
 
+	//Set this drop's values to spawn a swapable drop
+	this->set_spawns_ptr_ = this->IDToDropPtr(old_weapon_ptr->GetID());
+
 	//Delete the old ability
 	delete old_weapon_ptr;
 
@@ -178,6 +248,9 @@ bool AxeDrop::TriggerEvent(PlayerCharacter& in_player) {
 
 	//Give the player a double jump and catch the ptr to the old ability
 	Weapon* old_weapon_ptr = in_player.SwapWeapon(new Axe());
+
+	//Set this drop's values to spawn a swapable drop
+	this->set_spawns_ptr_ = this->IDToDropPtr(old_weapon_ptr->GetID());
 
 	//Delete the old ability
 	delete old_weapon_ptr;
@@ -255,14 +328,26 @@ void BossDoor::SpinDrop(const float& in_deltatime) {
 //Private
 bool Chest::TriggerEvent(PlayerCharacter& in_player) {
 	
+	//If the chest is already open, don't do anything
+	if (this->GetObjectID() == OBJECT_ID_DROP_CHEST_OPEN) {
+		return false;
+	}
+
+	//Otherwise set it to now be open
 	this->SetObjectID(OBJECT_ID_DROP_CHEST_OPEN);
 
-	return false;
+	//Set number of random spawns
+	this->random_spawns_ = this->num_of_loot_;
+
+	//Return true
+	return true;
 }
 
 //Public
 Chest::Chest(glm::vec3 creation_pos)
 	: Drop(creation_pos, OBJECT_ID_DROP_CHEST_CLOSED) {
+
+	this->num_of_loot_ = GlobalSettings::Access()->ValueOf("DROP_CHEST_NUM_OF_LOOT");
 
 	//---
 	//Mess a bit with the look of a chest
