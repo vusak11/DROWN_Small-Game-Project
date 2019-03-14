@@ -13,6 +13,7 @@
 #include <SOIL/SOIL.h>
 
 #include "../Core/shader_handler.h"
+#include "../Camera/camera_handler.h"
 #include "../Core/sound_unit.h"
 
 class Menu {
@@ -32,6 +33,7 @@ private:
 	GLuint vertex_buffer_object_;
 
 	//GLuint background_image_;
+	bool mini_map_enabled_;
 
 	int selected_item_index_;
 	int nr_of_items_;
@@ -53,7 +55,7 @@ public:
 	void NavigateUp();
 	void NavigateDown();
 	void RenderMenu(ShaderHandler* shader_handler);
-	void RenderOptionsMenu(ShaderHandler* shader_handler, SoundUnit *sount_unit_ptr);
+	void RenderOptionsMenu(ShaderHandler * shader_handler, CameraHandler* cam_handler);
 	void RenderPauseMenu(ShaderHandler* shader_handler);
 	void RenderDeathMenu(ShaderHandler* shader_handler);
 	//void RenderBackground(/*ShaderHandler * shader_handler*/);
@@ -61,6 +63,10 @@ public:
 	void StateManager(GameState state);
 
 	int GetSelectedItemIndex() const;
+	void SetSelectedItemIndex(int index);
+
+	bool IsMinIMapEnabled();
+	void SetMiniMap(bool enabled);
 };
 
 #endif

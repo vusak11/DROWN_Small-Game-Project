@@ -59,7 +59,10 @@ void Game::InputForPauseState(const sf::Event& in_event) {
 			case 1:						//Save score
 				this->previous_states_.push_back(GameState::DEATH);
 				menu_.StateManager(this->previous_states_.back());
+				menu_.SetSelectedItemIndex(0);
+
 				//Save highscore
+
 				break;
 			case 2:						//Options
 				this->previous_states_.push_back(GameState::OPTIONS);
@@ -90,40 +93,61 @@ void Game::InputForOptionsState(const sf::Event& in_event) {
 			this->previous_states_.pop_back();
 			menu_.StateManager(this->previous_states_.back());
 		}
-		//Alter volume using left and right navigation keys
-		if (menu_.GetSelectedItemIndex() == 1) {
+		switch (menu_.GetSelectedItemIndex()) {
+		case 0:
+			//Alter camera zoom using left and right navigation keys
 			if (in_event.key.code == sf::Keyboard::A
 				|| in_event.key.code == sf::Keyboard::Left) {
-				sound_unit_ptr_->SetVolumeMusic(sound_unit_ptr_->GetVolumeMusic() - 5);
+				cam_handler_ptr_->MoveCamera(0.0, 0.0, -5.0);
+				if (cam_handler_ptr_->GetCameraPosition().z < 20) {
+					cam_handler_ptr_->SetCameraPos(cam_handler_ptr_->GetCameraPosition().x, cam_handler_ptr_->GetCameraPosition().y, 20.0);
+				}
 			}
 			if (in_event.key.code == sf::Keyboard::D
 				|| in_event.key.code == sf::Keyboard::Right) {
-				sound_unit_ptr_->SetVolumeMusic(sound_unit_ptr_->GetVolumeMusic() + 5);
-				if (sound_unit_ptr_->GetVolumeMusic() > 100) {
-					sound_unit_ptr_->SetVolumeMusic(100);
+				cam_handler_ptr_->MoveCamera(0.0, 0.0, 5.0);
+				if (cam_handler_ptr_->GetCameraPosition().z > 40) {
+					cam_handler_ptr_->SetCameraPos(cam_handler_ptr_->GetCameraPosition().x, cam_handler_ptr_->GetCameraPosition().y, 40.0);
 				}
 			}
-		}
-		if (in_event.key.code == sf::Keyboard::Enter) {
-			switch (menu_.GetSelectedItemIndex()) {
-			case 0:						//Resolution
-				
-				//menu_.StateManager(this->previous_states_.back());
-				break;
-			case 1:						//Volume
-				menu_.NavigateDown();
-				break;
-			case 2:						//XD
-				
-				//menu_.StateManager(this->previous_states_.back());
-				break;
-			case 3:						//BACK
+			break;
+		case 1:
+			//Alter volume using left and right navigation keys
+			if (in_event.key.code == sf::Keyboard::A
+				|| in_event.key.code == sf::Keyboard::Left) {
+				sf::Listener::setGlobalVolume(sf::Listener::getGlobalVolume() - 5);
+				if (sf::Listener::getGlobalVolume() < 0) {
+					sf::Listener::setGlobalVolume(0);
+				}
+			}
+			if (in_event.key.code == sf::Keyboard::D
+				|| in_event.key.code == sf::Keyboard::Right) {
+				sf::Listener::setGlobalVolume(sf::Listener::getGlobalVolume() + 5);
+				if (sf::Listener::getGlobalVolume() > 100) {
+					sf::Listener::setGlobalVolume(100);
+				}
+			}
+			break;
+		case 2:
+			if (in_event.key.code == sf::Keyboard::A || in_event.key.code == sf::Keyboard::D) {
+				if (menu_.IsMinIMapEnabled()) {
+					menu_.SetMiniMap(false);
+				}
+				else {
+					menu_.SetMiniMap(true);
+				}
+			}
+			break;
+		case 3:
+			if (in_event.key.code == sf::Keyboard::Enter) {
 				this->previous_states_.pop_back();
 				menu_.StateManager(this->previous_states_.back());
-				break;
+				menu_.SetSelectedItemIndex(0);
 			}
+			break;
+		default:
+			break;
 		}
-		break;
 	default:
 		break;
 	}
@@ -276,6 +300,7 @@ Game::~Game() {
 }
 
 void Game::InitializeGame() {
+	
 	this->meta_data_ptr_->Initialize();
 	
 	this->menu_.Initialize();
@@ -324,7 +349,8 @@ void Game::GameIteration() {
 			cam_handler_ptr_->GetCameraPosition(),
 			cam_handler_ptr_->GetViewPerspectiveMatrix(),
 			object_vector,
-			player_info
+			player_info,
+			menu_.IsMinIMapEnabled()
 		);
 
 		// INITIALIZE BOSS FIGHT
@@ -363,7 +389,8 @@ void Game::GameIteration() {
 			cam_handler_ptr_->GetCameraPosition(),
 			cam_handler_ptr_->GetViewPerspectiveMatrix(),
 			object_vector,
-			player_info
+			player_info,
+			menu_.IsMinIMapEnabled()
 		);
 
 		/*--------------Restart Game when death occurs--------------*/
@@ -376,7 +403,7 @@ void Game::GameIteration() {
 		render_.RenderPauseMenu(menu_);
 	}
 	else if (this->previous_states_.back() == GameState::OPTIONS) {
-		render_.RenderOptionsMenu(menu_, sound_unit_ptr_);
+		render_.RenderOptionsMenu(menu_, cam_handler_ptr_);
 	}
 	else if (this->previous_states_.back() == GameState::DEATH) {
 		render_.RenderDeathMenu(menu_);

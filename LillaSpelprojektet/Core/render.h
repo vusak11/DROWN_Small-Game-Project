@@ -47,7 +47,8 @@ public:
 		glm::vec3 camera_position,
 		glm::mat4 perspective_view_matrix,
 		std::vector<ObjectPackage>& object_vector,
-		PlayerInfoPackage player_data
+		PlayerInfoPackage player_data,
+		bool mini_map_enabled
 		);
 
 	void GeometryPass(
@@ -58,7 +59,7 @@ public:
 
 
 	void RenderMenuState(Menu menu);
-	void RenderOptionsMenu(Menu menu, SoundUnit* sound_unit);
+	void RenderOptionsMenu(Menu menu, CameraHandler* cam_handler);
 	void RenderPauseMenu(Menu menu);
 	void RenderDeathMenu(Menu menu);
 	//void GeometryDrawing();

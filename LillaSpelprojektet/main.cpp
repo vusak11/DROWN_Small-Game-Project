@@ -26,7 +26,6 @@ int main() {
 		sf::Style::Default, 
 		sf::ContextSettings(32));
 	float test = GlobalSettings::Access()->ValueOf("WINDOW_WIDTH");
-	window.setVerticalSyncEnabled(true);
 
 	window.setActive(true);
 	 
@@ -81,7 +80,6 @@ int main() {
 			game.InputEvents(event);
 			/*----------------Input from mouse / keyboard---------*/
 		}
-
 		game.InputContinual();
 	}
 
