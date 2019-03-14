@@ -214,11 +214,16 @@ void Game::InputForSecondaryCamera(const float& in_deltatime) {
 	}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::P)) {
-		//Move active camera forwards ("zoom in")
+		//Move active camera to player's position
+		//cam_handler_ptr_->SetCameraPos(
+		//	GlobalSettings::Access()->ValueOf("CAMERA_DEBUG_POSITION_X"),
+		//	GlobalSettings::Access()->ValueOf("CAMERA_DEBUG_POSITION_Y"),
+		//	GlobalSettings::Access()->ValueOf("CAMERA_DEBUG_POSITION_Z")
+		//);
 		cam_handler_ptr_->SetCameraPos(
-			GlobalSettings::Access()->ValueOf("CAMERA_DEBUG_POSITION_X"),
-			GlobalSettings::Access()->ValueOf("CAMERA_DEBUG_POSITION_Y"),
-			GlobalSettings::Access()->ValueOf("CAMERA_DEBUG_POSITION_Z")
+			this->obj_handler_ptr_->RetrievePlayerInfoPackage().position.x,
+			this->obj_handler_ptr_->RetrievePlayerInfoPackage().position.y,
+			this->obj_handler_ptr_->RetrievePlayerInfoPackage().position.z + 50
 		);
 	}
 }

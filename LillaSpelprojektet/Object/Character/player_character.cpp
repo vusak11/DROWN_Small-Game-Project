@@ -32,8 +32,8 @@ PlayerCharacter::PlayerCharacter(glm::vec3 start_pos)
 	this->jump_speed_ = GlobalSettings::Access()->ValueOf("PLAYER_JUMP_VELOCITY");
 	
 	//this->ability_ptr_ = new Ability();
-	//this->ability_ptr_ = new DoubleJump();
-	this->ability_ptr_ = new Dash();
+	this->ability_ptr_ = new DoubleJump();
+	//this->ability_ptr_ = new Dash();
 	
 	this->weapon_ptr_ = new Sword();
 	//this->weapon_ptr_ = new Axe();
