@@ -35,6 +35,7 @@ private:
 	glm::mat4 model_matrix_;
 
 	//Physics
+	bool use_physics_ = true;
 	glm::vec3 velocity_vec_;
 
 	//Functions----------------------------------------------
@@ -63,6 +64,7 @@ public:
 	void SetRotation(float in_x, float in_y, float in_z);
 	
 	//Physics
+	void SetUsingPhysics(bool use_physics);
 	void SetVelocity(float in_velocity);					//Set current velocity to in-parameter (does not change direction)
 	void SetVelocityVec(glm::vec3 in_velocity_vec);			//Set current velocity and movement direction to match in-parameter
 	void SetObjectID(ObjectID object_id);
@@ -73,6 +75,7 @@ public:
 	glm::vec3 GetScale() const;					//Returns the object's x, y and z scale variables
 	float GetVelocity() const;					//Returns a float with the opject's velocity
 	glm::vec3 GetVelocityVec() const;			//Returns a vec3 with the object's velocity vector
+	bool GetUsePhysics() const;					// Returns if the object is using physics
 	glm::mat4 RetrieveModelMatrix();			//NTS: Should check if model matrix is up to date before returning, and update it if it isn't
 	//Other Functions--------------------------------------
 	bool IsAirborne();

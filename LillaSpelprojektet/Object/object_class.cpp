@@ -109,6 +109,10 @@ void ObjectClass::SetRotation(float in_x, float in_y, float in_z) {
 	this->model_matrix_up_to_date_ = false;
 }
 
+void ObjectClass::SetUsingPhysics(bool use_physics) {
+	use_physics_ = use_physics;
+}
+
 void ObjectClass::SetVelocity(float in_velocity) {
 	//Normalize the current vector and then scale it in accordance with the new velocity
 	this->velocity_vec_ = glm::normalize(this->velocity_vec_) * in_velocity;
@@ -149,6 +153,10 @@ float ObjectClass::GetVelocity() const {
 
 glm::vec3 ObjectClass::GetVelocityVec() const {
 	return this->velocity_vec_;
+}
+
+bool ObjectClass::GetUsePhysics() const {
+	return use_physics_;
 }
 
 glm::mat4 ObjectClass::RetrieveModelMatrix() {

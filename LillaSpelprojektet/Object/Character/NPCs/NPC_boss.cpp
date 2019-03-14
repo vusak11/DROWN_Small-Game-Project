@@ -1,5 +1,6 @@
 #include "NPC_boss.h"
 #include "../player_character.h"
+//#include "NPC_ghost.h"
 
 NPCBoss::NPCBoss(glm::vec3 start_pos) : NPC(
 	start_pos,
@@ -48,6 +49,8 @@ void NPCBoss::ExecuteAI(float in_deltatime, glm::vec3 in_player_pos) {
 	}
 	health_last_frame_ = health;
 
+	//UpdateBossNPCs(in_deltatime, in_player_pos);
+
 	// set time to 0 after each cycle
 	if (stage_ == STAGE_1) {
 		
@@ -55,6 +58,14 @@ void NPCBoss::ExecuteAI(float in_deltatime, glm::vec3 in_player_pos) {
 			actions_.arm_attack = true; actions_.arm_attack_process = true;
 			laugh2_.PlaySound();
 			time = 4.0f;
+			
+
+		/*	boss_NPCs_.push_back(new NPCGhost(
+				glm::vec3(160, -1150, 5.0f), OBJECT_ID_DUMMY));
+			boss_NPCs_.back()->SetScale(1);
+			boss_NPCs_.back()->SetOffsets(1, 1);*/
+
+			//std::cout << "Spawning enamy ghost " << boss_NPCs_.size() << std::endl;
 		}
 		if (time > 9.0f) {
 			time = 0.0f;
@@ -66,12 +77,19 @@ void NPCBoss::ExecuteAI(float in_deltatime, glm::vec3 in_player_pos) {
 				stage_2_counter = 0;
 				laugh3_.PlaySound();
 				SetVelocityVec(glm::vec3(0.0f, +30.0f, 0.0f));
+				phases_complete_++;
+				if (phases_complete_ > 3)
+				{
+					actions_.spawn_ghost = true;
+				}
 			}
 		}
 		if (health < GetMaxHealth() * 0.8f)
 		{
 			stage_ = STAGE_3;
 			std::cout << "Du har typ klarat spelet xD: " << std::endl;
+			stage_1_counter = 0;
+			time = 3.1f;
 		}
 		if (GetPosition().y > -1110)
 		{
@@ -89,7 +107,7 @@ void NPCBoss::ExecuteAI(float in_deltatime, glm::vec3 in_player_pos) {
 			stage_2_counter++;
 			time = 0.0f;
 		}
-		if (stage_2_counter >= 5)
+		if (stage_2_counter >= 3)
 		{
 			stage_ = STAGE_1;
 			stage_1_counter = 0;
@@ -97,13 +115,37 @@ void NPCBoss::ExecuteAI(float in_deltatime, glm::vec3 in_player_pos) {
 			SetVelocityVec(glm::vec3(0.0f, -30.0f, 0.0f));
 			glm::vec3 temp_pos = GetPosition();
 			SetPosition(160, temp_pos.y, temp_pos.z);
-
+			phases_complete_++;
+			if (phases_complete_ > 3)
+			{
+				actions_.spawn_ghost = true;
+			}
 		}
 
 	}
 	else if (stage_ == STAGE_3)
 	{
+		if (time > 0.0f && time < 3.0f) {
+			actions_.arm_attack = true; actions_.arm_attack_process = true;
+			laugh2_.PlaySound();
+			time = 3.1f;
 
+			actions_.spawn_ghost = true;
+			
+		}
+		if (time > 9.0f) {
+			time = 0.0f;
+			stage_1_counter++;
+			if (stage_1_counter >= 5)
+			{
+				
+			}
+		}
+		
+		if (GetPosition().y > -1110)
+		{
+			SetVelocityVec(glm::vec3(0.0f, -30.0f, 0.0f));
+		}
 	}
 
 
@@ -224,10 +266,34 @@ void NPCBoss::UpdateBossDamageToPlayer(float in_deltatime, PlayerCharacter * pla
 
 }
 
+//void NPCBoss::UpdateBossNPCs(float in_deltatime, glm::vec3 in_player_pos) {
+//
+//	/*for (size_t i = 0; i < boss_NPCs_.size(); i++)
+//	{
+//		if (boss_NPCs_[i]->GetHealthLastFrame() > boss_NPCs_[i]->GetCurrentHealth())
+//		{
+//			damaged_.PlaySound();
+//			std::cout << "Killed ghost: " << std::endl;
+//			boss_NPCs_.erase(boss_NPCs_.begin() + i);
+//			i--;
+//		}
+//	}*/
+//}
+
 BossActions NPCBoss::GetBossActions() const {
 	return actions_;
+}
+
+BossStage NPCBoss::GetBossStage() const
+{
+	return stage_;
 }
 
 std::vector<ObjectClass*> NPCBoss::GetBossObjectVector() const {
 	return boss_objects_;
 }
+
+//std::vector<NPCGhost*> NPCBoss::GetBossNPCVector() const
+//{
+//	return boss_NPCs_;
+//}
