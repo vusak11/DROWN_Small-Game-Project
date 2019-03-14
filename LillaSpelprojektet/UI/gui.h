@@ -41,7 +41,7 @@ public:
 	void RenderHealthBar();
 	void RenderGUIObject(float xpos, float ypos, float offset, GLuint slot_texture);
 
-	void RenderGUI(ShaderHandler* shader_program, PlayerInfoPackage player_data);
+	void RenderGUI(ShaderHandler* shader_program, PlayerInfoPackage player_data, bool mini_map_enabled);
 
 	void LoadTexture(char* texture_name, GLuint &texture_variable);
 	void updateHUD(PlayerInfoPackage player_data);

@@ -149,7 +149,7 @@ void Render::UpdateRender(
 	glm::vec3 camera_position,
 	glm::mat4 perspective_view_matrix,
 	std::vector<ObjectPackage>& object_vector,
-	PlayerInfoPackage player_data) {
+	PlayerInfoPackage player_data, bool mini_map_enabled) {
 
 	//SET UP FOR 3D
 	glDisable(GL_BLEND);
@@ -189,7 +189,7 @@ void Render::UpdateRender(
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glLoadIdentity();
 
-	hud_.RenderGUI(gui_shaders_, player_data);
+	hud_.RenderGUI(gui_shaders_, player_data, mini_map_enabled);
 
 	glFlush();
 	//swap_buffers(?)
@@ -296,6 +296,13 @@ void Render::RenderMenuState(Menu menu) {
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	menu.RenderMenu(text_shaders_);
+}
+
+void Render::RenderOptionsMenu(Menu menu, CameraHandler* cam_handler) {
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT);
+
+	menu.RenderOptionsMenu(text_shaders_, cam_handler);
 }
 
 void Render::RenderPauseMenu(Menu menu) {

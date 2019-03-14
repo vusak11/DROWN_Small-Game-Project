@@ -90,7 +90,7 @@ void GUI::RenderGUIObject(float xpos, float ypos, float offset, GLuint slot_text
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void GUI::RenderGUI(ShaderHandler * shader_program, PlayerInfoPackage player_data) {
+void GUI::RenderGUI(ShaderHandler * shader_program, PlayerInfoPackage player_data, bool mini_map_enabled) {
 	//Calculate length of health bar based on current health points
 	updateHUD(player_data);
 	glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(
@@ -123,10 +123,12 @@ void GUI::RenderGUI(ShaderHandler * shader_program, PlayerInfoPackage player_dat
 			}
 		}
 	}
-	// Render mini map
-	RenderGUIObject(1010.0f, 260.0f, 250.0f, mini_map_);
-	// Render mini map player marker
-	RenderGUIObject(mm_marker_pos_.x, mm_marker_pos_.y, 10.0f, map_marker_);
+	if (mini_map_enabled) {
+		// Render mini map
+		RenderGUIObject(1010.0f, 260.0f, 250.0f, mini_map_);
+		// Render mini map player marker
+		RenderGUIObject(mm_marker_pos_.x, mm_marker_pos_.y, 10.0f, map_marker_);
+	}
 }
 
 void GUI::LoadTexture(char * texture_name, GLuint &texture_variable) {

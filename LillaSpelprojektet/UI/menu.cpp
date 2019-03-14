@@ -9,7 +9,9 @@ Menu::Menu() {
 Menu::~Menu() {
 }
 
-void Menu::Initiliaze() {
+void Menu::Initialize() {
+	mini_map_enabled_ = true;
+
 	//All function return 0 in the case a error occurred
 	if (FT_Init_FreeType(&free_type_lib_)) {
 		std::cout << "Error::Can't init freetype" << std::endl;
@@ -17,7 +19,7 @@ void Menu::Initiliaze() {
 	//Load font
 	if (FT_New_Face(
 		free_type_lib_,
-		"../Resources/Fonts/alittlepot.ttf",
+		"../Resources/Fonts/strangerbackinthenight.ttf",
 		0,
 		&free_type_face_)) {
 
@@ -194,6 +196,182 @@ void Menu::RenderMenu(ShaderHandler * shader_handler) {
 	}
 }
 
+void Menu::RenderOptionsMenu(ShaderHandler * shader_handler, CameraHandler* cam_handler) {
+	int window_width = GlobalSettings::Access()->ValueOf("WINDOW_WIDTH");
+	int window_height = GlobalSettings::Access()->ValueOf("WINDOW_HEIGHT");
+
+	/*----------------Title---------------------*/
+	RenderText(
+		shader_handler,
+		"Options",
+		((float)window_width) / 9.0f * 3.5f,
+		(((float)window_height) / 11.0f) * 9.0f,
+		2.5f,
+		glm::vec3(1.0f, 1.0f, 1.0f)
+	);
+	/*----------------END Title-----------------*/
+	//----------------Resolution-------------------*/
+	if (selected_item_index_ == 0) {
+		RenderText(
+			shader_handler,
+			"Camera Zoom",
+			((float)window_width) / 2.0f - 530.0f,
+			((float)window_height) / 10.0f * 5.5f,
+			2.0f,
+			glm::vec3(0.8f, 0.8f, 0.8f)
+		);
+		RenderText(
+			shader_handler,
+			"> " + std::to_string((int)std::round(cam_handler->GetCameraPosition().z)) + " <",
+			((float)window_width) / 5.0f * 2.0f,
+			((float)window_height) / 10.0f * 5.5f,
+			2.0f,
+			glm::vec3(0.8f, 0.8f, 0.8f)
+		);
+	}
+	else {
+		RenderText(
+			shader_handler,
+			"Camera Zoom",
+			((float)window_width) / 2.0f - 530.0f,
+			((float)window_height) / 10.0f * 5.5f,
+			2.0f,
+			glm::vec3(0.75f, 0.0f, 0.0f)
+		);
+		RenderText(
+			shader_handler,
+			std::to_string((int)std::round(cam_handler->GetCameraPosition().z)),
+			((float)window_width) / 5.0f * 2.0f,
+			((float)window_height) / 10.0f * 5.5f,
+			2.0f,
+			glm::vec3(0.75f, 0.0f, 0.0f)
+		);
+	}
+	//----------------END Resolution---------------*/
+	//----------------Volume---------------*/
+	if (selected_item_index_ == 1) {
+		RenderText(
+			shader_handler,
+			"Volume",
+			((float)window_width) / 2.0f - 530.0f,
+			((float)window_height) / 10.0f * 4.0f,
+			2.0f,
+			glm::vec3(0.8f, 0.8f, 0.8f)
+		);
+		RenderText(
+			shader_handler,
+			"> " + std::to_string((int)std::round(sf::Listener::getGlobalVolume())) + " <",
+			((float)window_width) / 5.0f * 2.0f,
+			((float)window_height) / 10.0f * 4.0f,
+			2.0f,
+			glm::vec3(0.8f, 0.8f, 0.8f)
+		);
+	}
+	else {
+		RenderText(
+			shader_handler,
+			"Volume",
+			((float)window_width) / 2.0f - 530.0f,
+			((float)window_height) / 10.0f * 4.0f,
+			2.0f,
+			glm::vec3(0.75f, 0.0f, 0.0f)
+		);
+		RenderText(
+			shader_handler,
+			std::to_string((int)std::round(sf::Listener::getGlobalVolume())),
+			((float)window_width) / 5.0f * 2.0f,
+			((float)window_height) / 10.0f * 4.0f,
+			2.0f,
+			glm::vec3(0.75f, 0.0f, 0.0f)
+		);
+	}
+	//----------------END Volume-----------*/
+	//----------------XD---------------*/
+	if (selected_item_index_ == 2) {
+		RenderText(
+			shader_handler,
+			"Mini Map",
+			((float)window_width) / 2.0f - 530.0f,
+			((float)window_height) / 10.0f * 2.5f,
+			2.0f,
+			glm::vec3(0.8f, 0.8f, 0.8f)
+		);
+		if (mini_map_enabled_) {
+			RenderText(
+				shader_handler,
+				"> Enabled <",
+				((float)window_width) / 5.0f * 2.0f,
+				((float)window_height) / 10.0f * 2.5f,
+				2.0f,
+				glm::vec3(0.8f, 0.8f, 0.8f)
+			);
+		}
+		else {
+			RenderText(
+				shader_handler,
+				"> Disabled <",
+				((float)window_width) / 5.0f * 2.0f,
+				((float)window_height) / 10.0f * 2.5f,
+				2.0f,
+				glm::vec3(0.8f, 0.8f, 0.8f)
+			);
+		}
+	}
+	else {
+		RenderText(
+			shader_handler,
+			"Mini Map",
+			((float)window_width) / 2.0f - 530.0f,
+			((float)window_height) / 10.0f * 2.5f,
+			2.0f,
+			glm::vec3(0.75f, 0.0f, 0.0f)
+		);
+		if (mini_map_enabled_) {
+			RenderText(
+				shader_handler,
+				"Enabled",
+				((float)window_width) / 5.0f * 2.0f,
+				((float)window_height) / 10.0f * 2.5f,
+				2.0f,
+				glm::vec3(0.75f, 0.0f, 0.0f)
+			);
+		}
+		else {
+			RenderText(
+				shader_handler,
+				"Disabled",
+				((float)window_width) / 5.0f * 2.0f,
+				((float)window_height) / 10.0f * 2.5f,
+				2.0f,
+				glm::vec3(0.75f, 0.0f, 0.0f)
+			);
+		}
+	}
+	//----------------END XD-----------*/
+	// ---------- BACK ----------
+	if (selected_item_index_ == 3) {
+		RenderText(
+			shader_handler,
+			"Back",
+			((float)window_width) / 2.0f - 500.0f,
+			((float)window_height) / 10.0f * 1.0f,
+			2.0f,
+			glm::vec3(0.8f, 0.8f, 0.8f)
+		);
+	}
+	else {
+		RenderText(
+			shader_handler,
+			"Back",
+			((float)window_width) / 2.0f - 530.0f,
+			((float)window_height) / 10.0f * 1.0f,
+			2.0f,
+			glm::vec3(0.75f, 0.0f, 0.0f)
+		);
+	}
+	//----------------END BACK-----------*/
+}
+
 void Menu::RenderPauseMenu(ShaderHandler * shader_handler) {
 	int window_width = GlobalSettings::Access()->ValueOf("WINDOW_WIDTH");
 	int window_height = GlobalSettings::Access()->ValueOf("WINDOW_HEIGHT");
@@ -234,7 +412,7 @@ void Menu::RenderPauseMenu(ShaderHandler * shader_handler) {
 	if (selected_item_index_ == 1) {
 		RenderText(
 			shader_handler,
-			"Save score (Death)",
+			"Save score",
 			((float)window_width) / 2.0f - 500.0f,
 			((float)window_height) / 10.0f * 4.0f,
 			2.0f,
@@ -244,7 +422,7 @@ void Menu::RenderPauseMenu(ShaderHandler * shader_handler) {
 	else {
 		RenderText(
 			shader_handler,
-			"Save score (Death)",
+			"Save score",
 			((float)window_width) / 2.0f - 530.0f,
 			((float)window_height) / 10.0f * 4.0f,
 			2.0f,
@@ -387,12 +565,16 @@ void Menu::StateManager(GameState state) {
 		nr_of_items_ = 4;
 	}
 	else if (state == OPTIONS) {
-
+		nr_of_items_ = 4;
 	}
 }
 
 int Menu::GetSelectedItemIndex() const {
 	return selected_item_index_;
+}
+
+void Menu::SetSelectedItemIndex(int index) {
+	selected_item_index_ = index;
 }
 
 void Menu::RenderText(
@@ -455,4 +637,12 @@ void Menu::RenderText(
 	}
 	glBindVertexArray(0);
 	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+bool Menu::IsMinIMapEnabled() {
+	return mini_map_enabled_;
+}
+
+void Menu::SetMiniMap(bool enabled) {
+	mini_map_enabled_ = enabled;
 }

@@ -18,12 +18,12 @@ private:
 	//Variables
 	CameraHandler* cam_handler_ptr_;
 	ObjectHandler* obj_handler_ptr_;
-	SoundUnit sound_unit_game_;	// this variable contains functionality to play overworld songs
+	SoundUnit* sound_unit_ptr_;	// this variable contains functionality to play overworld songs
 	MetaData* meta_data_ptr_;
 
 	Render render_;
 
-	GameState previous_state_;
+	std::vector<GameState> previous_states_;
 	GameState state_;
 	Menu menu_;
 	
@@ -54,7 +54,6 @@ public:
 	void InputContinual();
 
 	bool IsRunning();
-	MetaData* getMetaDataPtr() const;
 };
 
 #endif // !GAME_H
