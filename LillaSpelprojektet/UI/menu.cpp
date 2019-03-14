@@ -10,8 +10,6 @@ Menu::~Menu() {
 }
 
 void Menu::Initialize() {
-	//Load background texture
-	//LoadTexture((char*)"../Resources/GUI/v4.png", background_image_);
 	mini_map_enabled_ = true;
 
 	//All function return 0 in the case a error occurred
@@ -558,54 +556,6 @@ void Menu::RenderDeathMenu(ShaderHandler * shader_handler) {
 	}
 	/*---------End Quit-----------------*/
 }
-
-//void Menu::RenderBackground(/*ShaderHandler * shader_handler*/) {
-//	//shader_handler->Use();
-//
-//	glActiveTexture(GL_TEXTURE0);
-//	glBindVertexArray(vertex_array_object_);
-//
-//	GLfloat background_vertices[] = {
-//		// Positions        // Texture Coords
-//			-1.0f,  1.0f, 0.0f, 0.0f, 1.0f,
-//			-1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
-//			 1.0f,  1.0f, 0.0f, 1.0f, 1.0f,
-//			 1.0f, -1.0f, 0.0f, 1.0f, 0.0f
-//	};
-//	//Render background image on quad
-//	glBindTexture(GL_TEXTURE_2D, background_image_);
-//
-//	glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_object_);
-//	glBufferData(GL_ARRAY_BUFFER, sizeof(background_vertices), &background_vertices, GL_STATIC_DRAW);
-//	glBindBuffer(GL_ARRAY_BUFFER, 0);
-//
-//	// Render background
-//	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-//
-//	glBindVertexArray(0);
-//	glBindTexture(GL_TEXTURE_2D, 0);
-//}
-//
-//void Menu::LoadTexture(char * texture_name, GLuint &texture_variable) {
-//	int tex_width, tex_height;
-//	unsigned char* image = SOIL_load_image(texture_name, &tex_width, &tex_height, 0, SOIL_LOAD_RGBA);
-//
-//	std::cout << texture_name << SOIL_last_result() << std::endl;
-//
-//	glGenTextures(1, &texture_variable);
-//	glBindTexture(GL_TEXTURE_2D, texture_variable);
-//
-//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
-//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
-//
-//	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, tex_width, tex_height, 0,
-//		GL_RGBA, GL_UNSIGNED_BYTE, image);
-//
-//	glGenerateMipmap(GL_TEXTURE_2D);
-//	SOIL_free_image_data(image);
-//}
 
 void Menu::StateManager(GameState state) {
 	if (state == MENU || state == DEATH) {

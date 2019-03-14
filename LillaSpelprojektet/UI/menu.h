@@ -58,8 +58,6 @@ public:
 	void RenderOptionsMenu(ShaderHandler * shader_handler, CameraHandler* cam_handler);
 	void RenderPauseMenu(ShaderHandler* shader_handler);
 	void RenderDeathMenu(ShaderHandler* shader_handler);
-	//void RenderBackground(/*ShaderHandler * shader_handler*/);
-	//void LoadTexture(char * texture_name, GLuint &texture_variable);
 	void StateManager(GameState state);
 
 	int GetSelectedItemIndex() const;
