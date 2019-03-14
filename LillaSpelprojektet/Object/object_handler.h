@@ -45,6 +45,8 @@ private:
 	PhysicsEngine* physics_engine_ptr_;
 	
 	Randomizer* randomizer_ptr_;
+	float enemy_drop_rate_;
+	float chest_drop_rate_;
 
 	//Functions-----------------------------------------------
 	bool ClearPtrVector(std::vector<ObjectClass*>& in_vec);
@@ -62,7 +64,7 @@ private:
 	);
 	void ResolvePlayerPickUp(std::vector<ObjectClass*>& in_relevant_drops_ptr_vector);
 	void ResolvePlayerAttack(std::vector<ObjectClass*>& in_relevant_npcs_ptr_vector);
-	void ResolveRandomDropSpawn(glm::vec3 in_pos);
+	void ResolveRandomDropSpawn(glm::vec3 in_pos, float in_drop_rate);
 
 	void ProcessNPCs(const float& in_deltatime, std::vector<ObjectClass*>& in_npcs_ptr_vector);	//Call AI functions for NPCs in vector
 	void DetermineNPCAction(const float& in_deltatime, NPC* in_npc);							//Call the AI of the npc object to see what the npc does, then determine legal actions

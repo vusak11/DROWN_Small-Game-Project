@@ -141,7 +141,7 @@ void ObjectHandler::ResolvePlayerPickUp(std::vector<ObjectClass*>& in_relevant_d
 		//First do the random ones by calling the randomizer that many times
 		num_random = drop_ptr->ConsumeNumOfRandomSpawns();
 		for (unsigned int i = 0; i < num_random; i++) {
-			this->ResolveRandomDropSpawn(drop_ptr->GetPosition());
+			this->ResolveRandomDropSpawn(drop_ptr->GetPosition(), this->chest_drop_rate_);
 		}
 		
 		//Then do the set one, if it exists
@@ -202,7 +202,7 @@ void ObjectHandler::ResolvePlayerAttack(std::vector<ObjectClass*>& in_relevant_n
 		//Randomly spawn drop
 		//NEW
 		spawn_pos = in_relevant_npcs_ptr_vector.at(index)->GetPosition();
-		this->ResolveRandomDropSpawn(spawn_pos);
+		this->ResolveRandomDropSpawn(spawn_pos, this->enemy_drop_rate_);
 		//NEW
 
 		//Delete the object and remove the pointer from the object handler's npc vector
@@ -218,12 +218,12 @@ void ObjectHandler::ResolvePlayerAttack(std::vector<ObjectClass*>& in_relevant_n
 
 }
 
-void ObjectHandler::ResolveRandomDropSpawn(glm::vec3 in_pos) {
+void ObjectHandler::ResolveRandomDropSpawn(glm::vec3 in_pos, float in_drop_rate) {
 	Drop* spawn_ptr = NULL;
 	float x_variation = -100;
 
 	//Call randomizer and retrieve a drop pointer
-	spawn_ptr = this->randomizer_ptr_->RandomNewDropPtr(in_pos, 100); //NTS: <-100% chance something spawns
+	spawn_ptr = this->randomizer_ptr_->RandomNewDropPtr(in_pos, in_drop_rate); //NTS: <-100% chance something spawns
 	
 	//If the pointer is not null
 	if (spawn_ptr != NULL) {
@@ -368,6 +368,9 @@ void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map
 
 	// Create the randomizer
 	this->randomizer_ptr_ = new Randomizer(meta_data);
+	//Set drop rates
+	this->enemy_drop_rate_ = GlobalSettings::Access()->ValueOf("ENEMY_DROP_RATE");
+	this->chest_drop_rate_ = GlobalSettings::Access()->ValueOf("CHEST_DROP_RATE");
 
 }
 
