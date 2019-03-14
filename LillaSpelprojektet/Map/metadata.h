@@ -27,7 +27,6 @@ public:
 
 	std::vector<glm::vec2> FetchThreeRandomPOIs(int offset);
 	glm::vec2 FetchRandomPOI();
-	//std::string GetZone(glm::vec2 zone_central_points);
 	ZoneID GetZone(glm::vec2 in_pos);
 	glm::vec2 FetchSpawnPoint();
 
