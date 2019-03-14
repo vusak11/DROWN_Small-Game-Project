@@ -588,12 +588,14 @@ void ObjectHandler::DetermineBossAction() {
 		
 		if (boss_ptr_->GetBossStage() == BossStage::STAGE_3)
 		{
-
-			this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(100, -1180, 5.0f), OBJECT_ID_FIRE_AI));
-			this->npc_ptr_vector_.back()->SetScale(2);
-			this->npc_ptr_vector_.back()->SetOffsets(2, 2);
+			int rand_x_pos = rand() % 220 + 100;
+			this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(rand_x_pos, -1100, 5.0f), OBJECT_ID_FIRE_AI));
+			this->npc_ptr_vector_.back()->SetScale(1);
+			this->npc_ptr_vector_.back()->SetOffsets(1, 1);
 			NPCRunner* temp_npc_ptr = dynamic_cast<NPCRunner*>(this->npc_ptr_vector_.back());
 			temp_npc_ptr->SetAggroRange(200);
+			temp_npc_ptr->SetJumpVelocity(300);
+			temp_npc_ptr->SetAggroVelocity(3000);
 		}
 
 		boss_ptr_->actions_.spawn_mobs = false;
@@ -619,6 +621,21 @@ void ObjectHandler::DetermineBossAction() {
 		
 		boss_ptr_->actions_.spawn_ghost = false;
 	}
+
+	if (boss_ptr_->actions_.spawn_jombo)
+	{
+		this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(160, -1100, 5.0f), OBJECT_ID_WOOD_AI));
+		this->npc_ptr_vector_.back()->SetScale(4);
+		this->npc_ptr_vector_.back()->SetOffsets(4, 4);
+		NPCRunner* temp_npc_ptr = dynamic_cast<NPCRunner*>(this->npc_ptr_vector_.back());
+		temp_npc_ptr->SetAggroRange(300);
+		temp_npc_ptr->SetJumpVelocity(150);
+		temp_npc_ptr->SetAggroVelocity(1000);
+		temp_npc_ptr->SetMaxHealth(120);
+		temp_npc_ptr->SetCurrentHealth(120);
+	}
+
+	
 
 }
 

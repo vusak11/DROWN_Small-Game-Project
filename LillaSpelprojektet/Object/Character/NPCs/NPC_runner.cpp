@@ -15,6 +15,8 @@ NPCRunner::NPCRunner(glm::vec3 start_pos, ObjectID id)
 	time_to_next_move_ = 0.0f;
 	next_move_index_ = 0;
 	aggro_range_ = GlobalSettings::Access()->ValueOf("NPC_AGGRO_RANGE");
+	jump_velocity_ = GlobalSettings::Access()->ValueOf("NPC_RUNNER_JUMP_VELOCITY");
+	aggro_speed_ = GlobalSettings::Access()->ValueOf("NPC_RUNNER_AGGRO_SPEED");
 }
 
 NPCRunner::~NPCRunner() {
@@ -26,8 +28,6 @@ void NPCRunner::ExecuteAI(float in_deltatime, glm::vec3 in_player_pos)
 	glm::vec3 temp_velocity = GetVelocityVec();
 
 	float idle_speed = GlobalSettings::Access()->ValueOf("NPC_RUNNER_IDLE_SPEED");
-	float aggro_speed = GlobalSettings::Access()->ValueOf("NPC_RUNNER_AGGRO_SPEED");
-	float jump_velocity = GlobalSettings::Access()->ValueOf("NPC_RUNNER_JUMP_VELOCITY");
 
 	static float private_time = 0.0f;
 	
@@ -88,18 +88,18 @@ void NPCRunner::ExecuteAI(float in_deltatime, glm::vec3 in_player_pos)
 		{
 			if (in_player_pos.x < temp_position.x)
 			{
-				SetVelocityVec({ -aggro_speed * in_deltatime ,temp_velocity.y , temp_velocity.z });
+				SetVelocityVec({ -aggro_speed_ * in_deltatime ,temp_velocity.y , temp_velocity.z });
 			}
 			else if (in_player_pos.x > temp_position.x)
 			{
-				SetVelocityVec({ aggro_speed * in_deltatime ,temp_velocity.y , temp_velocity.z });
+				SetVelocityVec({ aggro_speed_ * in_deltatime ,temp_velocity.y , temp_velocity.z });
 			}
 
 			temp_velocity = GetVelocityVec();
 
 			if (in_player_pos.y - temp_position.y > 10 && !IsAirborne())
 			{
-				SetVelocityVec({ temp_velocity.x , jump_velocity , temp_velocity.z });
+				SetVelocityVec({ temp_velocity.x , jump_velocity_ , temp_velocity.z });
 				SetAirborne(true);
 			}
 		}
@@ -126,4 +126,12 @@ bool NPCRunner::Attack(Character& in_target) {
 
 void NPCRunner::SetAggroRange(int aggro_range) {
 	aggro_range_ = aggro_range;
+}
+
+void NPCRunner::SetJumpVelocity(float jump_velocity) {
+	jump_velocity_ = jump_velocity;
+}
+
+void NPCRunner::SetAggroVelocity(float aggro_velocity) {
+	aggro_speed_ = aggro_velocity;
 }

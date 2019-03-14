@@ -59,13 +59,15 @@ void NPCBoss::ExecuteAI(float in_deltatime, glm::vec3 in_player_pos) {
 			laugh2_.PlaySound();
 			time = 4.0f;
 			
-
-		/*	boss_NPCs_.push_back(new NPCGhost(
-				glm::vec3(160, -1150, 5.0f), OBJECT_ID_DUMMY));
-			boss_NPCs_.back()->SetScale(1);
-			boss_NPCs_.back()->SetOffsets(1, 1);*/
-
-			//std::cout << "Spawning enamy ghost " << boss_NPCs_.size() << std::endl;
+			if (phases_complete_ > 3)
+			{
+				actions_.spawn_ghost = true;
+			}
+			if (phases_complete_ > 9)
+			{
+				actions_.spawn_mobs = true;
+			}
+			
 		}
 		if (time > 9.0f) {
 			time = 0.0f;
@@ -78,7 +80,7 @@ void NPCBoss::ExecuteAI(float in_deltatime, glm::vec3 in_player_pos) {
 				laugh3_.PlaySound();
 				SetVelocityVec(glm::vec3(0.0f, +30.0f, 0.0f));
 				phases_complete_++;
-				if (phases_complete_ > 3)
+				if (phases_complete_ > 2)
 				{
 					actions_.spawn_ghost = true;
 				}
@@ -89,7 +91,7 @@ void NPCBoss::ExecuteAI(float in_deltatime, glm::vec3 in_player_pos) {
 			stage_ = STAGE_3;
 			std::cout << "Du har typ klarat spelet xD: " << std::endl;
 			stage_1_counter = 0;
-			time = 3.1f;
+			time = 0.0f;
 		}
 		if (GetPosition().y > -1110)
 		{
@@ -101,22 +103,27 @@ void NPCBoss::ExecuteAI(float in_deltatime, glm::vec3 in_player_pos) {
 		{
 			SetVelocityVec(glm::vec3(0.0f, +30.0f, 0.0f));
 		}
-		if (time > __max(3.0f - phases_complete_ * 0.4f, 0.3f) )
+		if (time > __max(3.0f - phases_complete_ * 0.3f, 0.3f) )
 		{
 			actions_.spawn_mobs = true;
 			stage_2_counter++;
 			time = 0.0f;
+			if (phases_complete_ > 6)
+			{
+				actions_.spawn_ghost = true;
+			}
 		}
-		if (stage_2_counter >= 3)
+		int nr_of_iterations = rand() % 5 + 2;
+		if (stage_2_counter >= nr_of_iterations)
 		{
 			stage_ = STAGE_1;
 			stage_1_counter = 0;
-			time = 6.0f;
-			SetVelocityVec(glm::vec3(0.0f, -30.0f, 0.0f));
+			time = 7.5f;
+			SetVelocityVec(glm::vec3(0.0f, -90.0f, 0.0f));
 			glm::vec3 temp_pos = GetPosition();
 			SetPosition(160, temp_pos.y, temp_pos.z);
 			phases_complete_++;
-			if (phases_complete_ > 3)
+			if (phases_complete_ > 1)
 			{
 				actions_.spawn_ghost = true;
 			}
@@ -125,21 +132,21 @@ void NPCBoss::ExecuteAI(float in_deltatime, glm::vec3 in_player_pos) {
 	}
 	else if (stage_ == STAGE_3)
 	{
-		if (time > 0.0f && time < 3.0f) {
+		int action_variable = (int)time % 7;
+		if (action_variable < 1) {
 			actions_.arm_attack = true; actions_.arm_attack_process = true;
-			laugh2_.PlaySound();
-			time = 3.1f;
-
 			actions_.spawn_ghost = true;
-			
+			laugh2_.PlaySound();
 		}
-		if (time > 9.0f) {
-			time = 0.0f;
-			stage_1_counter++;
-			if (stage_1_counter >= 5)
-			{
-				
-			}
+
+		action_variable = (int)time % 4;
+		if (action_variable < 1.0f) {
+			actions_.spawn_mobs = true;
+		}
+
+		action_variable = (int)time % 10;
+		if (action_variable < 1.0f) {
+			actions_.spawn_jombo = true;
 		}
 		
 		if (GetPosition().y > -1110)

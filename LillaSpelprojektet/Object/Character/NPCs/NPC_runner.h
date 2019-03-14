@@ -14,6 +14,9 @@ private:
 	bool stunned_ = false;
 	float stun_timer = 0;
 
+	float jump_velocity_;
+	float aggro_speed_;
+
 public:
 	NPCRunner(glm::vec3 start_pos, ObjectID id);
 	~NPCRunner();
@@ -22,6 +25,8 @@ public:
 	bool Attack(Character& in_target);
 
 	void SetAggroRange(int aggro_range);
+	void SetJumpVelocity(float jump_velocity);
+	void SetAggroVelocity(float aggro_velocity);
 };
 
 

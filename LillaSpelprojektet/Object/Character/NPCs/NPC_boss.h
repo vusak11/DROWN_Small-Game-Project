@@ -12,6 +12,7 @@ struct BossActions {		//A way for the object handler to see what actions to make
 	bool arm_attack_process = false;
 	bool spawn_mobs = false;
 	bool spawn_ghost = false;
+	bool spawn_jombo = false;
 
 };
 
