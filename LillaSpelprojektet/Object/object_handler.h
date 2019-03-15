@@ -64,7 +64,6 @@ private:
 	);
 	void ResolvePlayerPickUp(std::vector<ObjectClass*>& in_relevant_drops_ptr_vector);
 	void ResolvePlayerAttack(std::vector<ObjectClass*>& in_relevant_npcs_ptr_vector);
-	void ResolvePlayerAttackB(std::vector<ObjectClass*>& in_relevant_npcs_ptr_vector);
 	void ResolveRandomDropSpawn(glm::vec3 in_pos, float in_drop_rate);
 
 	void ProcessNPCs(const float& in_deltatime, std::vector<ObjectClass*>& in_npcs_ptr_vector);	//Call AI functions for NPCs in vector

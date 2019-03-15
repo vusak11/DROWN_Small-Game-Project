@@ -102,7 +102,7 @@ void ObjectHandler::DeterminePlayerAction(
 	}
 	//If input is attack
 	if (this->player_input_.attack) {
-		this->ResolvePlayerAttackB(in_relevant_npcs_ptr_vector);
+		this->ResolvePlayerAttack(in_relevant_npcs_ptr_vector);
 	}
 	//If input is to pick up
 	if (this->player_input_.pick_up) {
@@ -167,75 +167,6 @@ void ObjectHandler::ResolvePlayerPickUp(std::vector<ObjectClass*>& in_relevant_d
 }
 
 void ObjectHandler::ResolvePlayerAttack(std::vector<ObjectClass*>& in_relevant_npcs_ptr_vector) {
-
-	std::vector<int> index_of_the_dead;
-	Character* character_ptr = NULL;
-
-	//DEBUG
-	std::cout << ":: Relevant NPCs: " << in_relevant_npcs_ptr_vector.size() << std::endl;
-	std::cout << "Index of the Dead: " << index_of_the_dead.size() << std::endl << std::endl;
-
-	//Loop over all relevant npcs
-	for (unsigned int i = 0; i < in_relevant_npcs_ptr_vector.size(); i++) {
-		//Typecast a ptr in the vector to the character type
-		character_ptr = dynamic_cast<Character*>(in_relevant_npcs_ptr_vector.at(i));
-		if (character_ptr != NULL) {
-			//Send in a npc and check if the player hits it with the attack
-			//If the unit dies save its index
-			if (1 == this->player_ptr_->UseWeapon(*character_ptr)) {
-				index_of_the_dead.push_back(i);
-			}
-		}
-	}
-
-	//DEBUG
-	//	std::cout << "Relevant NPCs: " << in_relevant_npcs_ptr_vector.size() << std::endl;
-	//	std::cout << "Index of the Dead: " << index_of_the_dead.size() << std::endl;
-	//	for (unsigned int i = 0; i < index_of_the_dead.size(); i++) {
-	//		std::cout << "Index of the Dead(" << i << "): " << index_of_the_dead.at(i) << std::endl;
-	//	}
-	//	std::cout << std::endl;
-
-
-	//Lastly remove enemies on position indicated by the index vector
-	//We need to track the offset  of how many thing we have deleted
-	//to be able to access the right index in the relevant npcs vector
-	int index;
-	int offset = 0;
-	
-	//NEW
-	glm::vec3 spawn_pos = glm::vec3(0.0f);
-	//NEW
-
-	for (unsigned int i = 0; i < index_of_the_dead.size(); i++) {
-
-		//DEBUG
-		std::cout << i << ": Relevant NPCs: " << in_relevant_npcs_ptr_vector.size() << std::endl;
-		std::cout << "Index of the Dead: " << index_of_the_dead.size() << std::endl << std::endl;
-
-		//Pick index from vector
-		index = index_of_the_dead.at(i);
-
-		//Randomly spawn drop
-		//NEW
-		spawn_pos = in_relevant_npcs_ptr_vector.at(index)->GetPosition();
-		this->ResolveRandomDropSpawn(spawn_pos, this->enemy_drop_rate_);
-		//NEW
-
-		//Delete the object and remove the pointer from the object handler's npc vector
-		this->RemoveObject(in_relevant_npcs_ptr_vector.at(index), this->npc_ptr_vector_);
-
-		//Then remove the entry from the list of relevant drops
-		in_relevant_npcs_ptr_vector.erase(in_relevant_npcs_ptr_vector.begin() + (index - offset));
-
-		//Handle the offset for removing a value
-		offset++;
-	}
-
-
-}
-
-void ObjectHandler::ResolvePlayerAttackB(std::vector<ObjectClass*>& in_relevant_npcs_ptr_vector) {
 
 	Character* character_ptr = NULL;
 	int outcome;
@@ -400,9 +331,6 @@ void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map
 	//TEMP
 	drop_pos.x += 10.0f;
 	this->drop_ptr_vector_.push_back(new Chest(drop_pos));
-
-	this->npc_ptr_vector_.push_back(new NPCRunner(drop_pos, OBJECT_ID_DUMMY));
-	this->npc_ptr_vector_.push_back(new NPCRunner(drop_pos, OBJECT_ID_DUMMY));
 	//TEMP
 
 	// Create NPCs and spawn them on every light source
