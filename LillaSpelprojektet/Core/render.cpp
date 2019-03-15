@@ -27,12 +27,7 @@ Render::Render() {
 	//--------------------------------------------------------
 	//-------------------Load Map Data------------------------
 	//--------------------------------------------------------
-
-	//--------------------------------------------------------
-	//---------------Load Models to Array---------------------
-	//--------------------------------------------------------
-	//Make space for 1 model per ObjectID
-
+	
 }
 
 Render::~Render() {
@@ -49,29 +44,16 @@ Render::~Render() {
 	//delete[] model_;
 }
 
-void Render::InitializeGUI() {
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-	hud_.Initiliaze();
-}
-
 void Render::InitializeRender(MetaData* meta_data) {
-	glDisable(GL_BLEND);
-	glEnable(GL_DEPTH_TEST);
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 	map_handler_.InitializeMaps(
 		"../Resources/Map/MainMap_Blocks.bmp",
 		"../Resources/Map/cavewall.png",
 		"../Resources/Map/v4.png");
 
-	map_handler_.InitializeBuffers(geometry_pass_->GetProgram());
-
+	//--------------------------------------------------------
+	//---------------Load Models to Array---------------------
+	//--------------------------------------------------------
+	//Make space for 1 model per ObjectID
 	this->nr_of_models_ = NUMBER_OF_OBJECT_IDS;
 	model_ = new Model*[this->nr_of_models_];
 
@@ -105,7 +87,6 @@ void Render::InitializeRender(MetaData* meta_data) {
 	model_[OBJECT_ID_PLAYER_ATTACK_AXE_STANCE_2] = new Model((char*)"../Resources/Models/Character/Attack/Axe/AxeStance2/axeStance2.obj");
 	model_[OBJECT_ID_PLAYER_ATTACK_AXE_STANCE_3] = new Model((char*)"../Resources/Models/Character/Attack/Axe/AxeStance3/axeStance3.obj");
 
-
 	meta_data_ptr_ = meta_data;
 
 	// Fetch light information and store locally
@@ -131,6 +112,13 @@ void Render::InitializeRender(MetaData* meta_data) {
 			lights_[i].SetAmbientLight(glm::vec3(0.0f, 0.4f, 1.0f));
 		}
 	}
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	hud_.Initiliaze();
+
+	map_handler_.InitializeBuffers(geometry_pass_->GetProgram());
 }
 
 void Render::UpdateRender(

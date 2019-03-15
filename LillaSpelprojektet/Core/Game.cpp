@@ -242,11 +242,17 @@ Game::~Game() {
 void Game::InitializeGame() {
 	this->menu_.Initiliaze();
 	
-	this->render_.InitializeGUI();
+	this->meta_data_ptr_->Initialize();
 
 	sound_unit_game_.SetMusicFile((char*)"../Resources/Audio/menusong.wav");
 	sound_unit_game_.SetVolumeMusic(50);
 	sound_unit_game_.PlayMusic();
+
+	this->render_.InitializeRender(meta_data_ptr_);
+	this->obj_handler_ptr_->InitializeObjectHandler(
+		render_.GetMapPointer(),
+		meta_data_ptr_);
+
 
 	this->game_clock_.restart();	//Get the clock going correctly
 
@@ -254,12 +260,6 @@ void Game::InitializeGame() {
 }
 
 void Game::InitializeStartGame() {
-	this->meta_data_ptr_->Initialize();
-	this->render_.InitializeRender(meta_data_ptr_);
-	this->obj_handler_ptr_->InitializeObjectHandler(
-		render_.GetMapPointer(),
-		meta_data_ptr_);
-
 	sound_unit_game_.SetMusicFile((char*)"../Resources/Audio/cavesong.wav");
 	sound_unit_game_.SetVolumeMusic(35);
 	sound_unit_game_.PlayMusic();
