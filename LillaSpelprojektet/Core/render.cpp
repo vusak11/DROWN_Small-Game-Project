@@ -1,8 +1,5 @@
 #include "render.h"
 
-void Render::DrawScene() {
-}
-
 Render::Render() {
 	quad_vertex_array_object_ = 0;
 	quad_vertex_buffer_object_ = 0;
@@ -29,6 +26,7 @@ Render::Render() {
 	//--------------------------------------------------------
 	//-------------------Load Map Data------------------------
 	//--------------------------------------------------------
+
 	map_handler_.InitializeMaps(
 		"../Resources/Map/MainMap_Blocks.bmp",
 		"../Resources/Map/cavewall.png",
@@ -116,8 +114,6 @@ void Render::InitializeRender(MetaData* meta_data) {
 	hud_.Initiliaze();
 	meta_data_ptr_ = meta_data;
 
-	geometry_pass_->GeometryFrameBuffers();
-
 	// Fetch light information and store locally
 	nr_of_lights_ = meta_data_ptr_->GetLightPositions().size();
 	lights_ = new Light[nr_of_lights_];
@@ -156,7 +152,8 @@ void Render::UpdateRender(
 	glEnable(GL_DEPTH_TEST);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	//  GEOMETRY
 	GeometryPass(camera_position, perspective_view_matrix);

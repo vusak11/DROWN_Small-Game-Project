@@ -144,6 +144,7 @@
     <ClCompile Include="Core\sound_unit.cpp" />
     <ClCompile Include="GLDebug.cpp" />
     <ClCompile Include="global_settings.cpp" />
+    <ClCompile Include="loading_screen.h" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map\metadata.cpp" />
     <ClCompile Include="Object\Character\ability.cpp" />

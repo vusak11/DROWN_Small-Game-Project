@@ -16,6 +16,8 @@
 class Game {
 private:
 	//Variables
+	bool game_loaded_;
+
 	CameraHandler* cam_handler_ptr_;
 	ObjectHandler* obj_handler_ptr_;
 	SoundUnit* sound_unit_ptr_;	// this variable contains functionality to play overworld songs
@@ -53,6 +55,7 @@ public:
 	void InputEvents(const sf::Event& in_event);
 	void InputContinual();
 
+	bool IsLoaded();
 	bool IsRunning();
 };
 

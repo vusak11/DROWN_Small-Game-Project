@@ -35,8 +35,6 @@ private:
 	
 	GUI hud_;
 
-	void DrawScene();
-
 public:
 	Render();
 	~Render();
