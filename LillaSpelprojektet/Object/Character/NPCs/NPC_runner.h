@@ -12,7 +12,7 @@ private:
 	glm::vec2 knockback_;
 	int health_last_frame_;	// used for calculating stun
 	bool stunned_ = false;
-	float stun_timer = 0;
+	float stun_timer_ = 0;
 
 	float jump_velocity_;
 	float aggro_speed_;

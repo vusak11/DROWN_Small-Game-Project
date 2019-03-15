@@ -3,8 +3,6 @@
 
 #include "../npc.h"
 
-//class NPCGhost;
-
 class PlayerCharacter;
 
 struct BossActions {		//A way for the object handler to see what actions to make for the boss npc
@@ -35,7 +33,6 @@ private:
 	SoundUnit phase_3_sound_;
 	SoundUnit arm_hit_ground_;
 	std::vector<ObjectClass*> boss_objects_;
-	//std::vector<NPCGhost*> boss_NPCs_;
 
 	int health_last_frame_;
 
@@ -43,8 +40,8 @@ private:
 	float light_timer_ = 0;
 
 	// stage 1 variables
-	int stage_1_counter = 0;
-	float arm_timer = 0;
+	int stage_1_counter_ = 0;
+	float arm_timer_ = 0;
 
 	// stage 2 variables
 	int stage_2_counter = 0;
@@ -63,13 +60,10 @@ public:
 	void UpdateBossObjects(float in_deltatime, glm::vec3 in_player_pos);	// This replaces the physics engine pass for all the other objects.
 	void UpdateBossDamageToPlayer(float in_deltatime, PlayerCharacter* player_ptr);
 
-	//void UpdateBossNPCs(float in_deltatime, glm::vec3 in_player_pos);
 
 	BossActions GetBossActions() const;
 	BossStage GetBossStage() const;
 	std::vector<ObjectClass*> GetBossObjectVector() const;
-	//std::vector<NPCGhost*> GetBossNPCVector() const;
-	
 
 };
 

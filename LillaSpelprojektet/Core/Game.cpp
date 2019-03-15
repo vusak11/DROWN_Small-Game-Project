@@ -179,10 +179,7 @@ void Game::InputForGameState(const sf::Event& in_event) {
 		{
 			obj_handler_ptr_->SetPlayerXYZPosForBoss();
 		}
-		/*if (in_event.key.code == sf::Keyboard::N)
-		{
-			obj_handler_ptr_->SetPlayerXYZPosForBoss();
-		}*/
+		
 
 	default:
 		break;
@@ -326,7 +323,6 @@ void Game::GameIteration() {
 		if (this->obj_handler_ptr_->PlayerInBossRoom()) { // Swap primary camera to 'boss' camera
 			cam_handler_ptr_->SwapCameraToBossCamera();
 			state_ = BOSS;
-			//obj_handler_ptr_->SetPlayerXYZPosForBoss();
 			sound_unit_game_.StopMusic();
 			sound_unit_game_.SetMusicFile((char*)"../Resources/Audio/disco2.wav");
 			sound_unit_game_.SetVolumeMusic(100);

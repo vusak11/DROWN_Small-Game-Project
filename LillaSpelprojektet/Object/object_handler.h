@@ -42,14 +42,9 @@ private:
 	float nr_of_runners_;
 
 	PlayerInput player_input_;
-	//BossActions boss_actions_;
 
 	PhysicsEngine* physics_engine_ptr_;
 
-
-
-	//std::vector<std::function<void()>> player_action_queue_;		//NTS: Not at home in ObjectHandler?
-	
 
 	//Functions-----------------------------------------------
 	bool ClearPtrVector(std::vector<ObjectClass*>& in_vec);
@@ -83,7 +78,6 @@ private:
 
 	void PackObjectIntoVector(ObjectClass* in_ptr, std::vector<ObjectPackage>& in_target_vector);
 	void PackObjectVectorIntoVector(std::vector<ObjectClass*>& in_ptr_vector, std::vector<ObjectPackage>& in_target_vector);
-	//void PackObjectVectorIntoVector(std::vector<NPCGhost*>& in_ptr_vector, std::vector<ObjectPackage>& in_target_vector);
 
 public:
 	ObjectHandler();

@@ -157,18 +157,15 @@ void Render::UpdateRender(
 		lights_[0].SetAmbientLight(glm::vec3(0.0f, 0.4f, 1.0f));
 	}
 	
-	if (player_pos.y < -1700)
-	{
+	if (player_pos.y < -1700) {
 		lights_[0].SetAmbientLight(glm::vec3(0.0f, 0.0f, 0.0f));
 	}
 	//std::cout << (int)boss_warning_light_state << "\n";
 	// Update boss light indication
-	if (boss_warning_light_state)
-	{
+	if (boss_warning_light_state) {
 		lights_[2].SetAmbientLight(glm::vec3(1.0f, 0.0f, 0.0f));
 	}
-	else
-	{
+	else {
 		lights_[2].SetAmbientLight(glm::vec3(0.0f, 0.0f, 0.0f));
 	}
 	LightingPass(camera_position);
@@ -273,6 +270,8 @@ void Render::LightingPass(glm::vec3 camera_position) {
 		);
 		// Attenuation parameters, and calculate radius
 		const float constant = 1.0f; // note that we don't send this to the shader, we assume it is always 1.0 (in our case)
+
+		// Save these values to know where we're coming from
 		//const float linear = 0.007f;
 		//const float quadratic = 0.0002f;
 

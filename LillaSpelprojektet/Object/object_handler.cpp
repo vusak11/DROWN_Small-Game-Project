@@ -116,16 +116,7 @@ void ObjectHandler::DeterminePlayerAction(
 	if (this->player_input_.pick_up) {
 		this->ResolvePlayerPickUp(in_relevant_drops_ptr_vector);
 	}
-
-	// Uppdate the listeners postion for the sound
-	//glm::vec3 tmp_pos = player_ptr_->GetPosition();
-	//sf::Listener::setPosition(tmp_pos.x, tmp_pos.y, tmp_pos.z);
-	//sf::Listener::setDirection(player_ptr_->GetFacingDirection(), 0.0f, 1.0f);
-	//sf::Listener::setUpVector(0.f, 1.f, 0.f);
 	
-	
-	
-
 }
 
 void ObjectHandler::ResolvePlayerPickUp(std::vector<ObjectClass*>& in_relevant_drops_ptr_vector) {
@@ -243,26 +234,6 @@ int ObjectHandler::ResolveBossAttack() {
 		sound_index = 0;
 	}
 
-	//std::vector<NPCGhost*>* npc_vector = &boss_ptr_->GetBossNPCVector();
-	//Character* character_ptr = NULL;
-	//int outcome = -1;
-
-	//for (unsigned int i = 0; i < npc_vector->size(); i++) {
-	//	//Typecast a ptr in the vector to the character type
-	//	character_ptr = dynamic_cast<Character*>(npc_vector->at(0));
-	//	if (character_ptr != NULL) {
-	//		outcome = this->player_ptr_->UseWeapon(*character_ptr);
-	//		if (0 == outcome && sound_index != 1)
-	//		{
-	//			sound_index = 0;
-	//		}
-	//		if (1 == outcome) {
-	//			sound_index = 1;
-	//		}
-	//	}
-	//}
-
-
 	return sound_index;
 }
 
@@ -330,13 +301,6 @@ void ObjectHandler::PackObjectVectorIntoVector(std::vector<ObjectClass*>& in_ptr
 		this->PackObjectIntoVector(in_ptr_vector.at(i), in_target_vector);
 	}
 }
-//
-//void ObjectHandler::PackObjectVectorIntoVector(std::vector<NPCGhost*>& in_ptr_vector, std::vector<ObjectPackage>& in_target_vector) {
-//	//Pack all objects in given vector into the given vector reference
-//	for (unsigned int i = 0; i < in_ptr_vector.size(); i++) {
-//		this->PackObjectIntoVector(in_ptr_vector.at(i), in_target_vector);
-//	}
-//}
 
 //Public---------------------------------------------------
 
@@ -517,12 +481,9 @@ std::vector<ObjectPackage> ObjectHandler::UpdateAndRetrieve(float in_deltatime) 
 		std::vector<ObjectClass*> temp_boss_list = boss_ptr_->GetBossObjectVector();
 		this->PackObjectVectorIntoVector(temp_boss_list, package_vector);
 
-		if (!PlayerInBossRoom())
-		{
+		if (!PlayerInBossRoom()) {
 			SetPlayerXYZPosForBoss();
 		}
-		/*std::vector<NPCGhost*> temp_boss_npc_list = boss_ptr_->GetBossNPCVector();
-		this->PackObjectVectorIntoVector(temp_boss_npc_list, package_vector);*/
 
 		DetermineBossAction();
 	}
@@ -552,8 +513,7 @@ bool ObjectHandler::PlayerInBossRoom() {
 	 return check;
 }
 
-void ObjectHandler::SetPlayerXYZPosForBoss()
-{
+void ObjectHandler::SetPlayerXYZPosForBoss() {
 	this->player_ptr_->SetVelocityVec({ 0,0,0 });
 
 	this->player_ptr_->SetPosition(
@@ -572,11 +532,9 @@ void ObjectHandler::SpawnBoss() {
 
 void ObjectHandler::DetermineBossAction() {
 
-	if (boss_ptr_->actions_.spawn_mobs)
-	{
+	if (boss_ptr_->actions_.spawn_mobs) {
 		
-		if (boss_ptr_->GetBossStage() == BossStage::STAGE_2)
-		{
+		if (boss_ptr_->GetBossStage() == BossStage::STAGE_2) {
 			this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(100, -1180, 5.0f), OBJECT_ID_FIRE_AI));
 			this->npc_ptr_vector_.back()->SetScale(2);
 			this->npc_ptr_vector_.back()->SetOffsets(2, 2);
@@ -590,8 +548,7 @@ void ObjectHandler::DetermineBossAction() {
 			temp_npc_ptr->SetAggroRange(200);
 		}
 		
-		if (boss_ptr_->GetBossStage() == BossStage::STAGE_3)
-		{
+		if (boss_ptr_->GetBossStage() == BossStage::STAGE_3) {
 			int rand_x_pos = rand() % 220 + 100;
 			this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(rand_x_pos, -1100, 5.0f), OBJECT_ID_FIRE_AI));
 			this->npc_ptr_vector_.back()->SetScale(1.5);
@@ -605,11 +562,9 @@ void ObjectHandler::DetermineBossAction() {
 		boss_ptr_->actions_.spawn_mobs = false;
 	}
 	
-	if (boss_ptr_->actions_.spawn_ghost)
-	{
+	if (boss_ptr_->actions_.spawn_ghost) {
 		int position_index = rand() % 3;
-		switch (position_index)
-		{
+		switch (position_index) {
 		case 0:
 			this->npc_ptr_vector_.push_back(new NPCGhost(glm::vec3(160, -1050, 5.0f), OBJECT_ID_NULL));
 			break;
@@ -626,8 +581,7 @@ void ObjectHandler::DetermineBossAction() {
 		boss_ptr_->actions_.spawn_ghost = false;
 	}
 
-	if (boss_ptr_->actions_.spawn_jombo)
-	{
+	if (boss_ptr_->actions_.spawn_jombo) {
 		this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(160, -1100, 5.0f), OBJECT_ID_WOOD_AI));
 		this->npc_ptr_vector_.back()->SetScale(4);
 		this->npc_ptr_vector_.back()->SetOffsets(4, 4);
@@ -644,10 +598,8 @@ void ObjectHandler::DetermineBossAction() {
 
 }
 
-bool ObjectHandler::GetBossAttackState()
-{
-	if (boss_ptr_)
-	{
+bool ObjectHandler::GetBossAttackState() {
+	if (boss_ptr_) {
 		return boss_ptr_->actions_.attack_light;
 	}
 	return false;

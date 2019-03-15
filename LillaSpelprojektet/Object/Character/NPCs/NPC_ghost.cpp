@@ -26,39 +26,15 @@ void NPCGhost::ExecuteAI(float in_deltatime, glm::vec3 in_player_pos) {
 	glm::vec3 temp_position = GetPosition();
 	glm::vec3 temp_velocity = GetVelocityVec();
 	float aggro_speed = GlobalSettings::Access()->ValueOf("NPC_GHOST_AGGRO_SPEED");
-	//static float private_time = 0.0f;
-	//private_time += in_deltatime;
-
 	
 	float length_to_player_x = (in_player_pos.x - temp_position.x);
 	float length_to_player_y = (in_player_pos.y - temp_position.y);
 	glm::vec3 dir = in_player_pos - temp_position; // dir = direction
-	//direction /= direction.;
 	float length = sqrtf(dir.x * dir.x + dir.y * dir.y);
 	dir = dir / length;
 	dir *= aggro_speed;
 
 	SetVelocityVec(dir);
-
-		//if (in_player_pos.x < temp_position.x && in_player_pos.y < temp_position.y)
-		//{
-		//	SetVelocityVec({ -aggro_speed * in_deltatime ,-aggro_speed * in_deltatime , temp_velocity.z });
-		//}
-		//else if (in_player_pos.x > temp_position.x && in_player_pos.y < temp_position.y)
-		//{
-		//	SetVelocityVec({ aggro_speed * in_deltatime ,-aggro_speed * in_deltatime , temp_velocity.z });
-		//}
-		//else if (in_player_pos.x > temp_position.x && in_player_pos.y > temp_position.y)
-		//{
-		//	SetVelocityVec({ aggro_speed * in_deltatime , aggro_speed * in_deltatime , temp_velocity.z });
-		//}
-		//else if (in_player_pos.x < temp_position.x && in_player_pos.y > temp_position.y)
-		//{
-		//	SetVelocityVec({ -aggro_speed * in_deltatime , aggro_speed * in_deltatime , temp_velocity.z });
-		//}
-
-	
-	
 
 }
 

@@ -64,80 +64,69 @@ void NPCBoss::ExecuteAI(float in_deltatime, glm::vec3 in_player_pos) {
 			light_timer_ = 0;
 			time = 4.0f;
 			
-			if (phases_complete_ > 3)
-			{
+			if (phases_complete_ > 3) {
 				actions_.spawn_ghost = true;
 			}
-			if (phases_complete_ > 9)
-			{
+			if (phases_complete_ > 9) {
 				actions_.spawn_mobs = true;
 			}
 			
 		}
 		if (time > 9.0f) {
 			time = 0.0f;
-			stage_1_counter++;
-			if (stage_1_counter >= 5)
-			{
+			stage_1_counter_++;
+			if (stage_1_counter_ >= 5) {
 				stage_ = STAGE_2;
 				time = 0.0f;
 				stage_2_counter = 0;
 				laugh3_.PlaySound();
 				SetVelocityVec(glm::vec3(0.0f, +30.0f, 0.0f));
 				phases_complete_++;
-				if (phases_complete_ > 2)
-				{
+				if (phases_complete_ > 2) {
 					actions_.spawn_ghost = true;
 				}
 			}
 		}
-		if (health < GetMaxHealth() * 0.8f)
-		{
+		if (health < GetMaxHealth() * 0.8f) {
 			stage_ = STAGE_3;
-			stage_1_counter = 0;
+			stage_1_counter_ = 0;
 			time = 0.0f;
 			time_stage3 = 1.0f;
 			phase_3_sound_.PlaySound();
 		}
-		if (GetPosition().y > -1110)
-		{
+		if (GetPosition().y > -1110) {
 			SetVelocityVec(glm::vec3(0.0f, -30.0f, 0.0f));
 		}
 	}
 	else if (stage_ == STAGE_2) {
-		if (GetPosition().y < -900)
-		{
+		if (GetPosition().y < -900) {
 			SetVelocityVec(glm::vec3(0.0f, +30.0f, 0.0f));
 		}
-		if (time > __max(3.0f - phases_complete_ * 0.3f, 0.3f) )
-		{
+		if (time > __max(3.0f - phases_complete_ * 0.3f, 0.3f) ) {
 			actions_.spawn_mobs = true;
 			stage_2_counter++;
 			time = 0.0f;
-			if (phases_complete_ > 6)
-			{
+			if (phases_complete_ > 6) {
 				actions_.spawn_ghost = true;
 			}
 		}
 		int nr_of_iterations = rand() % 5 + 2;
-		if (stage_2_counter >= nr_of_iterations)
-		{
+		if (stage_2_counter >= nr_of_iterations) {
 			stage_ = STAGE_1;
-			stage_1_counter = 0;
+			stage_1_counter_ = 0;
 			time = 7.5f;
 			SetVelocityVec(glm::vec3(0.0f, -90.0f, 0.0f));
 			glm::vec3 temp_pos = GetPosition();
 			SetPosition(160, temp_pos.y, temp_pos.z);
 			phases_complete_++;
-			if (phases_complete_ > 1)
-			{
+			if (phases_complete_ > 1) {
 				actions_.spawn_ghost = true;
 			}
 		}
 
 	}
-	else if (stage_ == STAGE_3)
-	{
+	else if (stage_ == STAGE_3) {
+
 		if (time > 7) {
 			actions_.arm_attack = true; actions_.arm_attack_process = true;
 			actions_.spawn_ghost = true;
@@ -165,28 +154,24 @@ void NPCBoss::ExecuteAI(float in_deltatime, glm::vec3 in_player_pos) {
 			time_stage3 = 0.00f;
 		}
 		
-		if (GetPosition().y > -1110)
-		{
+		if (GetPosition().y > -1110) {
 			SetVelocityVec(glm::vec3(0.0f, -30.0f, 0.0f));
 		}
 	}
-	else if (stage_ == STAGE_4)
-	{
+	else if (stage_ == STAGE_4) {
 		SetVelocityVec(glm::vec3(0.0f, -time * 9.87f, 0.0f));
 	}
 
-	if (light_timer_ > 1.5f)
-	{
+	if (light_timer_ > 1.5f) {
 		actions_.attack_light = false;
 	}
 
 	// Trigger when boss is defeated
-	if (current_health_ <= 0)
-	{
+	if (current_health_ <= 0) {
 		time = 0;
 		STAGE_4;
 	}
-
+	
 	ExecuteActions(in_deltatime, in_player_pos);
 	UpdateBossObjects(in_deltatime, in_player_pos);
 }
@@ -195,17 +180,14 @@ void NPCBoss::ExecuteActions(float in_deltatime, glm::vec3 in_player_pos) {
 	
 	// Set x velocity depending on player position
 	glm::vec3 temp_velocity = GetVelocityVec();
-	if (in_player_pos.y > -1170)
-	{
+	if (in_player_pos.y > -1170) {
 		// this acts strange with negative values obv
 		float diff = (GetPosition().x - in_player_pos.x);
 		float move_speed = __max(60 - 4.0 * phases_complete_, 15);
-		if (diff < 0)
-		{
+		if (diff < 0) {
 			SetVelocityVec({ -1 * move_speed, temp_velocity.y , temp_velocity.z });
 		}
-		else if (diff > 0)
-		{
+		else if (diff > 0) {
 			SetVelocityVec({ move_speed, temp_velocity.y, temp_velocity.z });
 		}
 	}
@@ -224,31 +206,25 @@ void NPCBoss::UpdateBossObjects(float in_deltatime, glm::vec3 in_player_pos) {
 	glm::vec3 temp_velocity = GetVelocityVec();
 	temp_pos += GetVelocityVec() * in_deltatime;
 
-	if (temp_velocity.x > 0)
-	{
+	if (temp_velocity.x > 0) {
 		if (GetPosition().x < 220) {
 			SetPosition(temp_pos.x, GetPosition().y, temp_pos.z);
 		}
 	}
-	else if (temp_velocity.x < 0)
-	{
+	else if (temp_velocity.x < 0) {
 		if (GetPosition().x > 100) {
 			SetPosition(temp_pos.x, GetPosition().y, temp_pos.z);
 		}
 	}
 
-	if (temp_velocity.y != 0)
-	{
-		if (temp_velocity.y > 0 && GetPosition().y < -900)
-		{
+	if (temp_velocity.y != 0) {
+		if (temp_velocity.y > 0 && GetPosition().y < -900) {
 			SetPosition(GetPosition().x, temp_pos.y, GetPosition().z);
 		}
-		else if (temp_velocity.y < 0 && GetPosition().y > -1110)
-		{
+		else if (temp_velocity.y < 0 && GetPosition().y > -1110) {
 			SetPosition(GetPosition().x, temp_pos.y, GetPosition().z);
 		}
-		else
-		{
+		else {
 			SetVelocityVec(glm::vec3(0.0f, 0.0f, 0.0f));
 		}
 	}
@@ -263,18 +239,15 @@ void NPCBoss::UpdateBossObjects(float in_deltatime, glm::vec3 in_player_pos) {
 		if (boss_objects_[i]->GetPosition().y > -1160 || boss_objects_[i]->GetVelocityVec().y > 0) {
 			boss_objects_[i]->SetPosition(temp_pos.x, temp_pos.y, temp_pos.z);
 		}
-		else if (actions_.arm_attack_process)
-		{
+		else if (actions_.arm_attack_process) {
 			actions_.arm_attack_process = false;
 			arm_hit_ground_.PlaySound();
-			arm_timer = 0;
+			arm_timer_ = 0;
 		}
 
-		if (!actions_.arm_attack_process)
-		{
-			arm_timer += in_deltatime;
-			if (arm_timer > 3)
-			{
+		if (!actions_.arm_attack_process) {
+			arm_timer_ += in_deltatime;
+			if (arm_timer_ > 3) {
 				boss_objects_[0]->SetVelocityVec(glm::vec3(0.0f, 600.0f, 0.0f));
 			}
 		}
