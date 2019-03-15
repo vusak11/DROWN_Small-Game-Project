@@ -51,7 +51,6 @@ int main() {
 	LoadingScreen(std::ref(window));
 
 	//Set active context, initialize game, set inactive context
-	std::cout << "Active called in main" << std::endl;
 	window.setActive(true);
 	game.InitializeGame();
 	window.setActive(false);
@@ -98,7 +97,6 @@ void GameLoop(
 	Game& in_game,
 	sf::Window& in_window) {
 
-	std::cout << "Active called in GameLoop" << std::endl;
 	in_window.setActive(true);
 
 	while (in_game.IsRunning()) {

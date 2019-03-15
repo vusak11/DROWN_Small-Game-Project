@@ -24,10 +24,6 @@ Render::Render() {
 		"glsl/lightingpass/lighting_fs.glsl");
 
 	geometry_pass_->GeometryFrameBuffers();
-	//--------------------------------------------------------
-	//-------------------Load Map Data------------------------
-	//--------------------------------------------------------
-	
 }
 
 Render::~Render() {
@@ -45,6 +41,10 @@ Render::~Render() {
 }
 
 void Render::InitializeRender(MetaData* meta_data) {
+	//--------------------------------------------------------
+	//-------------------Load Map Data------------------------
+	//--------------------------------------------------------
+
 	map_handler_.InitializeMaps(
 		"../Resources/Map/MainMap_Blocks.bmp",
 		"../Resources/Map/cavewall.png",
