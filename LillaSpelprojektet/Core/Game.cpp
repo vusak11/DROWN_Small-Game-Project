@@ -307,6 +307,10 @@ Game::~Game() {
 }
 
 void Game::InitializeGame() {
+
+	this->sound_unit_ptr_->SetMusicFile((char*)"../Resources/Audio/menusong.wav");
+	this->sound_unit_ptr_->PlayMusic();
+
 	this->meta_data_ptr_->Initialize();
 	
 	this->menu_.Initialize();
@@ -315,9 +319,6 @@ void Game::InitializeGame() {
 	this->obj_handler_ptr_->InitializeObjectHandler(
 		render_.GetMapPointer(),
 		meta_data_ptr_);
-
-	sound_unit_ptr_->SetMusicFile((char*)"../Resources/Audio/menusong.wav");
-	sound_unit_ptr_->PlayMusic();
 
 	this->game_clock_.restart();	//Get the clock going correctly
 
@@ -328,8 +329,8 @@ void Game::InitializeGame() {
 }
 
 void Game::InitializeStartGame() {
-	sound_unit_ptr_->SetMusicFile((char*)"../Resources/Audio/cavesong.wav");
-	sound_unit_ptr_->PlayMusic();
+	this->sound_unit_ptr_->SetMusicFile((char*)"../Resources/Audio/cavesong.wav");
+	this->sound_unit_ptr_->PlayMusic();
 }
 
 void Game::GameIteration() {
@@ -368,9 +369,9 @@ void Game::GameIteration() {
 			cam_handler_ptr_->SwapCameraToBossCamera();
 			this->previous_states_.push_back(GameState::BOSS);
 			obj_handler_ptr_->SetPlayerXYZPosForBoss();
-			sound_unit_ptr_->StopMusic();
-			sound_unit_ptr_->SetMusicFile((char*)"../Resources/Audio/disco2.wav");
-			sound_unit_ptr_->PlayMusic();
+			this->sound_unit_ptr_->StopMusic();
+			this->sound_unit_ptr_->SetMusicFile((char*)"../Resources/Audio/disco2.wav");
+			this->sound_unit_ptr_->PlayMusic();
 			std::cout << "ENTERING BOSS STATE" << std::endl;
 			obj_handler_ptr_->SpawnBoss();
 			// SPAWN BOSS

@@ -23,15 +23,39 @@ Render::Render() {
 		"glsl/lightingpass/lighting_vs.glsl",
 		"glsl/lightingpass/lighting_fs.glsl");
 
+	geometry_pass_->GeometryFrameBuffers();
+	
+}
+
+Render::~Render() {
+	delete geometry_pass_;
+	delete lighting_pass_;
+	delete[] lights_;
+
+	delete text_shaders_;
+	delete gui_shaders_;
+
+	//Save the adress to the null model that is deleted first.
+	//If that pointer is encountered later in the following loop
+	//just set it to null. This prevents crashes by deleting a 
+	//non-existant object.
+	Model* ptr_to_null = model_[0];
+
+	for (int i = 0; i < nr_of_models_; i++) {
+		if (model_[i] == ptr_to_null) { model_[i] = NULL; }
+		delete model_[i];
+	}
+	delete[] model_;
+}
+
+void Render::InitializeRender(MetaData* meta_data) {
 	//--------------------------------------------------------
 	//-------------------Load Map Data------------------------
 	//--------------------------------------------------------
-
 	map_handler_.InitializeMaps(
 		"../Resources/Map/MainMap_Blocks.bmp",
 		"../Resources/Map/cavewall.png",
 		"../Resources/Map/v4.png");
-
 	//--------------------------------------------------------
 	//---------------Load Models to Array---------------------
 	//--------------------------------------------------------
@@ -65,7 +89,7 @@ Render::Render() {
 	model_[OBJECT_ID_FIRE_AI] = new Model((char*)"../Resources/Models/NPC/fireAI.obj");
 	model_[OBJECT_ID_WOOD_AI] = new Model((char*)"../Resources/Models/NPC/grassAI.obj");
 	model_[OBJECT_ID_ICE_AI] = new Model((char*)"../Resources/Models/NPC/iceAI.obj");
-	
+
 	model_[OBJECT_ID_DROP_HP_RESTORE] = new Model((char*)"../Resources/Models/Drops/heart_drop/heart_drop.obj");
 	model_[OBJECT_ID_DROP_HP_UP] = new Model((char*)"../Resources/Models/Drops/hp_buff/hp_buff.obj");
 	model_[OBJECT_ID_DROP_ATK_UP] = new Model((char*)"../Resources/Models/Drops/attack_buff/attack_buff.obj");
@@ -76,38 +100,13 @@ Render::Render() {
 	model_[OBJECT_ID_DROP_AXE] = new Model((char*)"../Resources/Models/Drops/axe/axe.obj");
 	model_[OBJECT_ID_DROP_KEY] = new Model((char*)"../Resources/Models/Drops/key/key.obj");
 	model_[OBJECT_ID_DROP_DOOR] = new Model((char*)"../Resources/Models/Drops/Gate/Gate.obj");
-	
+
 	model_[OBJECT_ID_DROP_CHEST_CLOSED] = new Model((char*)"../Resources/Models/Drops/Chest/Closed/chestClosed.obj");
 	model_[OBJECT_ID_DROP_CHEST_OPEN] = new Model((char*)"../Resources/Models/Drops/Chest/Open/openChest.obj");
 
 	model_[OBJECT_ID_BOSS] = new Model((char*)"../Resources/Models/Boss/boss.obj");
 	model_[OBJECT_ID_BOSS_HAND] = new Model((char*)"../Resources/Models/Boss/bossHand.obj");
 
-	
-}
-
-Render::~Render() {
-	delete geometry_pass_;
-	delete lighting_pass_;
-	delete[] lights_;
-
-	delete text_shaders_;
-	delete gui_shaders_;
-
-	//Save the adress to the null model that is deleted first.
-	//If that pointer is encountered later in the following loop
-	//just set it to null. This prevents crashes by deleting a 
-	//non-existant object.
-	Model* ptr_to_null = model_[0];
-
-	for (int i = 0; i < nr_of_models_; i++) {
-		if (model_[i] == ptr_to_null) { model_[i] = NULL; }
-		delete model_[i];
-	}
-	delete[] model_;
-}
-
-void Render::InitializeRender(MetaData* meta_data) {
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 

@@ -46,7 +46,6 @@ int main() {
 	/*----------End of Variables----------*/
 	
 	/*-----------Initialize---------------*/
-
 	LoadingScreen(std::ref(window));
 
 	//Set active context, initialize game, set inactive context
