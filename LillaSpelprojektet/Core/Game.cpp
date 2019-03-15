@@ -257,6 +257,9 @@ void Game::InitializeGame() {
 	this->game_clock_.restart();	//Get the clock going correctly
 
 	this->game_loaded_ = true;
+
+
+
 }
 
 void Game::InitializeStartGame() {
