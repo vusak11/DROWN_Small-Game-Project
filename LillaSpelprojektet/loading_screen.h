@@ -10,7 +10,7 @@ inline void LoadingScreen(sf::Window& in_window) {
 	in_window.setActive(true);
 
 	//in_window.setActive(false);
-	const char *vertexShaderSource = "#version 330 core\n"
+	const char *vertex_shader_source = "#version 330 core\n"
 		"layout (location = 0) in vec3 aPos;\n"
 		"layout (location = 1) in vec2 aTexCoord;\n"
 		"out vec2 TexCoord;\n"
@@ -20,7 +20,7 @@ inline void LoadingScreen(sf::Window& in_window) {
 		"	TexCoord = aTexCoord;\n"
 		"}\0";
 
-	const char *fragmentShaderSource = "#version 330 core\n"
+	const char *fragment_shader_source = "#version 330 core\n"
 		"out vec4 FragColor;\n"
 		"in vec2 TexCoord;\n"
 		"uniform sampler2D texture1;\n"
@@ -31,24 +31,24 @@ inline void LoadingScreen(sf::Window& in_window) {
 
 
 	int vertex_shader = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(vertex_shader, 1, &vertexShaderSource, NULL);
+	glShaderSource(vertex_shader, 1, &vertex_shader_source, NULL);
 	glCompileShader(vertex_shader);
 
 	int success;
-	char infoLog[512];
+	char info_log[512];
 	glGetShaderiv(vertex_shader, GL_COMPILE_STATUS, &success);
 	if (!success) {
-		glGetShaderInfoLog(vertex_shader, 512, NULL, infoLog);
-		std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
+		glGetShaderInfoLog(vertex_shader, 512, NULL, info_log);
+		std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << info_log << std::endl;
 	}
 
 	int fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(fragment_shader, 1, &fragmentShaderSource, NULL);
+	glShaderSource(fragment_shader, 1, &fragment_shader_source, NULL);
 	glCompileShader(fragment_shader);
 	glGetShaderiv(fragment_shader, GL_COMPILE_STATUS, &success);
 	if (!success) {
-		glGetShaderInfoLog(vertex_shader, 512, NULL, infoLog);
-		std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
+		glGetShaderInfoLog(vertex_shader, 512, NULL, info_log);
+		std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << info_log << std::endl;
 	}
 
 	int shader_program = glCreateProgram();
@@ -58,8 +58,8 @@ inline void LoadingScreen(sf::Window& in_window) {
 
 	glGetProgramiv(shader_program, GL_LINK_STATUS, &success);
 	if (!success) {
-		glGetProgramInfoLog(shader_program, 512, NULL, infoLog);
-		std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
+		glGetProgramInfoLog(shader_program, 512, NULL, info_log);
+		std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << info_log << std::endl;
 	}
 	glDeleteShader(vertex_shader);
 	glDeleteShader(fragment_shader);
@@ -76,16 +76,16 @@ inline void LoadingScreen(sf::Window& in_window) {
 		0, 2, 3   // second Triangle
 	};
 
-	unsigned int VBO, VAO, EBO;
-	glGenVertexArrays(1, &VAO);
-	glGenBuffers(1, &VBO);
-	glGenBuffers(1, &EBO);
-	glBindVertexArray(VAO);
+	unsigned int vertex_array_object, vertex_buffer_object, elemental_buffer_object;
+	glGenVertexArrays(1, &vertex_array_object);
+	glGenBuffers(1, &vertex_buffer_object);
+	glGenBuffers(1, &elemental_buffer_object);
+	glBindVertexArray(vertex_array_object);
 
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_object);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elemental_buffer_object);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
 	glEnableVertexAttribArray(0);
@@ -123,15 +123,15 @@ inline void LoadingScreen(sf::Window& in_window) {
 	glBindTexture(GL_TEXTURE_2D, texture);
 
 	glUseProgram(shader_program);
-	glBindVertexArray(VAO);
+	glBindVertexArray(vertex_array_object);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 	in_window.display();
 
 	//remove any trash
-	glDeleteVertexArrays(1, &VAO);
-	glDeleteBuffers(1, &VBO);
-	glDeleteBuffers(1, &EBO);
+	glDeleteVertexArrays(1, &vertex_array_object);
+	glDeleteBuffers(1, &vertex_buffer_object);
+	glDeleteBuffers(1, &elemental_buffer_object);
 
 	in_window.setActive(false);
 }

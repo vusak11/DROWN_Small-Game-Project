@@ -29,15 +29,9 @@ Render::Render() {
 Render::~Render() {
 	delete geometry_pass_;
 	delete lighting_pass_;
-	//delete[] lights_;
 
 	delete text_shaders_;
 	delete gui_shaders_;
-
-	/*for (int i = 0; i < nr_of_models_; i++) {
-		delete model_[i];
-	}*/
-	//delete[] model_;
 }
 
 void Render::InitializeRender(MetaData* meta_data) {

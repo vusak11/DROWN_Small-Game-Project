@@ -47,12 +47,10 @@ void Game::InputForPauseState(const sf::Event& in_event) {
 			menu_.NavigateDown();
 		}
 		if (in_event.key.code == sf::Keyboard::Escape) {
-			if (previous_state_ == GameState::BOSS)
-			{
+			if (previous_state_ == GameState::BOSS) {
 				state_ = GameState::BOSS;
 			}
-			else
-			{
+			else {
 				state_ = GameState::GAME;
 			}
 			menu_.StateManager(state_);
@@ -60,12 +58,10 @@ void Game::InputForPauseState(const sf::Event& in_event) {
 		if (in_event.key.code == sf::Keyboard::Enter) {
 			switch (menu_.GetSelectedItemIndex()) {
 			case 0:						//Continue
-				if (previous_state_ == GameState::BOSS)
-				{
+				if (previous_state_ == GameState::BOSS) {
 					state_ = GameState::BOSS;
 				}
-				else
-				{
+				else {
 					state_ = GameState::GAME;
 				}
 				menu_.StateManager(state_);
