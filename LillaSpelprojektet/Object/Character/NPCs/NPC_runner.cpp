@@ -109,6 +109,15 @@ void NPCRunner::ExecuteAI(float in_deltatime, glm::vec3 in_player_pos)
 		stunned_ = false;
 	}
 
+	if (GetVelocityVec().x > 0)
+	{
+		TurnRight(in_deltatime);
+	}
+	else if (GetVelocityVec().x < 0)
+	{
+		TurnLeft(in_deltatime);
+	}
+
 
 	
 }

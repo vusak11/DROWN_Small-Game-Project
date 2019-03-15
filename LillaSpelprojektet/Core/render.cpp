@@ -98,8 +98,13 @@ void Render::InitializeRender(MetaData* meta_data) {
 	lights_[1].SetPos(glm::vec3(light_positions_[1], 0.0));
 	lights_[1].SetAmbientLight(glm::vec3(0.7f, 0.0f, 0.0f));
 	lights_[1].SetBrightness(glm::vec3(1.0f, 1.0f, 1.0f));
+	// Set boss attack light
+	lights_[2].SetPos(glm::vec3(light_positions_[2], 0.0));
+	lights_[2].SetBrightness(glm::vec3(1.0f, 1.0f, 1.0f));
+	lights_[2].SetAmbientLight(glm::vec3(0.7f, 0.0f, 0.0f));
+
 	// Set colour of the light depending on where in the world it's located, starting at 2 to not affect player light or the "danger light"
-	for (int i = 2; i < nr_of_lights_; i++) {
+	for (int i = 3; i < nr_of_lights_; i++) {
 		lights_[i].SetPos(glm::vec3(light_positions_[i], 10.0f));
 		if (meta_data_ptr_->GetZone(light_positions_[i]) == "RED") {
 			lights_[i].SetAmbientLight(glm::vec3(1.0f, 0.0f, 0.0f));
@@ -119,7 +124,9 @@ void Render::UpdateRender(
 	glm::vec3 camera_position,
 	glm::mat4 perspective_view_matrix,
 	std::vector<ObjectPackage>& object_vector,
-	PlayerInfoPackage player_data) {
+	PlayerInfoPackage player_data,
+	bool boss_warning_light_state,
+	GameState game_state) {
 
 	//SET UP FOR 3D
 	glDisable(GL_BLEND);
@@ -132,20 +139,37 @@ void Render::UpdateRender(
 	GeometryPass(camera_position, perspective_view_matrix);
 	GeometryDrawing(object_vector);
 
+	glm::vec3 player_pos = player_data.position;
+	
 	//  LIGHTING
-	lights_[0].SetPos(glm::vec3(camera_position.x, (camera_position.y + 15.0), 0.0));		//Place players light on our character
+	lights_[0].SetPos(glm::vec3(player_pos.x, (player_pos.y + 15.0), 0.0));		//Place players light on our character
 	// Update color of players light depending on zone
-	if (meta_data_ptr_->GetZone(camera_position) == "DEF") {
+	if (meta_data_ptr_->GetZone(player_pos) == "DEF" || game_state == GameState::BOSS) {
 		lights_[0].SetAmbientLight(glm::vec3(1.0f, 0.58f, 0.20f));
 	}
-	else if (meta_data_ptr_->GetZone(camera_position) == "RED") {
+	else if (meta_data_ptr_->GetZone(player_pos) == "RED") {
 		lights_[0].SetAmbientLight(glm::vec3(1.0f, 0.0f, 0.0f));
 	}
-	else if (meta_data_ptr_->GetZone(camera_position) == "GRE") {
+	else if (meta_data_ptr_->GetZone(player_pos) == "GRE") {
 		lights_[0].SetAmbientLight(glm::vec3(0.01f, 0.84f, 0.01f));
 	}
-	else if (meta_data_ptr_->GetZone(camera_position) == "BLU") {
+	else if (meta_data_ptr_->GetZone(player_pos) == "BLU") {
 		lights_[0].SetAmbientLight(glm::vec3(0.0f, 0.4f, 1.0f));
+	}
+	
+	if (player_pos.y < -1700)
+	{
+		lights_[0].SetAmbientLight(glm::vec3(0.0f, 0.0f, 0.0f));
+	}
+	//std::cout << (int)boss_warning_light_state << "\n";
+	// Update boss light indication
+	if (boss_warning_light_state)
+	{
+		lights_[2].SetAmbientLight(glm::vec3(1.0f, 0.0f, 0.0f));
+	}
+	else
+	{
+		lights_[2].SetAmbientLight(glm::vec3(0.0f, 0.0f, 0.0f));
 	}
 	LightingPass(camera_position);
 
@@ -249,8 +273,12 @@ void Render::LightingPass(glm::vec3 camera_position) {
 		);
 		// Attenuation parameters, and calculate radius
 		const float constant = 1.0f; // note that we don't send this to the shader, we assume it is always 1.0 (in our case)
-		const float linear = 0.007f;
-		const float quadratic = 0.0002f;
+		//const float linear = 0.007f;
+		//const float quadratic = 0.0002f;
+
+		const float linear = 0.014f;
+		const float quadratic = 0.0004f;
+		
 		glUniform1f(glGetUniformLocation(lighting_pass_->GetProgram(), ("lights[" + std::to_string(i) + "].a_linear").c_str()), linear);
 		glUniform1f(glGetUniformLocation(lighting_pass_->GetProgram(), ("lights[" + std::to_string(i) + "].a_quadratic").c_str()), quadratic);
 		// then calculate radius of light volume/sphere

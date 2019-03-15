@@ -508,7 +508,7 @@ std::vector<ObjectPackage> ObjectHandler::UpdateAndRetrieve(float in_deltatime) 
 	this->PackObjectIntoVector(this->player_ptr_, package_vector);
 	this->PackObjectVectorIntoVector(relevant_npcs_ptr_vector, package_vector);
 	this->PackObjectVectorIntoVector(relevant_drops_ptr_vector, package_vector);
-
+	
 	// if boss exists, process all boss stuff
 	if (boss_ptr_) {
 		boss_ptr_->ExecuteAI(in_deltatime, player_ptr_->GetPosition());
@@ -517,6 +517,10 @@ std::vector<ObjectPackage> ObjectHandler::UpdateAndRetrieve(float in_deltatime) 
 		std::vector<ObjectClass*> temp_boss_list = boss_ptr_->GetBossObjectVector();
 		this->PackObjectVectorIntoVector(temp_boss_list, package_vector);
 
+		if (!PlayerInBossRoom())
+		{
+			SetPlayerXYZPosForBoss();
+		}
 		/*std::vector<NPCGhost*> temp_boss_npc_list = boss_ptr_->GetBossNPCVector();
 		this->PackObjectVectorIntoVector(temp_boss_npc_list, package_vector);*/
 
@@ -590,8 +594,8 @@ void ObjectHandler::DetermineBossAction() {
 		{
 			int rand_x_pos = rand() % 220 + 100;
 			this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(rand_x_pos, -1100, 5.0f), OBJECT_ID_FIRE_AI));
-			this->npc_ptr_vector_.back()->SetScale(1);
-			this->npc_ptr_vector_.back()->SetOffsets(1, 1);
+			this->npc_ptr_vector_.back()->SetScale(1.5);
+			this->npc_ptr_vector_.back()->SetOffsets(1.5, 1.5);
 			NPCRunner* temp_npc_ptr = dynamic_cast<NPCRunner*>(this->npc_ptr_vector_.back());
 			temp_npc_ptr->SetAggroRange(200);
 			temp_npc_ptr->SetJumpVelocity(300);
@@ -633,9 +637,19 @@ void ObjectHandler::DetermineBossAction() {
 		temp_npc_ptr->SetAggroVelocity(1000);
 		temp_npc_ptr->SetMaxHealth(120);
 		temp_npc_ptr->SetCurrentHealth(120);
+		boss_ptr_->actions_.spawn_jombo = false;
 	}
 
 	
 
+}
+
+bool ObjectHandler::GetBossAttackState()
+{
+	if (boss_ptr_)
+	{
+		return boss_ptr_->actions_.attack_light;
+	}
+	return false;
 }
 

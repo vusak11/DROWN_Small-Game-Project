@@ -116,6 +116,7 @@ public:
 	void SetPlayerXYZPosForBoss();	// Adds a few values to z to move the player more into the room.
 	void SpawnBoss();
 	void DetermineBossAction();	// From wich flags are true in the boss, do things
+	bool GetBossAttackState();	// On for lighting the warning light at the boss.
 
 
 };

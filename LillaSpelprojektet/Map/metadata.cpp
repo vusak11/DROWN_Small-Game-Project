@@ -35,6 +35,7 @@ void MetaData::Initialize() {
 		//Special lights
 		glm::vec2(0, 0),		// Player
 		glm::vec2(1232, -550),	// Danger light at the throat of the dungeon
+		glm::vec2(160, -1100),	// Boss attack light
 		//POIs
 		glm::vec2(160, -70),
 		glm::vec2(1995, -115),
