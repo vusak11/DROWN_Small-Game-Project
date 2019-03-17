@@ -81,7 +81,7 @@ void ObjectHandler::DeterminePlayerAction(
 
 	//Update the player's status (such as cooldowns)
 	this->player_ptr_->UpdateStatus(in_deltatime);
-	player_ptr_->CalculateAnimationState(in_deltatime);
+	player_ptr_->CalculateAnimationState(in_deltatime, player_input_.attack);
 
 	//Determine player movement on the x-axis
 	if (this->player_input_.left) {

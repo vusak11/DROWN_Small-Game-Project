@@ -111,8 +111,7 @@ int PlayerCharacter::UseWeapon(Character& in_target) {
 	return this->weapon_ptr_->ExecuteWeapon(*this, in_target);
 }
 
-void PlayerCharacter::CalculateAnimationState(float delta_time) {
-
+void PlayerCharacter::CalculateAnimationState(float delta_time, bool is_attacking) {
 	if (IsAirborne()) {
 		animation_state_ = ANIMATION_STATE_PLAYER_JUMP;
 		SetObjectID(OBJECT_ID_PLAYER_JUMP);
@@ -120,17 +119,68 @@ void PlayerCharacter::CalculateAnimationState(float delta_time) {
 	else if (abs(GetVelocityVec().x) > 0.0f) {
 		animation_state_ = ANIMATION_STATE_PLAYER_WALK;
 		animation_timeline_ += delta_time;
-		if (animation_timeline_ > 0.15f) {
-			if (id_ == OBJECT_ID_PLAYER_LEFT_WALK) {
-				SetObjectID(OBJECT_ID_PLAYER_IDLE);
+		if (animation_timeline_ > 0.1f) {
+			if (id_ == OBJECT_ID_PLAYER_LEFT_WALK_1) {
+				SetObjectID(OBJECT_ID_PLAYER_LEFT_WALK_2);
 			}
-			else if (id_ == OBJECT_ID_PLAYER_IDLE) {
-				SetObjectID(OBJECT_ID_PLAYER_RIGHT_WALK);
+			else if (id_ == OBJECT_ID_PLAYER_LEFT_WALK_2) {
+				SetObjectID(OBJECT_ID_PLAYER_LEFT_WALK_3);
+			}
+			else if (id_ == OBJECT_ID_PLAYER_LEFT_WALK_3) {
+				SetObjectID(OBJECT_ID_PLAYER_RIGHT_WALK_1);
+			}
+			else if (id_ == OBJECT_ID_PLAYER_RIGHT_WALK_1) {
+				SetObjectID(OBJECT_ID_PLAYER_RIGHT_WALK_2);
+			}
+			else if (id_ == OBJECT_ID_PLAYER_RIGHT_WALK_2) {
+				SetObjectID(OBJECT_ID_PLAYER_RIGHT_WALK_3);
 			}
 			else {
-				SetObjectID(OBJECT_ID_PLAYER_IDLE);
+				SetObjectID(OBJECT_ID_PLAYER_LEFT_WALK_1);
 			}
 			animation_timeline_ = 0.0f;
+		}
+	}
+	/*else if (true) {
+		if (weapon_ptr_->GetID() == WEAPON_SWORD) {
+			animation_state_ = ANIMATION_STATE_PLAYER_SWORD_ATTACK;
+			animation_timeline_ += delta_time;
+			if (animation_timeline_ > 0.1f) {
+				if (id_ == OBJECT_ID_PLAYER_ATTACK_SWORD_STANCE_1) {
+					SetObjectID(OBJECT_ID_PLAYER_ATTACK_SWORD_STANCE_2);
+				}
+				else if (id_ == OBJECT_ID_PLAYER_ATTACK_SWORD_STANCE_2) {
+					SetObjectID(OBJECT_ID_PLAYER_ATTACK_SWORD_STANCE_3);
+				}
+				else {
+					SetObjectID(OBJECT_ID_PLAYER_ATTACK_SWORD_STANCE_1);
+				}
+				animation_timeline_ = 0.0f;
+			}
+		}
+		else if (weapon_ptr_->GetID() == WEAPON_AXE) {
+			animation_state_ = ANIMATION_STATE_PLAYER_AXE_ATTACK;
+		}
+	}*/
+	else if (is_attacking) {
+		if (weapon_ptr_->GetID() == WEAPON_SWORD) {
+			animation_state_ = ANIMATION_STATE_PLAYER_SWORD_ATTACK;
+			animation_timeline_ += delta_time;
+			if (animation_timeline_ > 0.1f) {
+				if (id_ == OBJECT_ID_PLAYER_ATTACK_SWORD_STANCE_1) {
+					SetObjectID(OBJECT_ID_PLAYER_ATTACK_SWORD_STANCE_2);
+				}
+				else if (id_ == OBJECT_ID_PLAYER_ATTACK_SWORD_STANCE_2) {
+					SetObjectID(OBJECT_ID_PLAYER_ATTACK_SWORD_STANCE_3);
+				}
+				else {
+					SetObjectID(OBJECT_ID_PLAYER_ATTACK_SWORD_STANCE_1);
+				}
+				animation_timeline_ = 0.0f;
+			}
+		}
+		else if (weapon_ptr_->GetID() == WEAPON_AXE) {
+			animation_state_ = ANIMATION_STATE_PLAYER_AXE_ATTACK;
 		}
 	}
 	else {
