@@ -161,6 +161,7 @@
     <ClCompile Include="Object\Character\NPCs\NPC_runner.cpp" />
     <ClCompile Include="Object\Character\player_character.cpp" />
     <ClCompile Include="Object\Character\weapon.cpp" />
+    <ClCompile Include="Object\Drop\drop.cpp" />
     <ClCompile Include="Object\hitbox.cpp" />
     <ClCompile Include="Object\object_class.cpp" />
     <ClCompile Include="Object\object_handler.cpp" />

@@ -175,7 +175,7 @@
       <Filter>Source Files\Object\Character\NPCs</Filter>
     </ClCompile>
     <ClCompile Include="Object\Drop\drop.cpp">
-      <Filter>Source Files\Object\Drop</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

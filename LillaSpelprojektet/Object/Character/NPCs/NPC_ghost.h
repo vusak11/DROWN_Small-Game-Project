@@ -15,7 +15,7 @@ private:
 	float stun_timer = 0;
 
 public:
-	NPCGhost(glm::vec3 start_pos, ObjectID id);
+	NPCGhost(glm::vec3 start_pos);
 	~NPCGhost();
 
 	void ExecuteAI(float in_deltatime, glm::vec3 in_player_pos);

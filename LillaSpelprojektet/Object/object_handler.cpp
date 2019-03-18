@@ -82,8 +82,8 @@ void ObjectHandler::DeterminePlayerAction(
 
 	//Update the player's status (such as cooldowns)
 	this->player_ptr_->UpdateStatus(in_deltatime);
-	player_ptr_->CalculateAnimationState(in_deltatime, player_input_.attack);
-	static float time = 0;
+	bool attacked = false;
+	static float time = 5;	// Init this to a higher value to be able to attack instantly
 	time += in_deltatime;
 
 	//Determine player movement on the x-axis
@@ -108,6 +108,7 @@ void ObjectHandler::DeterminePlayerAction(
 		if (time > player_ptr_->GetWeapon()->GetCooldown())
 		{
 			time = 0;
+			attacked = true;
 			this->ResolvePlayerAttack(in_relevant_npcs_ptr_vector);
 		}
 		
@@ -117,6 +118,9 @@ void ObjectHandler::DeterminePlayerAction(
 		this->ResolvePlayerPickUp(in_relevant_drops_ptr_vector);
 	}
 	
+	// Update player model (animation)
+	player_ptr_->CalculateAnimationState(in_deltatime, attacked);
+
 }
 
 void ObjectHandler::ResolvePlayerPickUp(std::vector<ObjectClass*>& in_relevant_drops_ptr_vector) {
@@ -592,13 +596,13 @@ void ObjectHandler::DetermineBossAction() {
 		int position_index = rand() % 3;
 		switch (position_index) {
 		case 0:
-			this->npc_ptr_vector_.push_back(new NPCGhost(glm::vec3(160, -1050, 5.0f), OBJECT_ID_NULL));
+			this->npc_ptr_vector_.push_back(new NPCGhost(glm::vec3(160, -1050, 5.0f)));
 			break;
 		case 1:
-			this->npc_ptr_vector_.push_back(new NPCGhost(glm::vec3(20, -1180, 5.0f), OBJECT_ID_NULL));
+			this->npc_ptr_vector_.push_back(new NPCGhost(glm::vec3(20, -1180, 5.0f)));
 			break;
 		case 2:
-			this->npc_ptr_vector_.push_back(new NPCGhost(glm::vec3(300, -1180, 5.0f), OBJECT_ID_NULL));
+			this->npc_ptr_vector_.push_back(new NPCGhost(glm::vec3(300, -1180, 5.0f)));
 			break;
 		default:
 			break;
