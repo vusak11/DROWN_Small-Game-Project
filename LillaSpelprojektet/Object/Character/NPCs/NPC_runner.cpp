@@ -19,7 +19,12 @@ NPCRunner::NPCRunner(glm::vec3 start_pos, ObjectID id)
 	aggro_speed_ = GlobalSettings::Access()->ValueOf("NPC_RUNNER_AGGRO_SPEED");
 
 	//Set the base scale of this type of unit
-	this->SetScale(GlobalSettings::Access()->ValueOf("NPC_RUNNER_SCALE"));
+	//this->SetScale(GlobalSettings::Access()->ValueOf("NPC_RUNNER_SCALE"));
+
+	float scale = GlobalSettings::Access()->ValueOf("NPC_RUNNER_SCALE");
+	SetScale(scale);
+	SetOffsets(scale, scale);
+
 }
 
 NPCRunner::~NPCRunner() {
