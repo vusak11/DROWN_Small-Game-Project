@@ -45,6 +45,7 @@ Drop::Drop(glm::vec3 creation_pos, ObjectID id) : ObjectClass(creation_pos, id) 
 	//Set the base scale of this type of unit
 	this->SetScale(2.0f);
 	this->SetOffsets(2.0f, 2.0f);
+	std::cout << "fuck this game!" << std::endl;
 }
 
 Drop::~Drop() {
