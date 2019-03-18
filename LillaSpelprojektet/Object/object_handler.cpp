@@ -562,7 +562,6 @@ void ObjectHandler::SpawnBoss() {
 }
 
 void ObjectHandler::DetermineBossAction() {
-
 	if (boss_ptr_->actions_.spawn_mobs) {
 		
 		if (boss_ptr_->GetBossStage() == BossStage::STAGE_2) {
@@ -632,6 +631,15 @@ void ObjectHandler::DetermineBossAction() {
 bool ObjectHandler::GetBossAttackState() {
 	if (boss_ptr_) {
 		return boss_ptr_->actions_.attack_light;
+	}
+	return false;
+}
+
+bool ObjectHandler::IsBossDead() {
+	if (boss_ptr_) {
+		if (boss_ptr_->IsStage4Complete()) {
+			return true;
+		}
 	}
 	return false;
 }

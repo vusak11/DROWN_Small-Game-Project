@@ -58,6 +58,7 @@ public:
 	void RenderOptionsMenu(ShaderHandler * shader_handler, CameraHandler* cam_handler);
 	void RenderPauseMenu(ShaderHandler* shader_handler);
 	void RenderDeathMenu(ShaderHandler* shader_handler);
+	void RenderVictoryMenu(ShaderHandler* shader_handler);
 	void StateManager(GameState state);
 
 	int GetSelectedItemIndex() const;

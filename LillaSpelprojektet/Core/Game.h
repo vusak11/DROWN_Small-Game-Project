@@ -46,6 +46,7 @@ private:
 	void InputForPauseState(const sf::Event& in_event);
 	void InputForOptionsState(const sf::Event& in_event);
 	void InputForDeathState(const sf::Event& in_event);
+	void InputForVictoryState(const sf::Event& in_event);
 
 	void InputForGameState(const sf::Event& in_event);
 	void InputForSecondaryCamera(const float& in_deltatime);
