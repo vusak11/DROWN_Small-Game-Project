@@ -44,6 +44,7 @@ Drop::Drop(glm::vec3 creation_pos, ObjectID id) : ObjectClass(creation_pos, id) 
 
 	//Set the base scale of this type of unit
 	this->SetScale(2.0f);
+	this->SetOffsets(2.0f, 2.0f);
 }
 
 Drop::~Drop() {
@@ -353,7 +354,8 @@ Chest::Chest(glm::vec3 creation_pos)
 	//Mess a bit with the look of a chest
 	//---
 	//Set the base scale of this type of unit
-	this->SetScale(1.0f, 2.5f, 1.0f);
+	this->SetScale(2.0f, 2.5f, 1.0f);
+	this->SetOffsets(2.0f, 2.5f);
 
 	// Move the chest a bit outwards
 	glm::vec3 pos = this->GetPosition();
