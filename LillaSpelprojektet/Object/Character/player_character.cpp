@@ -111,7 +111,7 @@ int PlayerCharacter::UseWeapon(Character& in_target) {
 	return this->weapon_ptr_->ExecuteWeapon(*this, in_target);
 }
 
-void PlayerCharacter::CalculateAnimationState(float delta_time, bool is_attacking) {
+void PlayerCharacter::CalculateAnimationState(float in_deltatime, bool is_attacking) {
 	
 	if (is_attacking) {
 		animation_state_ = ANIMATION_STATE_IS_ATTACKING;
@@ -119,7 +119,7 @@ void PlayerCharacter::CalculateAnimationState(float delta_time, bool is_attackin
 	}
 
 	if (animation_state_ == ANIMATION_STATE_IS_ATTACKING) {
-		animation_timeline_ += delta_time;
+		animation_timeline_ += in_deltatime;
 	
 		if (weapon_ptr_->GetID() == WEAPON_SWORD) {
 			if (animation_timeline_ < 0.1f) {
@@ -156,7 +156,7 @@ void PlayerCharacter::CalculateAnimationState(float delta_time, bool is_attackin
 	}
 	else if (abs(GetVelocityVec().x) > 0.0f) {
 		animation_state_ = ANIMATION_STATE_PLAYER_WALK;
-		animation_timeline_ += delta_time;
+		animation_timeline_ += in_deltatime;
 		if (animation_timeline_ > 0.13f) {
 			if (id_ == OBJECT_ID_PLAYER_LEFT_WALK_1) {
 				SetObjectID(OBJECT_ID_PLAYER_LEFT_WALK_2);

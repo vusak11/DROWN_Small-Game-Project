@@ -41,7 +41,7 @@ public:
 	void UseAbility();
 	int UseWeapon(Character& in_target);
 
-	void CalculateAnimationState(float delta_time, bool is_attacking);
+	void CalculateAnimationState(float in_deltatime, bool is_attacking);
 
 	Ability* SwapAbility(Ability* in_ability_ptr);
 	Weapon* SwapWeapon(Weapon* in_weapon_ptr);
