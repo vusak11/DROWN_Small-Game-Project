@@ -40,7 +40,6 @@ private:
 	float nr_of_runners_;
 
 	PlayerInput player_input_;
-	BossActions boss_actions_;
 
 	PhysicsEngine* physics_engine_ptr_;
 	
@@ -65,6 +64,7 @@ private:
 	void ResolvePlayerPickUp(std::vector<ObjectClass*>& in_relevant_drops_ptr_vector);
 	void ResolvePlayerAttack(std::vector<ObjectClass*>& in_relevant_npcs_ptr_vector);
 	void ResolveRandomDropSpawn(glm::vec3 in_pos, float in_drop_rate);
+	int ResolveBossAttack();
 
 	void ProcessNPCs(const float& in_deltatime, std::vector<ObjectClass*>& in_npcs_ptr_vector);	//Call AI functions for NPCs in vector
 	void DetermineNPCAction(const float& in_deltatime, NPC* in_npc);							//Call the AI of the npc object to see what the npc does, then determine legal actions
@@ -109,6 +109,7 @@ public:
 	void SetPlayerXYZPosForBoss();	// Adds a few values to z to move the player more into the room.
 	void SpawnBoss();
 	void DetermineBossAction();	// From wich flags are true in the boss, do things
+	bool GetBossAttackState();	// On for lighting the warning light at the boss.
 
 
 };

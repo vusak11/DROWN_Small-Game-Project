@@ -13,9 +13,13 @@ void PhysicsEngine::UpdateVelocity(float& in_deltatime, ObjectClass*& in_object_
 	//v = v0 + a*t
 	//velocity_vec = velocity_vec + in_object_ptr->GetAccelerationVec() * in_deltatime;
 
-	//Apply gravity to the y velocity
-	//v = v0 + g*t
-	velocity_vec.y = velocity_vec.y + this->gravitational_acceleration_ * in_deltatime;
+	if (in_object_ptr->GetUsePhysics())
+	{
+		//Apply gravity to the y velocity
+		//v = v0 + g*t
+		velocity_vec.y = velocity_vec.y + this->gravitational_acceleration_ * in_deltatime;
+	}
+	
 
 	//Apply the x-axis decceleration (Different for ground/air)
 	//v = v0 + (-v0*lr)*t;
@@ -50,8 +54,12 @@ void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_
 	//Displace the object using its velocity during deltatime
 	object_pos += in_object_ptr->GetVelocityVec()*in_deltatime;
 
-	//With the new location, check collision and return a new valid position. 
-	object_pos = CheckCollision(in_object_ptr, object_pos);
+	if (in_object_ptr->GetUsePhysics())
+	{
+		//With the new location, check collision and return a new valid position. 
+		object_pos = CheckCollision(in_object_ptr, object_pos);
+	}
+	
 
 	//DON'T LET AN OBJECT OUTSIDE THE MAP
 	int map_size = GlobalSettings::Access()->ValueOf("MAP_SIZE");
@@ -97,9 +105,8 @@ glm::vec3 PhysicsEngine::CheckCollision(ObjectClass *& in_object_ptr, glm::vec3 
 	bool collision_3 = false;
 
 	in_object_ptr->SetAirborne(true);
-
 	Hitbox hitbox;
-	hitbox.UpdateHitbox(object_pos, in_object_ptr->GetScale().x, in_object_ptr->GetScale().y);
+	hitbox.UpdateHitbox(object_pos, in_object_ptr->GetXOffset(), in_object_ptr->GetYOffset());
 	BoxPoints points = hitbox.GetPoints();
 
 	// Map each hitbox point to a map tile index

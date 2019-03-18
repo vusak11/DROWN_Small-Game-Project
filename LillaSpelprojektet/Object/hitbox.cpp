@@ -18,6 +18,10 @@ Hitbox::Hitbox(glm::vec3 position, float x_offset, float y_offset) {
 Hitbox::~Hitbox() {
 }
 
+void Hitbox::UpdateHitbox(glm::vec3 position) {
+	position_ = position;
+}
+
 void Hitbox::UpdateHitbox(glm::vec3 position, float x_offset, float y_offset) {
 	position_ = position;
 	x_offset_ = x_offset;
@@ -35,6 +39,11 @@ void Hitbox::SetOffsets(float in_x, float in_y) {
 
 float Hitbox::GetXOffset() const {
 	return this->x_offset_;
+}
+
+float Hitbox::GetYOffset() const
+{
+	return this->y_offset_;
 }
 
 glm::vec2 Hitbox::GetPoint0() const

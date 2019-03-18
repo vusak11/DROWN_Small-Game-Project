@@ -15,6 +15,7 @@ class Weapon : public CooldownClass {
 private:
 	int attack_power_;
 	Hitbox weapon_box_;
+	float cooldown_;
 
 protected:
 	WeaponID id_;
@@ -31,7 +32,7 @@ public:
 
 	WeaponID GetID() const;
 	int GetAttackPower() const;
-
+	float GetCooldown() const;
 
 	virtual int ExecuteWeapon(Character& in_attacker, Character& in_target);	//Returns	-1	if attack unsuccessful
 																			//			 0	if it was a hit
@@ -43,6 +44,8 @@ public:
 //---------------------------------------------------------
 
 class Sword : public Weapon {
+private:
+	float knock_back_;
 public:
 	Sword();
 	~Sword();

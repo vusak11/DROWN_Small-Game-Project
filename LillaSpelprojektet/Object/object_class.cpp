@@ -9,7 +9,7 @@ void ObjectClass::CalculateModelMatrix() {
 	//The order is important here.
 	//First we scale, then we rotate and finally we translate
 	this->model_matrix_ = this->translation_matrix_ * this->rotation_matrix_ * this->scaling_matrix_;
-	this->UpdateHitbox(position_, scale_.x, scale_.y);
+	this->UpdateHitbox(position_);
 }
 
 //Protected------------------------------------------------
@@ -41,7 +41,7 @@ ObjectClass::ObjectClass(glm::vec3 start_pos, ObjectID id) {
 	this->translation_matrix_ = glm::mat4(1.0f);
 
 	//hitbox_ = HitBox(position_, scale_.x, scale_.y);
-	this->UpdateHitbox(position_, scale_.x, scale_.y);
+	this->UpdateHitbox(position_);
 
 	//TBA: Use the ID to determine the specs of a Object (Character/Drop/etc)
 
@@ -72,7 +72,7 @@ void ObjectClass::SetPosition(float in_x, float in_y, float in_z) {
 	this->model_matrix_up_to_date_ = false;
 
 	//Apply new position on the hitbox
-	this->UpdateHitbox(position_, scale_.x, scale_.y);
+	this->UpdateHitbox(position_);
 }
 
 void ObjectClass::SetScale(float in_s) {
@@ -85,7 +85,7 @@ void ObjectClass::SetScale(float in_s) {
 	this->model_matrix_up_to_date_ = false;
 
 	//Apply new scale on the hitbox
-	this->UpdateHitbox(position_, scale_.x, scale_.y);
+	this->UpdateHitbox(position_);
 }
 
 void ObjectClass::SetScale(float in_x, float in_y, float in_z) {
@@ -113,6 +113,10 @@ void ObjectClass::SetRotation(float in_x, float in_y, float in_z) {
 
 	//World matrix is now out of date
 	this->model_matrix_up_to_date_ = false;
+}
+
+void ObjectClass::SetUsingPhysics(bool use_physics) {
+	use_physics_ = use_physics;
 }
 
 void ObjectClass::SetVelocity(float in_velocity) {
@@ -151,6 +155,10 @@ float ObjectClass::GetVelocity() const {
 
 glm::vec3 ObjectClass::GetVelocityVec() const {
 	return this->velocity_vec_;
+}
+
+bool ObjectClass::GetUsePhysics() const {
+	return use_physics_;
 }
 
 glm::mat4 ObjectClass::RetrieveModelMatrix() {

@@ -227,11 +227,16 @@ void Game::InputForGameState(const sf::Event& in_event) {
 		}
 		if (in_event.key.code == sf::Keyboard::L) {
 			GlobalSettings::Access()->UpdateValuesFromFile();
+			//sound_unit_game_.SetAttenuation(GlobalSettings::Access()->ValueOf("SOUND_ATTENUATION"));
+			//sound_unit_game_.SetMinDistance(GlobalSettings::Access()->ValueOf("SOUND_MIN_DIST"));
+			//std::cout << "lisenerpos_: " << sf::Listener::getPosition().x << " " << sf::Listener::getPosition().y << std::endl;
+			std::cout << "lisenerpos_: " << sound_unit_game_.GetMusicPos().x << " " << sound_unit_game_.GetMusicPos().y << std::endl;
 		}
 		if (in_event.key.code == sf::Keyboard::B)
 		{
 			obj_handler_ptr_->SetPlayerXYZPosForBoss();
 		}
+		
 
 	default:
 		break;
@@ -325,12 +330,32 @@ void Game::InitializeGame() {
 	this->game_loaded_ = true;
 
 
+	sound_unit_game_.SetMusicFile((char*)"../Resources/Audio/menusong.wav");
+	sound_unit_game_.PlayMusic();
 
 }
 
 void Game::InitializeStartGame() {
-	this->sound_unit_ptr_->SetMusicFile((char*)"../Resources/Audio/cavesong.wav");
-	this->sound_unit_ptr_->PlayMusic();
+	//sound_unit_game_.SetMusicFile((char*)"../Resources/Audio/cavesong2.wav");
+	sf::Listener::setGlobalVolume(100.0f);
+	sound_unit_game_.SetMusicFile((char*)"../Resources/Audio/cavesong2.wav");
+	sound_unit_game_.SetVolumeMusic(35);
+	sound_unit_game_.SetPosition(564.0f, -220.0f, 0.0f);
+	//sound_unit_game_.SetAttenuation(GlobalSettings::Access()->ValueOf("SOUND_ATTENUATION"));
+	//sound_unit_game_.SetMinDistance(GlobalSettings::Access()->ValueOf("SOUND_MIN_DIST"));
+	sound_unit_game_.PlayMusic();
+	
+	//sound_zone_1.SetMusicFile((char*)"../Resources/Audio/menusong2.wav");
+	//sound_zone_1.SetPosition(meta_data_ptr_->GetZonePOIs()[0].x, meta_data_ptr_->GetZonePOIs()[0].y, 0.0f);
+	////sound_zone_1.PlayMusic();
+
+	//sound_zone_2.SetMusicFile((char*)"../Resources/Audio/menusong2.wav");
+	//sound_zone_2.SetPosition(meta_data_ptr_->GetZonePOIs()[1].x, meta_data_ptr_->GetZonePOIs()[1].y, 0.0f);
+	////sound_zone_2.PlayMusic();
+
+	//sound_zone_3.SetMusicFile((char*)"../Resources/Audio/menusong2.wav");
+	//sound_zone_3.SetPosition(meta_data_ptr_->GetZonePOIs()[2].x, meta_data_ptr_->GetZonePOIs()[2].y, 0.0f);
+	////sound_zone_3.PlayMusic();
 }
 
 void Game::GameIteration() {
@@ -354,6 +379,9 @@ void Game::GameIteration() {
 		//Update the camera's position
 		cam_handler_ptr_->SetPrimaryCameraPos(player_info.position);
 
+		//Updates sound
+		//UpdateSound(player_info.position);
+
 		//Update the screen
 		render_.UpdateRender(
 			this->game_deltatime_,
@@ -361,24 +389,29 @@ void Game::GameIteration() {
 			cam_handler_ptr_->GetViewPerspectiveMatrix(),
 			object_vector,
 			player_info,
+			obj_handler_ptr_->GetBossAttackState(),
+			state_,
+			player_info,
 			menu_.IsMinIMapEnabled()
 		);
 
 		// INITIALIZE BOSS FIGHT
 		if (this->obj_handler_ptr_->PlayerInBossRoom()) { // Swap primary camera to 'boss' camera
 			cam_handler_ptr_->SwapCameraToBossCamera();
-			this->previous_states_.push_back(GameState::BOSS);
-			obj_handler_ptr_->SetPlayerXYZPosForBoss();
-			this->sound_unit_ptr_->StopMusic();
-			this->sound_unit_ptr_->SetMusicFile((char*)"../Resources/Audio/disco2.wav");
-			this->sound_unit_ptr_->PlayMusic();
+			state_ = BOSS;
+			sound_unit_game_.StopMusic();
+			sound_unit_game_.SetMusicFile((char*)"../Resources/Audio/disco2.wav");
+			sound_unit_game_.SetVolumeMusic(100);
+			sound_unit_game_.PlayMusic();
 			std::cout << "ENTERING BOSS STATE" << std::endl;
 			obj_handler_ptr_->SpawnBoss();
-			// SPAWN BOSS
+			
+			// Last set player to correct position again.
+			obj_handler_ptr_->SetPlayerXYZPosForBoss();
 		}
 
 		/*--------------Restart Game when death occurs--------------*/
-		if (player_info.current_hp == 0) { //Use this one
+		if (player_info.current_hp <= 0) { //Use this one
 			this->previous_states_.push_back(GameState::DEATH);
 		}
 		/*----------End Restart Game when death occurs--------------*/
@@ -400,6 +433,9 @@ void Game::GameIteration() {
 			cam_handler_ptr_->GetCameraPosition(),
 			cam_handler_ptr_->GetViewPerspectiveMatrix(),
 			object_vector,
+			player_info,
+			obj_handler_ptr_->GetBossAttackState(),
+			state_,
 			player_info,
 			menu_.IsMinIMapEnabled()
 		);
@@ -484,4 +520,104 @@ bool Game::IsLoaded() {
 bool Game::IsRunning() {
 	//If the game ain't quittin', it's runnin'
 	return (this->previous_states_.back() != QUIT);
+}
+	return (this->state_ != QUIT);
+}
+
+MetaData * Game::getMetaDataPtr() const {
+	return meta_data_ptr_;
+}
+
+void Game::UpdateSound(glm::vec3 player_pos)
+{
+	//float delta_x = player_pos.x - sound_unit_game_.GetMusicPos().x;
+	//float delta_y = player_pos.y - sound_unit_game_.GetMusicPos().y;
+	//float length = sqrt(delta_x * delta_x + delta_y * delta_y);
+	//float radius = GlobalSettings::Access()->ValueOf("SOUND_ATTENUATION");
+	//float a = radius - length;
+	////std::cout << a << std::endl;
+	//if (a > 0)
+	//{
+	//	sound_unit_game_.SetVolumeMusic(a / radius / 100);
+	//}
+	//else
+	//{
+	//	sound_unit_game_.SetVolumeMusic(0);
+	//}
+
+	//float radius = GlobalSettings::Access()->ValueOf("SOUND_ATTENUATION");
+
+	//float delta_x = player_pos.x - sound_zone_1.GetMusicPos().x;
+	//float delta_y = player_pos.y - sound_zone_1.GetMusicPos().y;
+	//float length = sqrt(delta_x * delta_x + delta_y * delta_y);
+	//float a = radius - length;
+	////std::cout << a << std::endl;
+	//if (a > 0)
+	//{
+	//	if (music_state != 1)
+	//	{
+	//		music_state = 1;
+	//		sound_zone_1.PlayMusic();
+	//	}
+	//	sound_zone_1.SetVolumeMusic(a / radius / 100);
+	//}
+	//else if (music_state == 1)
+	//{
+	//	music_state = 0;
+	//	sound_zone_1.SetVolumeMusic(0);
+	//	sound_zone_1.StopMusic();
+	//	sound_unit_game_.PlayMusic();
+	//}
+	//std::cout << a << " ";
+
+	//delta_x = player_pos.x - sound_zone_2.GetMusicPos().x;
+	//delta_y = player_pos.y - sound_zone_2.GetMusicPos().y;
+	//length = sqrt(delta_x * delta_x + delta_y * delta_y);
+	//
+	//a = radius - length;
+	////std::cout << a << std::endl;
+	//if (a > 0)
+	//{
+	//	if (music_state != 2)
+	//	{
+	//		music_state = 2;
+	//		sound_zone_2.PlayMusic();
+	//	}
+	//	sound_zone_2.SetVolumeMusic(a / radius / 100);
+	//}
+	//else if (music_state == 2)
+	//{
+	//	music_state = 0;
+	//	sound_zone_2.SetVolumeMusic(0);
+	//	sound_zone_2.StopMusic();
+	//	sound_unit_game_.PlayMusic();
+	//}
+	//std::cout << a << " ";
+
+	//delta_x = player_pos.x - sound_zone_3.GetMusicPos().x;
+	//delta_y = player_pos.y - sound_zone_3.GetMusicPos().y;
+	//length = sqrt(delta_x * delta_x + delta_y * delta_y);
+
+	//a = radius - length;
+	////std::cout << a << std::endl;
+	//if (a > 0)
+	//{
+	//	if (music_state != 3)
+	//	{
+	//		music_state = 3;
+	//		sound_zone_3.PlayMusic();
+	//	}
+	//	sound_zone_3.SetVolumeMusic(a / radius / 100);
+	//}
+	//else if (music_state == 3)
+	//{
+	//	music_state = 0;
+	//	sound_zone_3.SetVolumeMusic(0);
+	//	sound_zone_3.StopMusic();
+	//	sound_unit_game_.PlayMusic();
+	//}
+	//std::cout << a << std::endl;
+
+	
+
 }
