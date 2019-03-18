@@ -49,6 +49,7 @@ public:
 	void MoveRight();
 	void Jump();
 	void UseAbility();
+
 	int UseWeapon(Character& in_target);
 
 	void CalculateAnimationState(float in_deltatime, bool is_attacking);
