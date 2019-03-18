@@ -89,6 +89,7 @@ void Render::InitializeRender(MetaData* meta_data) {
 	model_[OBJECT_ID_FIRE_AI] = new Model((char*)"../Resources/Models/NPC/fireAI.obj");
 	model_[OBJECT_ID_WOOD_AI] = new Model((char*)"../Resources/Models/NPC/grassAI.obj");
 	model_[OBJECT_ID_ICE_AI] = new Model((char*)"../Resources/Models/NPC/iceAI.obj");
+	model_[OBJECT_ID_GHOST] = new Model((char*)"../Resources/Models/NPC/Ghost/ghost.obj");
 
 	model_[OBJECT_ID_DROP_HP_RESTORE] = new Model((char*)"../Resources/Models/Drops/heart_drop/heart_drop.obj");
 	model_[OBJECT_ID_DROP_HP_UP] = new Model((char*)"../Resources/Models/Drops/hp_buff/hp_buff.obj");

@@ -1,8 +1,8 @@
 #include "NPC_ghost.h"
 
-NPCGhost::NPCGhost(glm::vec3 start_pos, ObjectID id) : NPC(
+NPCGhost::NPCGhost(glm::vec3 start_pos) : NPC(
 	start_pos,
-	id,
+	ObjectID::OBJECT_ID_GHOST,
 	GlobalSettings::Access()->ValueOf("NPC_GHOST_START_HP"),
 	GlobalSettings::Access()->ValueOf("NPC_GHOST_START_ATK")
 ) {
