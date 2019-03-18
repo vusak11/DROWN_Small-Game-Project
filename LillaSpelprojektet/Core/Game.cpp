@@ -297,7 +297,7 @@ Game::Game() {
 	this->cam_handler_ptr_ = new CameraHandler(glm::vec3(256.0, -256.0f, 0.0f),
 		GlobalSettings::Access()->ValueOf("CAMERA_DEFAULT_ZOOM"));
 	this->obj_handler_ptr_ = new ObjectHandler();
-	this->sound_unit_ptr_ = new SoundUnit();
+	//this->sound_unit_ptr_ = new SoundUnit();
 	this->meta_data_ptr_ = new MetaData();
 
 	//this->state_ = MENU;
@@ -307,14 +307,16 @@ Game::Game() {
 Game::~Game() {
 	delete this->cam_handler_ptr_;
 	delete this->obj_handler_ptr_;
-	delete this->sound_unit_ptr_;
+	//delete this->sound_unit_ptr_;
 	delete this->meta_data_ptr_;
 }
 
 void Game::InitializeGame() {
 
-	this->sound_unit_ptr_->SetMusicFile((char*)"../Resources/Audio/menusong.wav");
-	this->sound_unit_ptr_->PlayMusic();
+	/*this->sound_unit_ptr_->SetMusicFile((char*)"../Resources/Audio/menusong.wav");
+	this->sound_unit_ptr_->PlayMusic();*/
+	sound_unit_game_.SetMusicFile((char*)"../Resources/Audio/menusong.wav");
+	sound_unit_game_.PlayMusic();
 
 	this->meta_data_ptr_->Initialize();
 	
@@ -328,10 +330,6 @@ void Game::InitializeGame() {
 	this->game_clock_.restart();	//Get the clock going correctly
 
 	this->game_loaded_ = true;
-
-
-	sound_unit_game_.SetMusicFile((char*)"../Resources/Audio/menusong.wav");
-	sound_unit_game_.PlayMusic();
 
 }
 
@@ -391,14 +389,13 @@ void Game::GameIteration() {
 			player_info,
 			obj_handler_ptr_->GetBossAttackState(),
 			state_,
-			player_info,
 			menu_.IsMinIMapEnabled()
 		);
 
 		// INITIALIZE BOSS FIGHT
 		if (this->obj_handler_ptr_->PlayerInBossRoom()) { // Swap primary camera to 'boss' camera
 			cam_handler_ptr_->SwapCameraToBossCamera();
-			state_ = BOSS;
+			this->previous_states_.push_back(GameState::BOSS);
 			sound_unit_game_.StopMusic();
 			sound_unit_game_.SetMusicFile((char*)"../Resources/Audio/disco2.wav");
 			sound_unit_game_.SetVolumeMusic(100);
@@ -420,7 +417,7 @@ void Game::GameIteration() {
 	{
 		// Create a vector to hold interesting objects
 		std::vector<ObjectPackage> object_vector;
-
+		
 		//Update the game logic and fill the vector
 		object_vector = this->obj_handler_ptr_->UpdateAndRetrieve(this->game_deltatime_);
 
@@ -436,7 +433,6 @@ void Game::GameIteration() {
 			player_info,
 			obj_handler_ptr_->GetBossAttackState(),
 			state_,
-			player_info,
 			menu_.IsMinIMapEnabled()
 		);
 
@@ -520,9 +516,10 @@ bool Game::IsLoaded() {
 bool Game::IsRunning() {
 	//If the game ain't quittin', it's runnin'
 	return (this->previous_states_.back() != QUIT);
+	//	return (this->state_ != QUIT);
 }
-	return (this->state_ != QUIT);
-}
+
+
 
 MetaData * Game::getMetaDataPtr() const {
 	return meta_data_ptr_;

@@ -198,11 +198,11 @@ void ObjectHandler::ResolvePlayerAttack(std::vector<ObjectClass*>& in_relevant_n
 				sound_index = 0;
 			}
 			else if (1 == outcome) {
-				index_of_the_dead.push_back(i);
 				sound_index = 1;
 			}
 		}
 	}
+	player_ptr_->PlaySound(sound_index);
 }
 
 void ObjectHandler::ResolveRandomDropSpawn(glm::vec3 in_pos, float in_drop_rate) {

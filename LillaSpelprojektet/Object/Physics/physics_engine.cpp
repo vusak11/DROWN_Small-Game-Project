@@ -134,18 +134,23 @@ glm::vec3 PhysicsEngine::CheckCollision(ObjectClass *& in_object_ptr, glm::vec3 
 	if (stair_adjustment_value_Y_1 > 0.5)
 		y_1_index++;
 
-	if ((*map_height_list_)[y_0_index][x_0_index] > 100.0f) {
-		collision_0 = true;
+	if (y_1_index < 2048 && y_1_index > 0 && y_0_index < 2048 && y_0_index > 0
+		&& x_1_index < 2048 && x_1_index > 0 && x_0_index < 2048 && x_0_index > 0)
+	{
+		if ((*map_height_list_)[y_0_index][x_0_index] > 100.0f) {
+			collision_0 = true;
+		}
+		if ((*map_height_list_)[y_0_index][x_1_index] > 100.0f) {
+			collision_1 = true;
+		}
+		if ((*map_height_list_)[y_1_index][x_1_index] > 100.0f) {
+			collision_2 = true;
+		}
+		if ((*map_height_list_)[y_1_index][x_0_index] > 100.0f) {
+			collision_3 = true;
+		}
 	}
-	if ((*map_height_list_)[y_0_index][x_1_index] > 100.0f)	{
-		collision_1 = true;
-	}
-	if ((*map_height_list_)[y_1_index][x_1_index] > 100.0f)	{
-		collision_2 = true;
-	}
-	if ((*map_height_list_)[y_1_index][x_0_index] > 100.0f)	{
-		collision_3 = true;
-	}
+	
 
 	// | 6 | Finally do things in a switch case if colliding.
 	bool doublecollision = false;
