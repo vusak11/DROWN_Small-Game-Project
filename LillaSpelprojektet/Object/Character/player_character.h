@@ -17,7 +17,7 @@ private:
 	Ability* ability_ptr_;
 	Weapon* weapon_ptr_;
 	AnimationState animation_state_;
-	float animation_timeline_ = 0;
+	float animation_timeline_ = 0.0f;
 
 	int num_of_keys_;
 

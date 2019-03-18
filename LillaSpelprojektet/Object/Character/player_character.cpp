@@ -35,8 +35,8 @@ PlayerCharacter::PlayerCharacter(glm::vec3 start_pos)
 	this->ability_ptr_ = new DoubleJump();
 	//this->ability_ptr_ = new Dash();
 	
-	this->weapon_ptr_ = new Sword();
-	//this->weapon_ptr_ = new Axe();
+	//this->weapon_ptr_ = new Sword();
+	this->weapon_ptr_ = new Axe();
 
 	animation_state_ = ANIMATION_STATE_PLAYER_IDLE;
 
@@ -112,14 +112,52 @@ int PlayerCharacter::UseWeapon(Character& in_target) {
 }
 
 void PlayerCharacter::CalculateAnimationState(float delta_time, bool is_attacking) {
-	if (IsAirborne()) {
+	
+	if (is_attacking) {
+		animation_state_ = ANIMATION_STATE_IS_ATTACKING;
+		animation_timeline_ = 0.0f;
+	}
+
+	if (animation_state_ == ANIMATION_STATE_IS_ATTACKING) {
+		animation_timeline_ += delta_time;
+	
+		if (weapon_ptr_->GetID() == WEAPON_SWORD) {
+			if (animation_timeline_ < 0.1f) {
+				SetObjectID(OBJECT_ID_PLAYER_ATTACK_SWORD_STANCE_1);
+			}
+			else if (animation_timeline_ >= 0.1f && animation_timeline_ <= 0.15f) {
+				SetObjectID(OBJECT_ID_PLAYER_ATTACK_SWORD_STANCE_2);
+			}
+			else if (animation_timeline_ > 0.15f && animation_timeline_ <= 0.3f) {
+				SetObjectID(OBJECT_ID_PLAYER_ATTACK_SWORD_STANCE_3);
+			}
+			else if (animation_timeline_ > 0.3f) {
+				animation_state_ = ANIMATION_STATE_PLAYER_IDLE;
+			}
+		}
+		else if (weapon_ptr_->GetID() == WEAPON_AXE) {
+			if (animation_timeline_ < 0.1f) {
+				SetObjectID(OBJECT_ID_PLAYER_ATTACK_AXE_STANCE_1);
+			}
+			else if (animation_timeline_ >= 0.1f && animation_timeline_ <= 0.15f) {
+				SetObjectID(OBJECT_ID_PLAYER_ATTACK_AXE_STANCE_2);
+			}
+			else if (animation_timeline_ > 0.15f && animation_timeline_ <= 0.3f) {
+				SetObjectID(OBJECT_ID_PLAYER_ATTACK_AXE_STANCE_3);
+			}
+			else if (animation_timeline_ > 0.3f) {
+				animation_state_ = ANIMATION_STATE_PLAYER_IDLE;
+			}
+		}
+	}
+	else if (IsAirborne() && (GetVelocityVec().y < -65.0f || GetVelocityVec().y > 0.0f)) {
 		animation_state_ = ANIMATION_STATE_PLAYER_JUMP;
 		SetObjectID(OBJECT_ID_PLAYER_JUMP);
 	}
 	else if (abs(GetVelocityVec().x) > 0.0f) {
 		animation_state_ = ANIMATION_STATE_PLAYER_WALK;
 		animation_timeline_ += delta_time;
-		if (animation_timeline_ > 0.1f) {
+		if (animation_timeline_ > 0.13f) {
 			if (id_ == OBJECT_ID_PLAYER_LEFT_WALK_1) {
 				SetObjectID(OBJECT_ID_PLAYER_LEFT_WALK_2);
 			}
@@ -141,48 +179,7 @@ void PlayerCharacter::CalculateAnimationState(float delta_time, bool is_attackin
 			animation_timeline_ = 0.0f;
 		}
 	}
-	/*else if (true) {
-		if (weapon_ptr_->GetID() == WEAPON_SWORD) {
-			animation_state_ = ANIMATION_STATE_PLAYER_SWORD_ATTACK;
-			animation_timeline_ += delta_time;
-			if (animation_timeline_ > 0.1f) {
-				if (id_ == OBJECT_ID_PLAYER_ATTACK_SWORD_STANCE_1) {
-					SetObjectID(OBJECT_ID_PLAYER_ATTACK_SWORD_STANCE_2);
-				}
-				else if (id_ == OBJECT_ID_PLAYER_ATTACK_SWORD_STANCE_2) {
-					SetObjectID(OBJECT_ID_PLAYER_ATTACK_SWORD_STANCE_3);
-				}
-				else {
-					SetObjectID(OBJECT_ID_PLAYER_ATTACK_SWORD_STANCE_1);
-				}
-				animation_timeline_ = 0.0f;
-			}
-		}
-		else if (weapon_ptr_->GetID() == WEAPON_AXE) {
-			animation_state_ = ANIMATION_STATE_PLAYER_AXE_ATTACK;
-		}
-	}*/
-	else if (is_attacking) {
-		if (weapon_ptr_->GetID() == WEAPON_SWORD) {
-			animation_state_ = ANIMATION_STATE_PLAYER_SWORD_ATTACK;
-			animation_timeline_ += delta_time;
-			if (animation_timeline_ > 0.1f) {
-				if (id_ == OBJECT_ID_PLAYER_ATTACK_SWORD_STANCE_1) {
-					SetObjectID(OBJECT_ID_PLAYER_ATTACK_SWORD_STANCE_2);
-				}
-				else if (id_ == OBJECT_ID_PLAYER_ATTACK_SWORD_STANCE_2) {
-					SetObjectID(OBJECT_ID_PLAYER_ATTACK_SWORD_STANCE_3);
-				}
-				else {
-					SetObjectID(OBJECT_ID_PLAYER_ATTACK_SWORD_STANCE_1);
-				}
-				animation_timeline_ = 0.0f;
-			}
-		}
-		else if (weapon_ptr_->GetID() == WEAPON_AXE) {
-			animation_state_ = ANIMATION_STATE_PLAYER_AXE_ATTACK;
-		}
-	}
+	
 	else {
 		animation_state_ = ANIMATION_STATE_PLAYER_IDLE;
 		SetObjectID(OBJECT_ID_PLAYER_IDLE);
