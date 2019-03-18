@@ -1,4 +1,5 @@
 #include "object_handler.h"
+#include "Character/NPCs/NPC_ghost.h"
 
 //Private--------------------------------------------------
 bool ObjectHandler::ClearPtrVector(std::vector<ObjectClass*>& in_vec) {
@@ -82,6 +83,8 @@ void ObjectHandler::DeterminePlayerAction(
 	//Update the player's status (such as cooldowns)
 	this->player_ptr_->UpdateStatus(in_deltatime);
 	player_ptr_->CalculateAnimationState(in_deltatime);
+	static float time = 0;
+	time += in_deltatime;
 
 	//Determine player movement on the x-axis
 	if (this->player_input_.left) {
@@ -102,13 +105,18 @@ void ObjectHandler::DeterminePlayerAction(
 	}
 	//If input is attack
 	if (this->player_input_.attack) {
-		this->ResolvePlayerAttack(in_relevant_npcs_ptr_vector);
+		if (time > player_ptr_->GetWeapon()->GetCooldown())
+		{
+			time = 0;
+			this->ResolvePlayerAttack(in_relevant_npcs_ptr_vector);
+		}
+		
 	}
 	//If input is to pick up
 	if (this->player_input_.pick_up) {
 		this->ResolvePlayerPickUp(in_relevant_drops_ptr_vector);
 	}
-
+	
 }
 
 void ObjectHandler::ResolvePlayerPickUp(std::vector<ObjectClass*>& in_relevant_drops_ptr_vector) {
@@ -169,7 +177,14 @@ void ObjectHandler::ResolvePlayerPickUp(std::vector<ObjectClass*>& in_relevant_d
 void ObjectHandler::ResolvePlayerAttack(std::vector<ObjectClass*>& in_relevant_npcs_ptr_vector) {
 
 	Character* character_ptr = NULL;
-	int outcome;
+	int outcome = -1;
+	int sound_index = -1;
+
+	// First check if boss is hit
+	if (boss_ptr_)
+	{
+		sound_index = ResolveBossAttack();
+	}
 
 	//Loop over all relevant npcs
 	for (unsigned int i = 0; i < in_relevant_npcs_ptr_vector.size(); i++) {
@@ -178,6 +193,14 @@ void ObjectHandler::ResolvePlayerAttack(std::vector<ObjectClass*>& in_relevant_n
 		if (character_ptr != NULL) {
 			//Send in a npc and check if the player hits it with the attack
 			outcome = this->player_ptr_->UseWeapon(*character_ptr);
+			if (0 == outcome && sound_index != 1)
+			{
+				sound_index = 0;
+			}
+			else if (1 == outcome) {
+				index_of_the_dead.push_back(i);
+				sound_index = 1;
+			}
 		}
 	}
 }
@@ -199,6 +222,17 @@ void ObjectHandler::ResolveRandomDropSpawn(glm::vec3 in_pos, float in_drop_rate)
 		this->drop_ptr_vector_.push_back(spawn_ptr);
 	}
 
+}
+
+int ObjectHandler::ResolveBossAttack() {
+	int sound_index = -1;
+
+	if (player_ptr_->UseWeapon(*boss_ptr_) != -1)
+	{
+		sound_index = 0;
+	}
+
+	return sound_index;
 }
 
 void ObjectHandler::ProcessNPCs(const float& in_deltatime, std::vector<ObjectClass*>& in_npcs_ptr_vector) {
@@ -325,6 +359,11 @@ void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map
 	//Create player
 	//Assign spawn position randomly via meta data
 	this->player_ptr_ = new PlayerCharacter(glm::vec3(meta_data->GetSpawnPointCoords(), 3.0f));
+	//this->player_ptr_ = new PlayerCharacter(glm::vec3(564.0f, -220.0f, 5.0f));
+	this->player_ptr_->SetScale(2.0f);
+	this->player_ptr_->SetOffsets(2, 2);
+	this->player_ptr_->LoadPlayerSounds();
+	
 
 	// Create NPCs and spawn them on every light source
 	for (int i = 2; i < meta_data->GetLightPositions().size(); i++) {
@@ -342,6 +381,9 @@ void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map
 			else if (meta_data->GetZone(meta_data->GetLightPositions()[i]) == BLU) {
 				this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(meta_data->GetLightPositions()[i], 5.0f), OBJECT_ID_ICE_AI));
 			}
+			/*float scale = GlobalSettings::Access()->ValueOf("NPC_RUNNER_SCALE");
+			this->npc_ptr_vector_.back()->SetScale(scale);
+			this->npc_ptr_vector_.back()->SetOffsets(scale, scale);*/
 		}
 	}
 	this->nr_of_runners_ = this->npc_ptr_vector_.size();
@@ -457,14 +499,22 @@ std::vector<ObjectPackage> ObjectHandler::UpdateAndRetrieve(float in_deltatime) 
 	this->PackObjectIntoVector(this->player_ptr_, package_vector);
 	this->PackObjectVectorIntoVector(relevant_npcs_ptr_vector, package_vector);
 	this->PackObjectVectorIntoVector(relevant_drops_ptr_vector, package_vector);
-
+	
 	// if boss exists, process all boss stuff
 	if (boss_ptr_) {
 		boss_ptr_->ExecuteAI(in_deltatime, player_ptr_->GetPosition());
+		boss_ptr_->UpdateBossDamageToPlayer(in_deltatime, player_ptr_);
 		this->PackObjectIntoVector(this->boss_ptr_, package_vector);
 		std::vector<ObjectClass*> temp_boss_list = boss_ptr_->GetBossObjectVector();
 		this->PackObjectVectorIntoVector(temp_boss_list, package_vector);
+
+		if (!PlayerInBossRoom()) {
+			SetPlayerXYZPosForBoss();
+		}
+
+		DetermineBossAction();
 	}
+	
 
 	return package_vector;
 }
@@ -490,8 +540,9 @@ bool ObjectHandler::PlayerInBossRoom() {
 	 return check;
 }
 
-void ObjectHandler::SetPlayerXYZPosForBoss()
-{
+void ObjectHandler::SetPlayerXYZPosForBoss() {
+	this->player_ptr_->SetVelocityVec({ 0,0,0 });
+
 	this->player_ptr_->SetPosition(
 		GlobalSettings::Access()->ValueOf("DROP_BOSS_DOOR_DESTINATION_X"),
 		GlobalSettings::Access()->ValueOf("DROP_BOSS_DOOR_DESTINATION_Y"),
@@ -501,8 +552,83 @@ void ObjectHandler::SetPlayerXYZPosForBoss()
 
 void ObjectHandler::SpawnBoss() {
 	
-	boss_ptr_ = new NPCBoss(glm::vec3(160, -1100, 10));
+	boss_ptr_ = new NPCBoss(glm::vec3(160, -1110, 10));
 	boss_ptr_->SetPosition(160, -1110, 10);
 	std::cout << "Spawned boss" << std::endl;
+}
+
+void ObjectHandler::DetermineBossAction() {
+
+	if (boss_ptr_->actions_.spawn_mobs) {
+		
+		if (boss_ptr_->GetBossStage() == BossStage::STAGE_2) {
+			this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(100, -1180, 5.0f), OBJECT_ID_FIRE_AI));
+			this->npc_ptr_vector_.back()->SetScale(2);
+			this->npc_ptr_vector_.back()->SetOffsets(2, 2);
+			NPCRunner* temp_npc_ptr = dynamic_cast<NPCRunner*>(this->npc_ptr_vector_.back());
+			temp_npc_ptr->SetAggroRange(200);
+
+			this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(220, -1180, 5.0f), OBJECT_ID_FIRE_AI));
+			this->npc_ptr_vector_.back()->SetScale(2);
+			this->npc_ptr_vector_.back()->SetOffsets(2, 2);
+			temp_npc_ptr = dynamic_cast<NPCRunner*>(this->npc_ptr_vector_.back());
+			temp_npc_ptr->SetAggroRange(200);
+		}
+		
+		if (boss_ptr_->GetBossStage() == BossStage::STAGE_3) {
+			int rand_x_pos = rand() % 220 + 100;
+			this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(rand_x_pos, -1100, 5.0f), OBJECT_ID_FIRE_AI));
+			this->npc_ptr_vector_.back()->SetScale(1.5);
+			this->npc_ptr_vector_.back()->SetOffsets(1.5, 1.5);
+			NPCRunner* temp_npc_ptr = dynamic_cast<NPCRunner*>(this->npc_ptr_vector_.back());
+			temp_npc_ptr->SetAggroRange(200);
+			temp_npc_ptr->SetJumpVelocity(300);
+			temp_npc_ptr->SetAggroVelocity(3000);
+		}
+
+		boss_ptr_->actions_.spawn_mobs = false;
+	}
+	
+	if (boss_ptr_->actions_.spawn_ghost) {
+		int position_index = rand() % 3;
+		switch (position_index) {
+		case 0:
+			this->npc_ptr_vector_.push_back(new NPCGhost(glm::vec3(160, -1050, 5.0f), OBJECT_ID_NULL));
+			break;
+		case 1:
+			this->npc_ptr_vector_.push_back(new NPCGhost(glm::vec3(20, -1180, 5.0f), OBJECT_ID_NULL));
+			break;
+		case 2:
+			this->npc_ptr_vector_.push_back(new NPCGhost(glm::vec3(300, -1180, 5.0f), OBJECT_ID_NULL));
+			break;
+		default:
+			break;
+		}
+		
+		boss_ptr_->actions_.spawn_ghost = false;
+	}
+
+	if (boss_ptr_->actions_.spawn_jombo) {
+		this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(160, -1100, 5.0f), OBJECT_ID_WOOD_AI));
+		this->npc_ptr_vector_.back()->SetScale(4);
+		this->npc_ptr_vector_.back()->SetOffsets(4, 4);
+		NPCRunner* temp_npc_ptr = dynamic_cast<NPCRunner*>(this->npc_ptr_vector_.back());
+		temp_npc_ptr->SetAggroRange(300);
+		temp_npc_ptr->SetJumpVelocity(150);
+		temp_npc_ptr->SetAggroVelocity(1000);
+		temp_npc_ptr->SetMaxHealth(120);
+		temp_npc_ptr->SetCurrentHealth(120);
+		boss_ptr_->actions_.spawn_jombo = false;
+	}
+
+	
+
+}
+
+bool ObjectHandler::GetBossAttackState() {
+	if (boss_ptr_) {
+		return boss_ptr_->actions_.attack_light;
+	}
+	return false;
 }
 

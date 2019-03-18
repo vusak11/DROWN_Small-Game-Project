@@ -3,6 +3,7 @@
 SoundUnit::SoundUnit() {
 	buffer_.loadFromFile((char*)"../Resources/Audio/default_sound.wav");
 	sound_.setBuffer(buffer_);
+	sound_.setRelativeToListener(true);
 
 	music_file_name_ = ((char*)"../Resources/Audio/default_sound.wav");
 	music_.setVolume(20);
@@ -66,3 +67,27 @@ int SoundUnit::GetVolumeMusic() const {
 //void SoundUnit::SetPosition(float x, float y, float z) {
 //	music_.setPosition(x, y, z);
 //}
+
+
+void SoundUnit::SetAttenuation(float attenuation) {
+	music_.setAttenuation(attenuation);
+
+}
+
+void SoundUnit::SetMinDistance(float distance) {
+	music_.setMinDistance(distance);
+	music_.setRelativeToListener(true);
+	std::cout << "sounddist_ " << music_.getPosition().x << " " << music_.getPosition().y << std::endl;
+}
+
+void SoundUnit::SetPosition(float x, float y, float z) {
+	music_.setRelativeToListener(true);
+	music_.setAttenuation(0);
+	music_.setMinDistance(5000);
+	music_.setPosition(x, y, z);
+
+}
+
+sf::Vector3f SoundUnit::GetMusicPos() const {
+	return music_.getPosition();
+}

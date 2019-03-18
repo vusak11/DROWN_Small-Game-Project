@@ -46,6 +46,8 @@ public:
 		glm::mat4 perspective_view_matrix,
 		std::vector<ObjectPackage>& object_vector,
 		PlayerInfoPackage player_data,
+		bool boss_warning_light_state,
+		GameState game_state,
 		bool mini_map_enabled
 		);
 

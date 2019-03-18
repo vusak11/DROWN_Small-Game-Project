@@ -20,8 +20,14 @@ private:
 
 	CameraHandler* cam_handler_ptr_;
 	ObjectHandler* obj_handler_ptr_;
-	SoundUnit* sound_unit_ptr_;	// this variable contains functionality to play overworld songs
 	MetaData* meta_data_ptr_;
+
+	SoundUnit sound_unit_game_;	// this variable contains functionality to play overworld songs
+	//SoundUnit* sound_unit_ptr_;	// this variable contains functionality to play overworld songs
+	//SoundUnit sound_zone_1;
+	//SoundUnit sound_zone_2;
+	//SoundUnit sound_zone_3;
+	int music_state = 0;
 
 	Render render_;
 
@@ -57,6 +63,8 @@ public:
 
 	bool IsLoaded();
 	bool IsRunning();
+	MetaData* getMetaDataPtr() const;
+	void UpdateSound(glm::vec3 player_pos);
 };
 
 #endif // !GAME_H

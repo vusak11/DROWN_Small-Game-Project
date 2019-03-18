@@ -1,4 +1,5 @@
 #include "player_character.h"
+#include "../../Core/sound_unit.h"
 
 //Private--------------------------------------------------
 void PlayerCharacter::AlterVelocity() {
@@ -59,6 +60,10 @@ WeaponID PlayerCharacter::GetWeaponID() const {
 
 int PlayerCharacter::GetNumOfKeys() const {
 	return this->num_of_keys_;
+}
+
+Weapon* PlayerCharacter::GetWeapon() const {
+	return this->weapon_ptr_;
 }
 
 void PlayerCharacter::MoveLeft() {
@@ -190,4 +195,53 @@ void PlayerCharacter::UpdateStatus(const float& in_deltatime) {
 void PlayerCharacter::IncreaseKeys() {
 	//Increase keys by one
 	this->num_of_keys_++;
+}
+
+void PlayerCharacter::LoadPlayerSounds() {
+	sound_atk_1_.LoadSound((char*)"../Resources/Audio/swosh1.wav");
+	sound_atk_2_.LoadSound((char*)"../Resources/Audio/swosh5.wav");
+	sound_atk_3_.LoadSound((char*)"../Resources/Audio/swosh6.wav");
+	sound_axe_1_.LoadSound((char*)"../Resources/Audio/swosh_axe1.wav");
+	sound_axe_2_.LoadSound((char*)"../Resources/Audio/swosh_axe2.wav");
+}
+
+void PlayerCharacter::PlaySound(int sound_index) {
+	WeaponID id_index = GetWeaponID();
+
+	if (id_index == WeaponID::WEAPON_AXE)
+	{
+		switch (sound_index)
+		{
+		case -1:
+			sound_axe_1_.PlaySound();
+			break;
+		case 0:
+			sound_axe_2_.PlaySound();
+			break;
+		case 1:
+			sound_axe_2_.PlaySound();
+			break;
+		default:
+			break;
+		}
+	}
+	else if (id_index == WeaponID::WEAPON_SWORD)
+	{
+		switch (sound_index)
+		{
+		case -1:
+			sound_atk_1_.PlaySound();
+			break;
+		case 0:
+			sound_atk_2_.PlaySound();
+			break;
+		case 1:
+			sound_atk_3_.PlaySound();
+			break;
+		default:
+			break;
+		}
+	}
+
+	
 }

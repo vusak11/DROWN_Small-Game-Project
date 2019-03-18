@@ -31,6 +31,8 @@ protected:
 	bool invincible_;
 	*/
 
+	
+
 public:
 	Character(glm::vec3 start_pos, ObjectID id, int start_hp, int start_atk);
 	~Character();
@@ -56,6 +58,7 @@ public:
 	//Character Movement Stuff-----------------------------
 	void TurnLeft(const float& in_deltatime);
 	void TurnRight(const float& in_deltatime);
+
 };
 
 #endif // !CHARACTER_H

@@ -33,9 +33,6 @@ public:
 	void SetVolumeMusic(int volume); // Volume from 0 -> 100
 	int GetVolumeMusic() const;
 
-	//void SetAttenuation(float attenuation);
-	//void SetMinDistance(float distance);
-	//void SetPosition(float x, float y, float z);
 	void SetAttenuation(float attenuation);
 	void SetMinDistance(float distance);
 	void SetPosition(float x, float y, float z);
