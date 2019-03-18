@@ -82,7 +82,7 @@ void ObjectHandler::DeterminePlayerAction(
 
 	//Update the player's status (such as cooldowns)
 	this->player_ptr_->UpdateStatus(in_deltatime);
-	player_ptr_->CalculateAnimationState(in_deltatime);
+	player_ptr_->CalculateAnimationState(in_deltatime, player_input_.attack);
 	static float time = 0;
 	time += in_deltatime;
 

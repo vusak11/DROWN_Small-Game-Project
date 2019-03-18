@@ -17,7 +17,7 @@ private:
 	Ability* ability_ptr_;
 	Weapon* weapon_ptr_;
 	AnimationState animation_state_;
-	float animation_timeline_ = 0;
+	float animation_timeline_ = 0.0f;
 
 	int num_of_keys_;
 
@@ -48,7 +48,7 @@ public:
 	void UseAbility();
 	int UseWeapon(Character& in_target);
 
-	void CalculateAnimationState(float delta_time);
+	void CalculateAnimationState(float in_deltatime, bool is_attacking);
 
 	Ability* SwapAbility(Ability* in_ability_ptr);
 	Weapon* SwapWeapon(Weapon* in_weapon_ptr);
