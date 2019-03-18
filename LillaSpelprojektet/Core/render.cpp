@@ -351,6 +351,15 @@ void Render::RenderDeathMenu(Menu menu) {
 	menu.RenderDeathMenu(text_shaders_);
 }
 
+void Render::RenderVictoryMenu(Menu menu) {
+	glDisable(GL_DEPTH_TEST);
+	glEnable(GL_BLEND);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT);
+
+	menu.RenderVictoryMenu(text_shaders_);
+}
+
 // RenderQuad() Renders a 1x1 quad in NDC, best used for framebuffer color targets
 // and post-processing effects.
 void Render::RenderQuad() {

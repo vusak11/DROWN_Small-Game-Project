@@ -96,7 +96,8 @@ enum GameState {
 	OPTIONS,
 	DEATH,
 	BOSS,
-	QUIT
+	QUIT, 
+	VICTORY
 };
 
 //---------------------------------------------------------

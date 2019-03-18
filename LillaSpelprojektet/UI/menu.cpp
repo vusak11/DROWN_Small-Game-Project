@@ -5,7 +5,6 @@ Menu::Menu() {
 	nr_of_items_ = 0;
 }
 
-
 Menu::~Menu() {
 }
 
@@ -557,6 +556,64 @@ void Menu::RenderDeathMenu(ShaderHandler * shader_handler) {
 	/*---------End Quit-----------------*/
 }
 
+void Menu::RenderVictoryMenu(ShaderHandler * shader_handler) {
+	int window_width = GlobalSettings::Access()->ValueOf("WINDOW_WIDTH");
+	int window_height = GlobalSettings::Access()->ValueOf("WINDOW_HEIGHT");
+
+	/*----------------Title---------------------*/
+	RenderText(
+		shader_handler,
+		"YOU WON",
+		((float)window_width) / 5.0f,
+		(((float)window_height) / 10.0f) * 7.0f,
+		3.0f,
+		glm::vec3(1.0f, 1.0f, 1.0f)
+	);
+	/*----------------End Title-----------------*/
+	/*----------------Restart-----------------*/
+	if (selected_item_index_ == 0) {
+		RenderText(
+			shader_handler,
+			"Restart",
+			((float)window_width) / 2.0f - 500.0f,
+			((float)window_height) / 10.0f * 5.0f,
+			2.0f,
+			glm::vec3(0.8f, 0.8f, 0.8f)
+		);
+	}
+	else {
+		RenderText(
+			shader_handler,
+			"Restart",
+			((float)window_width) / 2.0f - 530.0f,
+			((float)window_height) / 10.0f * 5.0f,
+			2.0f,
+			glm::vec3(0.75f, 0.0f, 0.0f)
+		);
+	}
+	if (selected_item_index_ == 1) {
+		RenderText(
+			shader_handler,
+			"Quit",
+			((float)window_width) / 2.0f - 530.0f,
+			((float)window_height) / 10.0f * 3.0f,
+			2.0f,
+			glm::vec3(0.8f, 0.8f, 0.8f)
+		);
+	}
+	else {
+		RenderText(
+			shader_handler,
+			"Quit",
+			((float)window_width) / 2.0f - 530.0f,
+			((float)window_height) / 10.0f * 3.0f,
+			2.0f,
+			glm::vec3(0.75f, 0.0f, 0.0f)
+		);
+	}
+
+}
+
 void Menu::StateManager(GameState state) {
 	if (state == MENU || state == DEATH) {
 		nr_of_items_ = 3;
@@ -566,6 +623,9 @@ void Menu::StateManager(GameState state) {
 	}
 	else if (state == OPTIONS) {
 		nr_of_items_ = 4;
+	}
+	else if (state == VICTORY) {
+		nr_of_items_ = 2;
 	}
 }
 
