@@ -11,7 +11,7 @@ void PlayerCharacter::AlterVelocity() {
 
 	//If velocity exceeds top_speed clamp it down
 	float positive_velocity = velocity.x * this->looking_towards_x_;
-	if (positive_velocity > this->move_top_speed_) { 
+	if (positive_velocity > this->move_top_speed_) {
 		velocity.x = this->move_top_speed_ * this->looking_towards_x_;
 	}
 
@@ -31,23 +31,28 @@ PlayerCharacter::PlayerCharacter(glm::vec3 start_pos)
 	this->move_acceleration_rate_ = GlobalSettings::Access()->ValueOf("PLAYER_MOVE_ACCELERATION_RATE");
 	this->move_acceleration_ = this->move_top_speed_ / this->move_acceleration_rate_;
 	this->jump_speed_ = GlobalSettings::Access()->ValueOf("PLAYER_JUMP_VELOCITY");
-	
-	//this->ability_ptr_ = new Ability();
-	this->ability_ptr_ = new DoubleJump();
+
+	this->ability_ptr_ = new Ability();
+	//this->ability_ptr_ = new DoubleJump();
 	//this->ability_ptr_ = new Dash();
-	
+
 	this->weapon_ptr_ = new Sword();
 	//this->weapon_ptr_ = new Axe();
 
 	animation_state_ = ANIMATION_STATE_PLAYER_IDLE;
 
+	//Airborne fix
+	this->airborne_cd_ptr_ = new CooldownClass(GlobalSettings::Access()->ValueOf("PLAYER_AIRBORNE_COOLDOWN"));
+
 	//Set the base scale of this type of unit
 	this->SetScale(2.0f);
+	this->SetOffsets(2.0f, 2.0f);
 }
 
 PlayerCharacter::~PlayerCharacter() {
-	delete ability_ptr_;
-	delete weapon_ptr_;
+	delete this->ability_ptr_;
+	delete this->weapon_ptr_;
+	delete this->airborne_cd_ptr_;
 }
 
 AbilityID PlayerCharacter::GetAbilityID() const {
@@ -104,7 +109,7 @@ void PlayerCharacter::Jump() {
 		//If they do we call for the execution of that ability
 		this->ability_ptr_->ExecuteAbility(*this);
 	}
-	
+
 	return;
 }
 
@@ -117,7 +122,7 @@ int PlayerCharacter::UseWeapon(Character& in_target) {
 }
 
 void PlayerCharacter::CalculateAnimationState(float in_deltatime, bool is_attacking) {
-	
+
 	if (is_attacking) {
 		animation_state_ = ANIMATION_STATE_IS_ATTACKING;
 		animation_timeline_ = 0.0f;
@@ -125,7 +130,7 @@ void PlayerCharacter::CalculateAnimationState(float in_deltatime, bool is_attack
 
 	if (animation_state_ == ANIMATION_STATE_IS_ATTACKING) {
 		animation_timeline_ += in_deltatime;
-	
+
 		if (weapon_ptr_->GetID() == WEAPON_SWORD) {
 			if (animation_timeline_ < 0.1f) {
 				SetObjectID(OBJECT_ID_PLAYER_ATTACK_SWORD_STANCE_1);
@@ -184,7 +189,7 @@ void PlayerCharacter::CalculateAnimationState(float in_deltatime, bool is_attack
 			animation_timeline_ = 0.0f;
 		}
 	}
-	
+
 	else {
 		animation_state_ = ANIMATION_STATE_PLAYER_IDLE;
 		SetObjectID(OBJECT_ID_PLAYER_IDLE);
@@ -198,7 +203,7 @@ Ability* PlayerCharacter::SwapAbility(Ability* in_ability_ptr) {
 
 	//Save the pointer to the new ability
 	this->ability_ptr_ = in_ability_ptr;
-	
+
 	//Return the old ability
 	return old_ability_ptr;
 }
@@ -215,7 +220,17 @@ Weapon* PlayerCharacter::SwapWeapon(Weapon* in_weapon_ptr) {
 }
 
 void PlayerCharacter::SetAirborne(bool in_air) {
-	this->airborne_ = in_air;
+
+	//Airborne fix
+	if (in_air	&&	this->airborne_cd_ptr_->IsOffCooldown()) {
+		this->airborne_ = true;
+	}
+	else {
+		if (this->airborne_cd_ptr_->IsOffCooldown()) {
+			this->airborne_cd_ptr_->BeginCooldown();
+		}
+		this->airborne_ = false;
+	}
 
 	//If the player just was put out of the air
 	//and it has a double jump, set the double jump to available
@@ -226,7 +241,7 @@ void PlayerCharacter::SetAirborne(bool in_air) {
 }
 
 void PlayerCharacter::UpdateStatus(const float& in_deltatime) {
-	
+
 	//Check if the current ability is a cooldown ability
 	CooldownClass* cd_class_ptr = dynamic_cast<CooldownClass*>(this->ability_ptr_);
 	if (cd_class_ptr != NULL) {
@@ -237,6 +252,8 @@ void PlayerCharacter::UpdateStatus(const float& in_deltatime) {
 	//Update weapon cooldown
 	this->weapon_ptr_->UpdateCooldown(in_deltatime);
 
+	//Airborne fix
+	this->airborne_cd_ptr_->UpdateCooldown(in_deltatime);
 }
 
 void PlayerCharacter::IncreaseKeys() {
@@ -290,5 +307,5 @@ void PlayerCharacter::PlaySound(int sound_index) {
 		}
 	}
 
-	
+
 }
