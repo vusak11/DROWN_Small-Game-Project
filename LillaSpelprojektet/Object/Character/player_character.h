@@ -22,6 +22,7 @@ private:
 	int num_of_keys_;
 
 	//Airborne fix
+	CooldownClass* jump_cd_ptr_;
 	CooldownClass* airborne_cd_ptr_;
 
 	SoundUnit sound_atk_1_;

@@ -42,6 +42,7 @@ PlayerCharacter::PlayerCharacter(glm::vec3 start_pos)
 	animation_state_ = ANIMATION_STATE_PLAYER_IDLE;
 
 	//Airborne fix
+	this->jump_cd_ptr_ = new CooldownClass(GlobalSettings::Access()->ValueOf("PLAYER_JUMP_COOLDOWN"));
 	this->airborne_cd_ptr_ = new CooldownClass(GlobalSettings::Access()->ValueOf("PLAYER_AIRBORNE_COOLDOWN"));
 
 	//Set the base scale of this type of unit
@@ -52,6 +53,7 @@ PlayerCharacter::PlayerCharacter(glm::vec3 start_pos)
 PlayerCharacter::~PlayerCharacter() {
 	delete this->ability_ptr_;
 	delete this->weapon_ptr_;
+	delete this->jump_cd_ptr_;
 	delete this->airborne_cd_ptr_;
 }
 
@@ -97,8 +99,11 @@ void PlayerCharacter::MoveRight() {
 
 void PlayerCharacter::Jump() {
 
-	//If player is not in the air
-	if (!this->airborne_) {
+	//If player is not in the air	AND	jump cd is 0
+	if (!this->airborne_	&&	this->jump_cd_ptr_->IsOffCooldown()) {
+		//Begin jump cd
+		this->jump_cd_ptr_->BeginCooldown();
+
 		//Set player velocity towards positive y
 		glm::vec3 new_velocity = this->GetVelocityVec();
 		new_velocity.y = this->jump_speed_;
@@ -253,6 +258,7 @@ void PlayerCharacter::UpdateStatus(const float& in_deltatime) {
 	this->weapon_ptr_->UpdateCooldown(in_deltatime);
 
 	//Airborne fix
+	this->jump_cd_ptr_->UpdateCooldown(in_deltatime);
 	this->airborne_cd_ptr_->UpdateCooldown(in_deltatime);
 }
 
