@@ -259,18 +259,19 @@ void ObjectHandler::RemoveDeadNPCs(std::vector<ObjectClass*>& in_relevant_npcs_p
 	//This function checks for NPCs with 0 or less health,
 	//removes them and calls for spawning a drop in their place
 
-	Character* char_ptr = NULL;
+	NPC* npc_ptr = NULL;
 	glm::vec3 spawn_pos = glm::vec3(0.0f);
 
 	for (unsigned int i = 0; i < in_relevant_npcs_ptr_vector.size(); i++) {
 		//Cast to character
-		char_ptr = dynamic_cast<Character*>(in_relevant_npcs_ptr_vector.at(i));
-		if (char_ptr != NULL) {
+		npc_ptr = dynamic_cast<NPC*>(in_relevant_npcs_ptr_vector.at(i));
+		if (npc_ptr != NULL) {
 			//If the character has 0 or less hp
-			if (char_ptr->GetCurrentHealth() <= 0) {
+			//if (npc_ptr->GetCurrentHealth() <= 0) {
+			if (npc_ptr->IsDead()) {
 
 				//Call function to randomize if a drop should spawn
-				spawn_pos = char_ptr->GetPosition();
+				spawn_pos = npc_ptr->GetPosition();
 				//this->ResolveRandomDropSpawn(spawn_pos, this->enemy_drop_rate_);
 				this->ResolveRandomDropSpawn(spawn_pos, 100.0f);
 

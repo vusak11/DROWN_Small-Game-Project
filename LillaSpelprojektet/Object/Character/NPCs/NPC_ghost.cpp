@@ -23,6 +23,9 @@ NPCGhost::~NPCGhost() {
 
 void NPCGhost::ExecuteAI(float in_deltatime, glm::vec3 in_player_pos) {
 
+	//If we are in the process of dying, return
+	if (this->ExecuteDeath(in_deltatime)) { return; }
+
 	glm::vec3 temp_position = GetPosition();
 	glm::vec3 temp_velocity = GetVelocityVec();
 	float aggro_speed = GlobalSettings::Access()->ValueOf("NPC_GHOST_AGGRO_SPEED");
