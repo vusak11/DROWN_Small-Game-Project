@@ -28,7 +28,6 @@ void MetaData::Initialize() {
 		glm::vec2(2011, -1267),
 		glm::vec2(157, -1369),
 		glm::vec2(1186, -1468),
-		glm::vec2(1026, -525),
 		glm::vec2(446, -1664)
 	};
 	light_positions_ = {

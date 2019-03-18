@@ -364,12 +364,6 @@ void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map
 	this->player_ptr_->SetOffsets(2, 2);
 	this->player_ptr_->LoadPlayerSounds();
 	
-	glm::vec3 drop_pos = this->player_ptr_->GetPosition();
-	
-	//TEMP
-	drop_pos.x += 10.0f;
-	this->drop_ptr_vector_.push_back(new Chest(drop_pos));
-	//TEMP
 
 	// Create NPCs and spawn them on every light source
 	for (int i = 2; i < meta_data->GetLightPositions().size(); i++) {
@@ -397,6 +391,13 @@ void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map
 	// Spawn keys
 	for (int i = 0; i < 3; i++) {
 		this->drop_ptr_vector_.push_back(new KeyDrop(glm::vec3(meta_data->GetDoorKeyCoords()[i], 0.0f)));
+	}
+	// Spawn treasure chests
+	for (int i = 0; i < meta_data->GetZonePOIs().size(); i++) {
+		this->drop_ptr_vector_.push_back(new Chest(glm::vec3(meta_data->GetZonePOIs()[i], 0.0f)));
+	}
+	for (int i = 0; i < meta_data->GetRemainingPOIs().size(); i++) {
+		this->drop_ptr_vector_.push_back(new Chest(glm::vec3(meta_data->GetRemainingPOIs()[i], 0.0f)));
 	}
 	// Spawn boss door
 	this->drop_ptr_vector_.push_back(new BossDoor(glm::vec3(meta_data->GetBossDoorCoords(), 0.0f)));
