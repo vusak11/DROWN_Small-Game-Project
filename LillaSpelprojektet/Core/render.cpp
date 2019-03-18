@@ -74,10 +74,14 @@ void Render::InitializeRender(MetaData* meta_data) {
 	//!!!
 
 	//Continue setting models
-	model_[OBJECT_ID_PLAYER_IDLE] = new Model((char*)"../Resources/Models/Character/IdleStance.obj");
-	model_[OBJECT_ID_PLAYER_JUMP] = new Model((char*)"../Resources/Models/Character/JumpStance.obj");
-	model_[OBJECT_ID_PLAYER_LEFT_WALK] = new Model((char*)"../Resources/Models/Character/LeftWalkStance.obj");
-	model_[OBJECT_ID_PLAYER_RIGHT_WALK] = new Model((char*)"../Resources/Models/Character/RightWalkStance.obj");
+	model_[OBJECT_ID_PLAYER_IDLE] = new Model((char*)"../Resources/Models/Character/Idle/IdleStance.obj");
+	model_[OBJECT_ID_PLAYER_JUMP] = new Model((char*)"../Resources/Models/Character/Jump/JumpStance.obj");
+	model_[OBJECT_ID_PLAYER_LEFT_WALK_1] = new Model((char*)"../Resources/Models/Character/L1/L1.obj");
+	model_[OBJECT_ID_PLAYER_LEFT_WALK_2] = new Model((char*)"../Resources/Models/Character/L2/L2.obj");
+	model_[OBJECT_ID_PLAYER_LEFT_WALK_3] = new Model((char*)"../Resources/Models/Character/L3/L3.obj");
+	model_[OBJECT_ID_PLAYER_RIGHT_WALK_1] = new Model((char*)"../Resources/Models/Character/R1/R1.obj");
+	model_[OBJECT_ID_PLAYER_RIGHT_WALK_2] = new Model((char*)"../Resources/Models/Character/R2/R2.obj");
+	model_[OBJECT_ID_PLAYER_RIGHT_WALK_3] = new Model((char*)"../Resources/Models/Character/R3/R3.obj");
 	model_[OBJECT_ID_PLAYER_ATTACK_SWORD_STANCE_1] = new Model((char*)"../Resources/Models/Character/Attack/Sword/AttackStance1/attackStance1.obj");
 	model_[OBJECT_ID_PLAYER_ATTACK_SWORD_STANCE_2] = new Model((char*)"../Resources/Models/Character/Attack/Sword/AttackStance2/attackStance2.obj");
 	model_[OBJECT_ID_PLAYER_ATTACK_SWORD_STANCE_3] = new Model((char*)"../Resources/Models/Character/Attack/Sword/AttackStance3/attackStance3.obj");
