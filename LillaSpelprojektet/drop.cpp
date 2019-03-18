@@ -3,7 +3,7 @@
 //Protected
 Drop* Drop::IDToDropPtr(AbilityID in_id) {
 	glm::vec3 pos = this->GetPosition();
-	
+
 	switch (in_id) {
 	case ABILITY_DOUBLE_JUMP:
 		return new DoubleJumpDrop(pos);
@@ -19,7 +19,7 @@ Drop* Drop::IDToDropPtr(AbilityID in_id) {
 
 Drop* Drop::IDToDropPtr(WeaponID in_id) {
 	glm::vec3 pos = this->GetPosition();
-	
+
 	switch (in_id) {
 	case WEAPON_SWORD:
 		return new SwordDrop(pos);
@@ -44,7 +44,6 @@ Drop::Drop(glm::vec3 creation_pos, ObjectID id) : ObjectClass(creation_pos, id) 
 
 	//Set the base scale of this type of unit
 	this->SetScale(2.0f);
-	this->SetOffsets(2.0f, 2.0f);
 }
 
 Drop::~Drop() {
@@ -52,13 +51,13 @@ Drop::~Drop() {
 }
 
 bool Drop::CheckCollision(PlayerCharacter& in_player) {
-	
+
 	//Get the player's hitbox
 	BoxPoints player_box = in_player.GetPoints();
 
 	//If this object doesn't collide, return false
 	if (!this->Hitbox::CheckCollision(player_box)) { return false; }
-	
+
 	//Otherwise trigger its event and return true/false
 	return this->TriggerEvent(in_player);
 }
@@ -168,7 +167,7 @@ SpdUpDrop::~SpdUpDrop() {}
 //----------------------------------------------------------
 //Private
 bool DashDrop::TriggerEvent(PlayerCharacter& in_player) {
-	
+
 	//Give the player a dash and catch the ptr to the old ability
 	Ability* old_ability_ptr = in_player.SwapAbility(new Dash());
 
@@ -194,7 +193,7 @@ DashDrop::~DashDrop() {}
 //---------------------------------------------------------
 //Private
 bool DoubleJumpDrop::TriggerEvent(PlayerCharacter& in_player) {
-	
+
 	//Give the player a double jump and catch the ptr to the old ability
 	Ability* old_ability_ptr = in_player.SwapAbility(new DoubleJump());
 
@@ -328,7 +327,7 @@ void BossDoor::SpinDrop(const float& in_deltatime) {
 //---------------------------------------------------------
 //Private
 bool Chest::TriggerEvent(PlayerCharacter& in_player) {
-	
+
 	//If the chest is already open, don't do anything
 	if (this->GetObjectID() == OBJECT_ID_DROP_CHEST_OPEN) {
 		return false;
