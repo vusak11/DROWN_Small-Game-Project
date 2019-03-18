@@ -4,6 +4,8 @@
 #include "../object_class.h"
 #include "../Character/player_character.h"
 #include "../../global_settings.h"
+#include "../Character/ability.h"
+#include "../Character/weapon.h"
 
 //---------------------------------------------------------
 //-----------------ABSTRACT-BASE-CLASS---------------------
@@ -13,11 +15,28 @@ class Drop : public ObjectClass {
 private:
 	virtual bool TriggerEvent(PlayerCharacter& in_player) = 0;
 
+protected:
+	bool swappable_;
+
+	//These two variables are used for drops that can
+	//spawn other drops. The resolution logic lies in
+	//the ObjectHandler
+	int random_spawns_;
+	Drop* set_spawns_ptr_;
+
+	//Functions to help
+	Drop* IDToDropPtr(AbilityID in_id);
+	Drop* IDToDropPtr(WeaponID in_id);
+
 public:
 	Drop(glm::vec3 creation_pos, ObjectID id);
 	~Drop();
 
 	bool CheckCollision(PlayerCharacter& in_player);
+	bool IsSwappable();
+
+	int ConsumeNumOfRandomSpawns();
+	Drop* RetrieveSetSpawnPtr();
 
 	virtual void SpinDrop(const float& in_deltatime);
 };
@@ -65,6 +84,63 @@ public:
 
 //---------------------------------------------------------
 
+class SpdUpDrop : public Drop {
+private:
+	int speed_;
+
+	bool TriggerEvent(PlayerCharacter& in_player);
+
+public:
+	SpdUpDrop(glm::vec3 creation_pos);
+	~SpdUpDrop();
+};
+
+//---------------------------------------------------------
+
+class DashDrop : public Drop {
+private:
+	bool TriggerEvent(PlayerCharacter& in_player);
+
+public:
+	DashDrop(glm::vec3 creation_pos);
+	~DashDrop();
+};
+
+//---------------------------------------------------------
+
+class DoubleJumpDrop : public Drop {
+private:
+	bool TriggerEvent(PlayerCharacter& in_player);
+
+public:
+	DoubleJumpDrop(glm::vec3 creation_pos);
+	~DoubleJumpDrop();
+};
+
+//---------------------------------------------------------
+
+class SwordDrop : public Drop {
+private:
+	bool TriggerEvent(PlayerCharacter& in_player);
+
+public:
+	SwordDrop(glm::vec3 creation_pos);
+	~SwordDrop();
+};
+
+//---------------------------------------------------------
+
+class AxeDrop : public Drop {
+private:
+	bool TriggerEvent(PlayerCharacter& in_player);
+
+public:
+	AxeDrop(glm::vec3 creation_pos);
+	~AxeDrop();
+};
+
+//---------------------------------------------------------
+
 class KeyDrop : public Drop {
 private:
 	bool TriggerEvent(PlayerCharacter& in_player);
@@ -79,6 +155,9 @@ public:
 class BossDoor : public Drop {
 private:
 	int keys_required_;
+	float target_coordinate_x_;
+	float target_coordinate_y_;
+	float target_coordinate_z_;
 
 	bool TriggerEvent(PlayerCharacter& in_player);
 
@@ -90,31 +169,18 @@ public:
 };
 
 //---------------------------------------------------------
-//------------------ABILITY DROPS--------------------------
-class AbilitiesDrop : public Drop {
-private:
-	//bool TriggerEvent(PlayerCharacter& in_player);
 
-public:
-	AbilitiesDrop(glm::vec3 creation_pos, ObjectID id);
-	~AbilitiesDrop();
-};
-class DashDrop : public AbilitiesDrop {
+class Chest : public Drop {
 private:
+	int num_of_loot_;
+
 	bool TriggerEvent(PlayerCharacter& in_player);
 
 public:
-	DashDrop(glm::vec3 creation_pos);
-	~DashDrop();
-};
+	Chest(glm::vec3 creation_pos);
+	~Chest();
 
-class DoubleJumpDrop : public AbilitiesDrop {
-private:
-	bool TriggerEvent(PlayerCharacter& in_player);
-
-public:
-	DoubleJumpDrop(glm::vec3 creation_pos);
-	~DoubleJumpDrop();
+	void SpinDrop(const float& in_deltatime);
 };
 
 

@@ -15,6 +15,9 @@ NPCRunner::NPCRunner(glm::vec3 start_pos, ObjectID id)
 	time_to_next_move_ = 0.0f;
 	next_move_index_ = 0;
 	aggro_range_ = GlobalSettings::Access()->ValueOf("NPC_AGGRO_RANGE");
+
+	//Set the base scale of this type of unit
+	this->SetScale(GlobalSettings::Access()->ValueOf("NPC_RUNNER_SCALE"));
 }
 
 NPCRunner::~NPCRunner() {

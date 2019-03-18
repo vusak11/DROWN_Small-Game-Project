@@ -1,8 +1,5 @@
 #include "render.h"
 
-void Render::DrawScene() {
-}
-
 Render::Render() {
 	quad_vertex_array_object_ = 0;
 	quad_vertex_buffer_object_ = 0;
@@ -26,43 +23,8 @@ Render::Render() {
 		"glsl/lightingpass/lighting_vs.glsl",
 		"glsl/lightingpass/lighting_fs.glsl");
 
-	//--------------------------------------------------------
-	//-------------------Load Map Data------------------------
-	//--------------------------------------------------------
-	map_handler_.InitializeMaps(
-		"../Resources/Map/MainMap_Blocks.bmp",
-		"../Resources/Map/cavewall.png",
-		"../Resources/Map/v4.png");
-
-	//--------------------------------------------------------
-	//---------------Load Models to Array---------------------
-	//--------------------------------------------------------
-	//Make space for 1 model per ObjectID
-	this->nr_of_models_ = NUMBER_OF_OBJECT_IDS;
-	model_ = new Model*[this->nr_of_models_];
-
-	//Link models to a ObjectID
-	model_[OBJECT_ID_NULL] = new Model((char*)"../Resources/Models/DefaultDummyNPC/defaultDummyNPC.obj");
-	model_[OBJECT_ID_PLAYER_IDLE] = new Model((char*)"../Resources/Models/Character/IdleStance.obj");
-	model_[OBJECT_ID_PLAYER_JUMP] = new Model((char*)"../Resources/Models/Character/JumpStance.obj");
-	model_[OBJECT_ID_PLAYER_LEFT_WALK] = new Model((char*)"../Resources/Models/Character/LeftWalkStance.obj");
-	model_[OBJECT_ID_PLAYER_RIGHT_WALK] = new Model((char*)"../Resources/Models/Character/RightWalkStance.obj");
-	model_[OBJECT_ID_DUMMY] = new Model((char*)"../Resources/Models/NPC/AI.obj");
-	model_[OBJECT_ID_FIRE_AI] = new Model((char*)"../Resources/Models/NPC/fireAI.obj");
-	model_[OBJECT_ID_WOOD_AI] = new Model((char*)"../Resources/Models/NPC/grassAI.obj");
-	model_[OBJECT_ID_ICE_AI] = new Model((char*)"../Resources/Models/NPC/iceAI.obj");
-	model_[OBJECT_ID_DROP_HP_RESTORE] = new Model((char*)"../Resources/Models/Drops/heart_drop/heart_drop.obj");
-	model_[OBJECT_ID_DROP_HP_UP] = new Model((char*)"../Resources/Models/Drops/hp_buff/hp_buff.obj");
-	model_[OBJECT_ID_DROP_ATK_UP] = new Model((char*)"../Resources/Models/Drops/attack_buff/attack_buff.obj");
-	model_[OBJECT_ID_DROP_DASH] = new Model((char*)"../Resources/Models/Drops/dash/dash.obj");
-	model_[OBJECT_ID_DROP_DOUBLE_JUMP] = new Model((char*)"../Resources/Models/Drops/double_jump/double_jump.obj");
-	model_[OBJECT_ID_DROP_SWORD] = new Model((char*)"../Resources/Models/Drops/sword/sword.obj");
-	model_[OBJECT_ID_DROP_AXE] = new Model((char*)"../Resources/Models/Drops/axe/axe.obj");
-	model_[OBJECT_ID_DROP_KEY] = new Model((char*)"../Resources/Models/Drops/key/key.obj");
-	model_[OBJECT_ID_DROP_DOOR] = new Model((char*)"../Resources/Models/Drops/Gate/Gate.obj");
-	model_[OBJECT_ID_BOSS] = new Model((char*)"../Resources/Models/Boss/bossLayout1.obj");
-	model_[OBJECT_ID_BOSS_HAND] = new Model((char*)"../Resources/Models/Boss/bossHand.fbx");
-
+	geometry_pass_->GeometryFrameBuffers();
+	
 }
 
 Render::~Render() {
@@ -73,20 +35,83 @@ Render::~Render() {
 	delete text_shaders_;
 	delete gui_shaders_;
 
+	//Save the adress to the null model that is deleted first.
+	//If that pointer is encountered later in the following loop
+	//just set it to null. This prevents crashes by deleting a 
+	//non-existant object.
+	Model* ptr_to_null = model_[0];
+
 	for (int i = 0; i < nr_of_models_; i++) {
+		if (model_[i] == ptr_to_null) { model_[i] = NULL; }
 		delete model_[i];
 	}
 	delete[] model_;
 }
 
 void Render::InitializeRender(MetaData* meta_data) {
+	//--------------------------------------------------------
+	//-------------------Load Map Data------------------------
+	//--------------------------------------------------------
+	map_handler_.InitializeMaps(
+		"../Resources/Map/MainMap_Blocks.bmp",
+		"../Resources/Map/cavewall.png",
+		"../Resources/Map/v4.png");
+	//--------------------------------------------------------
+	//---------------Load Models to Array---------------------
+	//--------------------------------------------------------
+	//Make space for 1 model per ObjectID
+	this->nr_of_models_ = NUMBER_OF_OBJECT_IDS;
+	model_ = new Model*[this->nr_of_models_];
+
+	//Link models to a ObjectID
+	model_[OBJECT_ID_NULL] = new Model((char*)"../Resources/Models/DefaultNull/defaultNull.obj");
+
+	//!!!
+	//Set everything in the game to be the default dummy. This let's us identify missing models
+	for (unsigned int i = 0; i < NUMBER_OF_OBJECT_IDS; i++) {
+		model_[i] = model_[OBJECT_ID_NULL];
+	}
+	//!!!
+
+	//Continue setting models
+	model_[OBJECT_ID_PLAYER_IDLE] = new Model((char*)"../Resources/Models/Character/IdleStance.obj");
+	model_[OBJECT_ID_PLAYER_JUMP] = new Model((char*)"../Resources/Models/Character/JumpStance.obj");
+	model_[OBJECT_ID_PLAYER_LEFT_WALK] = new Model((char*)"../Resources/Models/Character/LeftWalkStance.obj");
+	model_[OBJECT_ID_PLAYER_RIGHT_WALK] = new Model((char*)"../Resources/Models/Character/RightWalkStance.obj");
+	model_[OBJECT_ID_PLAYER_ATTACK_SWORD_STANCE_1] = new Model((char*)"../Resources/Models/Character/Attack/Sword/AttackStance1/attackStance1.obj");
+	model_[OBJECT_ID_PLAYER_ATTACK_SWORD_STANCE_2] = new Model((char*)"../Resources/Models/Character/Attack/Sword/AttackStance2/attackStance2.obj");
+	model_[OBJECT_ID_PLAYER_ATTACK_SWORD_STANCE_3] = new Model((char*)"../Resources/Models/Character/Attack/Sword/AttackStance3/attackStance3.obj");
+	model_[OBJECT_ID_PLAYER_ATTACK_AXE_STANCE_1] = new Model((char*)"../Resources/Models/Character/Attack/Axe/AxeStance1/axeStance1.obj");
+	model_[OBJECT_ID_PLAYER_ATTACK_AXE_STANCE_2] = new Model((char*)"../Resources/Models/Character/Attack/Axe/AxeStance2/axeStance2.obj");
+	model_[OBJECT_ID_PLAYER_ATTACK_AXE_STANCE_3] = new Model((char*)"../Resources/Models/Character/Attack/Axe/AxeStance3/axeStance3.obj");
+
+	model_[OBJECT_ID_DUMMY] = new Model((char*)"../Resources/Models/NPC/AI.obj");
+	model_[OBJECT_ID_FIRE_AI] = new Model((char*)"../Resources/Models/NPC/fireAI.obj");
+	model_[OBJECT_ID_WOOD_AI] = new Model((char*)"../Resources/Models/NPC/grassAI.obj");
+	model_[OBJECT_ID_ICE_AI] = new Model((char*)"../Resources/Models/NPC/iceAI.obj");
+
+	model_[OBJECT_ID_DROP_HP_RESTORE] = new Model((char*)"../Resources/Models/Drops/heart_drop/heart_drop.obj");
+	model_[OBJECT_ID_DROP_HP_UP] = new Model((char*)"../Resources/Models/Drops/hp_buff/hp_buff.obj");
+	model_[OBJECT_ID_DROP_ATK_UP] = new Model((char*)"../Resources/Models/Drops/attack_buff/attack_buff.obj");
+	model_[OBJECT_ID_DROP_SPD_UP] = new Model((char*)"../Resources/Models/Drops/speed_buff/speed_buff.obj");
+	model_[OBJECT_ID_DROP_DASH] = new Model((char*)"../Resources/Models/Drops/dash/dash.obj");
+	model_[OBJECT_ID_DROP_DOUBLE_JUMP] = new Model((char*)"../Resources/Models/Drops/double_jump/double_jump.obj");
+	model_[OBJECT_ID_DROP_SWORD] = new Model((char*)"../Resources/Models/Drops/sword/sword.obj");
+	model_[OBJECT_ID_DROP_AXE] = new Model((char*)"../Resources/Models/Drops/axe/axe.obj");
+	model_[OBJECT_ID_DROP_KEY] = new Model((char*)"../Resources/Models/Drops/key/key.obj");
+	model_[OBJECT_ID_DROP_DOOR] = new Model((char*)"../Resources/Models/Drops/Gate/Gate.obj");
+
+	model_[OBJECT_ID_DROP_CHEST_CLOSED] = new Model((char*)"../Resources/Models/Drops/Chest/Closed/chestClosed.obj");
+	model_[OBJECT_ID_DROP_CHEST_OPEN] = new Model((char*)"../Resources/Models/Drops/Chest/Open/openChest.obj");
+
+	model_[OBJECT_ID_BOSS] = new Model((char*)"../Resources/Models/Boss/boss.obj");
+	model_[OBJECT_ID_BOSS_HAND] = new Model((char*)"../Resources/Models/Boss/bossHand.obj");
+
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	hud_.Initiliaze();
 	meta_data_ptr_ = meta_data;
-
-	geometry_pass_->GeometryFrameBuffers();
 
 	// Fetch light information and store locally
 	nr_of_lights_ = meta_data_ptr_->GetLightPositions().size();
@@ -101,13 +126,13 @@ void Render::InitializeRender(MetaData* meta_data) {
 	// Set colour of the light depending on where in the world it's located, starting at 2 to not affect player light or the "danger light"
 	for (int i = 2; i < nr_of_lights_; i++) {
 		lights_[i].SetPos(glm::vec3(light_positions_[i], 10.0f));
-		if (meta_data_ptr_->GetZone(light_positions_[i]) == "RED") {
+		if (meta_data_ptr_->GetZone(light_positions_[i]) == RED) {
 			lights_[i].SetAmbientLight(glm::vec3(1.0f, 0.0f, 0.0f));
 		}
-		else if (meta_data_ptr_->GetZone(light_positions_[i]) == "GRE") {
+		else if (meta_data_ptr_->GetZone(light_positions_[i]) == GRE) {
 			lights_[i].SetAmbientLight(glm::vec3(0.01f, 0.84f, 0.01f));
 		}
-		else if (meta_data_ptr_->GetZone(light_positions_[i]) == "BLU") {
+		else if (meta_data_ptr_->GetZone(light_positions_[i]) == BLU) {
 			lights_[i].SetAmbientLight(glm::vec3(0.0f, 0.4f, 1.0f));
 		}
 	}
@@ -119,14 +144,15 @@ void Render::UpdateRender(
 	glm::vec3 camera_position,
 	glm::mat4 perspective_view_matrix,
 	std::vector<ObjectPackage>& object_vector,
-	PlayerInfoPackage player_data) {
+	PlayerInfoPackage player_data, bool mini_map_enabled) {
 
 	//SET UP FOR 3D
 	glDisable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	//  GEOMETRY
 	GeometryPass(camera_position, perspective_view_matrix);
@@ -135,16 +161,16 @@ void Render::UpdateRender(
 	//  LIGHTING
 	lights_[0].SetPos(glm::vec3(camera_position.x, (camera_position.y + 15.0), 0.0));		//Place players light on our character
 	// Update color of players light depending on zone
-	if (meta_data_ptr_->GetZone(camera_position) == "DEF") {
+	if (meta_data_ptr_->GetZone(camera_position) == DEF) {
 		lights_[0].SetAmbientLight(glm::vec3(1.0f, 0.58f, 0.20f));
 	}
-	else if (meta_data_ptr_->GetZone(camera_position) == "RED") {
+	else if (meta_data_ptr_->GetZone(camera_position) == RED) {
 		lights_[0].SetAmbientLight(glm::vec3(1.0f, 0.0f, 0.0f));
 	}
-	else if (meta_data_ptr_->GetZone(camera_position) == "GRE") {
+	else if (meta_data_ptr_->GetZone(camera_position) == GRE) {
 		lights_[0].SetAmbientLight(glm::vec3(0.01f, 0.84f, 0.01f));
 	}
-	else if (meta_data_ptr_->GetZone(camera_position) == "BLU") {
+	else if (meta_data_ptr_->GetZone(camera_position) == BLU) {
 		lights_[0].SetAmbientLight(glm::vec3(0.0f, 0.4f, 1.0f));
 	}
 	LightingPass(camera_position);
@@ -159,7 +185,7 @@ void Render::UpdateRender(
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glLoadIdentity();
 
-	hud_.RenderGUI(gui_shaders_, player_data);
+	hud_.RenderGUI(gui_shaders_, player_data, mini_map_enabled);
 
 	glFlush();
 	//swap_buffers(?)
@@ -266,6 +292,13 @@ void Render::RenderMenuState(Menu menu) {
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	menu.RenderMenu(text_shaders_);
+}
+
+void Render::RenderOptionsMenu(Menu menu, CameraHandler* cam_handler) {
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT);
+
+	menu.RenderOptionsMenu(text_shaders_, cam_handler);
 }
 
 void Render::RenderPauseMenu(Menu menu) {

@@ -31,6 +31,11 @@ public:
 	bool PlayMusic();
 	void StopMusic();
 	void SetVolumeMusic(int volume); // Volume from 0 -> 100
+	int GetVolumeMusic() const;
+
+	//void SetAttenuation(float attenuation);
+	//void SetMinDistance(float distance);
+	//void SetPosition(float x, float y, float z);
 	void SetAttenuation(float attenuation);
 	void SetMinDistance(float distance);
 	void SetPosition(float x, float y, float z);
@@ -42,5 +47,4 @@ private:
 	sf::Sound sound_;
 	sf::Music music_;
 	char* music_file_name_;
-
 };

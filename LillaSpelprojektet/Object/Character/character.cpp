@@ -122,6 +122,19 @@ bool Character::IncreaseAttack(int in_atk) {
 	return true;
 }
 
+bool Character::IncreaseSpeed(int in_spd) {
+	//If the in parameter is negative, return false
+	if (in_spd < 0) {
+		return false;
+	}
+
+	//Otherwise increase stat and return true
+	this->move_top_speed_ += in_spd;
+	this->move_acceleration_ = this->move_top_speed_ / this->move_acceleration_rate_;
+
+	return true;
+}
+
 void Character::TurnLeft(const float& in_deltatime) {
 	//Turn the model leftwards (negative direction) with adjustment for deltatime
 	float turn_radians = this->turn_rate_radians_*in_deltatime;

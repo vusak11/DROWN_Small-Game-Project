@@ -12,8 +12,6 @@
 class PlayerCharacter : public Character {
 private:
 	//Player stats
-	float move_top_speed_;
-	float move_acceleration_;
 	float jump_speed_;
 
 	Ability* ability_ptr_;
@@ -45,7 +43,9 @@ public:
 
 	void CalculateAnimationState(float delta_time);
 
-	bool SwapAbilities(ObjectID object_ability);
+	Ability* SwapAbility(Ability* in_ability_ptr);
+	Weapon* SwapWeapon(Weapon* in_weapon_ptr);
+	
 	void SetAirborne(bool in_bool);
 	void UpdateStatus(const float& in_deltatime);		//Updates time related stuff
 														//e.g. cooldown on abilities

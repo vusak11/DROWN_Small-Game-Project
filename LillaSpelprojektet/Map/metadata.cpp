@@ -155,19 +155,22 @@ glm::vec2 MetaData::FetchRandomPOI() {
 	return return_POI;
 }
 
-std::string MetaData::GetZone(glm::vec2 zone_central_points) {
-	std::string zone_code = "DEF";
+ZoneID MetaData::GetZone(glm::vec2 in_pos) {
+	//Checks which zone the argument lies in and returns its ID
+
+	ZoneID zone_code = DEF;
+
 	//Check if point is within radius of the RED ZONE
-	if (pow(zone_central_points.x - zone_origin_coords_[0].x, 2) + pow(zone_central_points.y - zone_origin_coords_[0].y, 2) <= pow(zone_radius_, 2)) {
-		zone_code = "RED";
+	if (pow(in_pos.x - zone_origin_coords_[0].x, 2) + pow(in_pos.y - zone_origin_coords_[0].y, 2) <= pow(zone_radius_, 2)) {
+		zone_code = RED;
 	}
 	//Check if point is within radius of the BLU ZONE
-	else if (pow(zone_central_points.x - zone_origin_coords_[1].x, 2) + pow(zone_central_points.y - zone_origin_coords_[1].y, 2) <= pow(zone_radius_, 2)) {
-		zone_code = "GRE";
+	else if (pow(in_pos.x - zone_origin_coords_[1].x, 2) + pow(in_pos.y - zone_origin_coords_[1].y, 2) <= pow(zone_radius_, 2)) {
+		zone_code = GRE;
 	}
 	//Check if point is within radius of the SOL ZONE
-	else if (pow(zone_central_points.x - zone_origin_coords_[2].x, 2) + pow(zone_central_points.y - zone_origin_coords_[2].y, 2) <= pow(zone_radius_, 2)) {
-		zone_code = "BLU";
+	else if (pow(in_pos.x - zone_origin_coords_[2].x, 2) + pow(in_pos.y - zone_origin_coords_[2].y, 2) <= pow(zone_radius_, 2)) {
+		zone_code = BLU;
 	}
 	return zone_code;
 }
@@ -183,7 +186,7 @@ glm::vec2 MetaData::FetchSpawnPoint() {
 			i = 1 + ((rand() % (points_of_interest_.size() - 1)));			//START OVER ON NEW RANDOM VALUE BETWEEN 1 - 5
 		}
 		
-		if (GetZone(points_of_interest_[i]) == "DEF") {
+		if (GetZone(points_of_interest_[i]) == DEF) {
 			return_POI = points_of_interest_[i];
 			points_of_interest_.erase(points_of_interest_.begin() + i);		//Erase coords from list of available POIs
 			return return_POI;

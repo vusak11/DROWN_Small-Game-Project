@@ -144,6 +144,7 @@
     <ClCompile Include="Core\sound_unit.cpp" />
     <ClCompile Include="GLDebug.cpp" />
     <ClCompile Include="global_settings.cpp" />
+    <ClCompile Include="loading_screen.h" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map\metadata.cpp" />
     <ClCompile Include="Object\Character\ability.cpp" />
@@ -163,6 +164,7 @@
     <ClCompile Include="Object\object_class.cpp" />
     <ClCompile Include="Object\object_handler.cpp" />
     <ClCompile Include="Object\Physics\physics_engine.cpp" />
+    <ClCompile Include="Object\randomizer.cpp" />
     <ClCompile Include="UI\gui.cpp" />
     <ClCompile Include="UI\menu.cpp" />
   </ItemGroup>
@@ -194,6 +196,7 @@
     <ClInclude Include="Object\Physics\physics_engine.h" />
     <ClInclude Include="Camera\camera.h" />
     <ClInclude Include="Camera\camera_handler.h" />
+    <ClInclude Include="Object\randomizer.h" />
     <ClInclude Include="UI\gui.h" />
     <ClInclude Include="UI\menu.h" />
   </ItemGroup>

@@ -27,17 +27,21 @@ PlayerCharacter::PlayerCharacter(glm::vec3 start_pos)
 		GlobalSettings::Access()->ValueOf("PLAYER_START_ATK")
 	) {
 	this->move_top_speed_ = GlobalSettings::Access()->ValueOf("PLAYER_MOVE_VELOCITY");
-	this->move_acceleration_ = this->move_top_speed_ / GlobalSettings::Access()->ValueOf("PLAYER_MOVE_ACCELERATION_RATE");
+	this->move_acceleration_rate_ = GlobalSettings::Access()->ValueOf("PLAYER_MOVE_ACCELERATION_RATE");
+	this->move_acceleration_ = this->move_top_speed_ / this->move_acceleration_rate_;
 	this->jump_speed_ = GlobalSettings::Access()->ValueOf("PLAYER_JUMP_VELOCITY");
 	
 	//this->ability_ptr_ = new Ability();
-	//this->ability_ptr_ = new DoubleJump();
-	this->ability_ptr_ = new Dash();
+	this->ability_ptr_ = new DoubleJump();
+	//this->ability_ptr_ = new Dash();
 	
 	this->weapon_ptr_ = new Sword();
 	//this->weapon_ptr_ = new Axe();
 
 	animation_state_ = ANIMATION_STATE_PLAYER_IDLE;
+
+	//Set the base scale of this type of unit
+	this->SetScale(2.0f);
 }
 
 PlayerCharacter::~PlayerCharacter() {
@@ -135,34 +139,27 @@ void PlayerCharacter::CalculateAnimationState(float delta_time) {
 	}
 }
 
-bool PlayerCharacter::SwapAbilities(ObjectID object_ability) {
+Ability* PlayerCharacter::SwapAbility(Ability* in_ability_ptr) {
 
-	if (this->ability_ptr_->GetID() == ABILITY_NONE &&
-		object_ability == OBJECT_ID_DROP_DOUBLE_JUMP) {
-		delete this->ability_ptr_;
-		this->ability_ptr_ = new DoubleJump();
-		return true;
-	}
-	else if (this->ability_ptr_->GetID() == ABILITY_NONE &&
-		object_ability == OBJECT_ID_DROP_DASH) {
-		delete this->ability_ptr_;
-		this->ability_ptr_ = new Dash();
-		return true;
-	}
-	else if (this->ability_ptr_->GetID() == ABILITY_DASH &&
-		object_ability == OBJECT_ID_DROP_DOUBLE_JUMP) {
-		delete this->ability_ptr_;
-		this->ability_ptr_ = new DoubleJump();
-		return true;
-	} 
-	else if (this->ability_ptr_->GetID() == ABILITY_DOUBLE_JUMP &&
-		object_ability == OBJECT_ID_DROP_DASH) {
-		delete this->ability_ptr_;
-		this->ability_ptr_ = new Dash();
-		return true;
-	}
+	//Save the pointer to the old ability
+	Ability* old_ability_ptr = this->ability_ptr_;
+
+	//Save the pointer to the new ability
+	this->ability_ptr_ = in_ability_ptr;
 	
-	return false;
+	//Return the old ability
+	return old_ability_ptr;
+}
+
+Weapon* PlayerCharacter::SwapWeapon(Weapon* in_weapon_ptr) {
+	//Save the pointer to the old weapon
+	Weapon* old_weapon_ptr = this->weapon_ptr_;
+
+	//Save the pointer to the new weapon
+	this->weapon_ptr_ = in_weapon_ptr;
+
+	//Return the old weapon
+	return old_weapon_ptr;
 }
 
 void PlayerCharacter::SetAirborne(bool in_air) {

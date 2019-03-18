@@ -20,6 +20,8 @@ void GUI::Initiliaze()
 	LoadTexture((char*)"../Resources/GUI/quickslot_axe.png", quick_slot_axe_texture_);
 	LoadTexture((char*)"../Resources/GUI/quickslot_dash.png", quick_slot_dash_texture_);
 	LoadTexture((char*)"../Resources/GUI/quickslot_dbljump.png", quick_slot_dbljump_texture_);
+	LoadTexture((char*)"../Resources/GUI/MiniMap_70_c.png", mini_map_);
+	LoadTexture((char*)"../Resources/GUI/map_marker.png", map_marker_);
 
 	//current_slot_1_ = quick_slot_texture_;
 	//current_slot_2_ = quick_slot_texture_;
@@ -88,11 +90,11 @@ void GUI::RenderGUIObject(float xpos, float ypos, float offset, GLuint slot_text
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void GUI::RenderGUI(ShaderHandler * shader_program, PlayerInfoPackage player_data) {
+void GUI::RenderGUI(ShaderHandler * shader_program, PlayerInfoPackage player_data, bool mini_map_enabled) {
 	//Calculate length of health bar based on current health points
 	updateHUD(player_data);
 	glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(
-		GlobalSettings::Access()->ValueOf("WINDOW_WIDTH")), 
+		GlobalSettings::Access()->ValueOf("WINDOW_WIDTH")),
 		0.0f, static_cast<GLfloat>(GlobalSettings::Access()->ValueOf("WINDOW_HEIGHT")));
 
 	shader_program->Use();
@@ -103,6 +105,10 @@ void GUI::RenderGUI(ShaderHandler * shader_program, PlayerInfoPackage player_dat
 	//Send texture to shaders
 	glUniform1i(glGetUniformLocation(shader_program->GetProgram(), "texture_1"), 0);
 	glActiveTexture(GL_TEXTURE0);
+
+	//Send marker position to shaders
+	glUniform2fv(glGetUniformLocation(shader_program->GetProgram(), "marker_pos"), 1, glm::value_ptr(mm_marker_pos_));
+
 
 	RenderHealthBar();											// Health bar
 	RenderGUIObject(320.0f, 700.0f, 70.0f, current_slot_1_);	// Weapon slot
@@ -116,6 +122,12 @@ void GUI::RenderGUI(ShaderHandler * shader_program, PlayerInfoPackage player_dat
 				RenderGUIObject(540.0f, 700.0f, 70.0f, key_texture_);
 			}
 		}
+	}
+	if (mini_map_enabled) {
+		// Render mini map
+		RenderGUIObject(1010.0f, 260.0f, 250.0f, mini_map_);
+		// Render mini map player marker
+		RenderGUIObject(mm_marker_pos_.x, mm_marker_pos_.y, 10.0f, map_marker_);
 	}
 }
 
@@ -143,6 +155,8 @@ void GUI::LoadTexture(char * texture_name, GLuint &texture_variable) {
 void GUI::updateHUD(PlayerInfoPackage player_data) {
 	//Max length of health bar divided by Max HP, multiplied by current HP
 	health_bar_length_ = (300 / player_data.max_hp) * player_data.current_hp;
+	//Update map marker position [Coordinates = (PlayerPos / MapResolution) * MiniMapResolution + MiniMapGUIcoords + MarkerOffset / 2]
+	mm_marker_pos_ = glm::vec2((player_data.position.x / 2048.0f) * 250.0f + 1010.0f - 5.0f, (player_data.position.y / 2048.0f) * 250.0f + 260 + 7.0f);
 
 	switch (player_data.weapon_id) {
 	case WEAPON_NONE:
@@ -167,6 +181,4 @@ void GUI::updateHUD(PlayerInfoPackage player_data) {
 		current_slot_2_ = quick_slot_dash_texture_;
 		break;
 	};
-
-	
 }
