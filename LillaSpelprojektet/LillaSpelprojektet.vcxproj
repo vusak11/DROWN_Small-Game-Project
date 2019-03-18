@@ -142,6 +142,7 @@
     <ClCompile Include="Core\render.cpp" />
     <ClCompile Include="Core\shader_handler.cpp" />
     <ClCompile Include="Core\sound_unit.cpp" />
+    <ClCompile Include="drop.cpp" />
     <ClCompile Include="GLDebug.cpp" />
     <ClCompile Include="global_settings.cpp" />
     <ClCompile Include="loading_screen.h" />
@@ -161,7 +162,6 @@
     <ClCompile Include="Object\Character\player_character.cpp" />
     <ClCompile Include="Object\Character\weapon.cpp" />
     <ClCompile Include="Object\hitbox.cpp" />
-    <ClCompile Include="Object\Drop\drop.cpp" />
     <ClCompile Include="Object\object_class.cpp" />
     <ClCompile Include="Object\object_handler.cpp" />
     <ClCompile Include="Object\Physics\physics_engine.cpp" />
