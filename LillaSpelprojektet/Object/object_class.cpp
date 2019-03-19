@@ -96,18 +96,14 @@ void ObjectClass::SetScale(float in_x, float in_y, float in_z) {
 	this->model_matrix_up_to_date_ = false;
 }
 
-void ObjectClass::SetRotation(float in_x, float in_y, float in_z) {
-	this->rotation_around_x_ = in_x;
+void ObjectClass::SetRotation(float in_y) {
 	this->rotation_around_y_ = in_y;
-	this->rotation_around_z_ = in_z;
 
-	//Create three matrices for rotating around x, y and z
-	glm::mat4 rotation_matrix_x = glm::rotate((float)this->rotation_around_x_, glm::vec3(1.0f, 0.0f, 0.0f));
+	//Create a matrix for rotating around y
 	glm::mat4 rotation_matrix_y = glm::rotate((float)this->rotation_around_y_, glm::vec3(0.0f, 1.0f, 0.0f));
-	glm::mat4 rotation_matrix_z = glm::rotate((float)this->rotation_around_z_, glm::vec3(0.0f, 0.0f, 1.0f));
-
-	//Add the rotations together
-	this->rotation_matrix_ = rotation_matrix_x * rotation_matrix_y * rotation_matrix_z;
+	
+	//Set as the new rotation matrix
+	this->rotation_matrix_ = rotation_matrix_y;
 
 	//World matrix is now out of date
 	this->model_matrix_up_to_date_ = false;

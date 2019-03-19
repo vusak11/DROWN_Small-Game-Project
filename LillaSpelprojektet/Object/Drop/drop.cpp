@@ -95,8 +95,7 @@ void Drop::SpinDrop(const float& in_deltatime) {
 	float turn_radians = this->turn_rate_radians_*in_deltatime*0.1f;
 	float new_rotation = this->rotation_around_y_ + turn_radians;
 
-	this->SetRotation(this->rotation_around_x_, new_rotation, this->rotation_around_z_);
-	//this->SetRotation(new_rotation, new_rotation, new_rotation);
+	this->SetRotation(new_rotation);
 }
 
 //---------------------------------------------------------

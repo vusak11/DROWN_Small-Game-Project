@@ -47,9 +47,8 @@ protected:
 	float turn_rate_radians_;
 
 	//Math
-	float rotation_around_x_;			//The rotation of the object in radians
-	float rotation_around_y_;			//around the x, y and z-axises
-	float rotation_around_z_;
+	float rotation_around_y_;			//The rotation of the object in radians
+										//around the y-axis
 
 	void SetObjectID(ObjectID object_id);
 
@@ -63,7 +62,7 @@ public:
 	void SetPosition(float in_x, float in_y, float in_z = 0.0f);
 	void SetScale(float in_s);
 	void SetScale(float in_x, float in_y, float in_z);
-	void SetRotation(float in_x, float in_y, float in_z);
+	void SetRotation(float in_y);
 	
 	//Physics
 	void SetUsingPhysics(bool use_physics);

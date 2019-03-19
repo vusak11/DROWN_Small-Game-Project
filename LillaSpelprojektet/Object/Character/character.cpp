@@ -145,7 +145,7 @@ void Character::TurnLeft(const float& in_deltatime) {
 
 	//std::cout << "Rot L: " << glm::degrees(new_rotation) << std::endl;
 
-	this->SetRotation(this->rotation_around_x_, new_rotation, this->rotation_around_z_);
+	this->SetRotation(new_rotation);
 }
 
 void Character::TurnRight(const float& in_deltatime) {
@@ -158,7 +158,7 @@ void Character::TurnRight(const float& in_deltatime) {
 
 	//std::cout << "Rot R: " << glm::degrees(new_rotation) << std::endl;
 
-	this->SetRotation(this->rotation_around_x_, new_rotation, this->rotation_around_z_);
+	this->SetRotation(new_rotation);
 }
 
 

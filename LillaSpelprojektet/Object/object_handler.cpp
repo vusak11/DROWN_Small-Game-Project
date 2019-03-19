@@ -492,7 +492,7 @@ std::vector<ObjectPackage> ObjectHandler::UpdateAndRetrieve(float in_deltatime) 
 	this->ProcessNPCs(in_deltatime, relevant_npcs_ptr_vector);
 
 	//Go through all relevant drops and call their behaviour functions
-	//this->ProcessDrops(in_deltatime, relevant_drops_ptr_vector);
+	this->ProcessDrops(in_deltatime, relevant_drops_ptr_vector);
 
 	//--------------------------------------------------------
 	//------------------Apply Physics-------------------------
