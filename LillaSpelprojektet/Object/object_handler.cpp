@@ -287,8 +287,8 @@ void ObjectHandler::RemoveDeadNPCs(std::vector<ObjectClass*>& in_relevant_npcs_p
 
 				//Call function to randomize if a drop should spawn
 				spawn_pos = npc_ptr->GetPosition();
-				//this->ResolveRandomDropSpawn(spawn_pos, this->enemy_drop_rate_);
-				this->ResolveRandomDropSpawn(spawn_pos, 100.0f);
+				this->ResolveRandomDropSpawn(spawn_pos, this->enemy_drop_rate_);
+				//this->ResolveRandomDropSpawn(spawn_pos, 100.0f);
 
 				//Delete the object and remove the pointer from the object handler's npc vector
 				this->RemoveObject(in_relevant_npcs_ptr_vector.at(i), this->npc_ptr_vector_);
