@@ -91,7 +91,7 @@ void NPCBoss::ExecuteAI(float in_deltatime, glm::vec3 in_player_pos) {
 				}
 			}
 		}
-		if (health < GetMaxHealth() * 0.8f) {
+		if (health < GetMaxHealth() * 0.4f) {
 			stage_ = STAGE_3;
 			stage_1_counter_ = 0;
 			time = 0.0f;

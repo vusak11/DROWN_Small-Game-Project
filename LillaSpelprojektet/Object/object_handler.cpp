@@ -604,13 +604,13 @@ void ObjectHandler::DetermineBossAction() {
 	if (boss_ptr_->actions_.spawn_mobs) {
 		
 		if (boss_ptr_->GetBossStage() == BossStage::STAGE_2) {
-			this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(100, -1180, 5.0f), OBJECT_ID_FIRE_AI));
+			this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(100, -1180, 5.0f), OBJECT_ID_ICE_AI));
 			this->npc_ptr_vector_.back()->SetScale(2);
 			this->npc_ptr_vector_.back()->SetOffsets(2, 2);
 			NPCRunner* temp_npc_ptr = dynamic_cast<NPCRunner*>(this->npc_ptr_vector_.back());
 			temp_npc_ptr->SetAggroRange(200);
 
-			this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(220, -1180, 5.0f), OBJECT_ID_FIRE_AI));
+			this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(220, -1180, 5.0f), OBJECT_ID_ICE_AI));
 			this->npc_ptr_vector_.back()->SetScale(2);
 			this->npc_ptr_vector_.back()->SetOffsets(2, 2);
 			temp_npc_ptr = dynamic_cast<NPCRunner*>(this->npc_ptr_vector_.back());
