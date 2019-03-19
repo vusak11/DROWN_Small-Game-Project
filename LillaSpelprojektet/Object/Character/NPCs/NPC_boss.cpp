@@ -49,6 +49,10 @@ void NPCBoss::ExecuteAI(float in_deltatime, glm::vec3 in_player_pos) {
 	{
 		damaged_.PlaySound();
 		std::cout << "boss health: " << GetCurrentHealth() << std::endl;
+		if (GetCurrentHealth() <= 0)
+		{
+			stage_ = BossStage::STAGE_4;
+		}
 	}
 	health_last_frame_ = health;
 
@@ -167,10 +171,10 @@ void NPCBoss::ExecuteAI(float in_deltatime, glm::vec3 in_player_pos) {
 	}
 
 	// Trigger when boss is defeated
-	if (current_health_ <= 0) {
+	/*if (GetCurrentHealth() <= 0) {
 		time = 0;
 		STAGE_4;
-	}
+	}*/
 	
 	ExecuteActions(in_deltatime, in_player_pos);
 	UpdateBossObjects(in_deltatime, in_player_pos);
@@ -305,6 +309,7 @@ std::vector<ObjectClass*> NPCBoss::GetBossObjectVector() const {
 
 bool NPCBoss::IsStage4Complete() {
 	if (stage_ == STAGE_4) {
+		std::cout << "boss is beaten" << std::endl;
 		return true;
 	}
 	return false;

@@ -48,8 +48,8 @@ void GUI::RenderHealthBar() {
 		// Positions				 // Texture Coords
 		{0.0f,  700.0f,				 0.0f, 1.0f},
 		{0.0f,  670.0f,				 0.0f, 0.0f},
-		{static_cast<GLfloat>(health_bar_length_), 700.0f, 1.0f, 1.0f},
-		{static_cast<GLfloat>(health_bar_length_), 670.0f, 1.0f, 0.0f}
+		{health_bar_length_, 700.0f, 1.0f, 1.0f},
+		{health_bar_length_, 670.0f, 1.0f, 0.0f}
 	};
 	//Render texture on bar
 	glBindTexture(GL_TEXTURE_2D, health_bar_texture_);
@@ -154,7 +154,7 @@ void GUI::LoadTexture(char * texture_name, GLuint &texture_variable) {
 
 void GUI::updateHUD(PlayerInfoPackage player_data) {
 	//Max length of health bar divided by Max HP, multiplied by current HP
-	health_bar_length_ = (300 / player_data.max_hp) * player_data.current_hp;
+	health_bar_length_ = (300 / (float)player_data.max_hp) * (float)player_data.current_hp;
 	//Update map marker position [Coordinates = (PlayerPos / MapResolution) * MiniMapResolution + MiniMapGUIcoords + MarkerOffset / 2]
 	mm_marker_pos_ = glm::vec2((player_data.position.x / 2048.0f) * 250.0f + 1010.0f - 5.0f, (player_data.position.y / 2048.0f) * 250.0f + 260 + 7.0f);
 

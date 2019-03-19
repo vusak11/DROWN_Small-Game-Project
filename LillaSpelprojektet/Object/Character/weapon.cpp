@@ -64,7 +64,7 @@ int Weapon::ExecuteWeapon(Character& in_attacker, Character& in_target) {
 
 	//If it does apply the sum of the weapon's damage and the attacker's
 	//attack power to the target
-	int damage = this->attack_power_ + in_attacker.GetAttackPower();
+	int damage = this->attack_power_ * in_attacker.GetAttackPower() / 100.0f;
 	
 	return in_target.TakeDamage(damage);
 }
