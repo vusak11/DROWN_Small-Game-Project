@@ -393,7 +393,7 @@ void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map
 	}
 
 	// Spawn additional NPCs
-	for (int i = 2; i < meta_data->GetMonsterPositionsBonus().size(); i++) {
+	for (unsigned int i = 0; i < meta_data->GetMonsterPositionsBonus().size(); i++) {
 		if (sqrt(pow((meta_data->GetMonsterPositionsBonus()[i].x - meta_data->GetSpawnPointCoords().x), 2) + pow((meta_data->GetLightPositions()[i].y - meta_data->GetSpawnPointCoords().y), 2)) > 50) {
 			// Different NPC's depending on where they spawn
 			if (meta_data->GetZone(meta_data->GetMonsterPositionsBonus()[i]) == DEF) {
@@ -424,7 +424,7 @@ void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map
 	for (int i = 0; i < meta_data->GetRemainingPOIs().size(); i++) {
 		this->drop_ptr_vector_.push_back(new Chest(glm::vec3(meta_data->GetRemainingPOIs()[i], 0.0f)));
 	}
-	for (int i = 0; i < meta_data->GetChestPositionsBonus().size(); i++) {
+	for (unsigned int i = 0; i < meta_data->GetChestPositionsBonus().size(); i++) {
 		this->drop_ptr_vector_.push_back(new Chest(glm::vec3(meta_data->GetChestPositionsBonus()[i], 0.0f)));
 	}
 	// Spawn boss door
