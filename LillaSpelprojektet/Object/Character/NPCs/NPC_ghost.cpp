@@ -42,19 +42,20 @@ void NPCGhost::ExecuteAI(float in_deltatime, glm::vec3 in_player_pos) {
 }
 
 bool NPCGhost::Attack(Character& in_target) {
+	bool return_value = false;
 	if (this->NPC::Attack(in_target)) {
 		//Knockback player
 		in_target.TakeDamage(this->GetAttackPower());
 		if (in_target.GetPosition().x < GetPosition().x) {
 			in_target.SetVelocityVec(glm::vec3(-1 * knockback_.x, knockback_.y, 0.0f));
-			return true;
+			return_value = true;
 		}
 		else if (in_target.GetPosition().x > GetPosition().x) {
 			in_target.SetVelocityVec(glm::vec3(knockback_.x, knockback_.y, 0.0f));
-			return true;
+			return_value = true;
 		}
 	}
-	return false;
+	return return_value;
 }
 
 int NPCGhost::GetHealthLastFrame() const {
