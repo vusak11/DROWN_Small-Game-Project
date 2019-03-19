@@ -48,6 +48,8 @@ PlayerCharacter::PlayerCharacter(glm::vec3 start_pos)
 	//Set the base scale of this type of unit
 	this->SetScale(2.0f);
 	this->SetOffsets(2.0f, 2.0f);
+
+	health_last_frame_ = (int)GlobalSettings::Access()->ValueOf("PLAYER_START_HP");
 }
 
 PlayerCharacter::~PlayerCharacter() {
@@ -273,6 +275,8 @@ void PlayerCharacter::LoadPlayerSounds() {
 	sound_atk_3_.LoadSound((char*)"../Resources/Audio/swosh6.wav");
 	sound_axe_1_.LoadSound((char*)"../Resources/Audio/swosh_axe1.wav");
 	sound_axe_2_.LoadSound((char*)"../Resources/Audio/swosh_axe2.wav");
+	damaged_sound_.LoadSound((char*)"../Resources/Audio/player_damage.wav");
+	chest_sound_.LoadSound((char*)"../Resources/Audio/Chest.wav");
 }
 
 void PlayerCharacter::PlaySound(int sound_index) {
@@ -314,4 +318,24 @@ void PlayerCharacter::PlaySound(int sound_index) {
 	}
 
 
+}
+
+void PlayerCharacter::PlayChestSound() {
+	chest_sound_.PlaySound();
+}
+
+bool PlayerCharacter::DamagedSinceLastFrame() {
+	int actual_health = GetCurrentHealth();
+	//std::cout << "check health" << std::endl;
+	// Player is being damaged
+	if (health_last_frame_ > actual_health)
+	{
+		damaged_sound_.PlaySound();
+		health_last_frame_ = actual_health;
+		//std::cout << "damaged confirmed" << std::endl;
+		return true;
+	}
+
+	health_last_frame_ = actual_health;
+	return false;
 }

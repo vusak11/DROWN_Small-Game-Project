@@ -30,6 +30,10 @@ private:
 	SoundUnit sound_atk_3_;
 	SoundUnit sound_axe_1_;
 	SoundUnit sound_axe_2_;
+	SoundUnit damaged_sound_;
+	SoundUnit chest_sound_; // Store this here to not read it multiple times
+
+	int health_last_frame_;
 
 	//friend bool Ability::ExecuteAbility(PlayerCharacter&);
 	friend bool DoubleJump::ExecuteAbility(PlayerCharacter& in_player);
@@ -66,7 +70,9 @@ public:
 
 	void LoadPlayerSounds();
 	void PlaySound(int sound_index);
+	void PlayChestSound();
 
+	bool DamagedSinceLastFrame();
 };
 
 
