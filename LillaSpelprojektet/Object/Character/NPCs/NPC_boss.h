@@ -64,6 +64,7 @@ public:
 	BossActions GetBossActions() const;
 	BossStage GetBossStage() const;
 	std::vector<ObjectClass*> GetBossObjectVector() const;
+	bool IsStage4Complete();
 
 };
 

@@ -17,13 +17,36 @@ NPCRunner::NPCRunner(glm::vec3 start_pos, ObjectID id)
 	aggro_range_ = GlobalSettings::Access()->ValueOf("NPC_AGGRO_RANGE");
 	jump_velocity_ = GlobalSettings::Access()->ValueOf("NPC_RUNNER_JUMP_VELOCITY");
 	aggro_speed_ = GlobalSettings::Access()->ValueOf("NPC_RUNNER_AGGRO_SPEED");
-
+	float scale = GlobalSettings::Access()->ValueOf("NPC_RUNNER_SCALE");
+	float hp = GlobalSettings::Access()->ValueOf("NPC_RUNNER_START_HP");
 	//Set the base scale of this type of unit
 	//this->SetScale(GlobalSettings::Access()->ValueOf("NPC_RUNNER_SCALE"));
 
-	float scale = GlobalSettings::Access()->ValueOf("NPC_RUNNER_SCALE");
-	SetScale(scale);
-	SetOffsets(scale, scale);
+	if (id == OBJECT_ID_FIRE_AI) {
+		SetScale(1.5f);
+		SetOffsets(1.5f, 1.5f);
+		aggro_speed_ = 4000;
+	}
+	else if (id == OBJECT_ID_ICE_AI) {
+		SetScale(scale);
+		SetOffsets(scale, scale);
+		aggro_range_ = 200;
+		jump_velocity_ = 200;
+	}
+	else if (id == OBJECT_ID_WOOD_AI) {
+		SetScale(4.0f);
+		SetOffsets(4.0f, 4.0f);
+		aggro_speed_ = 2300;
+		SetMaxHealth(hp * 3);
+		SetCurrentHealth(hp * 3);
+	}
+	else { // default 
+		SetScale(scale);
+		SetOffsets(scale, scale);
+	}
+
+	
+	
 
 }
 

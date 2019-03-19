@@ -303,6 +303,13 @@ std::vector<ObjectClass*> NPCBoss::GetBossObjectVector() const {
 	return boss_objects_;
 }
 
+bool NPCBoss::IsStage4Complete() {
+	if (stage_ == STAGE_4) {
+		return true;
+	}
+	return false;
+}
+
 //std::vector<NPCGhost*> NPCBoss::GetBossNPCVector() const
 //{
 //	return boss_NPCs_;

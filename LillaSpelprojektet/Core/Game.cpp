@@ -183,6 +183,35 @@ void Game::InputForDeathState(const sf::Event& in_event) {
 	}
 }
 
+void Game::InputForVictoryState(const sf::Event & in_event) {
+	menu_.StateManager(previous_states_.back());
+	switch (in_event.type) {
+	case sf::Event::KeyPressed:
+		if (in_event.key.code == sf::Keyboard::W
+			|| in_event.key.code == sf::Keyboard::Up) {
+			menu_.NavigateUp();
+		}
+		if (in_event.key.code == sf::Keyboard::S
+			|| in_event.key.code == sf::Keyboard::Down) {
+			menu_.NavigateDown();
+		}
+		if (in_event.key.code == sf::Keyboard::Enter) {
+			switch (menu_.GetSelectedItemIndex()) {
+			case 0:						//Restart
+				system("restartGame.cmd"); // TEST case
+				this->previous_states_.push_back(GameState::QUIT);
+				break;
+			case 1:						//Quit
+				this->previous_states_.push_back(GameState::QUIT);
+				break;
+			}
+		}
+		break;
+	default:
+		break;
+	}
+}
+
 void Game::InputForGameState(const sf::Event& in_event) {
 
 	switch (in_event.type) {
@@ -232,8 +261,7 @@ void Game::InputForGameState(const sf::Event& in_event) {
 			//std::cout << "lisenerpos_: " << sf::Listener::getPosition().x << " " << sf::Listener::getPosition().y << std::endl;
 			std::cout << "lisenerpos_: " << sound_unit_game_.GetMusicPos().x << " " << sound_unit_game_.GetMusicPos().y << std::endl;
 		}
-		if (in_event.key.code == sf::Keyboard::B)
-		{
+		if (in_event.key.code == sf::Keyboard::B) {
 			obj_handler_ptr_->SetPlayerXYZPosForBoss();
 		}
 		
@@ -441,6 +469,9 @@ void Game::GameIteration() {
 			this->previous_states_.push_back(GameState::DEATH);
 		}
 		/*----------End Restart Game when death occurs--------------*/
+		if (obj_handler_ptr_->IsBossDead()) {
+			previous_states_.push_back(GameState::VICTORY);
+		}
 	}
 	else if (this->previous_states_.back() == GameState::PAUSE) {
 		render_.RenderPauseMenu(menu_);
@@ -454,6 +485,10 @@ void Game::GameIteration() {
 	else if (this->previous_states_.back() == GameState::QUIT) {
 		//This will break the outside loops
 	}
+	else if (previous_states_.back() == GameState::VICTORY) {
+		render_.RenderVictoryMenu(menu_);
+	}
+
 }
 
 void Game::InputEvents(const sf::Event& in_event) {
@@ -476,6 +511,9 @@ void Game::InputEvents(const sf::Event& in_event) {
 	}
 	else if (this->previous_states_.back() == GameState::DEATH) {
 		this->InputForDeathState(in_event);
+	}
+	else if (this->previous_states_.back() == GameState::VICTORY) {
+		this->InputForVictoryState(in_event);
 	}
 }
 
@@ -518,8 +556,6 @@ bool Game::IsRunning() {
 	return (this->previous_states_.back() != QUIT);
 	//	return (this->state_ != QUIT);
 }
-
-
 
 MetaData * Game::getMetaDataPtr() const {
 	return meta_data_ptr_;
