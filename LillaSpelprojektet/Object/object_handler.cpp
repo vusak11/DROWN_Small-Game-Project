@@ -391,6 +391,26 @@ void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map
 			this->npc_ptr_vector_.back()->SetOffsets(scale, scale);*/
 		}
 	}
+
+	// Spawn additional NPCs
+	for (int i = 2; i < meta_data->GetMonsterPositionsBonus().size(); i++) {
+		if (sqrt(pow((meta_data->GetMonsterPositionsBonus()[i].x - meta_data->GetSpawnPointCoords().x), 2) + pow((meta_data->GetLightPositions()[i].y - meta_data->GetSpawnPointCoords().y), 2)) > 50) {
+			// Different NPC's depending on where they spawn
+			if (meta_data->GetZone(meta_data->GetMonsterPositionsBonus()[i]) == DEF) {
+				this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(meta_data->GetMonsterPositionsBonus()[i], 5.0f), OBJECT_ID_DUMMY));
+			}
+			else if (meta_data->GetZone(meta_data->GetMonsterPositionsBonus()[i]) == RED) {
+				this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(meta_data->GetMonsterPositionsBonus()[i], 5.0f), OBJECT_ID_FIRE_AI));
+			}
+			else if (meta_data->GetZone(meta_data->GetMonsterPositionsBonus()[i]) == GRE) {
+				this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(meta_data->GetMonsterPositionsBonus()[i], 5.0f), OBJECT_ID_WOOD_AI));
+			}
+			else if (meta_data->GetZone(meta_data->GetMonsterPositionsBonus()[i]) == BLU) {
+				this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(meta_data->GetMonsterPositionsBonus()[i], 5.0f), OBJECT_ID_ICE_AI));
+			}
+		}
+	}
+
 	this->nr_of_runners_ = this->npc_ptr_vector_.size();
 
 	// Spawn keys
@@ -403,6 +423,9 @@ void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map
 	}
 	for (int i = 0; i < meta_data->GetRemainingPOIs().size(); i++) {
 		this->drop_ptr_vector_.push_back(new Chest(glm::vec3(meta_data->GetRemainingPOIs()[i], 0.0f)));
+	}
+	for (int i = 0; i < meta_data->GetChestPositionsBonus().size(); i++) {
+		this->drop_ptr_vector_.push_back(new Chest(glm::vec3(meta_data->GetChestPositionsBonus()[i], 0.0f)));
 	}
 	// Spawn boss door
 	this->drop_ptr_vector_.push_back(new BossDoor(glm::vec3(meta_data->GetBossDoorCoords(), 0.0f)));
