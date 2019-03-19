@@ -185,7 +185,8 @@ void Game::InputForDeathState(const sf::Event& in_event) {
 				//Update to menu state
 				this->previous_states_.push_back(GameState::MENU);
 				menu_.StateManager(this->previous_states_.back());
-				//
+				//Reset cam
+				this->cam_handler_ptr_->SwapToPrimaryCamera();
 				
 				break;
 			case 1:						//Save score
@@ -559,9 +560,10 @@ void Game::InputContinual() {
 	//-------------------------------------------------------
 	//---------------Secondary Camera Control----------------
 	//-------------------------------------------------------
-	//Primary is 0 (boolean false), Secondary is 1 (boolean !false)
-	//bool secondary = cam_handler_ptr_->GetMode();
-	if (cam_handler_ptr_->GetMode()) {
+	//Primary is 0 (game),
+	//Secondary is 1 (debug)
+	//Tertiary is 2 (boss)
+	if (1 == cam_handler_ptr_->GetMode()) {
 		this->InputForSecondaryCamera(this->input_deltatime_);
 	}
 }
