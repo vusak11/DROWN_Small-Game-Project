@@ -480,7 +480,7 @@ void Game::GameIteration() {
 			player_info,
 			obj_handler_ptr_->GetBossAttackState(),
 			state_,
-			menu_.IsMinIMapEnabled()
+			false
 		);
 
 		/*--------------Restart Game when death occurs--------------*/
