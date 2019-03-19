@@ -1,4 +1,5 @@
-#pragma once
+#ifndef SOUNDUNIT_H
+#define SOUNDUNIT_H
 
 #include <SFML/Audio.hpp>
 #include <iostream>
@@ -45,3 +46,5 @@ private:
 	sf::Music music_;
 	char* music_file_name_;
 };
+
+#endif

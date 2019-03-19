@@ -62,9 +62,9 @@ void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_
 	
 
 	//DON'T LET AN OBJECT OUTSIDE THE MAP
-	int map_size = GlobalSettings::Access()->ValueOf("MAP_SIZE");
+	int map_size = (int)GlobalSettings::Access()->ValueOf("MAP_SIZE");
 	if (object_pos.y < -1 * map_size + 1) {
-		object_pos.y = -1 * map_size + 1;
+		object_pos.y = (float)(-1 * map_size + 1);
 		glm::vec3 grounded_velocity = in_object_ptr->GetVelocityVec();
 		grounded_velocity.y = 0.0f;
 		in_object_ptr->SetVelocityVec(grounded_velocity);
@@ -79,7 +79,7 @@ void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_
 		in_object_ptr->SetAirborne(false);
 	}
 	if (object_pos.x > map_size * map_size + 1) {
-		object_pos.x = map_size * map_size + 1;
+		object_pos.x = (float)(map_size * map_size + 1);
 		glm::vec3 grounded_velocity = in_object_ptr->GetVelocityVec();
 		grounded_velocity.x = 0.0f;
 		in_object_ptr->SetVelocityVec(grounded_velocity);
@@ -93,7 +93,7 @@ void PhysicsEngine::UpdatePosition(float& in_deltatime, ObjectClass*& in_object_
 
 glm::vec3 PhysicsEngine::CheckCollision(ObjectClass *& in_object_ptr, glm::vec3 new_pos) {
 
-	int map_size = GlobalSettings::Access()->ValueOf("MAP_SIZE");	// OBS this variable needs to be collected from the map
+	int map_size = (int)GlobalSettings::Access()->ValueOf("MAP_SIZE");	// OBS this variable needs to be collected from the map
 	int radius_constant = 6;
 	bool print = false;
 	glm::vec3 object_pos = new_pos;
@@ -110,26 +110,26 @@ glm::vec3 PhysicsEngine::CheckCollision(ObjectClass *& in_object_ptr, glm::vec3 
 	BoxPoints points = hitbox.GetPoints();
 
 	// Map each hitbox point to a map tile index
-	int x_0_index = points.bottom_left.x;
+	int x_0_index = (int)points.bottom_left.x;
 	float stair_adjustment_value_X_0 = points.bottom_left.x - x_0_index; // This value is used for single point collision
 	if (stair_adjustment_value_X_0 > 0.5) {
 		x_0_index++;
 		stair_adjustment_value_X_0 = (1 - stair_adjustment_value_X_0) * (-1);
 	}
 
-	int x_1_index = points.bottom_right.x;
+	int x_1_index = (int)points.bottom_right.x;
 	float stair_adjustment_value_X_1 = points.bottom_right.x - x_1_index;
 	if (stair_adjustment_value_X_1 > 0.5) {
 		x_1_index++;
 		stair_adjustment_value_X_1 = (1 - stair_adjustment_value_X_1) * (-1);
 	}
 
-	int y_0_index = points.bottom_left.y * -1;
+	int y_0_index = (int)points.bottom_left.y * -1;
 	float stair_adjustment_value_Y_0 = points.bottom_left.y * -1 - y_0_index;
 	if (stair_adjustment_value_Y_0 > 0.5)
 		y_0_index++;
 
-	int y_1_index = points.top_left.y * -1;
+	int y_1_index = (int)points.top_left.y * -1;
 	float stair_adjustment_value_Y_1 = points.top_left.y * -1 - y_1_index;
 	if (stair_adjustment_value_Y_1 > 0.5)
 		y_1_index++;
@@ -345,13 +345,11 @@ glm::vec3 PhysicsEngine::CheckCollision(ObjectClass *& in_object_ptr, glm::vec3 
 		object_pos.y = free_index * (-1) + side - in_object_ptr->GetScale().y;
 		in_object_ptr->SetVelocityVec(glm::vec3(0.0f, 0.0f, in_object_ptr->GetVelocityVec().z));
 		
-		if (collision_0) // increase x a little
-		{
-			object_pos.x += 0.2;
+		if (collision_0) { // increase x a little
+			object_pos.x += 0.2f;
 		}
-		else
-		{
-			object_pos.x -= 0.2;
+		else {
+			object_pos.x -= 0.2f;
 		}
 
 		object_pos = CheckCollision(in_object_ptr, object_pos);
@@ -392,13 +390,11 @@ glm::vec3 PhysicsEngine::CheckCollision(ObjectClass *& in_object_ptr, glm::vec3 
 		object_pos.y = free_index * (-1) - side + in_object_ptr->GetScale().y;
 		in_object_ptr->SetVelocityVec(glm::vec3(0.0f, 0.0f, in_object_ptr->GetVelocityVec().z));
 		
-		if (collision_3) // increase x a little
-		{
-			object_pos.x += 0.2;
+		if (collision_3) { // increase x a little
+			object_pos.x += 0.2f;
 		}
-		else
-		{
-			object_pos.x -= 0.2;
+		else {
+			object_pos.x -= 0.2f;
 		}
 
 		object_pos = CheckCollision(in_object_ptr, object_pos);

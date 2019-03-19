@@ -112,7 +112,7 @@ std::vector<glm::vec2> MetaData::FetchThreeRandomPOIs(int offset) {
 
 	std::vector<glm::vec2> three_random_pois;
 
-	for (int i = rand_num; three_random_pois.size() < 3; i += rand_iterator) {
+	for (unsigned int i = rand_num; three_random_pois.size() < 3; i += rand_iterator) {
 		//IF OUT OF BOUNDS
 		if (i >= points_of_interest_.size()) {
 			i = 1 + ((rand() % 5));			//START OVER ON NEW RANDOM VALUE BETWEEN 1 - 5
@@ -180,7 +180,7 @@ glm::vec2 MetaData::FetchSpawnPoint() {
 	int rand_num = ((rand() % (points_of_interest_.size() - 1)));		//Random number 0 - nr_of_pois_
 	glm::vec2 return_POI;
 
-	for (int i = rand_num; i < points_of_interest_.size(); i++) {
+	for (unsigned int i = rand_num; i < points_of_interest_.size(); i++) {
 		//IF OUT OF BOUNDS
 		if (i >= points_of_interest_.size()) {
 			i = 1 + ((rand() % (points_of_interest_.size() - 1)));			//START OVER ON NEW RANDOM VALUE BETWEEN 1 - 5
@@ -189,9 +189,9 @@ glm::vec2 MetaData::FetchSpawnPoint() {
 		if (GetZone(points_of_interest_[i]) == DEF) {
 			return_POI = points_of_interest_[i];
 			points_of_interest_.erase(points_of_interest_.begin() + i);		//Erase coords from list of available POIs
-			return return_POI;
 		}
 	}
+	return return_POI;
 }
 
 std::vector<glm::vec2> MetaData::GetRemainingPOIs() const {

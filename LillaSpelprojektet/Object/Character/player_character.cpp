@@ -24,8 +24,8 @@ void PlayerCharacter::AlterVelocity() {
 PlayerCharacter::PlayerCharacter(glm::vec3 start_pos)
 	: Character(start_pos,
 		OBJECT_ID_PLAYER_IDLE,
-		GlobalSettings::Access()->ValueOf("PLAYER_START_HP"),
-		GlobalSettings::Access()->ValueOf("PLAYER_START_ATK")
+		(int)GlobalSettings::Access()->ValueOf("PLAYER_START_HP"),
+		(int)GlobalSettings::Access()->ValueOf("PLAYER_START_ATK")
 	) {
 	this->move_top_speed_ = GlobalSettings::Access()->ValueOf("PLAYER_MOVE_VELOCITY");
 	this->move_acceleration_rate_ = GlobalSettings::Access()->ValueOf("PLAYER_MOVE_ACCELERATION_RATE");
