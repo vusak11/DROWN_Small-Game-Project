@@ -121,6 +121,10 @@ void ObjectHandler::DeterminePlayerAction(
 	// Update player model (animation)
 	player_ptr_->CalculateAnimationState(in_deltatime, attacked);
 
+	// Check if player was damaged and play sound
+	player_ptr_->DamagedSinceLastFrame();
+	
+
 }
 
 void ObjectHandler::ResolvePlayerPickUp(std::vector<ObjectClass*>& in_relevant_drops_ptr_vector) {
@@ -128,13 +132,24 @@ void ObjectHandler::ResolvePlayerPickUp(std::vector<ObjectClass*>& in_relevant_d
 	int index = 0;
 	Drop* drop_ptr = NULL;
 
+	bool closed_chest = false;
+
 	//Loop over all relevant drops
 	for (unsigned int i = 0; !triggered && (i < in_relevant_drops_ptr_vector.size()); i++) {
 		//Typecast a ptr in the vector to the drop type
 		drop_ptr = dynamic_cast<Drop*>(in_relevant_drops_ptr_vector.at(i));
 		if (drop_ptr != NULL) {
+
+			//Check if closed chest
+			closed_chest = drop_ptr->GetObjectID() == OBJECT_ID_DROP_CHEST_CLOSED;
+
 			//Check if the player touches any of the drops (loop breaks if so)
 			triggered = drop_ptr->CheckCollision(*(this->player_ptr_));
+
+			if (closed_chest && triggered) {
+				//play sound
+				player_ptr_->PlayChestSound();
+			}
 		}
 		//Save current index
 		index = i;

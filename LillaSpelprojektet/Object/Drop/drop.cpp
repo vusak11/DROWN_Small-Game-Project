@@ -363,7 +363,8 @@ Chest::Chest(glm::vec3 creation_pos)
 	this->SetPosition(pos.x, pos.y, pos.z);
 }
 
-Chest::~Chest() {}
+Chest::~Chest() {
+}
 
 void Chest::SpinDrop(const float& in_deltatime) {
 	//Empty as chests shouldn't rotate
