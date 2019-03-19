@@ -1,4 +1,6 @@
-#pragma once
+#ifndef LIGHT_H
+#define LIGHT_H
+
 #include"GLM/glm.hpp"
 
 class Light {
@@ -19,3 +21,5 @@ public:
 	void SetAmbientLight(glm::vec3 ambient);
 	glm::vec3 GetAmbientLight() const;
 };
+
+#endif

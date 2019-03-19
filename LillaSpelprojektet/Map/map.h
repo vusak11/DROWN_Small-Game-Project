@@ -35,7 +35,7 @@ public:
 	);
 	void CalculateBorders(
 		int b_1, int b_2, int b_3, int b_4,
-		float cell_width, float cell_height,
+		int cell_width, int cell_height,
 		int grid_y, int grid_x
 	);
 	void UVCoordinates();
@@ -48,8 +48,8 @@ public:
 
 	void ClearHeightMapInfo();
 
-	int GetCellHeight() const;
-	int GetCellWidth() const;
+	unsigned int GetCellHeight() const;
+	unsigned int GetCellWidth() const;
 	
 
 	std::vector<std::vector<float>> GetTestList();
@@ -63,8 +63,8 @@ private:
 		int image_height_;		// Height of map image
 
 	std::vector<std::vector<float>> cell_vertices_;
-	float cell_width_;
-	float cell_height_;
+	unsigned int cell_width_;
+	unsigned int cell_height_;
 	
 	std::vector<Triangle> vertices_;
 	std::vector<std::vector<float>> height_map_;

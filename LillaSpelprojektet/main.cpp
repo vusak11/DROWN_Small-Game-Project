@@ -22,13 +22,12 @@ int main() {
 	GlobalSettings::Access()->UpdateValuesFromFile();
 
 	sf::Window window(sf::VideoMode(
-		GlobalSettings::Access()->ValueOf("WINDOW_WIDTH"),
-		GlobalSettings::Access()->ValueOf("WINDOW_HEIGHT")),
+		(unsigned int)GlobalSettings::Access()->ValueOf("WINDOW_WIDTH"),
+		(unsigned int)GlobalSettings::Access()->ValueOf("WINDOW_HEIGHT")),
 		"Drown", 
 		sf::Style::Default, 
 		sf::ContextSettings(32));
-	float test = GlobalSettings::Access()->ValueOf("WINDOW_WIDTH");
-
+	
 	window.setActive(true);
 	 
 	glewExperimental = GL_TRUE;
@@ -37,7 +36,7 @@ int main() {
 	}
 
 	/*----------Start GL Debugging----------*/
-	//EnableGLDebug(); //Comment this away to stop output
+	EnableGLDebug(); //Comment this away to stop output
 	/*----------End of Start GL Debugging----------*/
 
 	/*----------Variables----------*/

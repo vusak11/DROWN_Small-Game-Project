@@ -125,16 +125,16 @@ bool Hitbox::CheckCollision(const BoxPoints& other_box) {
 
 	//Check if any of the sides breaks the criteria
 	//(note the >)
-	int side = other_box.bottom_left.x;
+	int side = (int)other_box.bottom_left.x;
 	if (side > this->GetPoint1().x) { ls_x1 = false; }
 
-	side = other_box.bottom_right.x;
+	side = (int)other_box.bottom_right.x;
 	if (this->GetPoint0().x > side) { x0_rs = false; }
 
-	side = other_box.bottom_left.y;
+	side = (int)other_box.bottom_left.y;
 	if (side > this->GetPoint3().y) { bs_y3 = false; }
 
-	side = other_box.top_left.y;
+	side = (int)other_box.top_left.y;
 	if (this->GetPoint0().y > side) { y0_ts = false; }
 
 	//DEBUG

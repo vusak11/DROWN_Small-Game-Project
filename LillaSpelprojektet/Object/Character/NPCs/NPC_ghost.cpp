@@ -3,8 +3,8 @@
 NPCGhost::NPCGhost(glm::vec3 start_pos) : NPC(
 	start_pos,
 	ObjectID::OBJECT_ID_GHOST,
-	GlobalSettings::Access()->ValueOf("NPC_GHOST_START_HP"),
-	GlobalSettings::Access()->ValueOf("NPC_GHOST_START_ATK")
+	(int)GlobalSettings::Access()->ValueOf("NPC_GHOST_START_HP"),
+	(int)GlobalSettings::Access()->ValueOf("NPC_GHOST_START_ATK")
 ) {
 
 	knockback_ = glm::vec2(GlobalSettings::Access()->ValueOf("NPC_KNOCKBACK_X"),
@@ -42,14 +42,20 @@ void NPCGhost::ExecuteAI(float in_deltatime, glm::vec3 in_player_pos) {
 }
 
 bool NPCGhost::Attack(Character& in_target) {
+	bool return_value = false;
 	if (this->NPC::Attack(in_target)) {
 		//Knockback player
 		in_target.TakeDamage(this->GetAttackPower());
-		if (in_target.GetPosition().x < GetPosition().x)
+		if (in_target.GetPosition().x < GetPosition().x) {
 			in_target.SetVelocityVec(glm::vec3(-1 * knockback_.x, knockback_.y, 0.0f));
-		else if (in_target.GetPosition().x > GetPosition().x)
+			return_value = true;
+		}
+		else if (in_target.GetPosition().x > GetPosition().x) {
 			in_target.SetVelocityVec(glm::vec3(knockback_.x, knockback_.y, 0.0f));
+			return_value = true;
+		}
 	}
+	return return_value;
 }
 
 int NPCGhost::GetHealthLastFrame() const {

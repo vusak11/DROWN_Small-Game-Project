@@ -115,7 +115,7 @@ bool HPRestoreDrop::TriggerEvent(PlayerCharacter& in_player) {
 //Public
 HPRestoreDrop::HPRestoreDrop(glm::vec3 creation_pos)
 	: Drop(creation_pos, OBJECT_ID_DROP_HP_RESTORE) {
-	this->health_ = GlobalSettings::Access()->ValueOf("DROP_HP_RESTORE");
+	this->health_ = (int)GlobalSettings::Access()->ValueOf("DROP_HP_RESTORE");
 }
 
 HPRestoreDrop::~HPRestoreDrop() {}
@@ -132,7 +132,7 @@ bool HPUpDrop::TriggerEvent(PlayerCharacter& in_player) {
 //Public
 HPUpDrop::HPUpDrop(glm::vec3 creation_pos)
 	: Drop(creation_pos, OBJECT_ID_DROP_HP_UP) {
-	this->health_ = GlobalSettings::Access()->ValueOf("DROP_HP_UP");
+	this->health_ = (int)GlobalSettings::Access()->ValueOf("DROP_HP_UP");
 }
 
 HPUpDrop::~HPUpDrop() {}
@@ -147,7 +147,7 @@ bool AtkUpDrop::TriggerEvent(PlayerCharacter& in_player) {
 //Public
 AtkUpDrop::AtkUpDrop(glm::vec3 creation_pos)
 	: Drop(creation_pos, OBJECT_ID_DROP_ATK_UP) {
-	this->attack_ = GlobalSettings::Access()->ValueOf("DROP_ATK_UP");
+	this->attack_ = (int)GlobalSettings::Access()->ValueOf("DROP_ATK_UP");
 }
 
 AtkUpDrop::~AtkUpDrop() {}
@@ -162,7 +162,7 @@ bool SpdUpDrop::TriggerEvent(PlayerCharacter& in_player) {
 //Public
 SpdUpDrop::SpdUpDrop(glm::vec3 creation_pos)
 	: Drop(creation_pos, OBJECT_ID_DROP_SPD_UP) {
-	this->speed_ = GlobalSettings::Access()->ValueOf("DROP_SPD_UP");
+	this->speed_ = (int)GlobalSettings::Access()->ValueOf("DROP_SPD_UP");
 }
 
 SpdUpDrop::~SpdUpDrop() {}
@@ -313,7 +313,7 @@ bool BossDoor::TriggerEvent(PlayerCharacter& in_player) {
 BossDoor::BossDoor(glm::vec3 creation_pos)
 	: Drop(creation_pos, OBJECT_ID_DROP_DOOR) {
 
-	this->keys_required_ = GlobalSettings::Access()->ValueOf("DROP_NUM_OF_KEYS");
+	this->keys_required_ = (int)GlobalSettings::Access()->ValueOf("DROP_NUM_OF_KEYS");
 
 	this->target_coordinate_x_ = GlobalSettings::Access()->ValueOf("DROP_BOSS_DOOR_DESTINATION_X");
 	this->target_coordinate_y_ = GlobalSettings::Access()->ValueOf("DROP_BOSS_DOOR_DESTINATION_Y");
@@ -350,7 +350,7 @@ bool Chest::TriggerEvent(PlayerCharacter& in_player) {
 Chest::Chest(glm::vec3 creation_pos)
 	: Drop(creation_pos, OBJECT_ID_DROP_CHEST_CLOSED) {
 
-	this->num_of_loot_ = GlobalSettings::Access()->ValueOf("DROP_CHEST_NUM_OF_LOOT");
+	this->num_of_loot_ = (int)GlobalSettings::Access()->ValueOf("DROP_CHEST_NUM_OF_LOOT");
 
 	//---
 	//Mess a bit with the look of a chest

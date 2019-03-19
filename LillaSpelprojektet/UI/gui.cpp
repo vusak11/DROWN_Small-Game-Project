@@ -48,8 +48,8 @@ void GUI::RenderHealthBar() {
 		// Positions				 // Texture Coords
 		{0.0f,  700.0f,				 0.0f, 1.0f},
 		{0.0f,  670.0f,				 0.0f, 0.0f},
-		{health_bar_length_, 700.0f, 1.0f, 1.0f},
-		{health_bar_length_, 670.0f, 1.0f, 0.0f}
+		{static_cast<GLfloat>(health_bar_length_), 700.0f, 1.0f, 1.0f},
+		{static_cast<GLfloat>(health_bar_length_), 670.0f, 1.0f, 0.0f}
 	};
 	//Render texture on bar
 	glBindTexture(GL_TEXTURE_2D, health_bar_texture_);

@@ -72,7 +72,7 @@ int Weapon::ExecuteWeapon(Character& in_attacker, Character& in_target) {
 Sword::Sword()
 	: Weapon(
 		WEAPON_SWORD,
-		GlobalSettings::Access()->ValueOf("WEAPON_SWORD_DAMAGE"),
+		(int)GlobalSettings::Access()->ValueOf("WEAPON_SWORD_DAMAGE"),
 		GlobalSettings::Access()->ValueOf("WEAPON_SWORD_COOLDOWN"),
 		GlobalSettings::Access()->ValueOf("WEAPON_SWORD_HITBOX_OFFSET_X"),
 		GlobalSettings::Access()->ValueOf("WEAPON_SWORD_HITBOX_OFFSET_Y")
@@ -103,7 +103,7 @@ int Sword::ExecuteWeapon(Character& in_attacker, Character& in_target) {
 		//If y-direction is less than 45deg
 		//(y = 1/sqrt(2) = 0.707..)
 		//set y to be that
-		if (direction.y < 0.707) { direction.y = 0.707; }
+		if (direction.y < 0.707f) { direction.y = 0.707f; }
 		//TEST
 
 		//Scale direction with knockback
@@ -124,7 +124,7 @@ int Sword::ExecuteWeapon(Character& in_attacker, Character& in_target) {
 Axe::Axe()
 	: Weapon(
 		WEAPON_AXE,
-		GlobalSettings::Access()->ValueOf("WEAPON_AXE_DAMAGE"),
+		(int)GlobalSettings::Access()->ValueOf("WEAPON_AXE_DAMAGE"),
 		GlobalSettings::Access()->ValueOf("WEAPON_AXE_COOLDOWN"),
 		GlobalSettings::Access()->ValueOf("WEAPON_AXE_HITBOX_OFFSET_X"),
 		GlobalSettings::Access()->ValueOf("WEAPON_AXE_HITBOX_OFFSET_Y")
@@ -157,7 +157,7 @@ int Axe::ExecuteWeapon(Character& in_attacker, Character& in_target) {
 		//If y-direction is less than 45deg
 		//(y = 1/sqrt(2) = 0.707..)
 		//set y to be that
-		if (direction.y < 0.707) { direction.y = 0.707; }
+		if (direction.y < 0.707f) { direction.y = 0.707f; }
 		//TEST
 
 		//Scale direction with knockback

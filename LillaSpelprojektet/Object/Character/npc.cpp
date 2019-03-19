@@ -15,9 +15,12 @@ NPC::~NPC() {
 }
 
 bool NPC::Attack(Character& in_target) {
-	if (in_target.GetCurrentHealth() != 0)
+	bool return_value = true;
+	if (in_target.GetCurrentHealth() <= 0) {
 		in_target.SetCurrentHealth(in_target.GetCurrentHealth() - 1);
-	
+		return_value = true;
+	}
+	return return_value;
 }
 
 void NPC::ExecuteAI(float in_deltatime, glm::vec3 in_player_pos) {

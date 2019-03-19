@@ -61,7 +61,7 @@ void Menu::Initialize() {
 			texture,
 			glm::ivec2(free_type_face_->glyph->bitmap.width, free_type_face_->glyph->bitmap.rows),
 			glm::ivec2(free_type_face_->glyph->bitmap_left, free_type_face_->glyph->bitmap_top),
-			free_type_face_->glyph->advance.x
+			static_cast<GLuint>(free_type_face_->glyph->advance.x)
 		};
 		characters_.insert(std::pair<GLchar, Character>(c, character));
 	}
@@ -115,8 +115,8 @@ void Menu::NavigateDown()
 }
 
 void Menu::RenderMenu(ShaderHandler * shader_handler) {
-	int window_width = GlobalSettings::Access()->ValueOf("WINDOW_WIDTH");
-	int window_height = GlobalSettings::Access()->ValueOf("WINDOW_HEIGHT");
+	float window_width = GlobalSettings::Access()->ValueOf("WINDOW_WIDTH");
+	float window_height = GlobalSettings::Access()->ValueOf("WINDOW_HEIGHT");
 
 	/*----------------Title---------------*/
 	RenderText(
@@ -196,8 +196,8 @@ void Menu::RenderMenu(ShaderHandler * shader_handler) {
 }
 
 void Menu::RenderOptionsMenu(ShaderHandler * shader_handler, CameraHandler* cam_handler) {
-	int window_width = GlobalSettings::Access()->ValueOf("WINDOW_WIDTH");
-	int window_height = GlobalSettings::Access()->ValueOf("WINDOW_HEIGHT");
+	float window_width = GlobalSettings::Access()->ValueOf("WINDOW_WIDTH");
+	float window_height = GlobalSettings::Access()->ValueOf("WINDOW_HEIGHT");
 
 	/*----------------Title---------------------*/
 	RenderText(
@@ -372,8 +372,8 @@ void Menu::RenderOptionsMenu(ShaderHandler * shader_handler, CameraHandler* cam_
 }
 
 void Menu::RenderPauseMenu(ShaderHandler * shader_handler) {
-	int window_width = GlobalSettings::Access()->ValueOf("WINDOW_WIDTH");
-	int window_height = GlobalSettings::Access()->ValueOf("WINDOW_HEIGHT");
+	float window_width = GlobalSettings::Access()->ValueOf("WINDOW_WIDTH");
+	float window_height = GlobalSettings::Access()->ValueOf("WINDOW_HEIGHT");
 
 	/*----------------Title---------------------*/
 	RenderText(
@@ -475,8 +475,8 @@ void Menu::RenderPauseMenu(ShaderHandler * shader_handler) {
 }
 
 void Menu::RenderDeathMenu(ShaderHandler * shader_handler) {
-	int window_width = GlobalSettings::Access()->ValueOf("WINDOW_WIDTH");
-	int window_height = GlobalSettings::Access()->ValueOf("WINDOW_HEIGHT");
+	float window_width = GlobalSettings::Access()->ValueOf("WINDOW_WIDTH");
+	float window_height = GlobalSettings::Access()->ValueOf("WINDOW_HEIGHT");
 
 	/*----------------Title---------------------*/
 	RenderText(
@@ -557,8 +557,8 @@ void Menu::RenderDeathMenu(ShaderHandler * shader_handler) {
 }
 
 void Menu::RenderVictoryMenu(ShaderHandler * shader_handler) {
-	int window_width = GlobalSettings::Access()->ValueOf("WINDOW_WIDTH");
-	int window_height = GlobalSettings::Access()->ValueOf("WINDOW_HEIGHT");
+	float window_width = GlobalSettings::Access()->ValueOf("WINDOW_WIDTH");
+	float window_height = GlobalSettings::Access()->ValueOf("WINDOW_HEIGHT");
 
 	/*----------------Title---------------------*/
 	RenderText(
@@ -645,8 +645,8 @@ void Menu::RenderText(
 	GLfloat scale,
 	glm::vec3 color) {
 
-	int window_width = GlobalSettings::Access()->ValueOf("WINDOW_WIDTH");
-	int window_height = GlobalSettings::Access()->ValueOf("WINDOW_HEIGHT");
+	int window_width = (int)GlobalSettings::Access()->ValueOf("WINDOW_WIDTH");
+	int window_height = (int)GlobalSettings::Access()->ValueOf("WINDOW_HEIGHT");
 
 	glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(window_width),
 		0.0f, static_cast<GLfloat>(window_height));

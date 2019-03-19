@@ -5,8 +5,8 @@
 NPCBoss::NPCBoss(glm::vec3 start_pos) : NPC(
 	start_pos,
 	OBJECT_ID_BOSS,
-	GlobalSettings::Access()->ValueOf("BOSS_HP"),
-	GlobalSettings::Access()->ValueOf("BOSS_ATK")
+	(int)GlobalSettings::Access()->ValueOf("BOSS_HP"),
+	(int)GlobalSettings::Access()->ValueOf("BOSS_ATK")
 ) {
 	stage_ = STAGE_1;
 	SetScale(12, 12, 4);
@@ -183,7 +183,7 @@ void NPCBoss::ExecuteActions(float in_deltatime, glm::vec3 in_player_pos) {
 	if (in_player_pos.y > -1170) {
 		// this acts strange with negative values obv
 		float diff = (GetPosition().x - in_player_pos.x);
-		float move_speed = __max(60 - 4.0 * phases_complete_, 15);
+		float move_speed = (float)__max(60 - 4.0 * phases_complete_, 15);
 		if (diff < 0) {
 			SetVelocityVec({ -1 * move_speed, temp_velocity.y , temp_velocity.z });
 		}
@@ -232,7 +232,7 @@ void NPCBoss::UpdateBossObjects(float in_deltatime, glm::vec3 in_player_pos) {
 
 
 	// Boss objects
-	for (int i = 0; i < boss_objects_.size(); i++) {
+	for (unsigned int i = 0; i < boss_objects_.size(); i++) {
 		temp_pos = boss_objects_[i]->GetPosition();
 		temp_pos += boss_objects_[i]->GetVelocityVec() * in_deltatime;
 
@@ -257,13 +257,13 @@ void NPCBoss::UpdateBossObjects(float in_deltatime, glm::vec3 in_player_pos) {
 void NPCBoss::UpdateBossDamageToPlayer(float in_deltatime, PlayerCharacter * player_ptr) {
 
 	float knockback = GlobalSettings::Access()->ValueOf("BOSS_KNOCKBACK");
-	int boss_hand_damage = GlobalSettings::Access()->ValueOf("BOSS_ATK");
+	float boss_hand_damage = GlobalSettings::Access()->ValueOf("BOSS_ATK");
 
 	// check collision 
-	for (int i = 0; i < boss_objects_.size(); i++) {
+	for (unsigned int i = 0; i < boss_objects_.size(); i++) {
 		if (boss_objects_[i]->CheckCollision(player_ptr->GetPoints())) {
 			
-			player_ptr->TakeDamage(boss_hand_damage);
+			player_ptr->TakeDamage((int)boss_hand_damage);
 
 			//Knockback player
 			if (player_ptr->GetPosition().x < boss_objects_[i]->GetPosition().x)

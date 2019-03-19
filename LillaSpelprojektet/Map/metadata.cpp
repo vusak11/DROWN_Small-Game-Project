@@ -98,6 +98,86 @@ void MetaData::Initialize() {
 		glm::vec2(535, -160),
 		glm::vec2(310, -200)
 	};
+
+	monster_spawn_bonus_ = {
+		glm::vec2(284,-137),
+		glm::vec2(667,-114),
+		glm::vec2(1945,-215),
+		glm::vec2(1900,-290),
+		glm::vec2(1628,-258),
+		glm::vec2(1480,-390),
+		glm::vec2(1160,-330),
+		glm::vec2(1044,-405),
+		glm::vec2(237,-258),
+		glm::vec2(149,-481),
+		glm::vec2(570,-460),
+		glm::vec2(335,-643),
+		glm::vec2(585,-616),
+		glm::vec2(903,-624),
+		glm::vec2(235,-866),
+		glm::vec2(710,-954),
+		glm::vec2(1060,-935),
+		glm::vec2(1413,-636),
+		glm::vec2(1620,-593),
+		glm::vec2(1765,-698),
+		glm::vec2(1980,-760),
+		glm::vec2(1828,-966),
+		glm::vec2(1395,-995),
+		glm::vec2(1527,-1153),
+		glm::vec2(1847,-1183),
+		glm::vec2(1544,-1218),
+		glm::vec2(1580,-1318),
+		glm::vec2(1538,-1583),
+		glm::vec2(1800,-1600),
+		glm::vec2(888,-1247),
+		glm::vec2(741,-1253),
+		glm::vec2(516,-1329),
+		glm::vec2(1015,-1460),
+		glm::vec2(490,-1575),
+		glm::vec2(327,-1340),
+		glm::vec2(169,-1447),
+		glm::vec2(63,-1978),
+		glm::vec2(126,-1835),
+		glm::vec2(195,-1932),
+		glm::vec2(247,-1787),
+		glm::vec2(312,-1807),
+		glm::vec2(330,-1924),
+		glm::vec2(436,-1850),
+		glm::vec2(524,-1995),
+		glm::vec2(584,-1923),
+		glm::vec2(717,-1881),
+		glm::vec2(743,-2003),
+		glm::vec2(832,-1821),
+		glm::vec2(905,-1980),
+		glm::vec2(990,-1930),
+		glm::vec2(992,-1775),
+		glm::vec2(1080,-1983),
+		glm::vec2(1160,-1877),
+		glm::vec2(1321,-1817),
+		glm::vec2(1352,-1985),
+		glm::vec2(1418,-1907),
+		glm::vec2(1444,-1735),
+		glm::vec2(1540,-1820),
+		glm::vec2(1544,-1966),
+		glm::vec2(1640,-1965),
+		glm::vec2(1700,-1835),
+		glm::vec2(1827,-1914),
+		glm::vec2(1846,-1755),
+		glm::vec2(1920,-1975),
+		glm::vec2(1990,-1890)
+	};
+
+	chest_spawn_bonus_ = {
+		glm::vec2(62,-1996),
+		glm::vec2(495,-1940),
+		glm::vec2(630,-2020),
+		glm::vec2(1005,-2015),
+		glm::vec2(1163,-2015),
+		glm::vec2(1570,-1980),
+		glm::vec2(1627,-1674),
+		glm::vec2(1804,-1932)
+	};
+
 	zone_radius_ = 400;
 	zone_origin_coords_ = FetchThreeRandomPOIs(zone_radius_*2);
 	spawn_point_coords_ = FetchSpawnPoint();
@@ -112,7 +192,7 @@ std::vector<glm::vec2> MetaData::FetchThreeRandomPOIs(int offset) {
 
 	std::vector<glm::vec2> three_random_pois;
 
-	for (int i = rand_num; three_random_pois.size() < 3; i += rand_iterator) {
+	for (unsigned int i = rand_num; three_random_pois.size() < 3; i += rand_iterator) {
 		//IF OUT OF BOUNDS
 		if (i >= points_of_interest_.size()) {
 			i = 1 + ((rand() % 5));			//START OVER ON NEW RANDOM VALUE BETWEEN 1 - 5
@@ -180,7 +260,7 @@ glm::vec2 MetaData::FetchSpawnPoint() {
 	int rand_num = ((rand() % (points_of_interest_.size() - 1)));		//Random number 0 - nr_of_pois_
 	glm::vec2 return_POI;
 
-	for (int i = rand_num; i < points_of_interest_.size(); i++) {
+	for (unsigned int i = rand_num; i < points_of_interest_.size(); i++) {
 		//IF OUT OF BOUNDS
 		if (i >= points_of_interest_.size()) {
 			i = 1 + ((rand() % (points_of_interest_.size() - 1)));			//START OVER ON NEW RANDOM VALUE BETWEEN 1 - 5
@@ -189,9 +269,9 @@ glm::vec2 MetaData::FetchSpawnPoint() {
 		if (GetZone(points_of_interest_[i]) == DEF) {
 			return_POI = points_of_interest_[i];
 			points_of_interest_.erase(points_of_interest_.begin() + i);		//Erase coords from list of available POIs
-			return return_POI;
 		}
 	}
+	return return_POI;
 }
 
 std::vector<glm::vec2> MetaData::GetRemainingPOIs() const {
@@ -206,6 +286,16 @@ std::vector<glm::vec2> MetaData::GetZonePOIs() const
 std::vector<glm::vec2> MetaData::GetLightPositions() const
 {
 	return light_positions_;
+}
+
+std::vector<glm::vec2> MetaData::GetMonsterPositionsBonus() const
+{
+	return monster_spawn_bonus_;
+}
+
+std::vector<glm::vec2> MetaData::GetChestPositionsBonus() const
+{
+	return chest_spawn_bonus_;
 }
 
 glm::vec2 MetaData::GetSpawnPointCoords() const

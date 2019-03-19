@@ -39,8 +39,8 @@ bool Map::LoadMap(const char* path) {
 
 void Map::CreateCells(int grid_column, int grid_row, int grid_y, int grid_x) {
 	cell_vertices_.clear();
-	float cell_width = image_width_ / grid_column;
-	float cell_height = image_height_ / grid_row;
+	int cell_width = image_width_ / grid_column;
+	int cell_height = image_height_ / grid_row;
 
 	// Create cells and add extra vertices depending on what cell for filling gaps between cells
 	if (grid_y == 0 && grid_x == 0) // Upper left corner
@@ -76,7 +76,7 @@ void Map::CreateCells(int grid_column, int grid_row, int grid_y, int grid_x) {
 
 void Map::CalculateBorders(
 	int b_1, int b_2, int b_3, int b_4,
-	float cell_width, float cell_height,
+	int cell_width, int cell_height,
 	int grid_y, int grid_x) {
 
 	std::vector<float> temp_cell_width;
@@ -93,9 +93,9 @@ void Map::CalculateBorders(
 void Map::UVCoordinates() {
 	std::vector<glm::vec2> temp_coord;
 	tex_coordinates_.clear();
-	for (int z = 0; z < cell_height_; z++) {
+	for (unsigned int z = 0; z < cell_height_; z++) {
 		temp_coord.clear();
-		for (int x = 0; x < cell_width_; x++) {
+		for (unsigned int x = 0; x < cell_width_; x++) {
 			float f_scale_c = (float(x) / float(cell_width_ - 1));
 			float f_scale_r = (float(z) / float(cell_height_ - 1));
 			temp_coord.push_back(glm::vec2(f_scale_c, f_scale_r));
@@ -113,10 +113,10 @@ void Map::CalculateNormals() {
 	std::vector<glm::vec3> ancillary_normal_0, ancillary_normal_1;
 	std::vector<std::vector<glm::vec3>> triangle_normal_0, triangle_normal_1;
 
-	for (int z = 0; z < cell_height_ - 1; z++) {
+	for (unsigned int z = 0; z < cell_height_ - 1; z++) {
 		ancillary_normal_0.clear();
 		ancillary_normal_1.clear();
-		for (int x = 0; x < cell_width_ - 1; x++) {
+		for (unsigned int x = 0; x < cell_width_ - 1; x++) {
 
 			point_1 = glm::vec3((float)x, cell_vertices_[z][x], (float)z);
 			point_2 = glm::vec3((float)x, cell_vertices_[z + 1][x], (float)z + 1);
@@ -145,9 +145,9 @@ void Map::CalculateNormals() {
 	//---------------Sum Normals(adjacent)------------//
 	normals_.clear();
 	std::vector<glm::vec3> temp_sum;
-	for (int z = 0; z < cell_height_; z++) {
+	for (unsigned int z = 0; z < cell_height_; z++) {
 		temp_sum.clear();
-		for (int x = 0; x < cell_width_; x++) {
+		for (unsigned int x = 0; x < cell_width_; x++) {
 			glm::vec3 sum_normal = glm::vec3(0.0f, 0.0f, 0.0f);
 			if (z != 0 && x != 0) {
 				sum_normal += triangle_normal_0[z - 1][x - 1];
@@ -174,8 +174,8 @@ void Map::CreateTriangles() {
 	Triangle triangle;
 	vertices_.clear();
 	int index = 0;
-	for (int z = 0; z < cell_height_; z++) {
-		for (int x = 0; x < cell_width_; x++) {
+	for (unsigned int z = 0; z < cell_height_; z++) {
+		for (unsigned int x = 0; x < cell_width_; x++) {
 			triangle.x = (float)x;
 			triangle.y = (float)z * -1;
 			triangle.z = cell_vertices_[z][x];
@@ -192,17 +192,17 @@ void Map::CreateTriangles() {
 void Map::CreateIndices() {
 	indices_.clear();
 
-	for (int z = 0; z < cell_height_ - 1; z++) { // -1 so that we don't reach out of bounds
-		for (int x = 0; x < cell_width_ - 1; x++) { // -------- || ------------
-			int index = (z * cell_width_) + x;
+	for (unsigned int z = 0; z < cell_height_ - 1; z++) { // -1 so that we don't reach out of bounds
+		for (unsigned int x = 0; x < cell_width_ - 1; x++) { // -------- || ------------
+			unsigned int index = (z * cell_width_) + x;
 
-			int p1 = index;
-			int p2 = index + cell_width_ + 1;
-			int p3 = index + 1;
+			unsigned int p1 = index;
+			unsigned int p2 = index + cell_width_ + 1;
+			unsigned int p3 = index + 1;
 
-			int p4 = index;
-			int p5 = index + cell_width_;
-			int p6 = index + cell_width_ + 1;
+			unsigned int p4 = index;
+			unsigned int p5 = index + cell_width_;
+			unsigned int p6 = index + cell_width_ + 1;
 
 			indices_.push_back(p1);
 			indices_.push_back(p2);
@@ -212,7 +212,7 @@ void Map::CreateIndices() {
 			indices_.push_back(p6);
 
 		}
-		indices_.push_back(cell_width_*cell_height_); //degenerate strips
+		indices_.push_back((int)(cell_width_*cell_height_)); //degenerate strips
 	}
 }
 
@@ -302,7 +302,7 @@ void Map::Draw(GLuint shader) {
 
 	glBindVertexArray(vertex_array_object_);
 	glEnable(GL_PRIMITIVE_RESTART);
-	glPrimitiveRestartIndex(cell_width_ * cell_height_);
+	glPrimitiveRestartIndex((GLuint)(cell_width_ * cell_height_));
 	
 	glDrawElements(GL_TRIANGLE_STRIP, indices_.size(), GL_UNSIGNED_INT, 0);
 
@@ -310,7 +310,7 @@ void Map::Draw(GLuint shader) {
 	glDisable(GL_PRIMITIVE_RESTART);
 }
 
-int Map::GetCellHeight() const {
+unsigned int Map::GetCellHeight() const {
 	return cell_height_;
 }
 std::vector<std::vector<float>>* Map::GetTempHeightList() {
@@ -329,6 +329,6 @@ void Map::ClearHeightMapInfo() {
 	height_map_.clear();
 }
 
-int Map::GetCellWidth() const {
+unsigned int Map::GetCellWidth() const {
 	return cell_width_;
 }

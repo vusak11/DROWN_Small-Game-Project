@@ -37,7 +37,7 @@ private:
 	std::vector<ObjectClass*> drop_ptr_vector_;		//Things dropped on the ground (e.g. power-ups, health)
 	NPCBoss* boss_ptr_;
 
-	float nr_of_runners_;
+	int nr_of_runners_;
 
 	PlayerInput player_input_;
 
