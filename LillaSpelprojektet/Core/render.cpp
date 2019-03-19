@@ -261,8 +261,8 @@ void Render::GeometryPass(
 	glm::vec3 camera_position,
 	glm::mat4 perspective_view_matrix) {
 	glViewport(0, 0, 
-		GlobalSettings::Access()->ValueOf("WINDOW_WIDTH"), 
-		GlobalSettings::Access()->ValueOf("WINDOW_HEIGHT"));
+		(GLsizei)GlobalSettings::Access()->ValueOf("WINDOW_WIDTH"), 
+		(GLsizei)GlobalSettings::Access()->ValueOf("WINDOW_HEIGHT"));
 
 	glBindFramebuffer(GL_FRAMEBUFFER, geometry_pass_->GetBuffer());
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
