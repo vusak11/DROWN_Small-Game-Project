@@ -263,7 +263,6 @@ void Render::GeometryPass(
 	glViewport(0, 0, 
 		GlobalSettings::Access()->ValueOf("WINDOW_WIDTH"), 
 		GlobalSettings::Access()->ValueOf("WINDOW_HEIGHT"));
-	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glBindFramebuffer(GL_FRAMEBUFFER, geometry_pass_->GetBuffer());
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
