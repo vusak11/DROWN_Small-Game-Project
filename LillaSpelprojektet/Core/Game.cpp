@@ -167,8 +167,26 @@ void Game::InputForDeathState(const sf::Event& in_event) {
 		if (in_event.key.code == sf::Keyboard::Enter) {
 			switch (menu_.GetSelectedItemIndex()) {
 			case 0:						//Restart
-				system("restartGame.cmd"); // TEST case
-				this->previous_states_.push_back(GameState::QUIT);
+				//RESTART WITHOUT RELAUNCH
+				//Load update globals
+				GlobalSettings::Access()->UpdateValuesFromFile();
+				//Create new metadata
+				delete this->meta_data_ptr_;
+				this->meta_data_ptr_ = new MetaData();
+				this->meta_data_ptr_->Initialize();
+				//Update render
+				this->render_.UpdateMetadata(this->meta_data_ptr_);
+				//Create a new object handler
+				delete this->obj_handler_ptr_;
+				this->obj_handler_ptr_ = new ObjectHandler();
+				this->obj_handler_ptr_->InitializeObjectHandler(
+					render_.GetMapPointer(),
+					meta_data_ptr_);
+				//Update to menu state
+				this->previous_states_.push_back(GameState::MENU);
+				menu_.StateManager(this->previous_states_.back());
+				//
+				
 				break;
 			case 1:						//Save score
 				//Save highscore
@@ -351,6 +369,7 @@ void Game::InitializeGame() {
 	this->menu_.Initialize();
 	
 	this->render_.InitializeRender(meta_data_ptr_);
+	
 	this->obj_handler_ptr_->InitializeObjectHandler(
 		render_.GetMapPointer(),
 		meta_data_ptr_);

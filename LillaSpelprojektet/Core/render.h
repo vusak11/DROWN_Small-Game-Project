@@ -40,6 +40,8 @@ public:
 	~Render();
 
 	void InitializeRender(MetaData* meta_data);
+	void UpdateMetadata(MetaData* meta_data);
+
 	void UpdateRender(
 		float dt, 
 		glm::vec3 camera_position,
