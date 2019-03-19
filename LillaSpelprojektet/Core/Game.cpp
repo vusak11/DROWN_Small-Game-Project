@@ -384,7 +384,7 @@ void Game::InitializeStartGame() {
 	//sound_unit_game_.SetMusicFile((char*)"../Resources/Audio/cavesong2.wav");
 	sf::Listener::setGlobalVolume(100.0f);
 	sound_unit_game_.SetMusicFile((char*)"../Resources/Audio/cavesong2.wav");
-	sound_unit_game_.SetVolumeMusic(35);
+	sound_unit_game_.SetVolumeMusic(0);
 	sound_unit_game_.SetPosition(564.0f, -220.0f, 0.0f);
 	//sound_unit_game_.SetAttenuation(GlobalSettings::Access()->ValueOf("SOUND_ATTENUATION"));
 	//sound_unit_game_.SetMinDistance(GlobalSettings::Access()->ValueOf("SOUND_MIN_DIST"));
@@ -445,7 +445,7 @@ void Game::GameIteration() {
 			this->previous_states_.push_back(GameState::BOSS);
 			sound_unit_game_.StopMusic();
 			sound_unit_game_.SetMusicFile((char*)"../Resources/Audio/disco2.wav");
-			sound_unit_game_.SetVolumeMusic(100);
+			sound_unit_game_.SetVolumeMusic(0);
 			sound_unit_game_.PlayMusic();
 			std::cout << "ENTERING BOSS STATE" << std::endl;
 			obj_handler_ptr_->SpawnBoss();

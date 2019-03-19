@@ -378,7 +378,7 @@ void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map
 
 	//Create player
 	//Assign spawn position randomly via meta data
-	this->player_ptr_ = new PlayerCharacter(glm::vec3(meta_data->GetSpawnPointCoords(), 3.0f));
+	this->player_ptr_ = new PlayerCharacter(glm::vec3(176.0f, -86.0f, 3.0f));
 	//this->player_ptr_ = new PlayerCharacter(glm::vec3(564.0f, -220.0f, 5.0f));
 	this->player_ptr_->SetScale(2.0f);
 	this->player_ptr_->SetOffsets(2, 2);
