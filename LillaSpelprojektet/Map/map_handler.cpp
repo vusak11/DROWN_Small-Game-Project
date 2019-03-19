@@ -25,8 +25,8 @@ void MapHandler::InitializeMaps(
 	GridMap grid_cell;
 	std::vector<GridMap> grid_cells;
 
-	int grid_row = GlobalSettings::Access()->ValueOf("GRID_ROW");
-	int grid_column = GlobalSettings::Access()->ValueOf("GRID_COLUMN");
+	int grid_row = (int)GlobalSettings::Access()->ValueOf("GRID_ROW");
+	int grid_column = (int)GlobalSettings::Access()->ValueOf("GRID_COLUMN");
 	float grid_gap = GlobalSettings::Access()->ValueOf("GRID_GAP");
 
 	for (int j = 0; j < grid_row; j++) {
@@ -55,8 +55,8 @@ void MapHandler::InitializeMaps(
 }
 
 void MapHandler::InitializeBuffers(GLuint shader) {
-	for (int j = 0; j < grid_map_.size(); j++) {
-		for (int i = 0; i < grid_map_[j].size(); i++) {
+	for (unsigned int j = 0; j < grid_map_.size(); j++) {
+		for (unsigned int i = 0; i < grid_map_[j].size(); i++) {
 			grid_map_[j][i].map_cell.Buffer(shader);
 		}
 	}
@@ -76,9 +76,9 @@ void MapHandler::Draw(GLuint shader, int column, int row) {
 
 glm::vec2 MapHandler::CurrentCell(glm::vec3 players_current_position) {
 	// Finds out what grid cell player stands on
-	float x, y = 0;
-	for (int j = 0; j < grid_map_.size(); j++) {
-		for (int i = 0; i < grid_map_[j].size(); i++) {
+	unsigned int x, y = 0;
+	for (unsigned int j = 0; j < grid_map_.size(); j++) {
+		for (unsigned int i = 0; i < grid_map_[j].size(); i++) {
 			if (players_current_position.x > grid_map_[j][i].translate.x)
 				x = i;
 			if (players_current_position.y < grid_map_[j][i].translate.y)
@@ -93,8 +93,8 @@ std::vector<glm::vec2> MapHandler::GridCulling(glm::vec2 current_cell) {
 	// Check all neighbouring cells and see whether they exists or not.
 	// If they do exist, push the location into cells_to_draw vector.
 	// 'Center' will always be drawn because that's where the player stands
-	int grid_column = GlobalSettings::Access()->ValueOf("GRID_COLUMN");
-	int grid_row = GlobalSettings::Access()->ValueOf("GRID_ROW");
+	int grid_column = (int)GlobalSettings::Access()->ValueOf("GRID_COLUMN");
+	int grid_row = (int)GlobalSettings::Access()->ValueOf("GRID_ROW");
 
 	cells_to_draw_.clear();
 	if (current_cell.x >= 0 && current_cell.x <= 4 &&

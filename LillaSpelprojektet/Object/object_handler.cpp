@@ -152,7 +152,7 @@ void ObjectHandler::ResolvePlayerPickUp(std::vector<ObjectClass*>& in_relevant_d
 		//Spawn any additional drops the triggered one stores
 		//First do the random ones by calling the randomizer that many times
 		num_random = drop_ptr->ConsumeNumOfRandomSpawns();
-		for (unsigned int i = 0; i < num_random; i++) {
+		for (int i = 0; i < num_random; i++) {
 			this->ResolveRandomDropSpawn(drop_ptr->GetPosition(), this->chest_drop_rate_);
 		}
 		
@@ -371,7 +371,7 @@ void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map
 	
 
 	// Create NPCs and spawn them on every light source
-	for (int i = 2; i < meta_data->GetLightPositions().size(); i++) {
+	for (unsigned int i = 2; i < meta_data->GetLightPositions().size(); i++) {
 		if (sqrt(pow((meta_data->GetLightPositions()[i].x - meta_data->GetSpawnPointCoords().x), 2) + pow((meta_data->GetLightPositions()[i].y - meta_data->GetSpawnPointCoords().y), 2)) > 50) {
 			// Different NPC's depending on where they spawn
 			if (meta_data->GetZone(meta_data->GetLightPositions()[i]) == DEF) {
@@ -418,10 +418,10 @@ void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map
 		this->drop_ptr_vector_.push_back(new KeyDrop(glm::vec3(meta_data->GetDoorKeyCoords()[i], 0.0f)));
 	}
 	// Spawn treasure chests
-	for (int i = 0; i < meta_data->GetZonePOIs().size(); i++) {
+	for (unsigned int i = 0; i < meta_data->GetZonePOIs().size(); i++) {
 		this->drop_ptr_vector_.push_back(new Chest(glm::vec3(meta_data->GetZonePOIs()[i], 0.0f)));
 	}
-	for (int i = 0; i < meta_data->GetRemainingPOIs().size(); i++) {
+	for (unsigned int i = 0; i < meta_data->GetRemainingPOIs().size(); i++) {
 		this->drop_ptr_vector_.push_back(new Chest(glm::vec3(meta_data->GetRemainingPOIs()[i], 0.0f)));
 	}
 	for (unsigned int i = 0; i < meta_data->GetChestPositionsBonus().size(); i++) {

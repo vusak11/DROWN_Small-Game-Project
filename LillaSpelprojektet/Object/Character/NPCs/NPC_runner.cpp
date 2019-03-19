@@ -6,8 +6,8 @@ NPCRunner::NPCRunner(glm::vec3 start_pos, ObjectID id)
 	: NPC(
 		start_pos, 
 		id,
-		GlobalSettings::Access()->ValueOf("NPC_RUNNER_START_HP"),
-		GlobalSettings::Access()->ValueOf("NPC_RUNNER_START_ATK")
+		(int)GlobalSettings::Access()->ValueOf("NPC_RUNNER_START_HP"),
+		(int)GlobalSettings::Access()->ValueOf("NPC_RUNNER_START_ATK")
 	) {
 
 	knockback_ = glm::vec2(GlobalSettings::Access()->ValueOf("NPC_KNOCKBACK_X"),
@@ -37,8 +37,8 @@ NPCRunner::NPCRunner(glm::vec3 start_pos, ObjectID id)
 		SetScale(4.0f);
 		SetOffsets(4.0f, 4.0f);
 		aggro_speed_ = 2300;
-		SetMaxHealth(hp * 3);
-		SetCurrentHealth(hp * 3);
+		SetMaxHealth((int)(hp * 3));
+		SetCurrentHealth((int)(hp * 3));
 	}
 	else { // default 
 		SetScale(scale);
@@ -65,7 +65,7 @@ void NPCRunner::ExecuteAI(float in_deltatime, glm::vec3 in_player_pos) {
 
 	static float private_time = 0.0f;
 	
-	float stun_duration = 0.6;
+	float stun_duration = 0.6f;
 
 
 	int health = GetCurrentHealth();
@@ -85,7 +85,7 @@ void NPCRunner::ExecuteAI(float in_deltatime, glm::vec3 in_player_pos) {
 		else {
 			if (state_ == NPC_STATE_AGGRO) {
 				private_time = 3.0f;
-				next_move_index_ = 0.0f;
+				next_move_index_ = 0;
 			}
 			state_ = NPC_STATE_IDLE;
 		}
@@ -96,7 +96,7 @@ void NPCRunner::ExecuteAI(float in_deltatime, glm::vec3 in_player_pos) {
 			if (private_time > time_to_next_move_) {
 				private_time = 0;
 				next_move_index_ = rand() % 3;
-				time_to_next_move_ = rand() % 10 + 2;
+				time_to_next_move_ = rand() % 10 + 2.0f;
 			}
 
 			switch (next_move_index_) {
@@ -144,15 +144,20 @@ bool NPCRunner::Attack(Character& in_target) {
 	if (this->NPC::Attack(in_target)) {
 		//Knockback player
 		in_target.TakeDamage(this->GetAttackPower());
-		if (in_target.GetPosition().x < GetPosition().x)
+		if (in_target.GetPosition().x < GetPosition().x) {
 			in_target.SetVelocityVec(glm::vec3(-1 * knockback_.x, knockback_.y, 0.0f));
-		else if (in_target.GetPosition().x > GetPosition().x)
+			return true;
+		}
+		else if (in_target.GetPosition().x > GetPosition().x) {
 			in_target.SetVelocityVec(glm::vec3(knockback_.x, knockback_.y, 0.0f));
+			return true;
+		}
 	}
+	return false;
 }
 
 void NPCRunner::SetAggroRange(int aggro_range) {
-	aggro_range_ = aggro_range;
+	aggro_range_ = (float)aggro_range;
 }
 
 void NPCRunner::SetJumpVelocity(float jump_velocity) {

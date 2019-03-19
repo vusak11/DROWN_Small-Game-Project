@@ -49,11 +49,11 @@ void SoundUnit::StopMusic() {
 }
 
 void SoundUnit::SetVolumeMusic(int volume) {
-	music_.setVolume(volume);
+	music_.setVolume((float)volume);
 }
 
 int SoundUnit::GetVolumeMusic() const {
-	return std::round(music_.getVolume());
+	return (int)std::round(music_.getVolume());
 }
 
 //void SoundUnit::SetAttenuation(float attenuation) {
