@@ -124,7 +124,9 @@ HPRestoreDrop::~HPRestoreDrop() {}
 //Private
 bool HPUpDrop::TriggerEvent(PlayerCharacter& in_player) {
 	//Increase the player's max health, return true is successful
-	return in_player.IncreaseMaxHealth(this->health_);
+	bool ret_val = in_player.IncreaseMaxHealth(this->health_);
+	if(ret_val) { in_player.HealDamage(this->health_); }
+	return ret_val;
 }
 
 //Public

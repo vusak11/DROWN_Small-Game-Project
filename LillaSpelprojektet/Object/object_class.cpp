@@ -43,8 +43,6 @@ ObjectClass::ObjectClass(glm::vec3 start_pos, ObjectID id) {
 	//hitbox_ = HitBox(position_, scale_.x, scale_.y);
 	this->UpdateHitbox(position_);
 
-	//TBA: Use the ID to determine the specs of a Object (Character/Drop/etc)
-
 	this->model_matrix_up_to_date_ = false;
 
 	this->velocity_vec_ = glm::vec3(0.0f);
