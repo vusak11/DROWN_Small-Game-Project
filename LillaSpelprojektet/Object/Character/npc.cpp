@@ -7,7 +7,7 @@ NPC::NPC(glm::vec3 start_pos, ObjectID id, int start_hp, int start_atk)
 	: Character(start_pos, id, start_hp, start_atk) {
 	this->state_ = NPC_STATE_IDLE;
 
-	this->dead_ = false;
+	this->is_dead_ = false;
 	this->death_time_ = 0.5f;
 }
 
@@ -49,12 +49,12 @@ bool NPC::ExecuteDeath(const float& in_deltatime) {
 	this->death_time_ -= in_deltatime;
 
 	//When we are done dying, be dead :D
-	if (death_time_ <= 0.0f) { this->dead_ = true; }
+	if (death_time_ <= 0.0f) { this->is_dead_ = true; }
 
 	//Since we are dyiong or dead return true
 	return true;
 }
 
 bool NPC::IsDead() {
-	return this->dead_;
+	return this->is_dead_;
 }

@@ -12,7 +12,7 @@ enum NPC_STATE {
 
 class NPC : public Character {
 private:
-	bool dead_;
+	bool is_dead_;
 	float death_time_;
 	float shrink_rate_;
 
