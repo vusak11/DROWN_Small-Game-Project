@@ -186,9 +186,7 @@ void MetaData::Initialize() {
 }
 
 std::vector<glm::vec2> MetaData::FetchThreeRandomPOIs(int offset) {
-	//srand((unsigned)time(0));
-	//int rand_num = ((rand() % (points_of_interest_.size() + 1)));		//Random number 0 - nr_of_pois_
-	//int rand_iterator = 1 + ((rand() % 5));								//Random number 1 - 5 used as an iterator
+
 	int rand_num = ((GlobalSettings::GetRandomInt() % (points_of_interest_.size() + 1)));		//Random number 0 - nr_of_pois_
 	int rand_iterator = 1 + ((GlobalSettings::GetRandomInt() % 5));								//Random number 1 - 5 used as an iterator
 
@@ -197,7 +195,6 @@ std::vector<glm::vec2> MetaData::FetchThreeRandomPOIs(int offset) {
 	for (unsigned int i = rand_num; three_random_pois.size() < 3; i += rand_iterator) {
 		//IF OUT OF BOUNDS
 		if (i >= points_of_interest_.size()) {
-			//i = 1 + ((rand() % 5));			//START OVER ON NEW RANDOM VALUE BETWEEN 1 - 5
 			i = 1 + ((GlobalSettings::GetRandomInt() % 5));			//START OVER ON NEW RANDOM VALUE BETWEEN 1 - 5
 		}
 		//IF RETURN LIST IS EMPTY
@@ -229,8 +226,7 @@ std::vector<glm::vec2> MetaData::FetchThreeRandomPOIs(int offset) {
 }
 
 glm::vec2 MetaData::FetchRandomPOI() {
-	//srand((unsigned)time(0));
-	//int rand_num = ((rand() % (points_of_interest_.size() - 1)));		//Random number 0 - nr_of_pois_
+
 	int rand_num = ((GlobalSettings::GetRandomInt() % (points_of_interest_.size() - 1)));		//Random number 0 - nr_of_pois_
 
 	glm::vec2 return_POI = points_of_interest_[rand_num];
@@ -260,24 +256,21 @@ ZoneID MetaData::GetZone(glm::vec2 in_pos) {
 }
 
 glm::vec2 MetaData::FetchSpawnPoint() {
-	//srand((unsigned)time(0));
-	//int rand_num = ((rand() % (points_of_interest_.size() - 1)));		//Random number 0 - nr_of_pois_
-	int rand_num = ((GlobalSettings::GetRandomInt() % (points_of_interest_.size() - 1)));		//Random number 0 - nr_of_pois_
+	
+	glm::vec2 return_POI = glm::vec2(0.0f);
 
-	glm::vec2 return_POI;
 
-	for (unsigned int i = rand_num; i < points_of_interest_.size(); i++) {
-		//IF OUT OF BOUNDS
-		if (i >= points_of_interest_.size()) {
-			//i = 1 + ((rand() % (points_of_interest_.size() - 1)));			//START OVER ON NEW RANDOM VALUE BETWEEN 1 - 5
-			i = 1 + ((GlobalSettings::GetRandomInt() % (points_of_interest_.size() - 1)));			//START OVER ON NEW RANDOM VALUE BETWEEN 1 - 5
-		}
-		
-		if (GetZone(points_of_interest_[i]) == DEF) {
-			return_POI = points_of_interest_[i];
-			points_of_interest_.erase(points_of_interest_.begin() + i);		//Erase coords from list of available POIs
+	int rand_num = 0;
+	while (return_POI.x == 0.0f) {
+		rand_num = ((GlobalSettings::GetRandomInt() % (points_of_interest_.size())));		//Random number 0 - nr_of_pois_
+
+		if (GetZone(points_of_interest_[rand_num]) == DEF) {
+			return_POI = points_of_interest_[rand_num];
+			points_of_interest_.erase(points_of_interest_.begin() + rand_num);		//Erase coords from list of available POIs
 		}
 	}
+
+	
 	return return_POI;
 }
 

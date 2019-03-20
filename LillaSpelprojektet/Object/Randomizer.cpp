@@ -75,8 +75,7 @@ Randomizer::~Randomizer() {
 }
 
 float Randomizer::RandomizeFloat(float lower_bound, float upper_bound) {
-	return lower_bound 
-		//+ (static_cast<float>(rand())
+	return lower_bound
 		+ (static_cast<float>(GlobalSettings::GetRandomInt())
 			/ static_cast<float>(RAND_MAX 
 				/ (upper_bound - lower_bound)
@@ -95,7 +94,6 @@ Drop* Randomizer::RandomNewDropPtr(glm::vec3 in_pos, float in_drop_rate) {
 	//This function can return a null pointer. Ensure to handle outside
 
 	//Get a random number in the range 0 - 100
-	//float verdict = static_cast<float>(rand()) / static_cast<float>(RAND_MAX/100);
 	float verdict = this->RandomizeFloat(0.0f, 100.0f);
 
 	//If the verdict is higher than the drop rate value, return null

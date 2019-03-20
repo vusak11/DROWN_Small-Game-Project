@@ -95,9 +95,7 @@ void NPCRunner::ExecuteAI(float in_deltatime, glm::vec3 in_player_pos) {
 
 			if (private_time > time_to_next_move_) {
 				private_time = 0;
-				//next_move_index_ = rand() % 3;
 				next_move_index_ = GlobalSettings::GetRandomInt() % 3;
-				//time_to_next_move_ = rand() % 10 + 2.0f;
 				time_to_next_move_ = GlobalSettings::GetRandomInt() % 10 + 2.0f;
 			}
 
