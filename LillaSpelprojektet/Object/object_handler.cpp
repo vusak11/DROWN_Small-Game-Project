@@ -378,8 +378,10 @@ void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map
 
 	//Create player
 	//Assign spawn position randomly via meta data
-	this->player_ptr_ = new PlayerCharacter(glm::vec3(176.0f, -86.0f, 3.0f));
+	this->player_ptr_ = new PlayerCharacter(glm::vec3(meta_data->GetBossDoorCoords(), 5.0f));
+	//this->player_ptr_ = new PlayerCharacter(glm::vec3(176.0f, -86.0f, 3.0f));
 	//this->player_ptr_ = new PlayerCharacter(glm::vec3(564.0f, -220.0f, 5.0f));
+	
 	this->player_ptr_->SetScale(2.0f);
 	this->player_ptr_->SetOffsets(2, 2);
 	this->player_ptr_->LoadPlayerSounds();
@@ -443,7 +445,7 @@ void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map
 		this->drop_ptr_vector_.push_back(new Chest(glm::vec3(meta_data->GetChestPositionsBonus()[i], 0.0f)));
 	}
 	// Spawn boss door
-	this->drop_ptr_vector_.push_back(new BossDoor(glm::vec3(meta_data->GetBossDoorCoords(), 0.0f)));
+	this->drop_ptr_vector_.push_back(new BossDoor(glm::vec3(meta_data->GetBossDoorCoords(), 3.0f)));
 
 	// Create physics engine
 	this->physics_engine_ptr_ = new PhysicsEngine(map_height_list);
@@ -507,7 +509,7 @@ std::vector<ObjectPackage> ObjectHandler::UpdateAndRetrieve(float in_deltatime) 
 	this->ProcessNPCs(in_deltatime, relevant_npcs_ptr_vector);
 
 	//Go through all relevant drops and call their behaviour functions
-	//this->ProcessDrops(in_deltatime, relevant_drops_ptr_vector);
+	this->ProcessDrops(in_deltatime, relevant_drops_ptr_vector);
 
 	//--------------------------------------------------------
 	//------------------Apply Physics-------------------------

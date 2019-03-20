@@ -32,12 +32,14 @@ PlayerCharacter::PlayerCharacter(glm::vec3 start_pos)
 	this->move_acceleration_ = this->move_top_speed_ / this->move_acceleration_rate_;
 	this->jump_speed_ = GlobalSettings::Access()->ValueOf("PLAYER_JUMP_VELOCITY");
 
-	this->ability_ptr_ = new Ability();
-	//this->ability_ptr_ = new DoubleJump();
+	//this->ability_ptr_ = new Ability();
+	this->ability_ptr_ = new DoubleJump();
 	//this->ability_ptr_ = new Dash();
 
-	this->weapon_ptr_ = new Sword();
-	//this->weapon_ptr_ = new Axe();
+	//this->weapon_ptr_ = new Sword();
+	this->weapon_ptr_ = new Axe();
+	
+	this->num_of_keys_ = 3;
 
 	animation_state_ = ANIMATION_STATE_PLAYER_IDLE;
 

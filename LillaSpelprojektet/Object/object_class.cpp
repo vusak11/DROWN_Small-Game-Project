@@ -107,7 +107,7 @@ void ObjectClass::SetRotation(float in_x, float in_y, float in_z) {
 	glm::mat4 rotation_matrix_z = glm::rotate((float)this->rotation_around_z_, glm::vec3(0.0f, 0.0f, 1.0f));
 
 	//Add the rotations together
-	this->rotation_matrix_ = rotation_matrix_x * rotation_matrix_y * rotation_matrix_z;
+	this->rotation_matrix_ = rotation_matrix_y;
 
 	//World matrix is now out of date
 	this->model_matrix_up_to_date_ = false;
