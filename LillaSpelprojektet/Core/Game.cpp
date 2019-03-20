@@ -186,13 +186,11 @@ void Game::InputForDeathState(const sf::Event& in_event) {
 				this->previous_states_.push_back(GameState::MENU);
 				menu_.StateManager(this->previous_states_.back());
 				//
-				
+
 				break;
-			case 1:						//Save score
-				//Save highscore
-				break;
-			case 2:						//QUIT
+			case 1:
 				this->previous_states_.push_back(GameState::QUIT);
+				break;
 			}
 		}
 		break;
