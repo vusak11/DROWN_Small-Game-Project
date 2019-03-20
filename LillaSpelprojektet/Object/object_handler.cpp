@@ -603,7 +603,8 @@ void ObjectHandler::DetermineBossAction() {
 		}
 		
 		if (boss_ptr_->GetBossStage() == BossStage::STAGE_3) {
-			int rand_x_pos = rand() % 220 + 100;
+			//int rand_x_pos = rand() % 220 + 100;
+			int rand_x_pos = GlobalSettings::GetRandomInt() % 220 + 100;
 			this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(rand_x_pos, -1100, 5.0f), OBJECT_ID_FIRE_AI));
 			this->npc_ptr_vector_.back()->SetScale(1.5);
 			this->npc_ptr_vector_.back()->SetOffsets(1.5, 1.5);
@@ -617,7 +618,9 @@ void ObjectHandler::DetermineBossAction() {
 	}
 	
 	if (boss_ptr_->actions_.spawn_ghost) {
-		int position_index = rand() % 3;
+		//int position_index = rand() % 3;
+		int position_index = GlobalSettings::GetRandomInt() % 3;
+
 		switch (position_index) {
 		case 0:
 			this->npc_ptr_vector_.push_back(new NPCGhost(glm::vec3(160, -1050, 5.0f)));

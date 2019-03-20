@@ -53,7 +53,8 @@ Randomizer::Randomizer(MetaData* in_metadata_ptr) {
 	//NOTE:	This should preferably be done nowhere else in the program
 	//		As of now the zone generation does it twice before this part
 	//		of the code
-	srand(static_cast<unsigned>(time(0)));
+	//srand(static_cast<unsigned>(time(0)));
+	//EDIT: Now done with a call to global settings from main
 
 	//Allocate space for drop rates for each zone
 	this->zone_rates_arr_ = new DropRates[NUM_OF_ZONES];
@@ -75,7 +76,8 @@ Randomizer::~Randomizer() {
 
 float Randomizer::RandomizeFloat(float lower_bound, float upper_bound) {
 	return lower_bound 
-		+ (static_cast<float>(rand())
+		//+ (static_cast<float>(rand())
+		+ (static_cast<float>(GlobalSettings::GetRandomInt())
 			/ static_cast<float>(RAND_MAX 
 				/ (upper_bound - lower_bound)
 				)
@@ -93,7 +95,8 @@ Drop* Randomizer::RandomNewDropPtr(glm::vec3 in_pos, float in_drop_rate) {
 	//This function can return a null pointer. Ensure to handle outside
 
 	//Get a random number in the range 0 - 100
-	float verdict = static_cast<float>(rand()) / static_cast<float>(RAND_MAX/100);
+	//float verdict = static_cast<float>(rand()) / static_cast<float>(RAND_MAX/100);
+	float verdict = this->RandomizeFloat(0.0f, 100.0f);
 
 	//If the verdict is higher than the drop rate value, return null
 	if (verdict > in_drop_rate) { return NULL; }

@@ -7,7 +7,8 @@
 #include <GLM/glm.hpp>
 #include <vector>
 #include <math.h>
-#include <ctime>
+
+//#include <ctime>
 
 //Point Of Interest
 class MetaData {

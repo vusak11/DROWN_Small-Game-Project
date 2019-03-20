@@ -5,8 +5,8 @@
 #include "Drop/Drop.h"
 #include "../Map/metadata.h"
 
-#include <cstdlib>
-#include <ctime>
+//#include <cstdlib>
+//#include <ctime>
 #include <string>
 
 class Randomizer {

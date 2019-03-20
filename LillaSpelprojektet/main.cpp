@@ -20,6 +20,7 @@ int main() {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 
 	GlobalSettings::Access()->UpdateValuesFromFile();
+	GlobalSettings::SeedRandomSeed();
 
 	sf::Window window(sf::VideoMode(
 		(unsigned int)GlobalSettings::Access()->ValueOf("WINDOW_WIDTH"),

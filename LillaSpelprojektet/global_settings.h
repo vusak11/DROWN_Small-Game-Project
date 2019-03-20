@@ -4,6 +4,12 @@
 #include <GLM\glm.hpp>
 #include <map>
 
+//For rand
+#include <cstdlib>
+#include <ctime>
+
+
+
 // This class contains all the global data for settings. It's a singleton which
 // means that it should only be one of it hence the get instance function.
 // Example:
@@ -120,8 +126,7 @@ struct PlayerInfoPackage {
 };
 
 
-class GlobalSettings
-{
+class GlobalSettings {
 public:
 	static GlobalSettings* Access() {
 		static GlobalSettings instance;
@@ -129,6 +134,9 @@ public:
 	}
 	void UpdateValuesFromFile();
 	float ValueOf(std::string setting_name);
+
+	static void SeedRandomSeed();
+	static int GetRandomInt();
 
 private:
 	GlobalSettings() {};

@@ -110,7 +110,8 @@ void NPCBoss::ExecuteAI(float in_deltatime, glm::vec3 in_player_pos) {
 				actions_.spawn_ghost = true;
 			}
 		}
-		int nr_of_iterations = rand() % 5 + 2;
+		//int nr_of_iterations = rand() % 5 + 2;
+		int nr_of_iterations = GlobalSettings::GetRandomInt() % 5 + 2;
 		if (stage_2_counter >= nr_of_iterations) {
 			stage_ = STAGE_1;
 			stage_1_counter_ = 0;
