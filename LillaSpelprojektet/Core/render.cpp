@@ -53,7 +53,7 @@ void Render::InitializeRender(MetaData* meta_data) {
 	//-------------------Load Map Data------------------------
 	//--------------------------------------------------------
 	map_handler_.InitializeMaps(
-		"../Resources/Map/MainMap.bmp",
+		"../Resources/Map/MainMapR.bmp",
 		"../Resources/Map/cavewall.png",
 		"../Resources/Map/v4.png");
 	//--------------------------------------------------------

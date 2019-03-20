@@ -319,7 +319,8 @@ BossDoor::BossDoor(glm::vec3 creation_pos)
 	this->target_coordinate_z_ = GlobalSettings::Access()->ValueOf("DROP_BOSS_DOOR_DESTINATION_Z");
 
 	this->SetScale(7.0f);
-	this->SetOffsets(4.0f,3.0f);
+	this->SetOffsets(7.0f,4.0f);
+	this->SetUsingPhysics(false);
 }
 
 BossDoor::~BossDoor() {}
