@@ -65,7 +65,7 @@ void NPCRunner::ExecuteAI(float in_deltatime, glm::vec3 in_player_pos) {
 
 	static float private_time = 0.0f;
 	
-	float stun_duration = 0.6f;
+	float stun_duration = 0.5f;
 
 
 	int health = GetCurrentHealth();

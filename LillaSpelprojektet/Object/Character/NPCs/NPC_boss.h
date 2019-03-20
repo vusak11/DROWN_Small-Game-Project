@@ -32,10 +32,12 @@ private:
 	SoundUnit damaged_;
 	SoundUnit phase_3_sound_;
 	SoundUnit arm_hit_ground_;
+	SoundUnit defeat_sound_;
 	std::vector<ObjectClass*> boss_objects_;
 
 	int health_last_frame_;
 
+	float time_ = -5.0f;
 	float phases_complete_ = 0; // add one after each phace complete to scale the boss.
 	float light_timer_ = 0;
 

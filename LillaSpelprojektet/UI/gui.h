@@ -27,7 +27,7 @@ private:
 	GLuint mini_map_;
 	GLuint map_marker_;
 
-	int health_bar_length_;
+	float health_bar_length_;
 	glm::vec2 mm_marker_pos_;
 
 	GLuint vertex_array_object_;

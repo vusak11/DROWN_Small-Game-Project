@@ -121,6 +121,10 @@ void ObjectHandler::DeterminePlayerAction(
 	// Update player model (animation)
 	player_ptr_->CalculateAnimationState(in_deltatime, attacked);
 
+	// Check if player was damaged and play sound
+	player_ptr_->DamagedSinceLastFrame();
+	
+
 }
 
 void ObjectHandler::ResolvePlayerPickUp(std::vector<ObjectClass*>& in_relevant_drops_ptr_vector) {
@@ -128,13 +132,24 @@ void ObjectHandler::ResolvePlayerPickUp(std::vector<ObjectClass*>& in_relevant_d
 	int index = 0;
 	Drop* drop_ptr = NULL;
 
+	bool closed_chest = false;
+
 	//Loop over all relevant drops
 	for (unsigned int i = 0; !triggered && (i < in_relevant_drops_ptr_vector.size()); i++) {
 		//Typecast a ptr in the vector to the drop type
 		drop_ptr = dynamic_cast<Drop*>(in_relevant_drops_ptr_vector.at(i));
 		if (drop_ptr != NULL) {
+
+			//Check if closed chest
+			closed_chest = drop_ptr->GetObjectID() == OBJECT_ID_DROP_CHEST_CLOSED;
+
 			//Check if the player touches any of the drops (loop breaks if so)
 			triggered = drop_ptr->CheckCollision(*(this->player_ptr_));
+
+			if (closed_chest && triggered) {
+				//play sound
+				player_ptr_->PlayChestSound();
+			}
 		}
 		//Save current index
 		index = i;
@@ -272,8 +287,8 @@ void ObjectHandler::RemoveDeadNPCs(std::vector<ObjectClass*>& in_relevant_npcs_p
 
 				//Call function to randomize if a drop should spawn
 				spawn_pos = npc_ptr->GetPosition();
-				//this->ResolveRandomDropSpawn(spawn_pos, this->enemy_drop_rate_);
-				this->ResolveRandomDropSpawn(spawn_pos, 100.0f);
+				this->ResolveRandomDropSpawn(spawn_pos, this->enemy_drop_rate_);
+				//this->ResolveRandomDropSpawn(spawn_pos, 100.0f);
 
 				//Delete the object and remove the pointer from the object handler's npc vector
 				this->RemoveObject(in_relevant_npcs_ptr_vector.at(i), this->npc_ptr_vector_);
@@ -589,13 +604,13 @@ void ObjectHandler::DetermineBossAction() {
 	if (boss_ptr_->actions_.spawn_mobs) {
 		
 		if (boss_ptr_->GetBossStage() == BossStage::STAGE_2) {
-			this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(100, -1180, 5.0f), OBJECT_ID_FIRE_AI));
+			this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(100, -1180, 5.0f), OBJECT_ID_ICE_AI));
 			this->npc_ptr_vector_.back()->SetScale(2);
 			this->npc_ptr_vector_.back()->SetOffsets(2, 2);
 			NPCRunner* temp_npc_ptr = dynamic_cast<NPCRunner*>(this->npc_ptr_vector_.back());
 			temp_npc_ptr->SetAggroRange(200);
 
-			this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(220, -1180, 5.0f), OBJECT_ID_FIRE_AI));
+			this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(220, -1180, 5.0f), OBJECT_ID_ICE_AI));
 			this->npc_ptr_vector_.back()->SetScale(2);
 			this->npc_ptr_vector_.back()->SetOffsets(2, 2);
 			temp_npc_ptr = dynamic_cast<NPCRunner*>(this->npc_ptr_vector_.back());

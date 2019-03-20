@@ -189,11 +189,9 @@ void Game::InputForDeathState(const sf::Event& in_event) {
 				this->cam_handler_ptr_->SwapToPrimaryCamera();
 				
 				break;
-			case 1:						//Save score
-				//Save highscore
-				break;
-			case 2:						//QUIT
+			case 1:
 				this->previous_states_.push_back(GameState::QUIT);
+				break;
 			}
 		}
 		break;
@@ -485,12 +483,14 @@ void Game::GameIteration() {
 		);
 
 		/*--------------Restart Game when death occurs--------------*/
-		if (player_info.current_hp == 0) { //Use this one
+		if (player_info.current_hp <= 0) { //Use this one
 			this->previous_states_.push_back(GameState::DEATH);
+			sound_unit_game_.StopMusic();
 		}
 		/*----------End Restart Game when death occurs--------------*/
 		if (obj_handler_ptr_->IsBossDead()) {
 			previous_states_.push_back(GameState::VICTORY);
+			sound_unit_game_.StopMusic();
 		}
 	}
 	else if (this->previous_states_.back() == GameState::PAUSE) {
