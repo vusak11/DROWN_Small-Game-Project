@@ -287,8 +287,8 @@ void ObjectHandler::RemoveDeadNPCs(std::vector<ObjectClass*>& in_relevant_npcs_p
 
 				//Call function to randomize if a drop should spawn
 				spawn_pos = npc_ptr->GetPosition();
-				//this->ResolveRandomDropSpawn(spawn_pos, this->enemy_drop_rate_);
-				this->ResolveRandomDropSpawn(spawn_pos, 100.0f);
+				this->ResolveRandomDropSpawn(spawn_pos, this->enemy_drop_rate_);
+				//this->ResolveRandomDropSpawn(spawn_pos, 100.0f);
 
 				//Delete the object and remove the pointer from the object handler's npc vector
 				this->RemoveObject(in_relevant_npcs_ptr_vector.at(i), this->npc_ptr_vector_);
@@ -604,13 +604,13 @@ void ObjectHandler::DetermineBossAction() {
 	if (boss_ptr_->actions_.spawn_mobs) {
 		
 		if (boss_ptr_->GetBossStage() == BossStage::STAGE_2) {
-			this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(100, -1180, 5.0f), OBJECT_ID_FIRE_AI));
+			this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(100, -1180, 5.0f), OBJECT_ID_ICE_AI));
 			this->npc_ptr_vector_.back()->SetScale(2);
 			this->npc_ptr_vector_.back()->SetOffsets(2, 2);
 			NPCRunner* temp_npc_ptr = dynamic_cast<NPCRunner*>(this->npc_ptr_vector_.back());
 			temp_npc_ptr->SetAggroRange(200);
 
-			this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(220, -1180, 5.0f), OBJECT_ID_FIRE_AI));
+			this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(220, -1180, 5.0f), OBJECT_ID_ICE_AI));
 			this->npc_ptr_vector_.back()->SetScale(2);
 			this->npc_ptr_vector_.back()->SetOffsets(2, 2);
 			temp_npc_ptr = dynamic_cast<NPCRunner*>(this->npc_ptr_vector_.back());
