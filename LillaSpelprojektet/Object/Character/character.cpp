@@ -15,27 +15,30 @@ Character::~Character(){
 
 void Character::SetMaxHealth(int in_hp) {
 	if (in_hp < 1) {
-		throw std::invalid_argument(
-			"ERROR::CHARACTER::SETMAXHEALTH::Max health cannot be lower than 1"
-		);
+		//If value is negative do nothing :D
+		return;
 	}
 	this->max_health_ = in_hp;
 }
 
 void Character::SetCurrentHealth(int in_hp) {
-	if (in_hp < 0	||	in_hp > this->max_health_) {
-		throw std::invalid_argument(
-			"ERROR::CHARACTER::SETCURRENTHEALTH::Argument out of valid scope"
-		);
+
+	if (in_hp < 0) {
+		//If value is negative do nothing :D
+		return;
 	}
+	else if (in_hp > this->max_health_) {
+		//If value is higher than max, set it to max
+		in_hp = this->max_health_;
+	}
+
 	this->current_health_ = in_hp;
 }
 
 void Character::SetAttackPower(int in_atk) {
 	if (in_atk < 1) {
-		throw std::invalid_argument(
-			"ERROR::CHARACTER::SETATTACKPOWER::Attack power cannot be lower than 1"
-		);
+		//If value is less than 1 do nothing :D
+		return;
 	}
 	this->attack_power_ = in_atk;
 }
@@ -63,9 +66,6 @@ int Character::TakeDamage(int in_dmg) {
 
 	//If the in parameter is negative, return -1
 	if (in_dmg < 0) {
-		//throw std::invalid_argument(
-		//	"ERROR::CHARACTER::TAKEDAMAGE::Damage may not be negative"
-		//);
 		return -1;
 	}
 
@@ -82,9 +82,6 @@ int Character::TakeDamage(int in_dmg) {
 int Character::HealDamage(int in_heal) {
 	//If the in parameter is negative, return -1
 	if (in_heal < 0) {
-		//throw std::invalid_argument(
-		//	"ERROR::CHARACTER::HEALDAMAGE::Heal may not be negative"
-		//);
 		return -1;
 	}
 

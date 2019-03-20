@@ -38,9 +38,9 @@ public:
 	~Character();
 
 	//Character Stat Stuff------------------------------------
-	void SetMaxHealth(int in_hp);		//Throws invalid argument
-	void SetCurrentHealth(int in_hp);	//Throws invalid argument
-	void SetAttackPower(int in_atk);	//Throws invalid argument
+	void SetMaxHealth(int in_hp);
+	void SetCurrentHealth(int in_hp);
+	void SetAttackPower(int in_atk);
 	
 	int GetMaxHealth() const;
 	int GetCurrentHealth() const;
