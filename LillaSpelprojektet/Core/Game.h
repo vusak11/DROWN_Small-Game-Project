@@ -51,6 +51,8 @@ private:
 	void InputForGameState(const sf::Event& in_event);
 	void InputForSecondaryCamera(const float& in_deltatime);
 
+	void RestartGame();
+
 public:
 	Game();
 	~Game();

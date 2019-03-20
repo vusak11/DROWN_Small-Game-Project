@@ -167,27 +167,7 @@ void Game::InputForDeathState(const sf::Event& in_event) {
 		if (in_event.key.code == sf::Keyboard::Enter) {
 			switch (menu_.GetSelectedItemIndex()) {
 			case 0:						//Restart
-				//RESTART WITHOUT RELAUNCH
-				//Load update globals
-				GlobalSettings::Access()->UpdateValuesFromFile();
-				//Create new metadata
-				delete this->meta_data_ptr_;
-				this->meta_data_ptr_ = new MetaData();
-				this->meta_data_ptr_->Initialize();
-				//Update render
-				this->render_.UpdateMetadata(this->meta_data_ptr_);
-				//Create a new object handler
-				delete this->obj_handler_ptr_;
-				this->obj_handler_ptr_ = new ObjectHandler();
-				this->obj_handler_ptr_->InitializeObjectHandler(
-					render_.GetMapPointer(),
-					meta_data_ptr_);
-				//Update to menu state
-				this->previous_states_.push_back(GameState::MENU);
-				menu_.StateManager(this->previous_states_.back());
-				//Reset cam
-				this->cam_handler_ptr_->SwapToPrimaryCamera();
-				
+				this->RestartGame();
 				break;
 			case 1:
 				this->previous_states_.push_back(GameState::QUIT);
@@ -215,8 +195,7 @@ void Game::InputForVictoryState(const sf::Event & in_event) {
 		if (in_event.key.code == sf::Keyboard::Enter) {
 			switch (menu_.GetSelectedItemIndex()) {
 			case 0:						//Restart
-				system("restartGame.cmd"); // TEST case
-				this->previous_states_.push_back(GameState::QUIT);
+				this->RestartGame();
 				break;
 			case 1:						//Quit
 				this->previous_states_.push_back(GameState::QUIT);
@@ -334,6 +313,30 @@ void Game::InputForSecondaryCamera(const float& in_deltatime) {
 		);
 	}
 }
+
+void Game::RestartGame() {
+	//RESTART WITHOUT RELAUNCH
+				//Load update globals
+	GlobalSettings::Access()->UpdateValuesFromFile();
+	//Create new metadata
+	delete this->meta_data_ptr_;
+	this->meta_data_ptr_ = new MetaData();
+	this->meta_data_ptr_->Initialize();
+	//Update render
+	this->render_.UpdateMetadata(this->meta_data_ptr_);
+	//Create a new object handler
+	delete this->obj_handler_ptr_;
+	this->obj_handler_ptr_ = new ObjectHandler();
+	this->obj_handler_ptr_->InitializeObjectHandler(
+		render_.GetMapPointer(),
+		meta_data_ptr_);
+	//Update to menu state
+	this->previous_states_.push_back(GameState::MENU);
+	menu_.StateManager(this->previous_states_.back());
+	//Reset cam
+	this->cam_handler_ptr_->SwapToPrimaryCamera();
+}
+
 //Public---------------------------------------------------
 
 Game::Game() {
