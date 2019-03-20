@@ -19,7 +19,8 @@ NPCBoss::NPCBoss(glm::vec3 start_pos) : NPC(
 	laugh3_.LoadSound((char*)"../Resources/Audio/evil_laugh1.wav");
 	damaged_.LoadSound((char*)"../Resources/Audio/boss_damaged.wav");
 	phase_3_sound_.LoadSound((char*)"../Resources/Audio/boss_stage_3.wav");
-	
+	defeat_sound_.LoadSound((char*)"../Resources/Audio/chest_opening.wav");
+
 	arm_hit_ground_.LoadSound((char*)"../Resources/Audio/boss_arm_boom.wav");
 	laugh1_.PlaySound();
 
@@ -38,9 +39,8 @@ void NPCBoss::ExecuteAI(float in_deltatime, glm::vec3 in_player_pos) {
 	//SetPosition(160,-1100,10);
 
 	// Set to -5 to delay the start
-	static float time = -5.0f;
 	static float time_stage3 = 0.0f;
-	time += in_deltatime;
+	time_ += in_deltatime;
 	time_stage3 += in_deltatime;
 	light_timer_ += in_deltatime;
 
@@ -52,6 +52,7 @@ void NPCBoss::ExecuteAI(float in_deltatime, glm::vec3 in_player_pos) {
 		if (GetCurrentHealth() <= 0)
 		{
 			stage_ = BossStage::STAGE_4;
+			defeat_sound_.PlaySound();
 		}
 	}
 	health_last_frame_ = health;
@@ -61,12 +62,12 @@ void NPCBoss::ExecuteAI(float in_deltatime, glm::vec3 in_player_pos) {
 	// set time to 0 after each cycle
 	if (stage_ == STAGE_1) {
 		
-		if (time > 0.0f && time < 3.0f) {
+		if (time_ > 0.0f && time_ < 3.0f) {
 			actions_.arm_attack = true; actions_.arm_attack_process = true;
 			laugh2_.PlaySound();
 			actions_.attack_light = true;
 			light_timer_ = 0;
-			time = 4.0f;
+			time_ = 4.0f;
 			
 			if (phases_complete_ > 3) {
 				actions_.spawn_ghost = true;
@@ -76,12 +77,12 @@ void NPCBoss::ExecuteAI(float in_deltatime, glm::vec3 in_player_pos) {
 			}
 			
 		}
-		if (time > 9.0f) {
-			time = 0.0f;
+		if (time_ > 9.0f) {
+			time_ = 0.0f;
 			stage_1_counter_++;
 			if (stage_1_counter_ >= 5) {
 				stage_ = STAGE_2;
-				time = 0.0f;
+				time_ = 0.0f;
 				stage_2_counter = 0;
 				laugh3_.PlaySound();
 				SetVelocityVec(glm::vec3(0.0f, +30.0f, 0.0f));
@@ -94,7 +95,7 @@ void NPCBoss::ExecuteAI(float in_deltatime, glm::vec3 in_player_pos) {
 		if (health < GetMaxHealth() * 0.4f) {
 			stage_ = STAGE_3;
 			stage_1_counter_ = 0;
-			time = 0.0f;
+			time_ = 0.0f;
 			time_stage3 = 1.0f;
 			phase_3_sound_.PlaySound();
 		}
@@ -106,10 +107,10 @@ void NPCBoss::ExecuteAI(float in_deltatime, glm::vec3 in_player_pos) {
 		if (GetPosition().y < -900) {
 			SetVelocityVec(glm::vec3(0.0f, +30.0f, 0.0f));
 		}
-		if (time > __max(3.0f - phases_complete_ * 0.3f, 0.3f) ) {
+		if (time_ > __max(3.0f - phases_complete_ * 0.3f, 0.3f) ) {
 			actions_.spawn_mobs = true;
 			stage_2_counter++;
-			time = 0.0f;
+			time_ = 0.0f;
 			if (phases_complete_ > 6) {
 				actions_.spawn_ghost = true;
 			}
@@ -118,7 +119,7 @@ void NPCBoss::ExecuteAI(float in_deltatime, glm::vec3 in_player_pos) {
 		if (stage_2_counter >= nr_of_iterations) {
 			stage_ = STAGE_1;
 			stage_1_counter_ = 0;
-			time = 7.5f;
+			time_ = 7.5f;
 			SetVelocityVec(glm::vec3(0.0f, -90.0f, 0.0f));
 			glm::vec3 temp_pos = GetPosition();
 			SetPosition(160, temp_pos.y, temp_pos.z);
@@ -131,13 +132,13 @@ void NPCBoss::ExecuteAI(float in_deltatime, glm::vec3 in_player_pos) {
 	}
 	else if (stage_ == STAGE_3) {
 
-		if (time > 7) {
+		if (time_ > 7) {
 			actions_.arm_attack = true; actions_.arm_attack_process = true;
 			actions_.spawn_ghost = true;
 			laugh2_.PlaySound();
 			actions_.attack_light = true;
 			light_timer_ = 0;
-			time = 0;
+			time_ = 0;
 		}
 
 		if (time_stage3 > 2.0f && time_stage3 < 3.0f) {
@@ -163,7 +164,7 @@ void NPCBoss::ExecuteAI(float in_deltatime, glm::vec3 in_player_pos) {
 		}
 	}
 	else if (stage_ == STAGE_4) {
-		SetVelocityVec(glm::vec3(0.0f, -time * 9.87f, 0.0f));
+		SetVelocityVec(glm::vec3(0.0f, -time_ * 9.87f, 0.0f));
 	}
 
 	if (light_timer_ > 1.5f) {
