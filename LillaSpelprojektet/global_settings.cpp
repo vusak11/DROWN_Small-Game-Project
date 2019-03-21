@@ -51,6 +51,14 @@ float GlobalSettings::ValueOf(std::string setting_name)
 	return returnValue;
 }
 
+void GlobalSettings::SeedRandomSeed() {
+	srand(static_cast<unsigned>(time(NULL)));
+}
+
+int GlobalSettings::GetRandomInt() {
+	return rand();
+}
+
 GlobalSettings::~GlobalSettings()
 {
 }

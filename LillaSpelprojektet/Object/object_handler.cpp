@@ -1,4 +1,5 @@
 #include "object_handler.h"
+#include "Character/NPCs/NPC_ghost.h"
 
 //Private--------------------------------------------------
 bool ObjectHandler::ClearPtrVector(std::vector<ObjectClass*>& in_vec) {
@@ -81,7 +82,9 @@ void ObjectHandler::DeterminePlayerAction(
 
 	//Update the player's status (such as cooldowns)
 	this->player_ptr_->UpdateStatus(in_deltatime);
-	player_ptr_->CalculateAnimationState(in_deltatime);
+	bool attacked = false;
+	static float time = 5;	// Init this to a higher value to be able to attack instantly
+	time += in_deltatime;
 
 	//Determine player movement on the x-axis
 	if (this->player_input_.left) {
@@ -102,12 +105,25 @@ void ObjectHandler::DeterminePlayerAction(
 	}
 	//If input is attack
 	if (this->player_input_.attack) {
-		this->ResolvePlayerAttack(in_relevant_npcs_ptr_vector);
+		if (time > player_ptr_->GetWeapon()->GetCooldown())
+		{
+			time = 0;
+			attacked = true;
+			this->ResolvePlayerAttack(in_relevant_npcs_ptr_vector);
+		}
+		
 	}
 	//If input is to pick up
 	if (this->player_input_.pick_up) {
 		this->ResolvePlayerPickUp(in_relevant_drops_ptr_vector);
 	}
+	
+	// Update player model (animation)
+	player_ptr_->CalculateAnimationState(in_deltatime, attacked);
+
+	// Check if player was damaged and play sound
+	player_ptr_->DamagedSinceLastFrame();
+	
 
 }
 
@@ -116,54 +132,78 @@ void ObjectHandler::ResolvePlayerPickUp(std::vector<ObjectClass*>& in_relevant_d
 	int index = 0;
 	Drop* drop_ptr = NULL;
 
+	bool closed_chest = false;
+
 	//Loop over all relevant drops
 	for (unsigned int i = 0; !triggered && (i < in_relevant_drops_ptr_vector.size()); i++) {
 		//Typecast a ptr in the vector to the drop type
 		drop_ptr = dynamic_cast<Drop*>(in_relevant_drops_ptr_vector.at(i));
 		if (drop_ptr != NULL) {
+
+			//Check if closed chest
+			closed_chest = drop_ptr->GetObjectID() == OBJECT_ID_DROP_CHEST_CLOSED;
+
 			//Check if the player touches any of the drops (loop breaks if so)
 			triggered = drop_ptr->CheckCollision(*(this->player_ptr_));
+
+			if (closed_chest && triggered) {
+				//play sound
+				player_ptr_->PlayChestSound();
+			}
 		}
 		//Save current index
 		index = i;
 	}
 
 	//If we have triggered an event
-	if (triggered) {
-		//Check if the ptr is an ability
-		bool same_ability = false;
-		drop_ptr = dynamic_cast<AbilitiesDrop*>(in_relevant_drops_ptr_vector.at(index));
-		//Swap abilities
-		if (drop_ptr != NULL) {
-			AbilityID old_ability = player_ptr_->GetAbilityID();
-			bool ability_swapped = player_ptr_->SwapAbilities(in_relevant_drops_ptr_vector.at(index)->GetObjectID());
+	//NTS: We do not need to worry about a vector index offset as we only
+	//trigger one drop at a time
+	int num_random = 0;
+	Drop* spawn_ptr = NULL;
 
-			if (ability_swapped) {
-				if (old_ability == ABILITY_DOUBLE_JUMP)
-					this->drop_ptr_vector_.push_back(
-						new DoubleJumpDrop(in_relevant_drops_ptr_vector.at(index)->GetPosition()));
-				else if (old_ability == ABILITY_DASH)
-					this->drop_ptr_vector_.push_back(
-						new DashDrop(in_relevant_drops_ptr_vector.at(index)->GetPosition()));
-				this->drop_ptr_vector_.back()->SetScale(3.0f);
-			}
-			else
-				same_ability = true;
+	if (triggered) {
+
+		//NEW
+		//Spawn any additional drops the triggered one stores
+		//First do the random ones by calling the randomizer that many times
+		num_random = drop_ptr->ConsumeNumOfRandomSpawns();
+		for (int i = 0; i < num_random; i++) {
+			this->ResolveRandomDropSpawn(drop_ptr->GetPosition(), this->chest_drop_rate_);
 		}
 		
-		if (!same_ability) { //OBS! This case is needed for swapping abilities otherwise we will have to duplicate content
-			//Delete the object and remove the pointer from the object handler's drop vector
-			this->RemoveObject(in_relevant_drops_ptr_vector.at(index), this->drop_ptr_vector_);
-			//Then remove the entry from the list of relevant drops
-			in_relevant_drops_ptr_vector.erase(in_relevant_drops_ptr_vector.begin() + index);
+		//Then do the set one, if it exists
+		spawn_ptr = drop_ptr->RetrieveSetSpawnPtr();
+		if (spawn_ptr != NULL) {
+			this->drop_ptr_vector_.push_back(spawn_ptr);
 		}
+
+		//We return early if the drop we are handling is a chest as those
+		//should stay around and not be deleted
+		//NTS: Triggered chests can only be OBJECT_ID_DROP_CHEST_OPEN as that
+		//is the id set when they are triggered
+		if (drop_ptr->GetObjectID() == OBJECT_ID_DROP_CHEST_OPEN) { return; }
+
+		//NEW
+
+		//Delete the object and remove the pointer from the object handler's drop vector
+		this->RemoveObject(in_relevant_drops_ptr_vector.at(index), this->drop_ptr_vector_);
+		//Then remove the entry from the list of relevant drops
+		in_relevant_drops_ptr_vector.erase(in_relevant_drops_ptr_vector.begin() + index);
 	}
+
 }
 
 void ObjectHandler::ResolvePlayerAttack(std::vector<ObjectClass*>& in_relevant_npcs_ptr_vector) {
 
-	std::vector<int> index_of_the_dead;
 	Character* character_ptr = NULL;
+	int outcome = -1;
+	int sound_index = -1;
+
+	// First check if boss is hit
+	if (boss_ptr_)
+	{
+		sound_index = ResolveBossAttack();
+	}
 
 	//Loop over all relevant npcs
 	for (unsigned int i = 0; i < in_relevant_npcs_ptr_vector.size(); i++) {
@@ -171,34 +211,47 @@ void ObjectHandler::ResolvePlayerAttack(std::vector<ObjectClass*>& in_relevant_n
 		character_ptr = dynamic_cast<Character*>(in_relevant_npcs_ptr_vector.at(i));
 		if (character_ptr != NULL) {
 			//Send in a npc and check if the player hits it with the attack
-			//If the unit dies save its index
-			if (1 == this->player_ptr_->UseWeapon(*character_ptr)) {
-				index_of_the_dead.push_back(i);
+			outcome = this->player_ptr_->UseWeapon(*character_ptr);
+			if (0 == outcome && sound_index != 1)
+			{
+				sound_index = 0;
+			}
+			else if (1 == outcome) {
+				sound_index = 1;
 			}
 		}
 	}
+	player_ptr_->PlaySound(sound_index);
+}
 
-	//Lastly remove enemies on position indicated by the index vector
-	//We need to track the offset  of how many thing we have deleted
-	//to be able to access the right index in the relevant npcs vector
-	int index;
-	int offset = 0;
-	for (unsigned int i = 0; i < index_of_the_dead.size(); i++) {
+void ObjectHandler::ResolveRandomDropSpawn(glm::vec3 in_pos, float in_drop_rate) {
+	Drop* spawn_ptr = NULL;
+	float x_variation = -100;
 
-		//Pick index from vector
-		index = index_of_the_dead.at(i);
-
-		//Delete the object and remove the pointer from the object handler's npc vector
-		this->RemoveObject(in_relevant_npcs_ptr_vector.at(index), this->npc_ptr_vector_);
-
-		//Then remove the entry from the list of relevant drops
-		in_relevant_npcs_ptr_vector.erase(in_relevant_npcs_ptr_vector.begin() + (index - offset));
-
-		//Increase offset
-		offset++;
+	//Call randomizer and retrieve a drop pointer
+	spawn_ptr = this->randomizer_ptr_->RandomNewDropPtr(in_pos, in_drop_rate); //NTS: <-100% chance something spawns
+	
+	//If the pointer is not null
+	if (spawn_ptr != NULL) {
+		//Get a bit of an variation for x (Note x_variation's negative start value)
+		x_variation += this->randomizer_ptr_->RandomizeFloat(0.0f, 200.f);
+		//Make it move a bit upwards
+		spawn_ptr->SetVelocityVec(glm::vec3(x_variation, 100.0f, 0.0f));
+		//And place it in the vector
+		this->drop_ptr_vector_.push_back(spawn_ptr);
 	}
 
+}
 
+int ObjectHandler::ResolveBossAttack() {
+	int sound_index = -1;
+
+	if (player_ptr_->UseWeapon(*boss_ptr_) != -1)
+	{
+		sound_index = 0;
+	}
+
+	return sound_index;
 }
 
 void ObjectHandler::ProcessNPCs(const float& in_deltatime, std::vector<ObjectClass*>& in_npcs_ptr_vector) {
@@ -212,6 +265,40 @@ void ObjectHandler::ProcessNPCs(const float& in_deltatime, std::vector<ObjectCla
 		//If it succeded, call DetermineNPCAction
 		if (npc_ptr != NULL) {
 			this->DetermineNPCAction(in_deltatime, npc_ptr);
+		}
+	}
+}
+
+void ObjectHandler::RemoveDeadNPCs(std::vector<ObjectClass*>& in_relevant_npcs_ptr_vector) {
+
+	//This function checks for NPCs with 0 or less health,
+	//removes them and calls for spawning a drop in their place
+
+	NPC* npc_ptr = NULL;
+	glm::vec3 spawn_pos = glm::vec3(0.0f);
+
+	for (unsigned int i = 0; i < in_relevant_npcs_ptr_vector.size(); i++) {
+		//Cast to character
+		npc_ptr = dynamic_cast<NPC*>(in_relevant_npcs_ptr_vector.at(i));
+		if (npc_ptr != NULL) {
+			//If the character has 0 or less hp
+			//if (npc_ptr->GetCurrentHealth() <= 0) {
+			if (npc_ptr->IsDead()) {
+
+				//Call function to randomize if a drop should spawn
+				spawn_pos = npc_ptr->GetPosition();
+				this->ResolveRandomDropSpawn(spawn_pos, this->enemy_drop_rate_);
+				//this->ResolveRandomDropSpawn(spawn_pos, 100.0f);
+
+				//Delete the object and remove the pointer from the object handler's npc vector
+				this->RemoveObject(in_relevant_npcs_ptr_vector.at(i), this->npc_ptr_vector_);
+
+				//Then remove the entry from the list of relevant drops
+				in_relevant_npcs_ptr_vector.erase(in_relevant_npcs_ptr_vector.begin() + i);
+
+				//Finally backstep a bit to not miss anything
+				i--;
+			}
 		}
 	}
 }
@@ -272,6 +359,7 @@ ObjectHandler::ObjectHandler() {
 	this->player_ptr_ = NULL;
 	this->boss_ptr_ = NULL;
 	this->physics_engine_ptr_ = NULL;
+	this->randomizer_ptr_ = NULL;
 }
 
 ObjectHandler::~ObjectHandler() {
@@ -281,6 +369,8 @@ ObjectHandler::~ObjectHandler() {
 	delete this->boss_ptr_;
 
 	delete this->physics_engine_ptr_;
+
+	delete this->randomizer_ptr_;
 	
 }
 
@@ -288,52 +378,82 @@ void ObjectHandler::InitializeObjectHandler(std::vector<std::vector<float>>* map
 
 	//Create player
 	//Assign spawn position randomly via meta data
-	//this->player_ptr_ = new PlayerCharacter(glm::vec3(meta_data->GetSpawnPointCoords(), 3.0f));
 	this->player_ptr_ = new PlayerCharacter(glm::vec3(meta_data->GetSpawnPointCoords(), 3.0f));
+	//this->player_ptr_ = new PlayerCharacter(glm::vec3(564.0f, -220.0f, 5.0f));
 	this->player_ptr_->SetScale(2.0f);
+	this->player_ptr_->SetOffsets(2, 2);
+	this->player_ptr_->LoadPlayerSounds();
 	
-	glm::vec3 drop_pos = this->player_ptr_->GetPosition();
-	//TEMP
-	drop_pos.x += 10.0f;
-	this->drop_ptr_vector_.push_back(new DoubleJumpDrop(drop_pos));
-	this->drop_ptr_vector_.back()->SetScale(3.0f);
 
 	// Create NPCs and spawn them on every light source
-	for (int i = 2; i < meta_data->GetLightPositions().size(); i++) {
+	for (unsigned int i = 2; i < meta_data->GetLightPositions().size(); i++) {
 		if (sqrt(pow((meta_data->GetLightPositions()[i].x - meta_data->GetSpawnPointCoords().x), 2) + pow((meta_data->GetLightPositions()[i].y - meta_data->GetSpawnPointCoords().y), 2)) > 50) {
 			// Different NPC's depending on where they spawn
-			if (meta_data->GetZone(meta_data->GetLightPositions()[i]) == "DEF") {
+			if (meta_data->GetZone(meta_data->GetLightPositions()[i]) == DEF) {
 				this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(meta_data->GetLightPositions()[i], 5.0f), OBJECT_ID_DUMMY));
 			}
-			else if (meta_data->GetZone(meta_data->GetLightPositions()[i]) == "RED") {
+			else if (meta_data->GetZone(meta_data->GetLightPositions()[i]) == RED) {
 				this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(meta_data->GetLightPositions()[i], 5.0f), OBJECT_ID_FIRE_AI));
 			}
-			else if (meta_data->GetZone(meta_data->GetLightPositions()[i]) == "GRE") {
+			else if (meta_data->GetZone(meta_data->GetLightPositions()[i]) == GRE) {
 				this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(meta_data->GetLightPositions()[i], 5.0f), OBJECT_ID_WOOD_AI));
 			}
-			else if (meta_data->GetZone(meta_data->GetLightPositions()[i]) == "BLU") {
+			else if (meta_data->GetZone(meta_data->GetLightPositions()[i]) == BLU) {
 				this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(meta_data->GetLightPositions()[i], 5.0f), OBJECT_ID_ICE_AI));
 			}
-			this->npc_ptr_vector_.back()->SetScale(GlobalSettings::Access()->ValueOf("NPC_RUNNER_SCALE"));
+			/*float scale = GlobalSettings::Access()->ValueOf("NPC_RUNNER_SCALE");
+			this->npc_ptr_vector_.back()->SetScale(scale);
+			this->npc_ptr_vector_.back()->SetOffsets(scale, scale);*/
 		}
 	}
+
+	// Spawn additional NPCs
+	for (unsigned int i = 0; i < meta_data->GetMonsterPositionsBonus().size(); i++) {
+		if (sqrt(pow((meta_data->GetMonsterPositionsBonus()[i].x - meta_data->GetSpawnPointCoords().x), 2) + pow((meta_data->GetLightPositions()[i].y - meta_data->GetSpawnPointCoords().y), 2)) > 50) {
+			// Different NPC's depending on where they spawn
+			if (meta_data->GetZone(meta_data->GetMonsterPositionsBonus()[i]) == DEF) {
+				this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(meta_data->GetMonsterPositionsBonus()[i], 5.0f), OBJECT_ID_DUMMY));
+			}
+			else if (meta_data->GetZone(meta_data->GetMonsterPositionsBonus()[i]) == RED) {
+				this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(meta_data->GetMonsterPositionsBonus()[i], 5.0f), OBJECT_ID_FIRE_AI));
+			}
+			else if (meta_data->GetZone(meta_data->GetMonsterPositionsBonus()[i]) == GRE) {
+				this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(meta_data->GetMonsterPositionsBonus()[i], 5.0f), OBJECT_ID_WOOD_AI));
+			}
+			else if (meta_data->GetZone(meta_data->GetMonsterPositionsBonus()[i]) == BLU) {
+				this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(meta_data->GetMonsterPositionsBonus()[i], 5.0f), OBJECT_ID_ICE_AI));
+			}
+		}
+	}
+
 	this->nr_of_runners_ = this->npc_ptr_vector_.size();
 
 	// Spawn keys
 	for (int i = 0; i < 3; i++) {
 		this->drop_ptr_vector_.push_back(new KeyDrop(glm::vec3(meta_data->GetDoorKeyCoords()[i], 0.0f)));
-		this->drop_ptr_vector_.back()->SetScale(3.0f);
+	}
+	// Spawn treasure chests
+	for (unsigned int i = 0; i < meta_data->GetZonePOIs().size(); i++) {
+		this->drop_ptr_vector_.push_back(new Chest(glm::vec3(meta_data->GetZonePOIs()[i], 0.0f)));
+	}
+	for (unsigned int i = 0; i < meta_data->GetRemainingPOIs().size(); i++) {
+		this->drop_ptr_vector_.push_back(new Chest(glm::vec3(meta_data->GetRemainingPOIs()[i], 0.0f)));
+	}
+	for (unsigned int i = 0; i < meta_data->GetChestPositionsBonus().size(); i++) {
+		this->drop_ptr_vector_.push_back(new Chest(glm::vec3(meta_data->GetChestPositionsBonus()[i], 0.0f)));
 	}
 	// Spawn boss door
 	this->drop_ptr_vector_.push_back(new BossDoor(glm::vec3(meta_data->GetBossDoorCoords(), 0.0f)));
-	this->drop_ptr_vector_.back()->SetScale(3.0f);
 
-
-	// Apply physics
+	// Create physics engine
 	this->physics_engine_ptr_ = new PhysicsEngine(map_height_list);
 
+	// Create the randomizer
+	this->randomizer_ptr_ = new Randomizer(meta_data);
+	//Set drop rates
+	this->enemy_drop_rate_ = GlobalSettings::Access()->ValueOf("ENEMY_DROP_RATE");
+	this->chest_drop_rate_ = GlobalSettings::Access()->ValueOf("CHEST_DROP_RATE");
 
-	//this->TestObjectHandler();		//NTS: Just for testing
 }
 
 void ObjectHandler::PlayerMoveLeft() {
@@ -380,22 +500,14 @@ std::vector<ObjectPackage> ObjectHandler::UpdateAndRetrieve(float in_deltatime) 
 	//Take input from player (i.e. set velocity, attack flags, etc)
 	this->DeterminePlayerAction(in_deltatime, relevant_npcs_ptr_vector, relevant_drops_ptr_vector);
 	
+	//Remove NPCs with 0 or less health
+	this->RemoveDeadNPCs(relevant_npcs_ptr_vector);
+
 	//Go through all relevant NPCs and call their AI functions
 	this->ProcessNPCs(in_deltatime, relevant_npcs_ptr_vector);
 
 	//Go through all relevant drops and call their behaviour functions
-	//this->ProcessDrops(in_deltatime, relevant_drops_ptr_vector);
-
-	//WIP----
-
-	//ResolvePlayerAction();
-
-	//ResolveNPCAction(/*vector.at(i)*/);
-
-	//ResolveDropBehaviour(in_drop);
-
-	//WIP----
-
+	this->ProcessDrops(in_deltatime, relevant_drops_ptr_vector);
 
 	//--------------------------------------------------------
 	//------------------Apply Physics-------------------------
@@ -430,14 +542,22 @@ std::vector<ObjectPackage> ObjectHandler::UpdateAndRetrieve(float in_deltatime) 
 	this->PackObjectIntoVector(this->player_ptr_, package_vector);
 	this->PackObjectVectorIntoVector(relevant_npcs_ptr_vector, package_vector);
 	this->PackObjectVectorIntoVector(relevant_drops_ptr_vector, package_vector);
-
+	
 	// if boss exists, process all boss stuff
 	if (boss_ptr_) {
 		boss_ptr_->ExecuteAI(in_deltatime, player_ptr_->GetPosition());
+		boss_ptr_->UpdateBossDamageToPlayer(in_deltatime, player_ptr_);
 		this->PackObjectIntoVector(this->boss_ptr_, package_vector);
 		std::vector<ObjectClass*> temp_boss_list = boss_ptr_->GetBossObjectVector();
 		this->PackObjectVectorIntoVector(temp_boss_list, package_vector);
+
+		if (!PlayerInBossRoom()) {
+			SetPlayerXYZPosForBoss();
+		}
+
+		DetermineBossAction();
 	}
+	
 
 	return package_vector;
 }
@@ -463,8 +583,9 @@ bool ObjectHandler::PlayerInBossRoom() {
 	 return check;
 }
 
-void ObjectHandler::SetPlayerXYZPosForBoss()
-{
+void ObjectHandler::SetPlayerXYZPosForBoss() {
+	this->player_ptr_->SetVelocityVec({ 0,0,0 });
+
 	this->player_ptr_->SetPosition(
 		GlobalSettings::Access()->ValueOf("DROP_BOSS_DOOR_DESTINATION_X"),
 		GlobalSettings::Access()->ValueOf("DROP_BOSS_DOOR_DESTINATION_Y"),
@@ -474,8 +595,92 @@ void ObjectHandler::SetPlayerXYZPosForBoss()
 
 void ObjectHandler::SpawnBoss() {
 	
-	boss_ptr_ = new NPCBoss(glm::vec3(160, -1100, 10));
+	boss_ptr_ = new NPCBoss(glm::vec3(160, -1110, 10));
 	boss_ptr_->SetPosition(160, -1110, 10);
 	std::cout << "Spawned boss" << std::endl;
+}
+
+void ObjectHandler::DetermineBossAction() {
+	if (boss_ptr_->actions_.spawn_mobs) {
+		
+		if (boss_ptr_->GetBossStage() == BossStage::STAGE_2) {
+			this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(100, -1180, 5.0f), OBJECT_ID_ICE_AI));
+			this->npc_ptr_vector_.back()->SetScale(2);
+			this->npc_ptr_vector_.back()->SetOffsets(2, 2);
+			NPCRunner* temp_npc_ptr = dynamic_cast<NPCRunner*>(this->npc_ptr_vector_.back());
+			temp_npc_ptr->SetAggroRange(200);
+
+			this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(220, -1180, 5.0f), OBJECT_ID_ICE_AI));
+			this->npc_ptr_vector_.back()->SetScale(2);
+			this->npc_ptr_vector_.back()->SetOffsets(2, 2);
+			temp_npc_ptr = dynamic_cast<NPCRunner*>(this->npc_ptr_vector_.back());
+			temp_npc_ptr->SetAggroRange(200);
+		}
+		
+		if (boss_ptr_->GetBossStage() == BossStage::STAGE_3) {
+			int rand_x_pos = GlobalSettings::GetRandomInt() % 220 + 100;
+			this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(rand_x_pos, -1100, 5.0f), OBJECT_ID_FIRE_AI));
+			this->npc_ptr_vector_.back()->SetScale(1.5);
+			this->npc_ptr_vector_.back()->SetOffsets(1.5, 1.5);
+			NPCRunner* temp_npc_ptr = dynamic_cast<NPCRunner*>(this->npc_ptr_vector_.back());
+			temp_npc_ptr->SetAggroRange(200);
+			temp_npc_ptr->SetJumpVelocity(300);
+			temp_npc_ptr->SetAggroVelocity(3000);
+		}
+
+		boss_ptr_->actions_.spawn_mobs = false;
+	}
+	
+	if (boss_ptr_->actions_.spawn_ghost) {
+		int position_index = GlobalSettings::GetRandomInt() % 3;
+
+		switch (position_index) {
+		case 0:
+			this->npc_ptr_vector_.push_back(new NPCGhost(glm::vec3(160, -1050, 5.0f)));
+			break;
+		case 1:
+			this->npc_ptr_vector_.push_back(new NPCGhost(glm::vec3(20, -1180, 5.0f)));
+			break;
+		case 2:
+			this->npc_ptr_vector_.push_back(new NPCGhost(glm::vec3(300, -1180, 5.0f)));
+			break;
+		default:
+			break;
+		}
+		
+		boss_ptr_->actions_.spawn_ghost = false;
+	}
+
+	if (boss_ptr_->actions_.spawn_jombo) {
+		this->npc_ptr_vector_.push_back(new NPCRunner(glm::vec3(160, -1100, 5.0f), OBJECT_ID_WOOD_AI));
+		this->npc_ptr_vector_.back()->SetScale(4);
+		this->npc_ptr_vector_.back()->SetOffsets(4, 4);
+		NPCRunner* temp_npc_ptr = dynamic_cast<NPCRunner*>(this->npc_ptr_vector_.back());
+		temp_npc_ptr->SetAggroRange(300);
+		temp_npc_ptr->SetJumpVelocity(150);
+		temp_npc_ptr->SetAggroVelocity(1000);
+		temp_npc_ptr->SetMaxHealth(120);
+		temp_npc_ptr->SetCurrentHealth(120);
+		boss_ptr_->actions_.spawn_jombo = false;
+	}
+
+	
+
+}
+
+bool ObjectHandler::GetBossAttackState() {
+	if (boss_ptr_) {
+		return boss_ptr_->actions_.attack_light;
+	}
+	return false;
+}
+
+bool ObjectHandler::IsBossDead() {
+	if (boss_ptr_) {
+		if (boss_ptr_->IsStage4Complete()) {
+			return true;
+		}
+	}
+	return false;
 }
 

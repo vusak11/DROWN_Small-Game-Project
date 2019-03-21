@@ -2,8 +2,7 @@
 #define OBJECT_OBJECT_HANDLER_H_
 
 #include <vector>
-#include <functional>		//Allows function pointers and lambdas
-							//Ref. for how it works: https://en.cppreference.com/w/cpp/utility/functional/function
+#include <iostream>			//Included for debug output
 
 #include "object_class.h"
 
@@ -17,8 +16,7 @@
 #include "Drop/Drop.h"
 
 #include "Physics/physics_engine.h"
-
-#include <iostream>			//Included for output in test function.
+#include "randomizer.h"
 
 class ObjectHandler {
 private:
@@ -35,21 +33,19 @@ private:
 
 	//Variables-----------------------------------------------
 	PlayerCharacter* player_ptr_;
-	std::vector<ObjectClass*> npc_ptr_vector_;				//All enemies
+	std::vector<ObjectClass*> npc_ptr_vector_;		//All enemies
 	std::vector<ObjectClass*> drop_ptr_vector_;		//Things dropped on the ground (e.g. power-ups, health)
 	NPCBoss* boss_ptr_;
 
-	float nr_of_runners_;
+	int nr_of_runners_;
 
 	PlayerInput player_input_;
-	BossActions boss_actions_;
 
 	PhysicsEngine* physics_engine_ptr_;
-
-
-
-	//std::vector<std::function<void()>> player_action_queue_;		//NTS: Not at home in ObjectHandler?
 	
+	Randomizer* randomizer_ptr_;
+	float enemy_drop_rate_;
+	float chest_drop_rate_;
 
 	//Functions-----------------------------------------------
 	bool ClearPtrVector(std::vector<ObjectClass*>& in_vec);
@@ -67,16 +63,15 @@ private:
 	);
 	void ResolvePlayerPickUp(std::vector<ObjectClass*>& in_relevant_drops_ptr_vector);
 	void ResolvePlayerAttack(std::vector<ObjectClass*>& in_relevant_npcs_ptr_vector);
+	void ResolveRandomDropSpawn(glm::vec3 in_pos, float in_drop_rate);
+	int ResolveBossAttack();
 
 	void ProcessNPCs(const float& in_deltatime, std::vector<ObjectClass*>& in_npcs_ptr_vector);	//Call AI functions for NPCs in vector
 	void DetermineNPCAction(const float& in_deltatime, NPC* in_npc);							//Call the AI of the npc object to see what the npc does, then determine legal actions
 
 	void ProcessDrops(const float& in_deltatime, std::vector<ObjectClass*>& in_drops_ptr_vector);	//Rotate drops
 
-	/*
-	void ResolveNPCAction(ObjectClass* in_npc);			//Move npc, apply hitboxes, etc.
-	void ResolveDropBehaviour(ObjectClass* in_drop);	//Rotates drop, counts towards its despawn, etc.
-	*/
+	void RemoveDeadNPCs(std::vector<ObjectClass*>& in_relevant_npcs_ptr_vector);
 
 	void ClearPlayerInput();							//Sets all values in player_input_ to false. Should be called at the end of each Update()
 
@@ -114,7 +109,8 @@ public:
 	void SetPlayerXYZPosForBoss();	// Adds a few values to z to move the player more into the room.
 	void SpawnBoss();
 	void DetermineBossAction();	// From wich flags are true in the boss, do things
-
+	bool GetBossAttackState();	// On for lighting the warning light at the boss.
+	bool IsBossDead();
 
 };
 

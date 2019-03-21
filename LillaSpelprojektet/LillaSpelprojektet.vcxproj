@@ -89,10 +89,13 @@
       <ConformanceMode>true</ConformanceMode>
       <PreprocessorDefinitions>SFML_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir)Externals\include</AdditionalIncludeDirectories>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion)</ProgramDataBaseFileName>
     </ClCompile>
     <Link>
       <AdditionalDependencies>glew32.lib;glew32s.lib;sfml-audio.lib;sfml-graphics.lib;sfml-system.lib;sfml-window.lib;opengl32.lib;SOIL.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)Externals\lib</AdditionalLibraryDirectories>
+      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -116,12 +119,15 @@
       <ConformanceMode>true</ConformanceMode>
       <PreprocessorDefinitions>SFML_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir)Externals\include</AdditionalIncludeDirectories>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion)</ProgramDataBaseFileName>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>glew32.lib;glew32s.lib;sfml-audio.lib;sfml-graphics.lib;sfml-system.lib;sfml-window.lib;opengl32.lib;freetype.lib;SOIL.lib;openal32.lib;assimp-vc140-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)Externals\lib</AdditionalLibraryDirectories>
+      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -148,6 +154,7 @@
     <ClCompile Include="Core\sound_unit.cpp" />
     <ClCompile Include="GLDebug.cpp" />
     <ClCompile Include="global_settings.cpp" />
+    <ClCompile Include="loading_screen.h" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map\metadata.cpp" />
     <ClCompile Include="Object\Character\ability.cpp" />
@@ -159,14 +166,16 @@
     <ClCompile Include="Object\Character\cooldown_class.cpp" />
     <ClCompile Include="Object\Character\npc.cpp" />
     <ClCompile Include="Object\Character\NPCs\NPC_boss.cpp" />
+    <ClCompile Include="Object\Character\NPCs\NPC_ghost.cpp" />
     <ClCompile Include="Object\Character\NPCs\NPC_runner.cpp" />
     <ClCompile Include="Object\Character\player_character.cpp" />
     <ClCompile Include="Object\Character\weapon.cpp" />
-    <ClCompile Include="Object\hitbox.cpp" />
     <ClCompile Include="Object\Drop\drop.cpp" />
+    <ClCompile Include="Object\hitbox.cpp" />
     <ClCompile Include="Object\object_class.cpp" />
     <ClCompile Include="Object\object_handler.cpp" />
     <ClCompile Include="Object\Physics\physics_engine.cpp" />
+    <ClCompile Include="Object\randomizer.cpp" />
     <ClCompile Include="UI\gui.cpp" />
     <ClCompile Include="UI\menu.cpp" />
   </ItemGroup>
@@ -188,6 +197,7 @@
     <ClInclude Include="Object\Character\cooldown_class.h" />
     <ClInclude Include="Object\Character\npc.h" />
     <ClInclude Include="Object\Character\NPCs\NPC_boss.h" />
+    <ClInclude Include="Object\Character\NPCs\NPC_ghost.h" />
     <ClInclude Include="Object\Character\NPCs\NPC_runner.h" />
     <ClInclude Include="Object\Character\player_character.h" />
     <ClInclude Include="Object\Character\weapon.h" />
@@ -198,6 +208,7 @@
     <ClInclude Include="Object\Physics\physics_engine.h" />
     <ClInclude Include="Camera\camera.h" />
     <ClInclude Include="Camera\camera_handler.h" />
+    <ClInclude Include="Object\randomizer.h" />
     <ClInclude Include="UI\gui.h" />
     <ClInclude Include="UI\menu.h" />
   </ItemGroup>

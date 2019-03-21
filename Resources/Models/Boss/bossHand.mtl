@@ -1,14 +1,14 @@
-newmtl initialShadingGroup
+newmtl lambert4SG
 illum 4
-Kd 0.50 0.50 0.50
+Kd 0.00 0.00 0.00
 Ka 0.00 0.00 0.00
 Tf 1.00 1.00 1.00
+map_Kd rock.png
 Ni 1.00
-newmtl phong1SG
+newmtl lambert5SG
 illum 4
-Kd 0.41 0.22 0.00
+Kd 0.00 0.00 0.00
 Ka 0.00 0.00 0.00
 Tf 1.00 1.00 1.00
+map_Kd dragonScale2.png
 Ni 1.00
-Ks 0.50 0.50 0.50
-Ns 18.00

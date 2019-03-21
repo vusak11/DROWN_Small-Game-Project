@@ -202,13 +202,13 @@ void ShaderHandler::GeometryFrameBuffers() {
 	glGenFramebuffers(1, &this->buffer_);
 	glBindFramebuffer(GL_FRAMEBUFFER, this->buffer_);
 
-	int window_width = GlobalSettings::Access()->ValueOf("WINDOW_WIDTH");
-	int window_height = GlobalSettings::Access()->ValueOf("WINDOW_HEIGHT");
+	float window_width = GlobalSettings::Access()->ValueOf("WINDOW_WIDTH");
+	float window_height = GlobalSettings::Access()->ValueOf("WINDOW_HEIGHT");
 
 	//  Color buffer - Position
 	glGenTextures(1, &this->position_);
 	glBindTexture(GL_TEXTURE_2D, this->position_);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, window_width, window_height,
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, (GLsizei)window_width, (GLsizei)window_height,
 		0, GL_RGB, GL_FLOAT, NULL);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -218,7 +218,7 @@ void ShaderHandler::GeometryFrameBuffers() {
 	// Color buffer - Normal
 	glGenTextures(1, &normal_);
 	glBindTexture(GL_TEXTURE_2D, this->normal_);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, window_width, window_height,
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, (GLsizei)window_width, (GLsizei)window_height,
 		0, GL_RGB, GL_FLOAT, NULL);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -228,7 +228,7 @@ void ShaderHandler::GeometryFrameBuffers() {
 	// Color buffer - Albedo Specular
 	glGenTextures(1, &this->albedo_specular_);
 	glBindTexture(GL_TEXTURE_2D, this->albedo_specular_);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, window_width, window_height,
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (GLsizei)window_width, (GLsizei)window_height,
 		0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -246,7 +246,7 @@ void ShaderHandler::GeometryFrameBuffers() {
 	GLuint rbo_depth;
 	glGenRenderbuffers(1, &rbo_depth);
 	glBindRenderbuffer(GL_RENDERBUFFER, rbo_depth);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, window_width, window_height);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, (GLsizei)window_width, (GLsizei)window_height);
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rbo_depth);
 
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)

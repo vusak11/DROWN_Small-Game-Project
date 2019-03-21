@@ -9,7 +9,13 @@ void ObjectClass::CalculateModelMatrix() {
 	//The order is important here.
 	//First we scale, then we rotate and finally we translate
 	this->model_matrix_ = this->translation_matrix_ * this->rotation_matrix_ * this->scaling_matrix_;
-	this->UpdateHitbox(position_, scale_.x, scale_.y);
+	this->UpdateHitbox(position_);
+}
+
+//Protected------------------------------------------------
+
+void ObjectClass::SetObjectID(ObjectID object_id) {
+	id_ = object_id;
 }
 
 //Public---------------------------------------------------
@@ -35,9 +41,7 @@ ObjectClass::ObjectClass(glm::vec3 start_pos, ObjectID id) {
 	this->translation_matrix_ = glm::mat4(1.0f);
 
 	//hitbox_ = HitBox(position_, scale_.x, scale_.y);
-	this->UpdateHitbox(position_, scale_.x, scale_.y);
-
-	//TBA: Use the ID to determine the specs of a Object (Character/Drop/etc)
+	this->UpdateHitbox(position_);
 
 	this->model_matrix_up_to_date_ = false;
 
@@ -66,7 +70,7 @@ void ObjectClass::SetPosition(float in_x, float in_y, float in_z) {
 	this->model_matrix_up_to_date_ = false;
 
 	//Apply new position on the hitbox
-	this->UpdateHitbox(position_, scale_.x, scale_.y);
+	this->UpdateHitbox(position_);
 }
 
 void ObjectClass::SetScale(float in_s) {
@@ -79,7 +83,7 @@ void ObjectClass::SetScale(float in_s) {
 	this->model_matrix_up_to_date_ = false;
 
 	//Apply new scale on the hitbox
-	this->UpdateHitbox(position_, scale_.x, scale_.y);
+	this->UpdateHitbox(position_);
 }
 
 void ObjectClass::SetScale(float in_x, float in_y, float in_z) {
@@ -92,21 +96,21 @@ void ObjectClass::SetScale(float in_x, float in_y, float in_z) {
 	this->model_matrix_up_to_date_ = false;
 }
 
-void ObjectClass::SetRotation(float in_x, float in_y, float in_z) {
-	this->rotation_around_x_ = in_x;
+void ObjectClass::SetRotation(float in_y) {
 	this->rotation_around_y_ = in_y;
-	this->rotation_around_z_ = in_z;
 
-	//Create three matrices for rotating around x, y and z
-	glm::mat4 rotation_matrix_x = glm::rotate((float)this->rotation_around_x_, glm::vec3(1.0f, 0.0f, 0.0f));
+	//Create a matrix for rotating around y
 	glm::mat4 rotation_matrix_y = glm::rotate((float)this->rotation_around_y_, glm::vec3(0.0f, 1.0f, 0.0f));
-	glm::mat4 rotation_matrix_z = glm::rotate((float)this->rotation_around_z_, glm::vec3(0.0f, 0.0f, 1.0f));
-
-	//Add the rotations together
-	this->rotation_matrix_ = rotation_matrix_x * rotation_matrix_y * rotation_matrix_z;
+	
+	//Set as the new rotation matrix
+	this->rotation_matrix_ = rotation_matrix_y;
 
 	//World matrix is now out of date
 	this->model_matrix_up_to_date_ = false;
+}
+
+void ObjectClass::SetUsingPhysics(bool use_physics) {
+	use_physics_ = use_physics;
 }
 
 void ObjectClass::SetVelocity(float in_velocity) {
@@ -117,10 +121,6 @@ void ObjectClass::SetVelocity(float in_velocity) {
 void ObjectClass::SetVelocityVec(glm::vec3 in_velocity_vec) {
 	//Set the velocity vector to be the new velocity
 	this->velocity_vec_ = in_velocity_vec;
-}
-
-void ObjectClass::SetObjectID(ObjectID object_id) {
-	id_ = object_id;
 }
 
 /*
@@ -149,6 +149,10 @@ float ObjectClass::GetVelocity() const {
 
 glm::vec3 ObjectClass::GetVelocityVec() const {
 	return this->velocity_vec_;
+}
+
+bool ObjectClass::GetUsePhysics() const {
+	return use_physics_;
 }
 
 glm::mat4 ObjectClass::RetrieveModelMatrix() {

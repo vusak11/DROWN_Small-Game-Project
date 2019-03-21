@@ -13,12 +13,18 @@ CameraHandler::~CameraHandler() {
 void CameraHandler::SwapCamera() {
 	//Swap to the other camera
 	if (this->mode_ == PRIMARY) { this->mode_ = SECONDARY; }
-	else { this->mode_ = PRIMARY; }
+	else if (this->mode_ == SECONDARY) { this->mode_ = PRIMARY; }
+	
+	//NTS: If we are boss, don't do camera swapping
 }
 
 void CameraHandler::SwapCameraToBossCamera() {
 	this->mode_ = BOSS;
 	SetCameraPos(160.0f, -1152.0f, 100.0f);
+}
+
+void CameraHandler::SwapToPrimaryCamera() {
+	this->mode_ = PRIMARY;
 }
 
 int CameraHandler::GetMode() {

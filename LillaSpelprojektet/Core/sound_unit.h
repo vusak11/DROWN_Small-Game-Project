@@ -1,4 +1,5 @@
-#pragma once
+#ifndef SOUNDUNIT_H
+#define SOUNDUNIT_H
 
 #include <SFML/Audio.hpp>
 #include <iostream>
@@ -31,14 +32,19 @@ public:
 	bool PlayMusic();
 	void StopMusic();
 	void SetVolumeMusic(int volume); // Volume from 0 -> 100
-	//void SetAttenuation(float attenuation);
-	//void SetMinDistance(float distance);
-	//void SetPosition(float x, float y, float z);
+	int GetVolumeMusic() const;
+
+	void SetAttenuation(float attenuation);
+	void SetMinDistance(float distance);
+	void SetPosition(float x, float y, float z);
+
+	sf::Vector3f GetMusicPos() const;
 
 private:
 	sf::SoundBuffer buffer_;
 	sf::Sound sound_;
 	sf::Music music_;
 	char* music_file_name_;
-
 };
+
+#endif

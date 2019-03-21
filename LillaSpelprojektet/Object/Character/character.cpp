@@ -15,27 +15,30 @@ Character::~Character(){
 
 void Character::SetMaxHealth(int in_hp) {
 	if (in_hp < 1) {
-		throw std::invalid_argument(
-			"ERROR::CHARACTER::SETMAXHEALTH::Max health cannot be lower than 1"
-		);
+		//If value is negative do nothing :D
+		return;
 	}
 	this->max_health_ = in_hp;
 }
 
 void Character::SetCurrentHealth(int in_hp) {
-	if (in_hp < 0	||	in_hp > this->max_health_) {
-		throw std::invalid_argument(
-			"ERROR::CHARACTER::SETCURRENTHEALTH::Argument out of valid scope"
-		);
+
+	if (in_hp < 0) {
+		//If value is negative do nothing :D
+		return;
 	}
+	else if (in_hp > this->max_health_) {
+		//If value is higher than max, set it to max
+		in_hp = this->max_health_;
+	}
+
 	this->current_health_ = in_hp;
 }
 
 void Character::SetAttackPower(int in_atk) {
 	if (in_atk < 1) {
-		throw std::invalid_argument(
-			"ERROR::CHARACTER::SETATTACKPOWER::Attack power cannot be lower than 1"
-		);
+		//If value is less than 1 do nothing :D
+		return;
 	}
 	this->attack_power_ = in_atk;
 }
@@ -63,9 +66,6 @@ int Character::TakeDamage(int in_dmg) {
 
 	//If the in parameter is negative, return -1
 	if (in_dmg < 0) {
-		//throw std::invalid_argument(
-		//	"ERROR::CHARACTER::TAKEDAMAGE::Damage may not be negative"
-		//);
 		return -1;
 	}
 
@@ -82,9 +82,6 @@ int Character::TakeDamage(int in_dmg) {
 int Character::HealDamage(int in_heal) {
 	//If the in parameter is negative, return -1
 	if (in_heal < 0) {
-		//throw std::invalid_argument(
-		//	"ERROR::CHARACTER::HEALDAMAGE::Heal may not be negative"
-		//);
 		return -1;
 	}
 
@@ -122,6 +119,19 @@ bool Character::IncreaseAttack(int in_atk) {
 	return true;
 }
 
+bool Character::IncreaseSpeed(int in_spd) {
+	//If the in parameter is negative, return false
+	if (in_spd < 0) {
+		return false;
+	}
+
+	//Otherwise increase stat and return true
+	this->move_top_speed_ += in_spd;
+	this->move_acceleration_ = this->move_top_speed_ / this->move_acceleration_rate_;
+
+	return true;
+}
+
 void Character::TurnLeft(const float& in_deltatime) {
 	//Turn the model leftwards (negative direction) with adjustment for deltatime
 	float turn_radians = this->turn_rate_radians_*in_deltatime;
@@ -132,7 +142,7 @@ void Character::TurnLeft(const float& in_deltatime) {
 
 	//std::cout << "Rot L: " << glm::degrees(new_rotation) << std::endl;
 
-	this->SetRotation(this->rotation_around_x_, new_rotation, this->rotation_around_z_);
+	this->SetRotation(new_rotation);
 }
 
 void Character::TurnRight(const float& in_deltatime) {
@@ -145,5 +155,7 @@ void Character::TurnRight(const float& in_deltatime) {
 
 	//std::cout << "Rot R: " << glm::degrees(new_rotation) << std::endl;
 
-	this->SetRotation(this->rotation_around_x_, new_rotation, this->rotation_around_z_);
+	this->SetRotation(new_rotation);
 }
+
+

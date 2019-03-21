@@ -9,7 +9,7 @@ Weapon::Weapon(
 	: CooldownClass(cooldown) {
 	this->id_ = id;
 	this->attack_power_ = attack_power;
-
+	this->cooldown_ = cooldown;
 	this->weapon_box_.SetOffsets(hitbox_offset_x, hitbox_offset_y);
 }
 
@@ -23,6 +23,10 @@ WeaponID Weapon::GetID() const {
 
 int Weapon::GetAttackPower() const {
 	return this->attack_power_;
+}
+
+float Weapon::GetCooldown() const {
+	return this->cooldown_;
 }
 
 int Weapon::ExecuteWeapon(Character& in_attacker, Character& in_target) {
@@ -60,7 +64,7 @@ int Weapon::ExecuteWeapon(Character& in_attacker, Character& in_target) {
 
 	//If it does apply the sum of the weapon's damage and the attacker's
 	//attack power to the target
-	int damage = this->attack_power_ + in_attacker.GetAttackPower();
+	int damage = (int)(this->attack_power_ * in_attacker.GetAttackPower() / 100.0f);
 	
 	return in_target.TakeDamage(damage);
 }
@@ -68,12 +72,13 @@ int Weapon::ExecuteWeapon(Character& in_attacker, Character& in_target) {
 Sword::Sword()
 	: Weapon(
 		WEAPON_SWORD,
-		GlobalSettings::Access()->ValueOf("WEAPON_SWORD_DAMAGE"),
+		(int)GlobalSettings::Access()->ValueOf("WEAPON_SWORD_DAMAGE"),
 		GlobalSettings::Access()->ValueOf("WEAPON_SWORD_COOLDOWN"),
 		GlobalSettings::Access()->ValueOf("WEAPON_SWORD_HITBOX_OFFSET_X"),
 		GlobalSettings::Access()->ValueOf("WEAPON_SWORD_HITBOX_OFFSET_Y")
 	) {
 
+	this->knock_back_ = GlobalSettings::Access()->ValueOf("WEAPON_SWORD_KNOCKBACK");
 }
 
 Sword::~Sword() {
@@ -82,13 +87,44 @@ Sword::~Sword() {
 
 int Sword::ExecuteWeapon(Character& in_attacker, Character& in_target) {
 	//This weapon only uses the default damaging function
-	return this->Weapon::ExecuteWeapon(in_attacker, in_target);
+	int outcome = this->Weapon::ExecuteWeapon(in_attacker, in_target);
+
+	//If attack connects, apply knock back
+	glm::vec3 direction;
+	if (outcome != -1) {
+
+		//Align directional vector from attacker to target
+		direction = in_target.GetPosition() - in_attacker.GetPosition();
+
+		//Normailize vector
+		direction = glm::normalize(direction);
+
+		//TEST
+		//If y-direction is less than 45deg
+		//(y = 1/sqrt(2) = 0.707..)
+		//set y to be that
+		if (direction.y < 0.707f) { direction.y = 0.707f; }
+		//TEST
+
+		//Scale direction with knockback
+		direction.x *= this->knock_back_;
+		direction.y *= this->knock_back_ / 2;
+		direction.z = 0.0f;
+
+		//Set the target's velocity
+		in_target.SetVelocityVec(direction);
+
+	}
+
+	return outcome;
+
+
 }
 //---------------------------------------------------------
 Axe::Axe()
 	: Weapon(
 		WEAPON_AXE,
-		GlobalSettings::Access()->ValueOf("WEAPON_AXE_DAMAGE"),
+		(int)GlobalSettings::Access()->ValueOf("WEAPON_AXE_DAMAGE"),
 		GlobalSettings::Access()->ValueOf("WEAPON_AXE_COOLDOWN"),
 		GlobalSettings::Access()->ValueOf("WEAPON_AXE_HITBOX_OFFSET_X"),
 		GlobalSettings::Access()->ValueOf("WEAPON_AXE_HITBOX_OFFSET_Y")
@@ -121,11 +157,13 @@ int Axe::ExecuteWeapon(Character& in_attacker, Character& in_target) {
 		//If y-direction is less than 45deg
 		//(y = 1/sqrt(2) = 0.707..)
 		//set y to be that
-		if (direction.y < 0.707) { direction.y = 0.707; }
+		if (direction.y < 0.707f) { direction.y = 0.707f; }
 		//TEST
 
 		//Scale direction with knockback
-		direction *= this->knock_back_;
+		direction.x *= this->knock_back_;
+		direction.y *= this->knock_back_ / 2;
+		direction.z = 0.0f;
 
 		//Set the target's velocity
 		in_target.SetVelocityVec(direction);

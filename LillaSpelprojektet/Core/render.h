@@ -35,19 +35,22 @@ private:
 	
 	GUI hud_;
 
-	void DrawScene();
-
 public:
 	Render();
 	~Render();
 
 	void InitializeRender(MetaData* meta_data);
+	void UpdateMetadata(MetaData* meta_data);
+
 	void UpdateRender(
 		float dt, 
 		glm::vec3 camera_position,
 		glm::mat4 perspective_view_matrix,
 		std::vector<ObjectPackage>& object_vector,
-		PlayerInfoPackage player_data
+		PlayerInfoPackage player_data,
+		bool boss_warning_light_state,
+		GameState game_state,
+		bool mini_map_enabled
 		);
 
 	void GeometryPass(
@@ -58,8 +61,10 @@ public:
 
 
 	void RenderMenuState(Menu menu);
+	void RenderOptionsMenu(Menu menu, CameraHandler* cam_handler);
 	void RenderPauseMenu(Menu menu);
 	void RenderDeathMenu(Menu menu);
+	void RenderVictoryMenu(Menu menu);
 	//void GeometryDrawing();
 	//void ModelTransformation(glm::vec3 m_translate, glm::vec3 m_rotate, float radians, glm::vec3 m_scale);
 

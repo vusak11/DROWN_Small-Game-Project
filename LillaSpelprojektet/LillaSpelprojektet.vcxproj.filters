@@ -156,9 +156,6 @@
     <ClCompile Include="Map\metadata.cpp">
       <Filter>Source Files\Map</Filter>
     </ClCompile>
-    <ClCompile Include="Object\Drop\drop.cpp">
-      <Filter>Source Files\Object\Drop</Filter>
-    </ClCompile>
     <ClCompile Include="Object\Character\NPCs\NPC_runner.cpp">
       <Filter>Source Files\Object\Character\NPCs</Filter>
     </ClCompile>
@@ -167,6 +164,18 @@
     </ClCompile>
     <ClCompile Include="Object\Character\weapon.cpp">
       <Filter>Source Files\Object\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\randomizer.cpp">
+      <Filter>Source Files\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="loading_screen.h">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Character\NPCs\NPC_ghost.cpp">
+      <Filter>Source Files\Object\Character\NPCs</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Drop\drop.cpp">
+      <Filter>Source Files\Object\Drop</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -256,6 +265,12 @@
     </ClInclude>
     <ClInclude Include="Object\Character\weapon.h">
       <Filter>Header Files\Object\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\randomizer.h">
+      <Filter>Header Files\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Character\NPCs\NPC_ghost.h">
+      <Filter>Header Files\Object\Character\NPCs</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

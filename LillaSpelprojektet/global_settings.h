@@ -4,6 +4,12 @@
 #include <GLM\glm.hpp>
 #include <map>
 
+//For rand
+#include <cstdlib>
+#include <ctime>
+
+
+
 // This class contains all the global data for settings. It's a singleton which
 // means that it should only be one of it hence the get instance function.
 // Example:
@@ -17,7 +23,8 @@
 enum AnimationState {
 	ANIMATION_STATE_PLAYER_IDLE,
 	ANIMATION_STATE_PLAYER_JUMP,
-	ANIMATION_STATE_PLAYER_WALK
+	ANIMATION_STATE_PLAYER_WALK,
+	ANIMATION_STATE_IS_ATTACKING
 };
 
 //ObjectIDs------------------------------------------------
@@ -29,22 +36,36 @@ enum ObjectID {
 	OBJECT_ID_NULL,				//:The Error Model
 	OBJECT_ID_PLAYER_IDLE,		//:Start of Player
 	OBJECT_ID_PLAYER_JUMP,
-	OBJECT_ID_PLAYER_LEFT_WALK,
-	OBJECT_ID_PLAYER_RIGHT_WALK,
+	OBJECT_ID_PLAYER_LEFT_WALK_1,
+	OBJECT_ID_PLAYER_LEFT_WALK_2,
+	OBJECT_ID_PLAYER_LEFT_WALK_3,
+	OBJECT_ID_PLAYER_RIGHT_WALK_1,
+	OBJECT_ID_PLAYER_RIGHT_WALK_2,
+	OBJECT_ID_PLAYER_RIGHT_WALK_3,
+	OBJECT_ID_PLAYER_ATTACK_SWORD_STANCE_1,
+	OBJECT_ID_PLAYER_ATTACK_SWORD_STANCE_2,
+	OBJECT_ID_PLAYER_ATTACK_SWORD_STANCE_3,
+	OBJECT_ID_PLAYER_ATTACK_AXE_STANCE_1,
+	OBJECT_ID_PLAYER_ATTACK_AXE_STANCE_2,
+	OBJECT_ID_PLAYER_ATTACK_AXE_STANCE_3,
 	OBJECT_ID_DUMMY,			//:Start of NPCs
 	OBJECT_ID_ICE_AI,
 	OBJECT_ID_FIRE_AI,
 	OBJECT_ID_WOOD_AI,
+	OBJECT_ID_GHOST,
 	OBJECT_ID_DROP_HP_RESTORE,	//:Start of Drops
 	OBJECT_ID_DROP_HP_UP,
 	OBJECT_ID_DROP_ATK_UP,
+	OBJECT_ID_DROP_SPD_UP,
 	OBJECT_ID_DROP_DASH,
 	OBJECT_ID_DROP_DOUBLE_JUMP,
 	OBJECT_ID_DROP_SWORD,
 	OBJECT_ID_DROP_AXE,
 	OBJECT_ID_DROP_KEY,
 	OBJECT_ID_DROP_DOOR,
-	OBJECT_ID_BOSS,
+	OBJECT_ID_DROP_CHEST_CLOSED,
+	OBJECT_ID_DROP_CHEST_OPEN,
+	OBJECT_ID_BOSS,				//:Start of Boss
 	OBJECT_ID_BOSS_HAND,
 	NUMBER_OF_OBJECT_IDS		//:The Last Enum
 };
@@ -53,15 +74,26 @@ enum ObjectID {
 enum AbilityID {
 	ABILITY_NONE,
 	ABILITY_DOUBLE_JUMP,
-	ABILITY_DASH
+	ABILITY_DASH,
+	NUM_OF_ABILITIES
 };
 
 enum WeaponID {
 	WEAPON_NONE,
 	WEAPON_SWORD,
-	WEAPON_AXE
+	WEAPON_AXE,
+	NUM_OF_WEAPONS
+
 };
 
+//Zone IDs-------------------------------------------------
+enum ZoneID {
+	DEF,
+	RED,
+	GRE,
+	BLU,
+	NUM_OF_ZONES
+};
 
 //States---------------------------------------------------
 enum GameState {
@@ -71,7 +103,8 @@ enum GameState {
 	OPTIONS,
 	DEATH,
 	BOSS,
-	QUIT
+	QUIT, 
+	VICTORY
 };
 
 //---------------------------------------------------------
@@ -93,8 +126,7 @@ struct PlayerInfoPackage {
 };
 
 
-class GlobalSettings
-{
+class GlobalSettings {
 public:
 	static GlobalSettings* Access() {
 		static GlobalSettings instance;
@@ -102,6 +134,9 @@ public:
 	}
 	void UpdateValuesFromFile();
 	float ValueOf(std::string setting_name);
+
+	static void SeedRandomSeed();
+	static int GetRandomInt();
 
 private:
 	GlobalSettings() {};

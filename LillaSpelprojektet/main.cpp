@@ -2,6 +2,7 @@
 
 #include <thread>
 
+#include "loading_screen.h"
 #include "Core/Game.h"
 #include "GLDebug.h"
 
@@ -14,20 +15,20 @@ void GameLoop(
 	const bool& in_running,
 	Game& in_game,
 	sf::Window& in_window);
+
 int main() {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 
 	GlobalSettings::Access()->UpdateValuesFromFile();
+	GlobalSettings::SeedRandomSeed();
 
 	sf::Window window(sf::VideoMode(
-		GlobalSettings::Access()->ValueOf("WINDOW_WIDTH"),
-		GlobalSettings::Access()->ValueOf("WINDOW_HEIGHT")),
+		(unsigned int)GlobalSettings::Access()->ValueOf("WINDOW_WIDTH"),
+		(unsigned int)GlobalSettings::Access()->ValueOf("WINDOW_HEIGHT")),
 		"Drown", 
 		sf::Style::Default, 
 		sf::ContextSettings(32));
-	float test = GlobalSettings::Access()->ValueOf("WINDOW_WIDTH");
-	window.setVerticalSyncEnabled(true);
-
+	
 	window.setActive(true);
 	 
 	glewExperimental = GL_TRUE;
@@ -36,7 +37,7 @@ int main() {
 	}
 
 	/*----------Start GL Debugging----------*/
-	//EnableGLDebug(); //Comment this away to stop output
+	EnableGLDebug(); //Comment this away to stop output
 	/*----------End of Start GL Debugging----------*/
 
 	/*----------Variables----------*/
@@ -45,9 +46,12 @@ int main() {
 	/*----------End of Variables----------*/
 	
 	/*-----------Initialize---------------*/
-	
-	//Start the game
+	LoadingScreen(std::ref(window));
+
+	//Set active context, initialize game, set inactive context
+	window.setActive(true);
 	game.InitializeGame();
+	window.setActive(false);
 
 	//Start thread iterating game
 	std::thread game_thread(
@@ -57,14 +61,10 @@ int main() {
 		std::ref(window)
 	);
 
-	//Tell this thread to not use the window actively
-	window.setActive(false);
-
 	//Turn of repeating key presses
 	window.setKeyRepeatEnabled(false);
 
 	/*-----------End Initialize---------------*/
-
 	while (game.IsRunning()) {
 		sf::Event event;
 		
@@ -81,7 +81,6 @@ int main() {
 			game.InputEvents(event);
 			/*----------------Input from mouse / keyboard---------*/
 		}
-
 		game.InputContinual();
 	}
 
@@ -95,8 +94,12 @@ void GameLoop(
 	Game& in_game,
 	sf::Window& in_window) {
 
+	in_window.setActive(true);
+
 	while (in_game.IsRunning()) {
 		in_game.GameIteration();
 		in_window.display();
 	}
+
+	in_window.setActive(false);
 }

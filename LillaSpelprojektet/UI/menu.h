@@ -10,8 +10,11 @@
 #include <map>
 #include <ft2build.h>
 #include FT_FREETYPE_H
+#include <SOIL/SOIL.h>
 
 #include "../Core/shader_handler.h"
+#include "../Camera/camera_handler.h"
+#include "../Core/sound_unit.h"
 
 class Menu {
 private:
@@ -29,9 +32,11 @@ private:
 	GLuint vertex_array_object_;
 	GLuint vertex_buffer_object_;
 
+	//GLuint background_image_;
+	bool mini_map_enabled_;
+
 	int selected_item_index_;
 	int nr_of_items_;
-	
 
 	void RenderText(
 		ShaderHandler* shader_handler,
@@ -46,15 +51,21 @@ public:
 	Menu();
 	~Menu();
 
-	void Initiliaze();
+	void Initialize();
 	void NavigateUp();
 	void NavigateDown();
 	void RenderMenu(ShaderHandler* shader_handler);
+	void RenderOptionsMenu(ShaderHandler * shader_handler, CameraHandler* cam_handler);
 	void RenderPauseMenu(ShaderHandler* shader_handler);
 	void RenderDeathMenu(ShaderHandler* shader_handler);
+	void RenderVictoryMenu(ShaderHandler* shader_handler);
 	void StateManager(GameState state);
 
 	int GetSelectedItemIndex() const;
+	void SetSelectedItemIndex(int index);
+
+	bool IsMinIMapEnabled();
+	void SetMiniMap(bool enabled);
 };
 
 #endif
