@@ -247,7 +247,7 @@ void Game::InputForGameState(const sf::Event& in_event) {
 			menu_.StateManager(this->previous_states_.back());
 		}
 		//Swap between normal and debug camera
-		if (in_event.key.code == sf::Keyboard::O) {
+		/*if (in_event.key.code == sf::Keyboard::O) {
 			cam_handler_ptr_->SwapCamera();
 		}
 		if (in_event.key.code == sf::Keyboard::L) {
@@ -259,7 +259,7 @@ void Game::InputForGameState(const sf::Event& in_event) {
 		}
 		if (in_event.key.code == sf::Keyboard::B) {
 			obj_handler_ptr_->SetPlayerXYZPosForBoss();
-		}
+		}*/
 		
 
 	default:
