@@ -1,4 +1,4 @@
-# DROWN_Small-Game-Project
+# DROWN
 2.5D Dungeon exploring RPG Platformer
 
 # Trailer
